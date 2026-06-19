@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================================================
     // UPDATE THIS WITH THE TATTOO ARTIST'S WHATSAPP NUMBER (including country code)
     // Example: '5511999999999' for Brazil (+55), SP (11)
-    const WHATSAPP_NUMBER = '5511999999999';
+    const WHATSAPP_NUMBER = '5531983529270';
 
     // ==========================================================================
     // CUSTOM CURSOR
