@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clara Nasc | Portfólio de Tatuagem & Fine Line</title>
+    <meta name="description" content="Explore o portfólio autoral de Clara Nasc. Tatuagens delicadas em Fine Line, Blackwork marcante e desenhos ornamentais personalizados. Agende sua sessão online.">
+    <meta name="keywords" content="tatuadora, tattoo artist, fine line, blackwork, tatuagem delicada, clara nasc, claranasc, tatuagem sp, tattoo portfolio">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://claranasc.com/">
+    <meta property="og:title" content="Clara Nasc | Portfólio de Tatuagem">
+    <meta property="og:description" content="Tatuagens delicadas em Fine Line e Blackwork autoral. Entre em contato e agende sua sessão personalizada.">
+    <meta property="og:image" content="assets/hero-bg.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
+
+    <!-- CSS stylesheet -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <!-- Custom Cursor -->
+    <div class="custom-cursor-outer" id="cursor-outer"></div>
+    <div class="custom-cursor-inner" id="cursor-inner"></div>
+
+    <!-- Header Navigation -->
+    <header class="main-header" id="main-header">
+        <div class="header-container">
+            <a href="#" class="logo-link" id="logo">
+                <span class="logo-text">CLARA<span>NASC</span></span>
+            </a>
+            <nav class="nav-menu" id="nav-menu">
+                <ul>
+                    <li><a href="#portfolio" class="nav-link" id="nav-link-portfolio">Portfólio</a></li>
+                    <li><a href="#sobre" class="nav-link" id="nav-link-sobre">A Artista</a></li>
+                    <li><a href="#contato" class="nav-link btn-header-cta" id="nav-link-contato">Agendar Sessão</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Abrir Menu">
+                <i data-lucide="menu"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-overlay" id="mobile-overlay">
+        <button class="mobile-menu-close" id="mobile-menu-close" aria-label="Fechar Menu">
+            <i data-lucide="x"></i>
+        </button>
+        <nav class="mobile-nav">
+            <ul>
+                <li><a href="#portfolio" class="mobile-nav-link" id="mob-link-portfolio">Portfólio</a></li>
+                <li><a href="#sobre" class="mobile-nav-link" id="mob-link-sobre">A Artista</a></li>
+                <li><a href="#contato" class="mobile-nav-link btn-mobile-cta" id="mob-link-contato">Agendar Sessão</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="home">
+        <div class="hero-background" style="background-image: url('assets/hero-bg.png');"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <span class="hero-tagline fade-in">Fine Line & Blackwork</span>
+            <h1 class="hero-title fade-in-delay-1">Clara Nasc</h1>
+            <p class="hero-subtitle fade-in-delay-2">A arte na pele desenhada para contar a sua história única.</p>
+            <div class="hero-actions fade-in-delay-3">
+                <a href="#contato" class="btn btn-primary" id="hero-cta-btn">
+                    <span>Orçamento & Agendamento</span>
+                    <i data-lucide="arrow-right"></i>
+                </a>
+                <a href="#portfolio" class="btn btn-secondary" id="hero-secondary-btn">Ver Portfólio</a>
+            </div>
+        </div>
+        <div class="hero-scroll-indicator">
+            <span class="scroll-text">Role para explorar</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- Portfolio Gallery Section -->
+    <section class="portfolio-section" id="portfolio">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">Galeria</span>
+                <h2 class="section-title">Trabalhos Recentes</h2>
+                <div class="header-divider"></div>
+            </div>
+
+            <!-- Filters -->
+            <div class="portfolio-filters reveal">
+                <button class="filter-btn active" data-filter="all" id="btn-filter-all">Todos</button>
+                <button class="filter-btn" data-filter="fineline" id="btn-filter-fineline">Fine Line</button>
+                <button class="filter-btn" data-filter="blackwork" id="btn-filter-blackwork">Blackwork</button>
+                <button class="filter-btn" data-filter="ornamental" id="btn-filter-ornamental">Ornamental</button>
+            </div>
+
+            <!-- Gallery Grid -->
+            <div class="portfolio-grid reveal">
+                <!-- Tattoo 1 -->
+                <div class="portfolio-item" data-category="fineline" id="gallery-item-1">
+                    <div class="portfolio-img-wrapper">
+                        <img src="assets/tattoo1.png" alt="Tatuagem floral em traço fino (Fine Line)" loading="lazy">
+                        <div class="portfolio-hover">
+                            <span class="item-category">Fine Line</span>
+                            <h3 class="item-title">Floral Lavender</h3>
+                            <button class="btn-zoom" aria-label="Ampliar Imagem">
+                                <i data-lucide="maximize-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tattoo 2 -->
+                <div class="portfolio-item" data-category="blackwork" id="gallery-item-2">
+                    <div class="portfolio-img-wrapper">
+                        <img src="assets/tattoo2.png" alt="Tatuagem de serpente detalhada em Blackwork" loading="lazy">
+                        <div class="portfolio-hover">
+                            <span class="item-category">Blackwork</span>
+                            <h3 class="item-title">Shadow Serpent</h3>
+                            <button class="btn-zoom" aria-label="Ampliar Imagem">
+                                <i data-lucide="maximize-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tattoo 3 -->
+                <div class="portfolio-item" data-category="ornamental" id="gallery-item-3">
+                    <div class="portfolio-img-wrapper">
+                        <img src="assets/tattoo3.png" alt="Tatuagem geométrica e ornamental simétrica" loading="lazy">
+                        <div class="portfolio-hover">
+                            <span class="item-category">Ornamental</span>
+                            <h3 class="item-title">Sacred Mandala</h3>
+                            <button class="btn-zoom" aria-label="Ampliar Imagem">
+                                <i data-lucide="maximize-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tattoo 4 -->
+                <div class="portfolio-item" data-category="fineline" id="gallery-item-4">
+                    <div class="portfolio-img-wrapper">
+                        <img src="assets/tattoo4.png" alt="Tatuagem de borboleta em micro-realismo" loading="lazy">
+                        <div class="portfolio-hover">
+                            <span class="item-category">Fine Line</span>
+                            <h3 class="item-title">Monarch Detail</h3>
+                            <button class="btn-zoom" aria-label="Ampliar Imagem">
+                                <i data-lucide="maximize-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="sobre">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-image-column reveal">
+                    <div class="about-image-wrapper">
+                        <div class="about-image-placeholder" style="background-image: url('assets/hero-bg.png');"></div>
+                        <div class="about-image-frame"></div>
+                    </div>
+                </div>
+                <div class="about-content-column reveal">
+                    <span class="section-tag">A Artista</span>
+                    <h2 class="section-title text-left">Clara Nasc</h2>
+                    <div class="header-divider left"></div>
+                    <p class="about-text highlight">
+                        Especialista em eternizar histórias e conceitos através de traços finos meticulosos e contrastes marcantes.
+                    </p>
+                    <p class="about-text">
+                        Com mais de 5 anos de experiência e um espaço privativo focado em conforto e biossegurança, meu propósito é traduzir sentimentos em desenhos autorais e únicos. Acredito que cada tatuagem é um ritual de expressão individual e respeito ao corpo.
+                    </p>
+                    <div class="about-details">
+                        <div class="detail-item">
+                            <i data-lucide="shield-check"></i>
+                            <div>
+                                <h4>Materiais Descartáveis</h4>
+                                <p>Segurança total e assepsia rigorosa.</p>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i data-lucide="pencil"></i>
+                            <div>
+                                <h4>Arte 100% Autoral</h4>
+                                <p>Desenhos criados exclusivamente para você.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Form Section -->
+    <section class="booking-section" id="contato">
+        <div class="container">
+            <div class="booking-card reveal">
+                <div class="booking-header">
+                    <span class="section-tag">Agendamento</span>
+                    <h2 class="section-title">Solicite seu Orçamento</h2>
+                    <p class="booking-subtitle">Preencha os detalhes abaixo para que possamos iniciar a criação do seu projeto personalizado. O formulário gerará uma mensagem direta para o meu WhatsApp.</p>
+                </div>
+
+                <form class="booking-form" id="booking-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="input-name">Nome Completo</label>
+                            <input type="text" id="input-name" placeholder="Ex: Clara Silva" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-phone">WhatsApp</label>
+                            <input type="tel" id="input-phone" placeholder="Ex: (11) 99999-9999" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="select-style">Estilo Preferido</label>
+                            <select id="select-style" required>
+                                <option value="" disabled selected>Selecione um estilo</option>
+                                <option value="Fine Line">Fine Line (Traços Finos/Delicados)</option>
+                                <option value="Blackwork">Blackwork (Preenchimento e Sombra)</option>
+                                <option value="Ornamental">Ornamental / Geométrico</option>
+                                <option value="Outro">Outro (Descreva na ideia)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-placement">Local do Corpo</label>
+                            <input type="text" id="input-placement" placeholder="Ex: Antebraço, Costela, Tornozelo" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="input-size">Tamanho Aproximado (em cm)</label>
+                            <input type="text" id="input-size" placeholder="Ex: 10cm de altura por 5cm de largura" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input-idea">Descreva sua Ideia</label>
+                        <textarea id="input-idea" rows="4" placeholder="Conte-me um pouco sobre o que você deseja tatuar, significado, elementos que gostaria de incluir e referências..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-submit" id="btn-submit-booking">
+                        <span>Enviar via WhatsApp</span>
+                        <i data-lucide="send"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <span class="logo-text">CLARA<span>NASC</span></span>
+                    <p>Tatuadora profissional especializada em Fine Line e designs autorais exclusivos.</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Navegação</h3>
+                    <ul>
+                        <li><a href="#home">Início</a></li>
+                        <li><a href="#portfolio">Portfólio</a></li>
+                        <li><a href="#sobre">A Artista</a></li>
+                        <li><a href="#contato">Agendar</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h3>Redes Sociais</h3>
+                    <div class="social-icons">
+                        <a href="https://instagram.com/" target="_blank" aria-label="Instagram" class="social-link">
+                            <i data-lucide="instagram"></i>
+                        </a>
+                        <a href="https://wa.me/5511999999999" target="_blank" aria-label="WhatsApp" class="social-link">
+                            <i data-lucide="phone"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Clara Nasc. Todos os direitos reservados. Feito com amor.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Lightbox Modal -->
+    <div class="lightbox-modal" id="lightbox-modal">
+        <button class="lightbox-close" id="lightbox-close" aria-label="Fechar Galeria">
+            <i data-lucide="x"></i>
+        </button>
+        <div class="lightbox-content">
+            <img src="" alt="" id="lightbox-img">
+            <div class="lightbox-caption">
+                <span class="lightbox-category" id="lightbox-category">Categoria</span>
+                <h3 class="lightbox-title" id="lightbox-title">Título</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main JavaScript File -->
+    <script src="script.js"></script>
+</body>
+</html>
