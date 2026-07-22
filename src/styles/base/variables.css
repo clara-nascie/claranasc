@@ -1,0 +1,30 @@
+/* ==========================================================================
+   DESIGN SYSTEM & VARIABLES
+   ========================================================================== */
+:root {
+    /* Color Palette */
+    --bg-primary: hsl(240, 10%, 4%);
+    --bg-secondary: hsl(240, 6%, 8%);
+    --bg-tertiary: hsl(240, 5%, 12%);
+    --accent-gold: hsl(36, 40%, 64%);
+    --accent-gold-hover: hsl(36, 45%, 72%);
+    --accent-gold-rgb: 197, 168, 128;
+    
+    --text-primary: hsl(0, 0%, 100%);
+    --text-secondary: hsl(240, 5%, 70%);
+    --text-muted: hsl(240, 4%, 45%);
+    --border-color: hsl(240, 5%, 15%);
+    
+    /* Glassmorphism */
+    --glass-bg: rgba(18, 18, 18, 0.75);
+    --glass-border: rgba(255, 255, 255, 0.05);
+    --glass-shadow: rgba(0, 0, 0, 0.6);
+    
+    /* Layout */
+    --container-max-width: 1200px;
+    --header-height: 80px;
+    
+    /* Transitions */
+    --transition-smooth: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    --transition-bounce: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
