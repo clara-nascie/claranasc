@@ -1,0 +1,72 @@
+/* ==========================================================================
+   SCROLL REVEAL ANIMATIONS
+   ========================================================================== */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Hero Animations on Page Load */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s forwards cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.fade-in-delay-1 {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s forwards cubic-bezier(0.25, 1, 0.5, 1);
+    animation-delay: 0.2s;
+}
+
+.fade-in-delay-2 {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s forwards cubic-bezier(0.25, 1, 0.5, 1);
+    animation-delay: 0.4s;
+}
+
+.fade-in-delay-3 {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s forwards cubic-bezier(0.25, 1, 0.5, 1);
+    animation-delay: 0.6s;
+}
+
+/* ==========================================================================
+   KEYFRAMES
+   ========================================================================== */
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scrollAnimation {
+    0% {
+        top: -15px;
+    }
+    50% {
+        top: 100%;
+    }
+    100% {
+        top: -15px;
+    }
+}
+
+@keyframes zoomHero {
+    0% {
+        transform: scale(1.02);
+    }
+    100% {
+        transform: scale(1.08);
+    }
+}
