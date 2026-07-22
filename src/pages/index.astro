@@ -56,32 +56,45 @@ import { Lightbox } from '../components/Lightbox';
                 window.lucide.createIcons();
             }
             
-            // Re-initialize when React components dynamically update the DOM (like the Portfolio filtering)
-            const iconObserver = new MutationObserver(() => {
-                if (window.lucide) {
+            const iconObserver = new MutationObserver((mutations, observer) => {
+                let hasNewNodes = false;
+                for (let mutation of mutations) {
+                    if (mutation.addedNodes.length > 0) {
+                        hasNewNodes = true;
+                        break;
+                    }
+                }
+                
+                if (hasNewNodes && window.lucide) {
+                    observer.disconnect();
                     window.lucide.createIcons();
+                    observer.observe(document.body, { childList: true, subtree: true });
                 }
             });
             iconObserver.observe(document.body, { childList: true, subtree: true });
 
             // Scroll animations (Intersection Observer)
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.15
-            };
-
             const scrollObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('active');
                     }
                 });
-            }, observerOptions);
+            }, { threshold: 0.15 });
 
-            document.querySelectorAll('.reveal, .fade-in, .fade-in-delay-1, .fade-in-delay-2, .fade-in-delay-3').forEach((el) => {
-                scrollObserver.observe(el);
+            const observeElements = () => {
+                document.querySelectorAll('.reveal, .fade-in, .fade-in-delay-1, .fade-in-delay-2, .fade-in-delay-3').forEach((el) => {
+                    scrollObserver.observe(el);
+                });
+            };
+
+            observeElements();
+
+            // Failsafe for React Hydration: When React replaces DOM nodes, re-observe them
+            const layoutObserver = new MutationObserver(() => {
+                observeElements();
             });
+            layoutObserver.observe(document.body, { childList: true, subtree: true });
         });
     </script>
 </body>
