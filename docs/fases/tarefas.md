@@ -10,15 +10,15 @@ Use este checklist para acompanhar o passo a passo da evolução e migração do
 - [x] Atualizar o arquivo `docs/stack.md` e `README.md` refletindo a nova arquitetura.
 
 ## 🏗️ Migração de Estrutura e Estilos (HTML/CSS para Astro/React)
-- [ ] Migrar o conteúdo de `index.html` para o layout principal em `src/pages/index.astro`.
-- [ ] Refatorar a estilização global (`style.css`) para os padrões do Astro.
-- [ ] Modularizar a página em Componentes Astro (Header, Hero, Portfolio, About, Contact).
+- [x] Migrar o conteúdo de `index.html` para o layout principal em `src/pages/index.astro`.
+- [x] Refatorar a estilização global (`style.css`) para os padrões do Astro.
+- [x] Modularizar a página em Componentes React (Header, Hero, Portfolio, About, Contact).
 
 ## ⚛️ Refatoração de Interatividade (JavaScript para React/TS)
-- [ ] Criar o componente React para o **Custom Cursor** (tipado com TypeScript).
-- [ ] Criar o componente React para o **Lightbox** (Galeria do Portfólio).
-- [ ] Implementar as animações de scroll (Intersection Observer) nos componentes.
-- [ ] Refatorar a lógica do formulário de agendamento (WhatsApp) em um componente React ou função TypeScript.
+- [x] Criar o componente React para o **Custom Cursor** (tipado com TypeScript).
+- [x] Criar o componente React para o **Lightbox** (Galeria do Portfólio).
+- [x] Implementar as animações de scroll (Intersection Observer) nos componentes.
+- [x] Refatorar a lógica do formulário de agendamento (WhatsApp) em um componente React ou função TypeScript.
 
 ## 🖼️ Mídia, SEO e Acessibilidade
 - [ ] Otimizar e mover imagens estáticas para a pasta `public/` ou `src/assets/`.

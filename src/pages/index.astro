@@ -1,17 +1,88 @@
 ---
+import '../styles/global.css';
 
+import { AppLayout } from '../components/layout/AppLayout';
+import { Header } from '../components/sections/Header';
+import { Hero } from '../components/sections/Hero';
+import { Portfolio } from '../components/sections/Portfolio';
+import { About } from '../components/sections/About';
+import { ContactForm } from '../components/sections/ContactForm';
+import { Footer } from '../components/sections/Footer';
+import { CustomCursor } from '../components/CustomCursor';
+import { Lightbox } from '../components/Lightbox';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clara Nasc | Portfólio de Tatuagem & Fine Line</title>
+    <meta name="description" content="Explore o portfólio autoral de Clara Nasc. Tatuagens delicadas em Fine Line, Blackwork marcante e desenhos ornamentais personalizados. Agende sua sessão online.">
+    <meta name="keywords" content="tatuadora, tattoo artist, fine line, blackwork, tatuagem delicada, clara nasc, claranasc, tatuagem sp, tattoo portfolio">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://claranasc.com/">
+    <meta property="og:title" content="Clara Nasc | Portfólio de Tatuagem">
+    <meta property="og:description" content="Tatuagens delicadas em Fine Line e Blackwork autoral. Entre em contato e agende sua sessão personalizada.">
+    <meta property="og:image" content="assets/hero-bg.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script is:inline src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <CustomCursor client:load />
+    
+    <AppLayout>
+        <Header client:load />
+        <Hero />
+        <Portfolio client:load />
+        <About />
+        <ContactForm client:load />
+        <Footer />
+        <Lightbox client:load />
+    </AppLayout>
+
+    <script is:inline>
+        // Initialize Lucide icons
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) {
+                window.lucide.createIcons();
+            }
+            
+            // Re-initialize when React components dynamically update the DOM (like the Portfolio filtering)
+            const iconObserver = new MutationObserver(() => {
+                if (window.lucide) {
+                    window.lucide.createIcons();
+                }
+            });
+            iconObserver.observe(document.body, { childList: true, subtree: true });
+
+            // Scroll animations (Intersection Observer)
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+
+            const scrollObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.reveal, .fade-in, .fade-in-delay-1, .fade-in-delay-2, .fade-in-delay-3').forEach((el) => {
+                scrollObserver.observe(el);
+            });
+        });
+    </script>
+</body>
 </html>
