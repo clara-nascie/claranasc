@@ -12,6 +12,7 @@ export const Header: React.FC = () => {
       <header className="main-header" id="main-header">
         <div className="header-container">
           <a href="#" className="logo-link" id="logo">
+            <img src="/favicon.png" alt="Ícone Clara Nasc" className="logo-icon" />
             <span className="logo-text">CLARA<span>NASC</span></span>
           </a>
           <nav className="nav-menu" id="nav-menu">
