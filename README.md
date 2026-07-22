@@ -30,34 +30,33 @@ claranasc/
 
 ## 🛠️ Stack Tecnológico
 
-O site é 100% estático para garantir velocidade de carregamento imediata:
-* **HTML5**: Semântico e otimizado para SEO.
-* **CSS3**: Layout responsivo com Flexbox, CSS Grid e variáveis customizadas.
-* **JavaScript (ES6+)**: Cursor inteligente, lightbox nativo e animações por interseção (sem frameworks externos).
+O site é construído com Astro para gerar arquivos estáticos super otimizados:
+* **Astro**: Framework principal para renderização (SSG) e estruturação do site.
+* **React & TypeScript**: Usados para componentes complexos e interativos com tipagem forte.
+* **CSS3 Vanilla**: Layout responsivo com Flexbox, CSS Grid e variáveis customizadas.
 * **Lucide Icons & Google Fonts**: Tipografia com as fontes *Syne* e *Inter*.
 
-Para mais detalhes sobre as tecnologias, consulte a [Documentação de Stack](docs/stack.md).
+Para mais detalhes sobre as tecnologias, consulte a [Documentação de Stack](docs/tecnologias/tecnologias.md) e [Arquitetura](docs/arquitetura/arquitetura.md).
 
 ---
 
 ## 💻 Como Executar Localmente
 
-Como a aplicação é composta apenas por arquivos estáticos puros, não há necessidade de instalação de dependências ou build compilado.
+O projeto utiliza Node.js e Astro para gerenciamento de dependências e servidor local.
 
 1. Clone o repositório para sua máquina:
    ```bash
    git clone https://github.com/seu-usuario/claranasc.git
    ```
-2. Abra a pasta do projeto e dê um duplo clique no arquivo `index.html` para abrir diretamente no seu navegador.
-3. *Alternativa recomendada (servidor local)*: Se preferir rodar através de um servidor local para desenvolvimento:
+2. Instale as dependências:
    ```bash
-   # Com Python 3
-   python -m http.server 8000
-   
-   # Ou com Node.js (npx)
-   npx http-server
+   npm install
    ```
-   Depois acesse `http://localhost:8000` (ou a porta correspondente).
+3. Inicie o servidor local de desenvolvimento:
+   ```bash
+   npm run dev
+   ```
+   Depois acesse `http://localhost:4321` no navegador.
 
 ---
 
