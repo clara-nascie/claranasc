@@ -2,23 +2,23 @@
    DESIGN SYSTEM & VARIABLES
    ========================================================================== */
 :root {
-    /* Color Palette */
-    --bg-primary: hsl(240, 10%, 4%);
-    --bg-secondary: hsl(240, 6%, 8%);
-    --bg-tertiary: hsl(240, 5%, 12%);
-    --accent-gold: hsl(36, 40%, 64%);
-    --accent-gold-hover: hsl(36, 45%, 72%);
-    --accent-gold-rgb: 197, 168, 128;
+    /* Color Palette (Premium Light Mode) */
+    --bg-primary: hsl(40, 30%, 96%); /* Creme Claro */
+    --bg-secondary: hsl(40, 25%, 92%); /* Bege */
+    --bg-tertiary: hsl(40, 20%, 88%); /* Bege Escuro */
+    --accent-gold: hsl(30, 45%, 45%); /* Marrom Mel */
+    --accent-gold-hover: hsl(30, 45%, 38%);
+    --accent-gold-rgb: 166, 107, 63; 
     
-    --text-primary: hsl(0, 0%, 100%);
-    --text-secondary: hsl(240, 5%, 70%);
-    --text-muted: hsl(240, 4%, 45%);
-    --border-color: hsl(240, 5%, 15%);
+    --text-primary: hsl(20, 15%, 15%); /* Cafe (Quase preto) */
+    --text-secondary: hsl(20, 10%, 40%); /* Marrom Medio */
+    --text-muted: hsl(20, 10%, 60%);
+    --border-color: hsl(40, 20%, 85%);
     
     /* Glassmorphism */
-    --glass-bg: rgba(18, 18, 18, 0.75);
-    --glass-border: rgba(255, 255, 255, 0.05);
-    --glass-shadow: rgba(0, 0, 0, 0.6);
+    --glass-bg: rgba(255, 253, 248, 0.75);
+    --glass-border: rgba(166, 107, 63, 0.1);
+    --glass-shadow: rgba(0, 0, 0, 0.05);
     
     /* Layout */
     --container-max-width: 1200px;
