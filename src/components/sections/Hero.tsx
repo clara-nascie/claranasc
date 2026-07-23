@@ -9,7 +9,7 @@ export const Hero: React.FC = () => {
       <div className="hero-content">
         <span className="hero-tagline fade-in">Fine Line, Geek, Cobertura & Blackwork</span>
         <h1 className="hero-title fade-in-delay-1">Clara Nasc</h1>
-        <p className="hero-subtitle fade-in-delay-2">A arte na pele desenhada para contar a sua história única.</p>
+        <p className="hero-subtitle fade-in-delay-2">A resposta para a vida, o universo e tudo mais é sempre uma tatuagem nova! Especialista em Fineline, Blackwork, cultura Geek e Coberturas.</p>
         <div className="hero-actions fade-in-delay-3">
           <Button as="a" href="#contato" className="btn-primary" id="hero-cta-btn">
             <span>Orçamento & Agendamento</span>
