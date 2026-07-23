@@ -10,7 +10,6 @@
 /* 2. Components UI */
 @import './components/buttons.css';
 @import './components/forms.css';
-@import './components/cursor.css';
 @import './components/lightbox.css';
 @import './components/animations.css';
 

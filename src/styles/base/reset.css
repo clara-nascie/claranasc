@@ -69,13 +69,3 @@ button, input, select, textarea {
     outline: none;
 }
 
-/* Hide cursor on touch devices */
-@media (hover: hover) and (pointer: fine) {
-    body {
-        cursor: none;
-    }
-    
-    a, button, select, input[type="submit"], .filter-btn, .portfolio-item {
-        cursor: none;
-    }
-}
