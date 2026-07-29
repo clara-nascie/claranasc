@@ -1,0 +1,57 @@
+name: Verificação
+
+# Roda a cada push e pull request na main. Protege contra regressões que só
+# aparecem no navegador — erro de hidratação do React, comportamento dependente
+# de scroll e contraste — que nenhuma análise estática detecta.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22.12.0'
+          cache: 'npm'
+
+      # `npm ci` em vez de `npm install`: instala exatamente o que está no
+      # package-lock.json, sem atualizar nada. É o comando correto em CI.
+      - name: Instalar dependências
+        run: npm ci
+
+      # Só o Chromium. Os outros navegadores seriam download inútil aqui.
+      - name: Instalar Chromium do Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Build
+        run: npm run build
+
+      # `astro preview` serve o conteúdo de dist/, ou seja, o site como fica em
+      # produção — e não o dev server. O script espera o servidor subir sozinho,
+      # então não é preciso sincronizar aqui.
+      - name: Subir preview do build
+        run: npm run preview &
+
+      - name: Verificação visual e de acessibilidade
+        run: npm run verificar
+        env:
+          BASE_URL: http://localhost:4321
+
+      # Sobe as capturas mesmo quando a verificação falha — são elas que
+      # mostram o que aconteceu.
+      - name: Publicar capturas
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: capturas-${{ github.sha }}
+          path: .playwright/
+          retention-days: 14
+          if-no-files-found: warn
