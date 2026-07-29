@@ -1,6 +1,10 @@
 ---
 import '../styles/global.css';
 
+import { SITE } from '../data/siteData';
+import Seo from '../components/seo/Seo.astro';
+import LocalBusinessSchema from '../components/seo/LocalBusinessSchema.astro';
+
 import { AppLayout } from '../components/layout/AppLayout';
 import { Header } from '../components/sections/Header';
 import { Hero } from '../components/sections/Hero';
@@ -10,30 +14,29 @@ import { ContactForm } from '../components/sections/ContactForm';
 import { Footer } from '../components/sections/Footer';
 
 import { Lightbox } from '../components/Lightbox';
+
+// Title com 59 caracteres: abaixo do limite de ~60 que o Google exibe sem cortar.
+// Ordem intencional — "Tatuadora em BH" logo após o nome, porque é o termo de busca.
+const title = 'Clara Nasc | Tatuadora em BH - Fine Line e Blackwork';
+const description =
+  'Tatuadora em Belo Horizonte especializada em Fine Line, Botânico, Blackwork, Geek & Animes e Coberturas. Veja o portfólio autoral e solicite seu orçamento pelo WhatsApp.';
 ---
 
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang={SITE.lang}>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clara Nasc | Tatuadora em BH - Fine Line, Geek, Cobertura & Blackwork</title>
     <link rel="icon" type="image/png" href="/favicon.png">
-    <meta name="description" content="Explore o portfólio de Clara Nasc, tatuadora em BH. Projetos autorais focados em Fine Line, Blackwork, universo Geek e Cobertura. Agende seu horário online.">
-    <meta name="keywords" content="tatuadora, tattoo artist, fine line, blackwork, tatuagem delicada, clara nasc, claranasc, tatuagem sp, tattoo portfolio">
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://claranasc.com/">
-    <meta property="og:title" content="Clara Nasc | Tatuadora em BH">
-    <meta property="og:description" content="Explore o portfólio de Clara Nasc, tatuadora em BH. Projetos autorais focados em Fine Line, Blackwork, universo Geek e Cobertura. Agende seu horário online.">
-    <meta property="og:image" content="/assets/hero-bg.webp">
+
+    <Seo title={title} description={description} />
+    <LocalBusinessSchema />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
-    
+
     <!-- Lucide Icons -->
     <script is:inline src="https://unpkg.com/lucide@latest"></script>
 </head>
