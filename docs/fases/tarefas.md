@@ -1,34 +1,60 @@
-# Lista de Tarefas: Portfólio Clara Nasc (Astro + React + TypeScript)
+# Fases do Projeto
 
-Use este checklist para acompanhar o passo a passo da evolução e migração do projeto para a nova stack. Marcadores `[x]` indicam tarefas concluídas.
+Histórico das fases de construção. **Tarefas em aberto ficam nas
+[GitHub Issues](https://github.com/clara-nascie/claranasc/issues)**, não aqui —
+este arquivo registra o que já foi percorrido.
 
-## 🛠️ Configuração Inicial do Ambiente
-- [x] Inicializar o projeto com o framework **Astro**.
-- [x] Configurar **TypeScript** no projeto.
-- [x] Adicionar e configurar a integração do **React** ao Astro.
-- [x] Configurar ambiente **Node.js** (scripts de dev e build).
-- [x] Atualizar o arquivo `docs/stack.md` e `README.md` refletindo a nova arquitetura.
+## ✅ Configuração do ambiente
+- [x] Projeto inicializado com **Astro**
+- [x] **TypeScript** configurado _(ver ressalva abaixo)_
+- [x] Integração **React** adicionada
+- [x] Scripts de dev e build
+- [x] `README.md` e `docs/` refletindo a arquitetura atual
 
-## 🏗️ Migração de Estrutura e Estilos (HTML/CSS para Astro/React)
-- [x] Migrar o conteúdo de `index.html` para o layout principal em `src/pages/index.astro`.
-- [x] Refatorar a estilização global (`style.css`) para os padrões do Astro.
-- [x] Modularizar a página em Componentes React (Header, Hero, Portfolio, About, Contact).
+## ✅ Migração de HTML/CSS monolítico para Astro/React
+- [x] `index.html` migrado para `src/pages/index.astro`
+- [x] `style.css` modularizado em `base/`, `components/` e `sections/`
+- [x] Página dividida em componentes (Header, Hero, Portfolio, About, ContactForm, Footer)
 
-## ⚛️ Refatoração de Interatividade (JavaScript para React/TS)
-- [x] Criar o componente React para o **Custom Cursor** (tipado com TypeScript).
-- [x] Criar o componente React para o **Lightbox** (Galeria do Portfólio).
-- [x] Implementar as animações de scroll (Intersection Observer) nos componentes.
-- [x] Refatorar a lógica do formulário de agendamento (WhatsApp) em um componente React ou função TypeScript.
+## ✅ Interatividade
+- [x] `Lightbox` como componente React
+- [x] Animações de scroll com `IntersectionObserver`
+- [x] Formulário de agendamento gerando mensagem para o WhatsApp
+- [x] ~~Custom Cursor~~ — removido: o cursor nativo tem melhor performance, e o componente ficou órfão até a limpeza de 29/07/2026
+- [x] Botão flutuante de agendamento (`FloatingCta.astro`), sem React
 
-## 🖼️ Mídia, SEO e Acessibilidade
-- [x] Mover imagens estáticas para a pasta `public/portfolio/` com `src/data/portfolioData.ts`.
-- [ ] ⚠️ **Otimizar** as imagens de verdade — os `.webp` atuais são JPEG renomeados (ver Issue 2.2).
-- [x] Configurar metatags de SEO dinâmicas (Head do Astro) — `src/components/seo/Seo.astro`.
-- [x] Dados estruturados JSON-LD para negócio local — `src/components/seo/LocalBusinessSchema.astro`.
-- [x] Sitemap automático via `@astrojs/sitemap` + `robots.txt` atualizado.
-- [ ] Garantir acessibilidade (A11y) nos novos componentes React.
+## ✅ SEO — fundação _(29/07/2026)_
+- [x] Meta tags e description com foco em "Tatuadora em BH" e nos 5 nichos
+- [x] Open Graph corrigido: `og:image` era relativo e **as prévias de link no WhatsApp não renderizavam**
+- [x] `canonical`, `robots`, Twitter Card
+- [x] `site` definido no `astro.config.mjs` (pré-requisito de URL absoluta)
+- [x] Sitemap automático via `@astrojs/sitemap`
+- [x] JSON-LD `TattooParlor` + `Person` + `WebSite`
+- [x] `siteData.ts` como fonte única dos dados de negócio
 
-## 🚀 Desempenho e Deploy
-- [ ] Testar a build do Astro para garantir que não há erros de TypeScript.
-- [ ] Ajustar configurações de deploy (`wrangler.jsonc`) para o Cloudflare Pages (suporte à build do Astro).
-- [ ] Deploy em produção e teste no Lighthouse.
+## ✅ Qualidade e infraestrutura _(29/07/2026)_
+- [x] Limpeza de código morto: `CustomCursor`, `cursor.css`, imagens pré-migração, `crop_icon.cjs`, token CSS não usado, estilos do header sticky abandonado
+- [x] `public/` reduzido de 10,59 MB para 5,53 MB
+- [x] Bug de hidratação do React corrigido na raiz ([#10](https://github.com/clara-nascie/claranasc/issues/10))
+- [x] Verificação visual e de a11y via Playwright (`npm run verificar`)
+- [x] GitHub Actions rodando a verificação a cada push
+- [x] Backlog consolidado nas GitHub Issues
+
+## ⏳ Em aberto
+
+Ver as [issues](https://github.com/clara-nascie/claranasc/issues). Prioridade:
+
+1. [#14](https://github.com/clara-nascie/claranasc/issues/14) — dados reais do estúdio (destrava o Google Maps)
+2. [#8](https://github.com/clara-nascie/claranasc/issues/8) — contraste dos botões do hero (falha visível para clientes)
+3. [#5](https://github.com/clara-nascie/claranasc/issues/5) / [#6](https://github.com/clara-nascie/claranasc/issues/6) — fotos reais do portfólio e otimização de imagens
+4. [#11](https://github.com/clara-nascie/claranasc/issues/11) — páginas por nicho
+5. [#12](https://github.com/clara-nascie/claranasc/issues/12) — Core Web Vitals restantes
+6. [#13](https://github.com/clara-nascie/claranasc/issues/13) — conteúdo (FAQ, guia de cuidados)
+
+---
+
+## ⚠️ Ressalvas que não devem ser esquecidas
+
+* **Não há verificação de tipos.** O `npm run build` só remove os tipos; não valida. A tarefa "testar a build para garantir que não há erros de TypeScript" que existia aqui era **impossível de cumprir** — o `typescript` não está instalado e o `@astrojs/check` é incompatível com TypeScript 7. Decidir entre fixar `typescript` em `^6` ou aguardar suporte é uma escolha em aberto.
+* **As imagens não estão otimizadas**, apesar de a fase de mídia constar como concluída no passado. Os `.webp` são JPEG renomeados. Ver [#6](https://github.com/clara-nascie/claranasc/issues/6).
+* **Lighthouse deve ser rodado contra `npm run preview`**, nunca contra o dev server — o dev server não é representativo do build de produção.
