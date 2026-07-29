@@ -26,7 +26,6 @@
     border-radius: 8px;
     position: relative;
     z-index: 2;
-    filter: grayscale(40%) contrast(110%);
     border: 1px solid var(--border-color);
 }
 
