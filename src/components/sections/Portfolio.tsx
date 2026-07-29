@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
-
-const portfolioItems = [
-  { id: 1, category: 'fineline', title: 'Floral Lavender', img: 'assets/tattoo1.png', alt: 'Tatuagem floral em traço fino (Fine Line)' },
-  { id: 2, category: 'blackwork', title: 'Shadow Serpent', img: 'assets/tattoo2.png', alt: 'Tatuagem de serpente detalhada em Blackwork' },
-  { id: 3, category: 'ornamental', title: 'Sacred Mandala', img: 'assets/tattoo3.png', alt: 'Tatuagem geométrica e ornamental simétrica' },
-  { id: 4, category: 'fineline', title: 'Monarch Detail', img: 'assets/tattoo4.png', alt: 'Tatuagem de borboleta em micro-realismo' }
-];
+import { portfolioItems, PORTFOLIO_CATEGORIES } from '../../data/portfolioData';
 
 export const Portfolio: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState('all');
@@ -13,6 +7,14 @@ export const Portfolio: React.FC = () => {
   const filteredItems = activeFilter === 'all' 
     ? portfolioItems 
     : portfolioItems.filter(item => item.category === activeFilter);
+
+  const handleOpenLightbox = (src: string, title: string, categoryLabel: string) => {
+    window.dispatchEvent(
+      new CustomEvent('open-lightbox', {
+        detail: { src, title, category: categoryLabel }
+      })
+    );
+  };
 
   return (
     <section className="portfolio-section" id="portfolio">
@@ -23,25 +25,39 @@ export const Portfolio: React.FC = () => {
           <div className="header-divider"></div>
         </div>
 
-        <div className="portfolio-filters reveal">
-          <button className={`filter-btn ${activeFilter === 'all' ? 'active' : ''}`} onClick={() => setActiveFilter('all')}>Todos</button>
-          <button className={`filter-btn ${activeFilter === 'fineline' ? 'active' : ''}`} onClick={() => setActiveFilter('fineline')}>Fine Line</button>
-          <button className={`filter-btn ${activeFilter === 'blackwork' ? 'active' : ''}`} onClick={() => setActiveFilter('blackwork')}>Blackwork</button>
-          <button className={`filter-btn ${activeFilter === 'ornamental' ? 'active' : ''}`} onClick={() => setActiveFilter('ornamental')}>Ornamental</button>
+        <div className="portfolio-filters reveal" role="tablist" aria-label="Filtros de categoria do portfólio">
+          {PORTFOLIO_CATEGORIES.map(cat => (
+            <button
+              key={cat.id}
+              role="tab"
+              aria-selected={activeFilter === cat.id}
+              className={`filter-btn ${activeFilter === cat.id ? 'active' : ''}`}
+              onClick={() => setActiveFilter(cat.id)}
+            >
+              {cat.label}
+            </button>
+          ))}
         </div>
 
         <div className="portfolio-grid reveal">
           {filteredItems.map(item => (
             <div key={item.id} className="portfolio-item" data-category={item.category}>
               <div className="portfolio-img-wrapper">
-                <img src={item.img} alt={item.alt} loading="lazy" />
+                <img
+                  src={item.image}
+                  alt={item.alt}
+                  loading="lazy"
+                  decoding="async"
+                  width="600"
+                  height="750"
+                />
                 <div className="portfolio-hover">
-                  <span className="item-category">{item.category === 'fineline' ? 'Fine Line' : item.category === 'blackwork' ? 'Blackwork' : 'Ornamental'}</span>
+                  <span className="item-category">{item.categoryLabel}</span>
                   <h3 className="item-title">{item.title}</h3>
                   <button 
                     className="btn-zoom lightbox-trigger" 
-                    aria-label="Ampliar Imagem" 
-                    onClick={() => window.dispatchEvent(new CustomEvent('open-lightbox', { detail: { src: item.img, title: item.title, category: item.category } }))}
+                    aria-label={`Ampliar imagem de ${item.title}`} 
+                    onClick={() => handleOpenLightbox(item.image, item.title, item.categoryLabel)}
                   >
                     <i data-lucide="maximize-2"></i>
                   </button>
