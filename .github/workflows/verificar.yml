@@ -49,9 +49,15 @@ jobs:
       # mostram o que aconteceu.
       - name: Publicar capturas
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: capturas-${{ github.sha }}
           path: .playwright/
           retention-days: 14
-          if-no-files-found: warn
+          # `.playwright/` começa com ponto, e o upload-artifact ignora arquivos
+          # ocultos por padrão — sem isto, nenhuma captura sobe e o aviso passa
+          # batido porque o job continua verde.
+          include-hidden-files: true
+          # `error` em vez de `warn`: capturas ausentes significam que algo não
+          # rodou, e isso deve aparecer como falha, não como aviso silencioso.
+          if-no-files-found: error
