@@ -54,8 +54,20 @@ Este documento lista as tarefas pendentes que devem ser iniciadas na próxima se
   - Rota dinâmica `src/pages/tatuagem/[categoria].astro` sobre o `portfolioData.ts` que já existe, com title/H1/description próprios, galeria filtrada, breadcrumb e 200-300 palavras de texto autoral por nicho.
   - Depende de conteúdo escrito (Google precisa de texto para ranquear em termo disputado).
 
-- [ ] **Issue 6: Core Web Vitals + quebra de hidratação do React** 🔴 _prioridade elevada em 29/07/2026_
-  - 🔴 **O Lucide via CDN quebra a hidratação do React.** Diagnosticado com Playwright, não por suspeita. Cadeia causal:
+- [ ] **Issue 6: Core Web Vitals + quebra de hidratação do React** _(parte da hidratação **resolvida** em 29/07/2026)_
+  - [x] ✅ **Hidratação corrigida.** `<i data-lucide>` + CDN do Lucide substituídos por `lucide-react` nos componentes React e SVG inline no `FloatingCta.astro`. Resultados medidos com `npm run verificar`:
+    - Erro de hidratação no console: **eliminado** (desktop e mobile).
+    - `#portfolio` e `#contato` agora **sobrevivem** à hidratação — antes eram destruídos e recriados.
+    - Botão flutuante passou a funcionar: as 3 checagens de comportamento passam nos 2 tamanhos de tela.
+    - Requisição bloqueante ao `unpkg.com` no `<head>`: **removida**.
+    - Os dois `MutationObserver` que reobservavam `document.body` a cada mutação: **removidos**. Sobrou um único `IntersectionObserver` que dá `unobserve` após revelar cada elemento.
+    - Verificações totais: de 6/14 para **10/14** (as 4 restantes são os contrastes da Issue 3).
+  - Dois detalhes descobertos e que não devem ser esquecidos:
+    - `lucide-react` não declara campo `exports`, só `main` (CJS) e `module` (ESM). O Node resolve para CJS e os imports nomeados quebram no SSR. Há um alias em `astro.config.mjs` apontando para `dist/esm/lucide-react.mjs` — **não remover**.
+    - O Lucide **removeu ícones de marca**. `Instagram` não existe no pacote (provavelmente o ícone do rodapé já vinha vazio com o CDN). Está agora em `src/components/ui/InstagramIcon.tsx`, com path do Simple Icons (CC0).
+  - **Ainda pendente nesta issue**: fontes do Google como stylesheet bloqueante; hero como `background-image` (LCP invisível ao preload scanner); imagens em `public/` sem `srcset`/AVIF; reduzir as 4 hidratações `client:load`.
+  - _Histórico do diagnóstico, para referência:_
+  - **O Lucide via CDN quebrava a hidratação do React.** Diagnosticado com Playwright, não por suspeita. Cadeia causal:
     1. O script do Lucide roda no `DOMContentLoaded` e **substitui** cada `<i data-lucide="...">` por um `<svg>`.
     2. O React então hidrata e encontra `<svg>` onde o HTML do servidor tinha `<i>` → *hydration mismatch* (erro real no console, em desktop e mobile).
     3. O React **descarta a árvore renderizada no servidor e recria tudo no cliente**.
