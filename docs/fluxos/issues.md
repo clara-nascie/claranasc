@@ -25,4 +25,4 @@ Este documento lista as tarefas pendentes que devem ser iniciadas na próxima se
   
 ---
 **Nota para a próxima sessão:** 
-Para iniciar os trabalhos, basta pedir ao Antigravity para "Iniciar a Issue 1 do nosso documento de tarefas pendentes".
+Para iniciar os trabalhos da próxima sessão, basta pedir ao Antigravity para "Iniciar a Issue 2 do nosso documento de tarefas pendentes" ou solicitar "Configurar o painel de upload do celular (Decap CMS)".
