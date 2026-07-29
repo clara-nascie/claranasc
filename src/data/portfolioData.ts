@@ -18,14 +18,30 @@ export interface PortfolioItem {
   description?: string;
 }
 
+/**
+ * Ordem intencional: Blackwork primeiro, porque é a especialidade da Clara.
+ * A ordem aparece nos filtros da galeria e é reaproveitada no schema JSON-LD,
+ * então ela comunica prioridade tanto para a visitante quanto para o Google.
+ */
 export const PORTFOLIO_CATEGORIES: PortfolioCategory[] = [
   { id: 'all', label: 'Todos' },
+  { id: 'blackwork', label: 'Blackwork' },
   { id: 'fineline', label: 'Fine Line' },
   { id: 'botanico', label: 'Botânico' },
-  { id: 'blackwork', label: 'Blackwork' },
   { id: 'geek', label: 'Geek & Animes' },
   { id: 'coberturas', label: 'Coberturas' }
 ];
+
+/**
+ * As três imagens da vitrine do hero, em ordem: a primeira é a grande.
+ *
+ * Escolha deliberada — a primeira deve ser um Blackwork, que é a especialidade,
+ * e as outras duas mostram leque de estilos. Troque os ids aqui para mudar a
+ * vitrine sem mexer no componente.
+ *
+ * TODO(clara): reapontar para as fotos reais quando o portfólio for atualizado.
+ */
+export const HERO_SHOWCASE_IDS = [3, 1, 4] as const;
 
 export const portfolioItems: PortfolioItem[] = [
   {
@@ -83,3 +99,14 @@ export const portfolioItems: PortfolioItem[] = [
     description: 'Minimalismo contemporâneo e linhas perfeitas.'
   }
 ];
+
+/**
+ * Itens da vitrine do hero, resolvidos a partir de `HERO_SHOWCASE_IDS`.
+ *
+ * O `filter` garante que um id inexistente não gere buraco na vitrine, e o
+ * `sort` preserva a ordem declarada em HERO_SHOWCASE_IDS (a ordem do array de
+ * itens é irrelevante aqui).
+ */
+export const heroShowcase: PortfolioItem[] = HERO_SHOWCASE_IDS.map((id) =>
+  portfolioItems.find((item) => item.id === id)
+).filter((item): item is PortfolioItem => item !== undefined);

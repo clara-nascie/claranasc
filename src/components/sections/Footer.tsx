@@ -10,7 +10,7 @@ export const Footer: React.FC = () => {
         <div className="footer-grid">
           <div className="footer-brand">
             <span className="logo-text">CLARA<span>NASC</span></span>
-            <p>Tatuadora em Belo Horizonte especializada em Fine Line, Botânico, Blackwork, Geek &amp; Animes e Coberturas.</p>
+            <p>Tatuadora em Belo Horizonte especializada em Blackwork, Fine Line, Botânico, Geek &amp; Animes e Coberturas.</p>
           </div>
           <div className="footer-links">
             <h3>Navegação</h3>

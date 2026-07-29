@@ -42,7 +42,7 @@ const business: Record<string, unknown> = {
   priceRange: SITE.priceRange,
   currenciesAccepted: 'BRL',
   description:
-    'Estúdio de tatuagem autoral em Belo Horizonte especializado em Fine Line, Botânico, Blackwork, Geek & Animes e Coberturas de tatuagens antigas.',
+    'Estúdio de tatuagem autoral em Belo Horizonte especializado em Blackwork, Fine Line, Botânico, Geek & Animes e Coberturas de tatuagens antigas.',
   address: {
     '@type': 'PostalAddress',
     addressLocality: LOCATION.city,
@@ -88,7 +88,7 @@ const person: Record<string, unknown> = {
   description:
     'Tatuadora especializada em traços finos meticulosos e contrastes marcantes, com mais de 5 anos de experiência em Belo Horizonte.',
   worksFor: { '@id': businessId },
-  knowsAbout: ['Fine Line', 'Blackwork', 'Tatuagem Botânica', 'Tatuagem Geek', 'Cobertura de Tatuagem'],
+  knowsAbout: ['Blackwork', 'Fine Line', 'Tatuagem Botânica', 'Tatuagem Geek', 'Cobertura de Tatuagem'],
   ...(sameAs.length > 0 ? { sameAs } : {})
 };
 

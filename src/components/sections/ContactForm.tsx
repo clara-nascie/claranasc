@@ -64,9 +64,9 @@ export const ContactForm: React.FC = () => {
                 onChange={handleChange}
                 options={[
                   { value: '', label: 'Selecione um estilo', disabled: true },
+                  { value: 'Blackwork', label: 'Blackwork (Preenchimento e Sombra)' },
                   { value: 'Fine Line', label: 'Fine Line (Traços Finos/Delicados)' },
                   { value: 'Botânico', label: 'Botânico (Flores e Folhagens)' },
-                  { value: 'Blackwork', label: 'Blackwork (Preenchimento e Sombra)' },
                   { value: 'Geek & Animes', label: 'Geek & Animes (Cultura Pop)' },
                   { value: 'Coberturas', label: 'Cobertura de Tatuagem Antiga' },
                   { value: 'Outro', label: 'Outro (Descreva na ideia)' }
