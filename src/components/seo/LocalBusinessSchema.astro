@@ -1,0 +1,110 @@
+---
+/**
+ * Dados estruturados JSON-LD (schema.org) para negócio local.
+ *
+ * É o principal sinal que o Google usa para entender que este site pertence a um
+ * estúdio de tatuagem físico em Belo Horizonte, e o que alimenta rich results e
+ * o local pack. Valide em https://search.google.com/test/rich-results
+ *
+ * Campos sem dado real são omitidos do JSON, nunca emitidos vazios: string vazia
+ * ou coordenada zerada é lida como informação incorreta, não como ausência.
+ */
+import { SITE, CONTACT, LOCATION, SOCIAL, OPENING_HOURS } from '../../data/siteData';
+import { PORTFOLIO_CATEGORIES } from '../../data/portfolioData';
+
+const businessId = `${SITE.url}/#business`;
+const personId = `${SITE.url}/#clara`;
+
+const sameAs = [SOCIAL.instagram, SOCIAL.tiktok].filter(
+  (url): url is string => typeof url === 'string' && url.length > 0
+);
+
+/** Os 5 nichos viram um catálogo de serviços — reforça relevância temática. */
+const services = PORTFOLIO_CATEGORIES.filter((cat) => cat.id !== 'all').map((cat) => ({
+  '@type': 'Offer',
+  itemOffered: {
+    '@type': 'Service',
+    name: `Tatuagem ${cat.label}`,
+    serviceType: cat.label,
+    provider: { '@id': businessId },
+    areaServed: LOCATION.areaServed.map((name) => ({ '@type': 'City', name }))
+  }
+}));
+
+const business: Record<string, unknown> = {
+  '@type': 'TattooParlor',
+  '@id': businessId,
+  name: SITE.businessName,
+  url: SITE.url,
+  image: new URL('/assets/hero-bg.webp', SITE.url).href,
+  telephone: CONTACT.telephone,
+  ...(CONTACT.email ? { email: CONTACT.email } : {}),
+  priceRange: SITE.priceRange,
+  currenciesAccepted: 'BRL',
+  description:
+    'Estúdio de tatuagem autoral em Belo Horizonte especializado em Fine Line, Botânico, Blackwork, Geek & Animes e Coberturas de tatuagens antigas.',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: LOCATION.city,
+    addressRegion: LOCATION.region,
+    addressCountry: LOCATION.country,
+    // Só entram no JSON quando preenchidos em siteData.ts
+    ...(LOCATION.streetAddress ? { streetAddress: LOCATION.streetAddress } : {}),
+    ...(LOCATION.postalCode ? { postalCode: LOCATION.postalCode } : {})
+  },
+  areaServed: LOCATION.areaServed.map((name) => ({ '@type': 'City', name })),
+  founder: { '@id': personId },
+  employee: { '@id': personId },
+  makesOffer: services,
+  ...(LOCATION.geo
+    ? {
+        geo: {
+          '@type': 'GeoCoordinates',
+          latitude: LOCATION.geo.latitude,
+          longitude: LOCATION.geo.longitude
+        }
+      }
+    : {}),
+  ...(OPENING_HOURS
+    ? {
+        openingHoursSpecification: OPENING_HOURS.map((slot) => ({
+          '@type': 'OpeningHoursSpecification',
+          dayOfWeek: slot.days,
+          opens: slot.opens,
+          closes: slot.closes
+        }))
+      }
+    : {}),
+  ...(sameAs.length > 0 ? { sameAs } : {})
+};
+
+const person: Record<string, unknown> = {
+  '@type': 'Person',
+  '@id': personId,
+  name: SITE.name,
+  jobTitle: SITE.jobTitle,
+  url: SITE.url,
+  image: new URL('/assets/about-artist.webp', SITE.url).href,
+  description:
+    'Tatuadora especializada em traços finos meticulosos e contrastes marcantes, com mais de 5 anos de experiência em Belo Horizonte.',
+  worksFor: { '@id': businessId },
+  knowsAbout: ['Fine Line', 'Blackwork', 'Tatuagem Botânica', 'Tatuagem Geek', 'Cobertura de Tatuagem'],
+  ...(sameAs.length > 0 ? { sameAs } : {})
+};
+
+const website = {
+  '@type': 'WebSite',
+  '@id': `${SITE.url}/#website`,
+  url: SITE.url,
+  name: SITE.name,
+  inLanguage: SITE.lang,
+  publisher: { '@id': businessId }
+};
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [business, person, website]
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} is:inline />

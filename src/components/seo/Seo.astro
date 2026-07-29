@@ -1,0 +1,60 @@
+---
+/**
+ * Meta tags de SEO, canonical e Open Graph.
+ *
+ * Centraliza o <head> para que as páginas por nicho (/tatuagem/fine-line etc.)
+ * reaproveitem a mesma base sem duplicar tags.
+ */
+import { SITE, OG_IMAGE } from '../../data/siteData';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Caminho da imagem de compartilhamento. Convertido para URL absoluta. */
+  image?: string;
+  /** Tipo Open Graph: 'website' para a home, 'article' para conteúdo editorial. */
+  ogType?: 'website' | 'article';
+  /** Impede indexação — use em páginas de teste ou obrigado/. */
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  image = OG_IMAGE.path,
+  ogType = 'website',
+  noindex = false
+} = Astro.props;
+
+// Astro.site vem do campo `site` em astro.config.mjs. Sem ele, não há como gerar
+// URL absoluta — e og:image com caminho relativo simplesmente não renderiza
+// prévia no WhatsApp, Facebook ou Instagram.
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site).href;
+const ogImageUrl = new URL(image, Astro.site).href;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalUrl} />
+
+{noindex
+  ? <meta name="robots" content="noindex, nofollow" />
+  : <meta name="robots" content="index, follow, max-image-preview:large" />}
+
+<!-- Open Graph -->
+<meta property="og:type" content={ogType} />
+<meta property="og:site_name" content={SITE.name} />
+<meta property="og:locale" content={SITE.locale} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImageUrl} />
+<meta property="og:image:width" content={String(OG_IMAGE.width)} />
+<meta property="og:image:height" content={String(OG_IMAGE.height)} />
+<meta property="og:image:alt" content={OG_IMAGE.alt} />
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageUrl} />
