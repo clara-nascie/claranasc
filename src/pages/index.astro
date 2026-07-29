@@ -37,9 +37,6 @@ const description =
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
-
-    <!-- Lucide Icons -->
-    <script is:inline src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 
@@ -55,53 +52,33 @@ const description =
         <FloatingCta />
     </AppLayout>
 
-    <script is:inline>
-        // Initialize Lucide icons
-        document.addEventListener('DOMContentLoaded', () => {
-            if (window.lucide) {
-                window.lucide.createIcons();
-            }
-            
-            const iconObserver = new MutationObserver((mutations, observer) => {
-                let hasNewNodes = false;
-                for (let mutation of mutations) {
-                    if (mutation.addedNodes.length > 0) {
-                        hasNewNodes = true;
-                        break;
-                    }
-                }
-                
-                if (hasNewNodes && window.lucide) {
-                    observer.disconnect();
-                    window.lucide.createIcons();
-                    observer.observe(document.body, { childList: true, subtree: true });
-                }
-            });
-            iconObserver.observe(document.body, { childList: true, subtree: true });
-
-            // Scroll animations (Intersection Observer)
-            const scrollObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
+    <script>
+        // Animações de entrada por scroll: adiciona .active quando o elemento
+        // entra na viewport.
+        //
+        // Este script é um módulo, portanto já roda com `defer` — depois do parse
+        // do documento e da hidratação do React. Como os ícones agora são SVG
+        // renderizados pelo próprio React (e não injetados por um script externo
+        // depois), o HTML do servidor e o do cliente batem: o React preserva os
+        // nós em vez de recriá-los. É por isso que uma única passada basta e não
+        // existe mais MutationObserver reobservando `document.body` a cada mutação.
+        const scrollObserver = new IntersectionObserver(
+            (entries) => {
+                for (const entry of entries) {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('active');
+                        // Uma vez revelado, não há motivo para continuar observando.
+                        scrollObserver.unobserve(entry.target);
                     }
-                });
-            }, { threshold: 0.15 });
+                }
+            },
+            { threshold: 0.15 }
+        );
 
-            const observeElements = () => {
-                document.querySelectorAll('.reveal, .fade-in, .fade-in-delay-1, .fade-in-delay-2, .fade-in-delay-3').forEach((el) => {
-                    scrollObserver.observe(el);
-                });
-            };
-
-            observeElements();
-
-            // Failsafe for React Hydration: When React replaces DOM nodes, re-observe them
-            const layoutObserver = new MutationObserver(() => {
-                observeElements();
-            });
-            layoutObserver.observe(document.body, { childList: true, subtree: true });
-        });
+        const seletorRevelaveis = '.reveal, .fade-in, .fade-in-delay-1, .fade-in-delay-2, .fade-in-delay-3';
+        for (const el of document.querySelectorAll(seletorRevelaveis)) {
+            scrollObserver.observe(el);
+        }
     </script>
 </body>
 </html>

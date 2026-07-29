@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Menu, X } from 'lucide-react';
 import { Button } from '../ui/Button';
 
 export const Header: React.FC = () => {
@@ -23,7 +24,7 @@ export const Header: React.FC = () => {
             </ul>
           </nav>
           <button className="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Abrir Menu" onClick={toggleMenu}>
-            <i data-lucide="menu"></i>
+            <Menu aria-hidden="true" />
           </button>
         </div>
       </header>
@@ -31,7 +32,7 @@ export const Header: React.FC = () => {
       {/* Mobile Menu Overlay */}
       <div className={`mobile-overlay ${isMobileMenuOpen ? 'active' : ''}`} id="mobile-overlay" style={{ display: isMobileMenuOpen ? 'flex' : 'none' }}>
         <button className="mobile-menu-close" id="mobile-menu-close" aria-label="Fechar Menu" onClick={closeMenu}>
-          <i data-lucide="x"></i>
+          <X aria-hidden="true" />
         </button>
         <nav className="mobile-nav">
           <ul>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Maximize2 } from 'lucide-react';
 import { portfolioItems, PORTFOLIO_CATEGORIES } from '../../data/portfolioData';
 
 export const Portfolio: React.FC = () => {
@@ -59,7 +60,7 @@ export const Portfolio: React.FC = () => {
                     aria-label={`Ampliar imagem de ${item.title}`} 
                     onClick={() => handleOpenLightbox(item.image, item.title, item.categoryLabel)}
                   >
-                    <i data-lucide="maximize-2"></i>
+                    <Maximize2 aria-hidden="true" />
                   </button>
                 </div>
               </div>

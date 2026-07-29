@@ -1,4 +1,5 @@
 import React from 'react';
+import { Pencil, ShieldCheck } from 'lucide-react';
 
 export const About: React.FC = () => {
   return (
@@ -23,14 +24,14 @@ export const About: React.FC = () => {
             </p>
             <div className="about-details">
               <div className="detail-item">
-                <i data-lucide="shield-check"></i>
+                <ShieldCheck aria-hidden="true" />
                 <div>
                   <h4>Materiais Descartáveis</h4>
                   <p>Segurança total e assepsia rigorosa.</p>
                 </div>
               </div>
               <div className="detail-item">
-                <i data-lucide="pencil"></i>
+                <Pencil aria-hidden="true" />
                 <div>
                   <h4>Arte 100% Autoral</h4>
                   <p>Desenhos criados exclusivamente para você.</p>

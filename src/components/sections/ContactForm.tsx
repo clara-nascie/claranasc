@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Send } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 import { Textarea } from '../ui/Textarea';
@@ -82,7 +83,7 @@ export const ContactForm: React.FC = () => {
 
             <Button type="submit" className="btn-primary btn-submit" id="btn-submit-booking">
               <span>Enviar via WhatsApp</span>
-              <i data-lucide="send"></i>
+              <Send size={18} aria-hidden="true" />
             </Button>
           </form>
         </div>

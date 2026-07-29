@@ -1,4 +1,6 @@
 import React from 'react';
+import { Phone } from 'lucide-react';
+import { InstagramIcon } from '../ui/InstagramIcon';
 import { whatsappUrl, SOCIAL } from '../../data/siteData';
 
 export const Footer: React.FC = () => {
@@ -26,11 +28,11 @@ export const Footer: React.FC = () => {
                   para instagram.com/ sem perfil é link quebrado aos olhos do Google. */}
               {SOCIAL.instagram && (
                 <a href={SOCIAL.instagram} target="_blank" rel="noreferrer" aria-label="Perfil de Clara Nasc no Instagram" className="social-link">
-                  <i data-lucide="instagram"></i>
+                  <InstagramIcon size={22} />
                 </a>
               )}
               <a href={whatsappUrl('Olá Clara! Vim pelo site e gostaria de saber mais sobre suas tatuagens.')} target="_blank" rel="noreferrer" aria-label="Conversar com Clara Nasc no WhatsApp" className="social-link">
-                <i data-lucide="phone"></i>
+                <Phone aria-hidden="true" />
               </a>
             </div>
           </div>

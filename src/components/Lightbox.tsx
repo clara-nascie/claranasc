@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { X } from 'lucide-react';
 
 export const Lightbox: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,7 +35,7 @@ export const Lightbox: React.FC = () => {
   return (
     <div className="lightbox-modal active" id="lightbox-modal">
       <button className="lightbox-close" id="lightbox-close" aria-label="Fechar Galeria" onClick={closeLightbox}>
-        <i data-lucide="x"></i>
+        <X aria-hidden="true" />
       </button>
       <div className="lightbox-content">
         <img src={imgData.src} alt={imgData.title} id="lightbox-img" />

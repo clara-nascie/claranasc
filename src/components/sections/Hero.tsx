@@ -1,4 +1,5 @@
 import React from 'react';
+import { ArrowRight } from 'lucide-react';
 import { Button } from '../ui/Button';
 
 export const Hero: React.FC = () => {
@@ -13,7 +14,7 @@ export const Hero: React.FC = () => {
         <div className="hero-actions fade-in-delay-3">
           <Button as="a" href="#contato" className="btn-primary" id="hero-cta-btn">
             <span>Orçamento & Agendamento</span>
-            <i data-lucide="arrow-right"></i>
+            <ArrowRight size={18} aria-hidden="true" />
           </Button>
           <Button as="a" href="#portfolio" className="btn-secondary" id="hero-secondary-btn">Ver Portfólio</Button>
         </div>
