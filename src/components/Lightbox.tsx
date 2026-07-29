@@ -40,7 +40,11 @@ export const Lightbox: React.FC = () => {
       <div className="lightbox-content">
         <img src={imgData.src} alt={imgData.title} id="lightbox-img" />
         <div className="lightbox-caption">
-          <span className="lightbox-category" id="lightbox-category">{imgData.category === 'fineline' ? 'Fine Line' : imgData.category === 'blackwork' ? 'Blackwork' : 'Ornamental'}</span>
+          {/* `category` já chega como rótulo pronto (ex: 'Blackwork'), enviado pelo
+              Portfolio via `item.categoryLabel`. O mapeamento que existia aqui
+              comparava contra ids ('blackwork'), nunca casava, e caía sempre no
+              fallback — toda tatuagem ampliada aparecia como "Ornamental". */}
+          <span className="lightbox-category" id="lightbox-category">{imgData.category}</span>
           <h3 className="lightbox-title" id="lightbox-title">{imgData.title}</h3>
         </div>
       </div>
