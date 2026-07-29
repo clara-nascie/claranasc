@@ -14,6 +14,7 @@ import { ContactForm } from '../components/sections/ContactForm';
 import { Footer } from '../components/sections/Footer';
 
 import { Lightbox } from '../components/Lightbox';
+import FloatingCta from '../components/FloatingCta.astro';
 
 // Title com 59 caracteres: abaixo do limite de ~60 que o Google exibe sem cortar.
 // Ordem intencional — "Tatuadora em BH" logo após o nome, porque é o termo de busca.
@@ -51,6 +52,7 @@ const description =
         <ContactForm client:load />
         <Footer />
         <Lightbox client:load />
+        <FloatingCta />
     </AppLayout>
 
     <script is:inline>

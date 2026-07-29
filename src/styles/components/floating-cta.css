@@ -1,0 +1,84 @@
+/* ==========================================================================
+   FLOATING CTA — botão persistente de agendamento
+   ========================================================================== */
+
+/* z-index 900: abaixo do header (1000), do menu mobile (2000) e do
+   lightbox (3000), para nunca cobrir a navegação nem a galeria ampliada. */
+.floating-cta {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 900;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 26px;
+    border-radius: 50px;
+
+    background-color: var(--accent-gold);
+    color: var(--bg-primary);
+    box-shadow: 0 6px 24px rgba(var(--accent-gold-rgb), 0.35);
+
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+
+    /* Estado oculto. `visibility` e `pointer-events` (não só opacity) garantem
+       que o botão invisível não receba clique nem foco por teclado. */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(16px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s,
+                background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.floating-cta.is-visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.floating-cta.is-visible:hover {
+    background-color: var(--accent-gold-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(var(--accent-gold-rgb), 0.45);
+}
+
+.floating-cta:focus-visible {
+    outline: 2px solid var(--text-primary);
+    outline-offset: 3px;
+}
+
+.floating-cta i,
+.floating-cta svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+    .floating-cta {
+        bottom: 16px;
+        right: 16px;
+        padding: 13px 20px;
+        font-size: 0.78rem;
+    }
+}
+
+/* Respeita quem configurou o sistema para reduzir animação: o botão ainda
+   aparece e desaparece, mas sem deslizar. */
+@media (prefers-reduced-motion: reduce) {
+    .floating-cta {
+        transition: opacity 0.01ms, visibility 0.01ms;
+        transform: none;
+    }
+
+    .floating-cta.is-visible:hover {
+        transform: none;
+    }
+}

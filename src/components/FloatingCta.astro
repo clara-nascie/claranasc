@@ -1,0 +1,62 @@
+---
+/**
+ * Botão flutuante de agendamento.
+ *
+ * Mantém o CTA principal sempre ao alcance sem fixar o cabeçalho — o header
+ * rola junto com a página por decisão de design, preservando o hero limpo.
+ *
+ * É um componente Astro, não React, de propósito: o comportamento é uma classe
+ * alternada por scroll, o que não justifica o custo de hidratar React só por isso.
+ * O `<script>` abaixo é empacotado pelo Astro e roda com `defer`.
+ */
+---
+
+<a
+  href="#contato"
+  class="floating-cta"
+  id="floating-cta"
+  aria-label="Ir para o formulário de orçamento e agendamento"
+>
+  <i data-lucide="calendar-plus"></i>
+  <span>Agendar Sessão</span>
+</a>
+
+<script>
+  const cta = document.getElementById('floating-cta');
+
+  if (cta) {
+    const hero = document.getElementById('home');
+    // Onde o botão seria redundante: o próprio formulário e o rodapé, que já
+    // tem contato de WhatsApp.
+    const hideZones = [
+      document.getElementById('contato'),
+      document.querySelector('.main-footer')
+    ].filter((el): el is Element => el !== null);
+
+    let pastHero = !hero;
+    const visibleHideZones = new Set<Element>();
+
+    const update = () => {
+      cta.classList.toggle('is-visible', pastHero && visibleHideZones.size === 0);
+    };
+
+    // IntersectionObserver em vez de listener de scroll: o navegador avisa
+    // quando o cruzamento acontece, sem rodar código a cada pixel rolado.
+    if (hero) {
+      new IntersectionObserver(([entry]) => {
+        pastHero = !entry.isIntersecting;
+        update();
+      }).observe(hero);
+    }
+
+    for (const zone of hideZones) {
+      new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting) visibleHideZones.add(zone);
+        else visibleHideZones.delete(zone);
+        update();
+      }).observe(zone);
+    }
+
+    update();
+  }
+</script>
