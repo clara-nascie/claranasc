@@ -3,9 +3,9 @@ import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 import { Textarea } from '../ui/Textarea';
 import { Select } from '../ui/Select';
+import { whatsappUrl } from '../../data/siteData';
 
 export const ContactForm: React.FC = () => {
-  const WHATSAPP_NUMBER = '5531983529270';
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -23,8 +23,19 @@ export const ContactForm: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const message = `Olá Clara! Gostaria de solicitar um orçamento para tatuagem.%0A%0A*Nome:* ${formData.name}%0A*Estilo:* ${formData.style}%0A*Local:* ${formData.placement}%0A*Tamanho:* ${formData.size}%0A%0A*Ideia:* ${formData.idea}`;
-    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, '_blank');
+    // Newlines reais em vez de '%0A' cru: whatsappUrl() faz o encode, então
+    // caracteres como & e # digitados pela cliente não quebram mais a mensagem.
+    const message = [
+      'Olá Clara! Gostaria de solicitar um orçamento para tatuagem.',
+      '',
+      `*Nome:* ${formData.name}`,
+      `*Estilo:* ${formData.style}`,
+      `*Local:* ${formData.placement}`,
+      `*Tamanho:* ${formData.size}`,
+      '',
+      `*Ideia:* ${formData.idea}`
+    ].join('\n');
+    window.open(whatsappUrl(message), '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -53,10 +64,12 @@ export const ContactForm: React.FC = () => {
                 options={[
                   { value: '', label: 'Selecione um estilo', disabled: true },
                   { value: 'Fine Line', label: 'Fine Line (Traços Finos/Delicados)' },
+                  { value: 'Botânico', label: 'Botânico (Flores e Folhagens)' },
                   { value: 'Blackwork', label: 'Blackwork (Preenchimento e Sombra)' },
-                  { value: 'Ornamental', label: 'Ornamental / Geométrico' },
+                  { value: 'Geek & Animes', label: 'Geek & Animes (Cultura Pop)' },
+                  { value: 'Coberturas', label: 'Cobertura de Tatuagem Antiga' },
                   { value: 'Outro', label: 'Outro (Descreva na ideia)' }
-                ]} 
+                ]}
               />
               <Input label="Local do Corpo" id="input-placement" placeholder="Ex: Antebraço, Costela, Tornozelo" required value={formData.placement} onChange={handleChange} />
             </div>
