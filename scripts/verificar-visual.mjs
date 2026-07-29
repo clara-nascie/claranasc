@@ -57,7 +57,11 @@ function parseRgb(cssColor) {
  * decisão explícita, e não uma flag genérica de "ignorar erros".
  */
 const FALHAS_ACEITAS = [
-  { padrao: /contraste/, motivo: 'GitHub #8 — contraste dos botões do hero' }
+  // Só o botão primário: creme sobre marrom mel dá 3,78:1. O `.btn-secondary`
+  // passou a 14,08:1 quando o hero virou fundo claro, então NÃO deve mais ser
+  // aceito — o padrão é específico de propósito, para uma regressão nele voltar
+  // a reprovar.
+  { padrao: /contraste "Orçamento/, motivo: 'GitHub #8 — botão primário 3,78:1' }
 ];
 
 const resultados = [];
@@ -115,7 +119,11 @@ try {
     await page.screenshot({ path: `${OUT_DIR}/${rotulo}-1-hero.png` });
 
     // --- 2. Deve aparecer depois de rolar o hero ---
-    await page.locator('#portfolio').scrollIntoViewIfNeeded();
+    // `scrollIntoView({ block: 'start' })`, não `scrollIntoViewIfNeeded()`: o
+    // hero agora tem 85vh e deixa a galeria espiar, então `#portfolio` já está
+    // parcialmente visível sem rolar — e `IfNeeded` não faz nada nesse caso,
+    // deixando o hero na tela e o teste medindo a situação errada.
+    await page.locator('#portfolio').evaluate((el) => el.scrollIntoView({ block: 'start' }));
     await page.waitForTimeout(800);
     await checarVisibilidade(cta, true, `[${rotulo}] botão flutuante visível no portfólio`);
     await page.screenshot({ path: `${OUT_DIR}/${rotulo}-2-portfolio.png` });
@@ -131,30 +139,44 @@ try {
     await page.waitForTimeout(600);
 
     const botoesHero = await page.evaluate(() => {
+      /**
+       * Cor de fundo que realmente aparece atrás do elemento: sobe a árvore até
+       * achar o primeiro ancestral com background-color opaco. Fundo hardcoded
+       * quebra silenciosamente quando o layout muda — foi o que aconteceu quando
+       * o hero deixou de ser escuro.
+       */
+      const fundoEfetivo = (el) => {
+        let atual = el;
+        while (atual && atual !== document.documentElement) {
+          const cor = getComputedStyle(atual).backgroundColor;
+          const m = cor.match(/rgba?\(([^)]+)\)/);
+          if (m) {
+            const p = m[1].split(/[,\s/]+/).map(Number);
+            const alfa = p.length > 3 ? p[3] : 1;
+            if (alfa > 0.85) return cor;
+          }
+          atual = atual.parentElement;
+        }
+        return getComputedStyle(document.body).backgroundColor;
+      };
+
       const encontrados = [];
       for (const el of document.querySelectorAll('.hero-actions a')) {
         const s = getComputedStyle(el);
+        const proprio = s.backgroundColor;
+        const temFundoProprio = !/rgba\([^)]*,\s*0\)$/.test(proprio) && proprio !== 'transparent';
         encontrados.push({
           texto: el.textContent.trim().slice(0, 30),
           cor: s.color,
-          fundo: s.backgroundColor,
+          fundo: temFundoProprio ? proprio : fundoEfetivo(el.parentElement),
           fontSize: s.fontSize
         });
       }
       return encontrados;
     });
 
-    // Cor efetiva atrás dos botões do hero: o overlay radial sobre a foto.
-    // Amostra o pixel real do screenshot seria mais fiel; aqui usamos a cor
-    // declarada do overlay no seu ponto mais opaco como aproximação honesta.
-    const FUNDO_HERO = [10, 10, 10];
-
     for (const btn of botoesHero) {
-      const corTexto = parseRgb(btn.cor);
-      const corFundo = parseRgb(btn.fundo);
-      // Botão com fundo próprio opaco compara contra ele; senão, contra o hero.
-      const fundoEfetivo = corFundo && !btn.fundo.includes('rgba(0, 0, 0, 0)') ? corFundo : FUNDO_HERO;
-      const razao = razaoContraste(corTexto, fundoEfetivo);
+      const razao = razaoContraste(parseRgb(btn.cor), parseRgb(btn.fundo));
       checar(
         `[${rotulo}] contraste "${btn.texto}"`,
         razao >= 4.5,

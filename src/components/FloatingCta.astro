@@ -65,11 +65,22 @@
 
     // IntersectionObserver em vez de listener de scroll: o navegador avisa
     // quando o cruzamento acontece, sem rodar código a cada pixel rolado.
+    //
+    // O gatilho é `intersectionRatio`, não `isIntersecting`, de propósito.
+    // `isIntersecting` exige que o hero saia por completo da viewport, e esse é
+    // um limiar exato: quando a base do hero fica em y=0, a área de interseção
+    // tem altura zero e o navegador ainda o reporta como visível. Resultado, já
+    // medido: o botão não aparecia ao rolar a galeria para o topo da tela.
+    // Com proporção, "o hero praticamente saiu" é um estado robusto.
+    const LIMITE_HERO = 0.2;
     if (hero) {
-      new IntersectionObserver(([entry]) => {
-        pastHero = !entry.isIntersecting;
-        update();
-      }).observe(hero);
+      new IntersectionObserver(
+        ([entry]) => {
+          pastHero = entry.intersectionRatio < LIMITE_HERO;
+          update();
+        },
+        { threshold: [0, LIMITE_HERO, 1] }
+      ).observe(hero);
     }
 
     for (const zone of hideZones) {
