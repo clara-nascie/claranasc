@@ -4,7 +4,7 @@ import { Button } from '../ui/Button';
 export const Hero: React.FC = () => {
   return (
     <section className="hero-section" id="home">
-      <div className="hero-background" style={{ backgroundImage: "url('assets/hero-bg.png')" }}></div>
+      <div className="hero-background" style={{ backgroundImage: "url('/assets/hero-bg.webp')" }}></div>
       <div className="hero-overlay"></div>
       <div className="hero-content">
         <span className="hero-tagline fade-in">Fine Line, Geek, Cobertura & Blackwork</span>

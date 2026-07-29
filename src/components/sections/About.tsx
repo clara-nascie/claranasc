@@ -7,7 +7,7 @@ export const About: React.FC = () => {
         <div className="about-grid">
           <div className="about-image-column reveal">
             <div className="about-image-wrapper">
-              <div className="about-image-placeholder" style={{ backgroundImage: "url('assets/hero-bg.png')" }}></div>
+              <div className="about-image-placeholder" style={{ backgroundImage: "url('/assets/about-artist.webp')" }}></div>
               <div className="about-image-frame"></div>
             </div>
           </div>
