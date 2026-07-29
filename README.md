@@ -2,29 +2,44 @@
 
 Este repositório contém o código-fonte do portfólio pessoal e profissional de **Clara Nasc**, tatuadora especializada em traços finos (Fine Line) e trabalhos autorais contrastantes (Blackwork / Ornamental). 
 
-O projeto foi construído para ser visualmente impactante, combinando um design escuro sofisticado (*glassmorphism* e detalhes em dourado) com excelente desempenho de carregamento e integração direta para agendamentos rápidos via WhatsApp.
+O projeto adota uma estética *Premium Light Mode* — fundo creme, tons terrosos e acentos em marrom mel — priorizando desempenho de carregamento, SEO local em Belo Horizonte e agendamento direto via WhatsApp.
 
 ---
 
 ## 📂 Estrutura de Pastas
 
-Abaixo está o mapeamento dos diretórios e arquivos que compõem o projeto:
-
 ```text
 claranasc/
-├── assets/                  # Arquivos de mídia e imagens do portfólio
-│   ├── hero-bg.png          # Imagem de fundo principal (Hero)
-│   ├── tattoo1.png          # Foto do portfólio: Floral Fine Line
-│   ├── tattoo2.png          # Foto do portfólio: Snake Blackwork
-│   ├── tattoo3.png          # Foto do portfólio: Sacred Mandala Ornamental
-│   └── tattoo4.png          # Foto do portfólio: Monarch Micro-realism
-├── docs/                    # Documentações detalhadas do projeto
-│   └── stack.md             # Detalhamento do Stack Tecnológico
-├── index.html               # Página única do site (Estrutura e SEO)
-├── style.css                # Folha de estilo (Design System, animações e responsividade)
-├── script.js                # Lógica e interatividade do cliente
-└── README.md                # Descrição geral do projeto
+├── assets/                     # Arte original em alta resolucao (NAO e servida na web)
+│   └── site-icon.png           # Logo original; fonte do favicon
+├── public/                     # Servido literalmente na raiz do site
+│   ├── assets/                 # Imagens institucionais (hero, foto da artista)
+│   ├── portfolio/              # Fotos do portfolio
+│   ├── favicon.png
+│   └── robots.txt
+├── scripts/
+│   └── verificar-visual.mjs    # Verificacao visual e de a11y via Playwright
+├── src/
+│   ├── components/
+│   │   ├── layout/             # AppLayout
+│   │   ├── seo/                # Seo.astro e LocalBusinessSchema.astro (JSON-LD)
+│   │   ├── sections/           # Header, Hero, Portfolio, About, ContactForm, Footer
+│   │   ├── ui/                 # Primitivos: Button, Input, Select, Textarea
+│   │   ├── FloatingCta.astro   # Botao flutuante de agendamento
+│   │   └── Lightbox.tsx        # Galeria ampliada
+│   ├── data/
+│   │   ├── portfolioData.ts    # Itens e categorias do portfolio
+│   │   └── siteData.ts         # Fonte unica: contato, localizacao, redes sociais
+│   ├── pages/
+│   │   └── index.astro         # Home
+│   └── styles/                 # CSS modular (base, components, sections)
+├── docs/                       # Issues, fases, arquitetura e stack
+├── astro.config.mjs            # site canonico + integracoes (React, sitemap)
+└── wrangler.jsonc              # Deploy na Cloudflare
 ```
+
+> `assets/` e `public/` têm papéis distintos e não devem ser confundidos: só o
+> conteúdo de `public/` é enviado ao visitante. Ver `assets/README.md`.
 
 ---
 
@@ -58,16 +73,41 @@ O projeto utiliza Node.js e Astro para gerenciamento de dependências e servidor
    ```
    Depois acesse `http://localhost:4321` no navegador.
 
+4. Gere a build de produção (saída em `dist/`):
+   ```bash
+   npm run build
+   ```
+
 ---
 
-## 🚀 Como Fazer o Deploy (Cloudflare Pages)
+## 🔍 Verificação Visual e de Acessibilidade
 
-1. Certifique-se de realizar o push das últimas atualizações para a branch principal (`main`) no seu repositório do GitHub.
-2. Acesse seu painel da **Cloudflare**.
-3. Navegue até **Workers & Pages** > **Pages** e clique em **Connect to Git** (Conectar ao Git).
-4. Selecione o repositório `claranasc`.
-5. Em configurações de build:
-   * **Framework preset**: Selecione *None* (Nenhum).
-   * **Build command**: Deixe em branco.
-   * **Build output directory**: Deixe como `/` (diretório raiz) ou `.`.
-6. Clique em **Save and Deploy**. A Cloudflare gerará o deploy do site estático automaticamente em instantes e vinculará ao seu domínio `claranasc.com`.
+O projeto inclui um script que sobe um Chromium headless (Playwright), navega
+pelo site como uma visitante e checa o que análise de código não alcança:
+comportamento dependente de scroll, erros de JavaScript no console e razão de
+contraste calculada a partir das cores efetivamente renderizadas.
+
+```bash
+npm run dev          # em um terminal
+npm run verificar    # em outro
+```
+
+Sai um relatório de PASSOU/FALHOU no terminal e capturas em `.playwright/`
+(desktop 1280px e mobile 390px). O script encerra com código de saída 1 quando
+alguma verificação falha, então serve em CI.
+
+---
+
+## 🚀 Deploy (Cloudflare Pages)
+
+O deploy é **automático a cada push na branch `main`**. Um push publica direto
+em produção, sem etapa de aprovação.
+
+Configuração de build no painel da Cloudflare (**Workers & Pages** > **Pages**):
+
+| Campo | Valor |
+| --- | --- |
+| Framework preset | `Astro` |
+| Build command | `npm run build` |
+| Build output directory | `dist` |
+| Node version | `22.12.0` ou superior |
