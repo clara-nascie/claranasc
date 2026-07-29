@@ -15,10 +15,8 @@
     --text-muted: hsl(20, 10%, 60%);
     --border-color: hsl(40, 20%, 85%);
     
-    /* Glassmorphism */
-    --glass-bg: rgba(255, 253, 248, 0.75);
+    /* Glassmorphism (usado no lightbox) */
     --glass-border: rgba(166, 107, 63, 0.1);
-    --glass-shadow: rgba(0, 0, 0, 0.05);
     
     /* Layout */
     --container-max-width: 1200px;

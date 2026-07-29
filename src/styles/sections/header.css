@@ -14,15 +14,6 @@
     border-bottom: 1px solid transparent;
 }
 
-.main-header.scrolled {
-    height: 70px;
-    background-color: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--glass-border);
-    box-shadow: 0 4px 30px var(--glass-shadow);
-}
-
 .header-container {
     width: 90%;
     max-width: var(--container-max-width);
