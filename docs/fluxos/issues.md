@@ -9,10 +9,27 @@ Este documento lista as tarefas pendentes que devem ser iniciadas na próxima se
   - [x] Otimizar imagens demonstrativas (formato WebP leve).
   - [x] Aplicar `loading="lazy"` e `decoding="async"` para performance máxima no Google.
 
-- [ ] **Issue 2: SEO Básico e Meta Tags Avançadas**
-  - Revisar e enriquecer as tags `<title>` e `<meta description>` no `index.astro` com palavras-chave relevantes (Ex: "Tatuadora em BH", "Estúdio de Tatuagem").
-  - Configurar as tags Open Graph (OG) para que os links fiquem bonitos quando compartilhados no WhatsApp, Instagram, etc.
-  - Certificar-se de que o `robots.txt` e um `sitemap.xml` estejam previstos para ajudar a indexação no Google.
+- [x] **Issue 2: SEO Básico e Meta Tags Avançadas** _(concluída em 29/07/2026)_
+  - [x] Título e description reescritos com foco em "Tatuadora em BH" + os 5 nichos. Removida a `meta keywords` (ignorada pelo Google desde 2009 e continha `tatuagem sp`, cidade errada).
+  - [x] Open Graph corrigido: `og:image` agora é **URL absoluta** — era caminho relativo, o que quebrava a prévia de link no WhatsApp/Instagram/Facebook. Adicionados `og:site_name`, `og:locale`, dimensões, alt e Twitter Card.
+  - [x] `site: 'https://claranasc.com'` no `astro.config.mjs` (pré-requisito para URL absoluta e sitemap).
+  - [x] `<link rel="canonical">` e `robots: index, follow, max-image-preview:large`.
+  - [x] `@astrojs/sitemap` instalado — sitemap gerado no build. `sitemap.xml` manual removido e `robots.txt` apontando para `/sitemap-index.xml`.
+  - [x] **JSON-LD `TattooParlor` + `Person` + `WebSite`** com `areaServed` (BH e região) e os 5 nichos como `Service`. Campos sem dado real são omitidos, não emitidos vazios.
+  - [x] Criado `src/data/siteData.ts` como fonte única (WhatsApp estava duplicado em 2 componentes) e `src/components/seo/` reaproveitável pelas futuras páginas por nicho.
+  - [x] Corrigido: `select` do formulário estava desalinhado dos nichos oficiais (tinha "Ornamental", faltavam Botânico, Geek e Coberturas).
+  - [x] Corrigido: mensagem do WhatsApp interpolava input da cliente sem encode — `&` ou `#` na descrição truncavam a mensagem.
+
+- [ ] **Issue 2.1: Preencher os dados reais do negócio** ⚠️ _bloqueia o local pack_
+  - Em `src/data/siteData.ts`, há `TODO(clara)` em: `LOCATION.streetAddress`, `postalCode`, `geo` (lat/long), `OPENING_HOURS` e `SOCIAL.instagram`.
+  - Sem endereço e coordenadas, o schema funciona mas **não gera pino no Google Maps** — que é o principal canal de busca local.
+  - Criar/verificar o **Google Business Profile** e o **Google Search Console** (peso maior que o próprio site para "tatuagem bh").
+
+- [ ] **Issue 2.2: Imagens não são WebP de verdade** 🔴 _achado em 29/07/2026_
+  - Todos os arquivos `.webp` em `public/` **são JPEG renomeados** — a conversão da Issue 1 nunca aconteceu, só a extensão mudou. Os navegadores renderizam (fazem sniffing do magic byte), por isso passou despercebido, mas **zero ganho de compressão foi obtido**.
+  - **10,59 MB de imagens** no total. `hero-bg` (elemento LCP) tem 800 KB; `favicon.png` tem 339 KB; `site-icon.png` tem **5,1 MB** e parece não ser referenciado em lugar nenhum.
+  - **3 pares são byte-a-byte idênticos**: `hero-bg` == `tattoo2`, `tattoo1` == `tattoo5`, `tattoo3` == `tattoo6`. Existem só **4 fotos distintas para 6 itens** de portfólio — ou seja, a mesma foto aparece sob títulos e categorias diferentes (ex: a "Fine Line Floral Lavender" e a "Botânico Orquídeas" são a mesma imagem), com `alt` descrevendo algo que não está na foto.
+  - Ação: converter de verdade para WebP/AVIF, substituir as duplicatas por fotos reais de cada nicho, remover `site-icon.png` se for órfão, gerar favicon pequeno.
 
 - [ ] **Issue 3: Acessibilidade (a11y)**
   - Adicionar atributos `alt` descritivos em todas as imagens (especialmente as do portfólio e ícones).
@@ -23,6 +40,22 @@ Este documento lista as tarefas pendentes que devem ser iniciadas na próxima se
   - Checar responsividade geral em telas muito pequenas ou tablets (após as últimas alterações de layout).
   - Validar funcionamento dos links de contato (WhatsApp).
   
+- [ ] **Issue 5: Páginas dedicadas por nicho** 🎯 _maior teto de ranqueamento_
+  - Uma página única ranqueia realisticamente para **um** cluster de busca. Para capturar `tatuagem fine line bh`, `cobertura de tatuagem bh`, `tatuagem geek bh`, `tatuagem botânica bh` e `blackwork bh`, cada nicho precisa da própria URL.
+  - Rota dinâmica `src/pages/tatuagem/[categoria].astro` sobre o `portfolioData.ts` que já existe, com title/H1/description próprios, galeria filtrada, breadcrumb e 200-300 palavras de texto autoral por nicho.
+  - Depende de conteúdo escrito (Google precisa de texto para ranquear em termo disputado).
+
+- [ ] **Issue 6: Core Web Vitals** _(é fator de ranqueamento)_
+  - Lucide via CDN unpkg bloqueando o `<head>` para o que deveriam ser SVGs inline.
+  - Os dois `MutationObserver` em `index.astro` se auto-realimentam: observam `document.body` inteiro e, a cada mutação, chamam `createIcons()` / `observeElements()` e voltam a observar — trabalho contínuo na main thread.
+  - Google Fonts como stylesheet bloqueante → self-host + preload.
+  - Hero é `background-image` CSS → o elemento LCP fica invisível ao preload scanner.
+  - Imagens em `public/` não passam pelo `<Image>` do Astro → sem `srcset`/AVIF (ver Issue 2.2).
+  - 4 hidratações `client:load`; Header e ContactForm não precisam ser eager.
+
+- [ ] **Issue 7: Conteúdo (o Google precisa de texto)**
+  - Hoje a home tem ~2 parágrafos. Faltam: FAQ (preço, dói, duração, cuidados) com schema `FAQPage`, e um guia de pós-tatuagem — este último costuma trazer muito tráfego long-tail.
+
 ---
-**Nota para a próxima sessão:** 
-Para iniciar os trabalhos da próxima sessão, basta pedir ao Antigravity para "Iniciar a Issue 2 do nosso documento de tarefas pendentes" ou solicitar "Configurar o painel de upload do celular (Decap CMS)".
+**Nota para a próxima sessão:**
+A fundação de SEO (Issue 2) está fechada. O caminho de maior impacto agora é, nesta ordem: **Issue 2.1** (dados reais — desbloqueia o local pack), **Issue 2.2** (imagens, que é bug real e não polimento), depois **Issue 5** (páginas por nicho).
