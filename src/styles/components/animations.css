@@ -50,23 +50,3 @@
     }
 }
 
-@keyframes scrollAnimation {
-    0% {
-        top: -15px;
-    }
-    50% {
-        top: 100%;
-    }
-    100% {
-        top: -15px;
-    }
-}
-
-@keyframes zoomHero {
-    0% {
-        transform: scale(1.02);
-    }
-    100% {
-        transform: scale(1.08);
-    }
-}

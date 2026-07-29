@@ -1,120 +1,203 @@
 /* ==========================================================================
-   HERO SECTION
+   HERO SECTION — layout dividido: tipografia + vitrine de trabalhos
    ========================================================================== */
+
+/*
+  85vh em vez de 100vh de propósito.
+  Um hero de viewport inteira cria a "ilusão de completude" (NN/g): a tela parece
+  um conteúdo fechado e a visitante não imagina que existe mais abaixo. Com 85vh,
+  o topo da galeria aparece sem rolar, o que é o sinal visual mais eficaz para
+  convidar ao scroll.
+  `min-height` impede que o hero fique apertado em telas baixas.
+*/
 .hero-section {
-    height: 100vh;
+    height: 85vh;
+    min-height: 620px;
     width: 100%;
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: center;
+    background-color: var(--bg-primary);
+    padding-top: var(--header-height);
     overflow: hidden;
 }
 
-.hero-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    z-index: 1;
-    transform: scale(1.05);
-    animation: zoomHero 20s infinite alternate ease-in-out;
+.hero-grid {
+    width: 90%;
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 60px;
 }
 
-.hero-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at center, rgba(10,10,10,0.6) 0%, rgba(10,10,10,0.95) 80%);
-    z-index: 2;
-}
+/* --- Coluna de texto ------------------------------------------------------ */
 
 .hero-content {
     position: relative;
-    z-index: 3;
-    text-align: center;
-    max-width: 800px;
-    width: 90%;
-    padding-bottom: 80px;
+    z-index: 2;
+    text-align: left;
 }
 
 .hero-tagline {
     font-family: 'Syne', sans-serif;
-    font-size: 1rem;
+    font-size: 0.8rem;
     text-transform: uppercase;
-    letter-spacing: 0.3em;
+    letter-spacing: 0.22em;
     color: var(--accent-gold);
     display: block;
-    margin-bottom: 20px;
+    margin-bottom: 22px;
 }
 
 .hero-title {
-    font-size: clamp(3rem, 8vw, 5.5rem);
+    margin-bottom: 24px;
+}
+
+/* Sobre fundo claro, o texto é escuro — o gradiente branco que existia aqui
+   dependia do overlay preto que foi removido. */
+.hero-title-name {
+    display: block;
+    font-size: clamp(2.75rem, 6.5vw, 4.75rem);
     text-transform: uppercase;
     font-weight: 800;
-    line-height: 1;
-    margin-bottom: 25px;
+    line-height: 0.95;
     letter-spacing: -0.03em;
-    background: linear-gradient(180deg, #ffffff 0%, #dcdcdc 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+    color: var(--text-primary);
+}
+
+.hero-title-role {
+    display: block;
+    margin-top: 14px;
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0.01em;
+    color: var(--text-secondary);
 }
 
 .hero-subtitle {
-    font-size: clamp(1rem, 2vw, 1.25rem);
+    font-size: clamp(0.98rem, 1.6vw, 1.12rem);
     color: var(--text-secondary);
-    max-width: 600px;
-    margin: 0 auto 40px auto;
+    max-width: 46ch;
+    margin: 0 0 36px 0;
     font-weight: 300;
+    line-height: 1.6;
 }
 
 .hero-actions {
     display: flex;
-    gap: 20px;
-    justify-content: center;
+    gap: 16px;
     flex-wrap: wrap;
 }
 
-.hero-scroll-indicator {
-    position: absolute;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 3;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
+/* --- Vitrine de trabalhos ------------------------------------------------- */
+
+/*
+  Grade de 2 colunas: a imagem principal ocupa a coluna esquerda inteira, e as
+  duas secundárias empilham à direita. Assim a principal fica grande o bastante
+  para avaliar traço, e as outras duas comunicam leque de estilos sem virar
+  miniatura ilegível.
+*/
+.hero-showcase {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 14px;
+    height: min(66vh, 560px);
 }
 
-.scroll-text {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.25em;
-    color: var(--text-muted);
-}
-
-.scroll-line {
-    width: 1px;
-    height: 50px;
-    background-color: var(--border-color);
+.hero-showcase-item {
     position: relative;
+    margin: 0;
     overflow: hidden;
+    border-radius: 6px;
+    background-color: var(--bg-secondary);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
 }
 
-.scroll-line::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
+.hero-showcase-item--principal {
+    grid-row: span 2;
+}
+
+.hero-showcase-item img {
     width: 100%;
-    height: 15px;
-    background-color: var(--accent-gold);
-    animation: scrollAnimation 2s infinite ease-in-out;
+    height: 100%;
+    /* Sem filtro nem overlay: as fotos autorais mantêm as cores originais. */
+    object-fit: cover;
+    display: block;
+}
+
+.hero-showcase-label {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    padding: 5px 12px;
+    border-radius: 40px;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-primary);
+    /* Pastilha clara garante contraste do rótulo qualquer que seja a foto. */
+    background-color: rgba(255, 253, 248, 0.92);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+/* --- Responsivo ---------------------------------------------------------- */
+
+@media (max-width: 992px) {
+    /* Empilha: texto primeiro, vitrine abaixo. `auto` na altura evita que o
+       hero estique demais no celular. */
+    .hero-section {
+        height: auto;
+        min-height: 0;
+        padding-top: calc(var(--header-height) + 40px);
+        padding-bottom: 50px;
+    }
+
+    .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .hero-content {
+        text-align: center;
+    }
+
+    .hero-subtitle {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-actions {
+        justify-content: center;
+    }
+
+    .hero-showcase {
+        height: 52vh;
+        max-height: 420px;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Em tela estreita, três imagens ficariam pequenas demais para avaliar
+       traço. Mostra só a principal e esconde as secundárias — a galeria logo
+       abaixo já cobre a variedade. */
+    .hero-showcase {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+        height: 44vh;
+        max-height: 340px;
+    }
+
+    .hero-showcase-item--secundaria {
+        display: none;
+    }
+
+    .hero-showcase-item--principal {
+        grid-row: span 1;
+    }
 }
