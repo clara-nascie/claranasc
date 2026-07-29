@@ -21,7 +21,7 @@ Use este checklist para acompanhar o passo a passo da evolução e migração do
 - [x] Refatorar a lógica do formulário de agendamento (WhatsApp) em um componente React ou função TypeScript.
 
 ## 🖼️ Mídia, SEO e Acessibilidade
-- [ ] Otimizar e mover imagens estáticas para a pasta `public/` ou `src/assets/`.
+- [x] Otimizar e mover imagens estáticas para a pasta `public/portfolio/` com `src/data/portfolioData.ts`.
 - [ ] Configurar metatags de SEO dinâmicas (Head do Astro).
 - [ ] Garantir acessibilidade (A11y) nos novos componentes React.
 

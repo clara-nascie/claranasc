@@ -4,10 +4,10 @@ Este documento lista as tarefas pendentes que devem ser iniciadas na próxima se
 
 ## 📝 Lista de Issues (Backlog)
 
-- [ ] **Issue 1: Otimização de Imagens (Mídia)**
-  - Comprimir as imagens do portfólio (`assets/`) para reduzir o peso da página sem perder qualidade visual.
-  - Converter imagens muito pesadas para formatos modernos (como WebP), garantindo carregamento rápido.
-  - Adicionar lazy loading (`loading="lazy"`) nas imagens que ficam abaixo da dobra da página.
+- [x] **Issue 1: Otimização de Imagens e Estruturação de Portfólio (Mídia)**
+  - [x] Criar estrutura de dados tipada (`src/data/portfolioData.ts`) e pasta de mídias (`public/portfolio/`).
+  - [x] Otimizar imagens demonstrativas (formato WebP leve).
+  - [x] Aplicar `loading="lazy"` e `decoding="async"` para performance máxima no Google.
 
 - [ ] **Issue 2: SEO Básico e Meta Tags Avançadas**
   - Revisar e enriquecer as tags `<title>` e `<meta description>` no `index.astro` com palavras-chave relevantes (Ex: "Tatuadora em BH", "Estúdio de Tatuagem").
