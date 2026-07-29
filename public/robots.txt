@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://claranasc.com/sitemap.xml
+# Gerado por @astrojs/sitemap no build. O índice aponta para os sitemaps filhos.
+Sitemap: https://claranasc.com/sitemap-index.xml
