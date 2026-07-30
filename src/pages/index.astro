@@ -8,7 +8,8 @@ import LocalBusinessSchema from '../components/seo/LocalBusinessSchema.astro';
 import { AppLayout } from '../components/layout/AppLayout';
 import { Header } from '../components/sections/Header';
 // Hero e Portfolio são Astro, não React: nenhum dos dois precisa de estado que
-// justifique hidratar uma ilha. O filtro da galeria é DOM puro.
+// justifique hidratar uma ilha, e só componente Astro pode usar o <Image> do
+// astro:assets — que é quem gera as variantes responsivas no build.
 import Hero from '../components/sections/Hero.astro';
 import Portfolio from '../components/sections/Portfolio.astro';
 import { About } from '../components/sections/About';

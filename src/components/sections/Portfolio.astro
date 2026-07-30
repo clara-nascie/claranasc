@@ -1,17 +1,47 @@
 ---
+import { Image, getImage } from 'astro:assets';
 import { portfolioItems, PORTFOLIO_CATEGORIES } from '../../data/portfolioData';
 
 /**
- * A galeria é Astro, não React, por dois motivos:
+ * A galeria é Astro, não React, por três motivos:
  *
- * 1. As imagens ficam no HTML estático, onde o Google Imagens as enxerga. Uma
- *    galeria montada por JS depende do robô executar o script.
- * 2. Filtrar é mostrar e esconder elemento. Não precisa de React, e cortar o
+ * 1. `<Image>` do `astro:assets` só existe em componente Astro. É ele que gera
+ *    as variantes responsivas no build — sem isso a foto original inteira vai
+ *    para o navegador.
+ * 2. As imagens ficam no HTML estático, onde o Google Imagens as enxerga. Uma
+ *    galeria renderizada por JS depende do robô executar o script.
+ * 3. Filtrar é mostrar e esconder elemento. Não precisa de React, e cortar o
  *    `client:load` daqui tira a maior hidratação da página (Issue #12).
  *
  * O contrato com o Lightbox continua o mesmo: um `CustomEvent('open-lightbox')`
  * com `{ src, title, category }`. Quem dispara mudou; o que é disparado, não.
  */
+
+/**
+ * Versão ampliada de cada foto, para o lightbox.
+ *
+ * A miniatura da grade tem no máximo ~380px — abrir a ampliação com ela ficaria
+ * borrado. `getImage()` gera no build uma variante maior e devolve a URL final,
+ * que vai num `data-` do botão.
+ */
+const ampliadas = new Map(
+  await Promise.all(
+    portfolioItems.map(async (item) => {
+      const grande = await getImage({ src: item.image, width: 1400, format: 'webp' });
+      return [item.id, grande.src] as const;
+    })
+  )
+);
+
+/**
+ * Larguras servidas e como o navegador escolhe entre elas.
+ *
+ * A grade é `repeat(auto-fill, minmax(280px, 1fr))` dentro de um container de
+ * 1200px, o que dá 3 colunas de ~380px no desktop, 2 no tablet e 1 no celular.
+ * O maior valor (760) cobre os 380px em tela de densidade 2x.
+ */
+const LARGURAS = [280, 380, 560, 760];
+const TAMANHOS = '(max-width: 639px) 90vw, (max-width: 991px) 43vw, 380px';
 ---
 
 <section class="portfolio-section" id="portfolio">
@@ -42,13 +72,15 @@ import { portfolioItems, PORTFOLIO_CATEGORIES } from '../../data/portfolioData';
       {portfolioItems.map((item) => (
         <div class="portfolio-item" data-category={item.category}>
           <div class="portfolio-img-wrapper">
-            <img
+            <Image
               src={item.image}
               alt={item.alt}
+              widths={LARGURAS}
+              sizes={TAMANHOS}
+              format="webp"
+              quality={72}
               loading="lazy"
               decoding="async"
-              width="600"
-              height="750"
             />
             <div class="portfolio-hover">
               <span class="item-category">{item.categoryLabel}</span>
@@ -57,7 +89,7 @@ import { portfolioItems, PORTFOLIO_CATEGORIES } from '../../data/portfolioData';
                 type="button"
                 class="btn-zoom lightbox-trigger"
                 aria-label={`Ampliar imagem de ${item.title}`}
-                data-src={item.image}
+                data-src={ampliadas.get(item.id)}
                 data-title={item.title}
                 data-category={item.categoryLabel}
               >

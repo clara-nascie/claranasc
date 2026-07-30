@@ -1,3 +1,18 @@
+/**
+ * As imagens são **importadas**, não referenciadas por caminho de texto.
+ *
+ * Isso não é detalhe de estilo: só o que entra por `import` de dentro de `src/`
+ * passa pelo pipeline do `astro:assets`, que gera as variantes responsivas em
+ * WebP no build. Arquivo em `public/` é copiado byte a byte para o `dist/` —
+ * o navegador da visitante receberia a foto original inteira.
+ */
+import tattoo1 from '../assets/portfolio/tattoo1.webp';
+import tattoo2 from '../assets/portfolio/tattoo2.webp';
+import tattoo3 from '../assets/portfolio/tattoo3.webp';
+import tattoo4 from '../assets/portfolio/tattoo4.webp';
+import tattoo5 from '../assets/portfolio/tattoo5.webp';
+import tattoo6 from '../assets/portfolio/tattoo6.webp';
+
 export interface PortfolioCategory {
   id: string;
   label: string;
@@ -8,7 +23,9 @@ export interface PortfolioItem {
   title: string;
   category: string;
   categoryLabel: string;
-  image: string;
+  /** `ImageMetadata` vindo do import — o `<Image>` do Astro precisa do objeto,
+   *  não da URL. Traz `src`, `width`, `height` e `format` já resolvidos. */
+  image: ImageMetadata;
   alt: string;
   /**
    * Texto de apoio do item. Ainda não é renderizado na home — será consumido
@@ -49,7 +66,7 @@ export const portfolioItems: PortfolioItem[] = [
     title: 'Floral Lavender & Ramalhetes',
     category: 'fineline',
     categoryLabel: 'Fine Line',
-    image: '/portfolio/tattoo1.webp',
+    image: tattoo1,
     alt: 'Tatuagem delicada de ramos de lavanda em traço fino (Fine Line) por Clara Nasc em Belo Horizonte',
     description: 'Composição fluida acompanhando a anatomia do antebraço.'
   },
@@ -58,7 +75,7 @@ export const portfolioItems: PortfolioItem[] = [
     title: 'Ramo Botânico & Orquídeas',
     category: 'botanico',
     categoryLabel: 'Botânico',
-    image: '/portfolio/tattoo5.webp',
+    image: tattoo5,
     alt: 'Tatuagem botânica autoral de orquídea com traço fino e acabamento delicado',
     description: 'Elementos florais orgânicos e traços suaves.'
   },
@@ -67,7 +84,7 @@ export const portfolioItems: PortfolioItem[] = [
     title: 'Shadow Serpent & Botânica Dark',
     category: 'blackwork',
     categoryLabel: 'Blackwork',
-    image: '/portfolio/tattoo2.webp',
+    image: tattoo2,
     alt: 'Tatuagem de serpente entre folhagens detalhada em estilo Blackwork autoral',
     description: 'Contraste marcante de sombras e textura de preenchimento.'
   },
@@ -76,7 +93,7 @@ export const portfolioItems: PortfolioItem[] = [
     title: 'Símbolo Geek & Ilustração Anime',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
-    image: '/portfolio/tattoo4.webp',
+    image: tattoo4,
     alt: 'Tatuagem no estilo Geek e Anime com linhas finas e sombreamento preciso',
     description: 'Ilustração inspirada na cultura pop e animes.'
   },
@@ -85,7 +102,7 @@ export const portfolioItems: PortfolioItem[] = [
     title: 'Cobertura Autoral com Arte Fluida',
     category: 'coberturas',
     categoryLabel: 'Coberturas',
-    image: '/portfolio/tattoo3.webp',
+    image: tattoo3,
     alt: 'Cobertura de tatuagem antiga (Cover-up) com arte ornamental e fluxo anatômico',
     description: 'Projeto de reestruturação visual e cobertura de marca anterior.'
   },
@@ -94,7 +111,7 @@ export const portfolioItems: PortfolioItem[] = [
     title: 'Mini Ilustração Delicada Fine Line',
     category: 'fineline',
     categoryLabel: 'Fine Line',
-    image: '/portfolio/tattoo6.webp',
+    image: tattoo6,
     alt: 'Tatuagem minimalista em fine line com traços limpos e elegantes',
     description: 'Minimalismo contemporâneo e linhas perfeitas.'
   }
