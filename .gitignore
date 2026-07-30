@@ -13,6 +13,12 @@ Desktop.ini
 .env*
 !.env.example
 
+# acervo de fotos originais (~1,3 GB, fora do repositorio)
+# Sao os arquivos direto da camera, por categoria. O que vai para o site sao as
+# versoes processadas em src/assets/portfolio/, que o astro:assets otimiza no
+# build. Os originais ficam so na maquina.
+Anúncios/
+
 # build output
 dist/
 # capturas do script de verificacao visual (regeneraveis)
