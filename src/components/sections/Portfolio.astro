@@ -1,0 +1,133 @@
+---
+import { portfolioItems, PORTFOLIO_CATEGORIES } from '../../data/portfolioData';
+
+/**
+ * A galeria é Astro, não React, por dois motivos:
+ *
+ * 1. As imagens ficam no HTML estático, onde o Google Imagens as enxerga. Uma
+ *    galeria montada por JS depende do robô executar o script.
+ * 2. Filtrar é mostrar e esconder elemento. Não precisa de React, e cortar o
+ *    `client:load` daqui tira a maior hidratação da página (Issue #12).
+ *
+ * O contrato com o Lightbox continua o mesmo: um `CustomEvent('open-lightbox')`
+ * com `{ src, title, category }`. Quem dispara mudou; o que é disparado, não.
+ */
+---
+
+<section class="portfolio-section" id="portfolio">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag">Galeria</span>
+      <h2 class="section-title">Trabalhos Recentes</h2>
+      <div class="header-divider"></div>
+    </div>
+
+    <div class="portfolio-filters reveal" role="tablist" aria-label="Filtros de categoria do portfólio">
+      {PORTFOLIO_CATEGORIES.map((cat) => (
+        <button
+          type="button"
+          role="tab"
+          id={`filtro-${cat.id}`}
+          aria-selected={cat.id === 'all'}
+          aria-controls="portfolio-grid"
+          class={`filter-btn${cat.id === 'all' ? ' active' : ''}`}
+          data-filtro={cat.id}
+        >
+          {cat.label}
+        </button>
+      ))}
+    </div>
+
+    <div class="portfolio-grid reveal" id="portfolio-grid">
+      {portfolioItems.map((item) => (
+        <div class="portfolio-item" data-category={item.category}>
+          <div class="portfolio-img-wrapper">
+            <img
+              src={item.image}
+              alt={item.alt}
+              loading="lazy"
+              decoding="async"
+              width="600"
+              height="750"
+            />
+            <div class="portfolio-hover">
+              <span class="item-category">{item.categoryLabel}</span>
+              <h3 class="item-title">{item.title}</h3>
+              <button
+                type="button"
+                class="btn-zoom lightbox-trigger"
+                aria-label={`Ampliar imagem de ${item.title}`}
+                data-src={item.image}
+                data-title={item.title}
+                data-category={item.categoryLabel}
+              >
+                {/* Ícone "maximize-2" do lucide, desenhado direto no HTML.
+                    Importar o componente React só para uma lupa traria o React
+                    de volta a um componente que agora é estático. */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M15 3h6v6" />
+                  <path d="m21 3-7 7" />
+                  <path d="m3 21 7-7" />
+                  <path d="M9 21H3v-6" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  const grade = document.getElementById('portfolio-grid');
+  const botoesFiltro = document.querySelectorAll<HTMLButtonElement>('[data-filtro]');
+
+  if (grade) {
+    const itens = Array.from(grade.querySelectorAll<HTMLElement>('.portfolio-item'));
+
+    for (const botao of botoesFiltro) {
+      botao.addEventListener('click', () => {
+        const alvo = botao.dataset.filtro;
+
+        for (const outro of botoesFiltro) {
+          const ativo = outro === botao;
+          outro.classList.toggle('active', ativo);
+          outro.setAttribute('aria-selected', String(ativo));
+        }
+
+        // `.hidden` já existe no portfolio.css e resolve para `display: none`.
+        for (const item of itens) {
+          item.classList.toggle('hidden', alvo !== 'all' && item.dataset.category !== alvo);
+        }
+      });
+    }
+
+    // Delegação: um listener na grade em vez de um por botão de lupa.
+    grade.addEventListener('click', (evento) => {
+      const gatilho = (evento.target as HTMLElement).closest<HTMLElement>('.lightbox-trigger');
+      if (!gatilho) return;
+
+      window.dispatchEvent(
+        new CustomEvent('open-lightbox', {
+          detail: {
+            src: gatilho.dataset.src,
+            title: gatilho.dataset.title,
+            category: gatilho.dataset.category
+          }
+        })
+      );
+    });
+  }
+</script>

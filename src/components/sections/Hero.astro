@@ -1,0 +1,77 @@
+---
+import { heroShowcase } from '../../data/portfolioData';
+
+/**
+ * O hero virou Astro junto com a galeria, por coerência: ele não tinha
+ * `client:` nenhum, ou seja, já era renderizado estático e o React só existia
+ * como sintaxe. A conversão não tira interatividade de nada.
+ */
+---
+
+<section class="hero-section" id="home">
+  <div class="hero-grid">
+    <div class="hero-content">
+      <span class="hero-tagline fade-in">Blackwork, Fine Line, Botânico, Geek &amp; Coberturas</span>
+      {/*
+        O H1 carrega o nome e o termo de busca. O nome fica no tamanho grande
+        e "Tatuadora em Belo Horizonte" entra como linha secundária dentro do
+        mesmo H1 — para o Google, o H1 inteiro conta como um só título.
+      */}
+      <h1 class="hero-title fade-in-delay-1">
+        <span class="hero-title-name">Clara Nasc</span>
+        <span class="hero-title-role">Tatuadora em Belo Horizonte</span>
+      </h1>
+      <p class="hero-subtitle fade-in-delay-2">
+        A resposta para a vida, o universo e tudo mais é sempre uma tatuagem nova!
+      </p>
+      <div class="hero-actions fade-in-delay-3">
+        <a href="#contato" class="btn btn-primary" id="hero-cta-btn">
+          <span>Orçamento &amp; Agendamento</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M5 12h14" />
+            <path d="m12 5 7 7-7 7" />
+          </svg>
+        </a>
+        <a href="#portfolio" class="btn btn-secondary" id="hero-secondary-btn">
+          Ver Portfólio
+        </a>
+      </div>
+    </div>
+
+    {/*
+      Vitrine sem overlay escurecedor: a primeira imagem é grande o suficiente
+      para o traço ser avaliado de perto, e as duas menores comunicam leque de
+      estilos sem virar miniatura ilegível.
+
+      A primeira é o elemento LCP, por isso `loading="eager"` e
+      `fetchpriority="high"` — o oposto do resto do site, que é lazy.
+    */}
+    <div class="hero-showcase">
+      {heroShowcase.map((item, indice) => (
+        <figure class={`hero-showcase-item hero-showcase-item--${indice === 0 ? 'principal' : 'secundaria'}`}>
+          <img
+            src={item.image}
+            alt={item.alt}
+            width={indice === 0 ? 760 : 380}
+            height={indice === 0 ? 950 : 475}
+            loading={indice === 0 ? 'eager' : 'lazy'}
+            fetchpriority={indice === 0 ? 'high' : 'auto'}
+            decoding={indice === 0 ? 'sync' : 'async'}
+          />
+          <figcaption class="hero-showcase-label">{item.categoryLabel}</figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>

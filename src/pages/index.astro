@@ -7,8 +7,10 @@ import LocalBusinessSchema from '../components/seo/LocalBusinessSchema.astro';
 
 import { AppLayout } from '../components/layout/AppLayout';
 import { Header } from '../components/sections/Header';
-import { Hero } from '../components/sections/Hero';
-import { Portfolio } from '../components/sections/Portfolio';
+// Hero e Portfolio são Astro, não React: nenhum dos dois precisa de estado que
+// justifique hidratar uma ilha. O filtro da galeria é DOM puro.
+import Hero from '../components/sections/Hero.astro';
+import Portfolio from '../components/sections/Portfolio.astro';
 import { About } from '../components/sections/About';
 import { ContactForm } from '../components/sections/ContactForm';
 import { Footer } from '../components/sections/Footer';
@@ -45,7 +47,7 @@ const description =
     <AppLayout>
         <Header client:load />
         <Hero />
-        <Portfolio client:load />
+        <Portfolio />
         <About />
         <ContactForm client:load />
         <Footer />
