@@ -76,7 +76,22 @@ const description =
                     }
                 }
             },
-            { threshold: 0.15 }
+            /*
+              Não use `threshold` por fração de área aqui.
+
+              `threshold: 0.15` exige que 15% da área do elemento esteja na tela,
+              e essa fração fica impossível quando o elemento é muito mais alto
+              que a viewport: a galeria com 30 fotos mede 14.000px no celular
+              contra 844px de tela, ou seja, no máximo 6% dela aparece de uma vez.
+              O observador nunca dispararia e a grade ficaria invisível para
+              sempre — foi exatamente o que aconteceu ao crescer de 6 para 30.
+
+              `rootMargin` não depende da altura do elemento: encolhe a borda de
+              baixo da viewport em 12%, e `threshold: 0` dispara assim que
+              qualquer parte cruza essa linha. Funciona igual para um título
+              curto e para uma galeria de 168 fotos.
+            */
+            { threshold: 0, rootMargin: '0px 0px -12% 0px' }
         );
 
         const seletorRevelaveis = '.reveal, .fade-in, .fade-in-delay-1, .fade-in-delay-2, .fade-in-delay-3';
