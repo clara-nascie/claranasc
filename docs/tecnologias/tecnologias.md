@@ -7,7 +7,9 @@ Horizonte, decisões de performance aqui são decisões de SEO.
 ## Núcleo
 
 * **Astro** — motor do site. Roteamento, orquestração e compilação do estático final. Configurado com `site: 'https://claranasc.com'`, obrigatório para gerar URL absoluta em `canonical` e `og:image`.
-* **React** — usado nos componentes que exigem estado: `Header` (menu mobile), `Portfolio` (filtros), `ContactForm` (formulário) e `Lightbox` (galeria ampliada). Ver a nota sobre hidratação em `docs/arquitetura/arquitetura.md`.
+* **React** — usado só nos componentes que exigem estado: `Header` (menu mobile), `ContactForm` (formulário) e `Lightbox` (galeria ampliada). Ver a nota sobre hidratação em `docs/arquitetura/arquitetura.md`.
+  > `Hero` e `Portfolio` **eram** React e hoje são `.astro`. O `<Image>` do `astro:assets` só funciona em componente Astro, e nenhum dos dois precisava de estado — o filtro da galeria é `classList.toggle`. Antes de converter algo para React, verifique se realmente há estado envolvido.
+* **`astro:assets`** — pipeline de imagem embutido no Astro. Gera as variantes responsivas em WebP no build, a partir das fotos importadas de `src/assets/`. Usa **sharp** por baixo, que já vem com o Astro e lê JPEG, WebP e HEIC **pelo conteúdo, não pela extensão** — útil porque o acervo tem arquivos com extensão errada.
 * **TypeScript** — tipagem nos componentes e nos arquivos de dados (`siteData.ts`, `portfolioData.ts`).
   > ⚠️ **Não há verificação de tipos neste projeto.** O `npm run build` (Vite) apenas **remove** os tipos, não valida nada — um erro de tipo passa sem reclamar. O `typescript` não está instalado, e o `@astrojs/check` é incompatível com TypeScript 7. Não conte com o TS para pegar bugs aqui; ele serve como documentação e autocomplete no editor.
 * **CSS3 vanilla** — sem framework utilitário. Design System *Premium Light Mode* (fundo creme, tons terrosos, acento marrom mel) em `src/styles/base/variables.css`. CSS modularizado em `base/`, `components/` e `sections/`, todos importados por `global.css`.
@@ -23,7 +25,7 @@ Horizonte, decisões de performance aqui são decisões de SEO.
 
 ## Desenvolvimento
 
-* **Playwright** (devDependency) — sobe um Chromium headless para o script `npm run verificar`, que valida comportamento dependente de scroll, erros de console e contraste computado. Sendo devDependency, não vai para o site publicado.
+* **Playwright** (devDependency) — sobe um Chromium headless para `npm run verificar` (scroll, console, contraste) e `npm run verificar:galeria` (filtro, lightbox e se a grade fica visível). Sendo devDependency, não vai para o site publicado.
 * **GitHub Actions** — `.github/workflows/verificar.yml` roda build e verificação a cada push e pull request.
 * **`gh` CLI** — o backlog do projeto vive nas GitHub Issues, não em arquivos markdown.
 
