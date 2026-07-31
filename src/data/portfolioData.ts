@@ -102,14 +102,18 @@ export const PORTFOLIO_CATEGORIES: PortfolioCategory[] = [
 /**
  * As três imagens da vitrine do hero, em ordem: a primeira é a grande.
  *
- * Escolha deliberada: as três vagas são das categorias que precisam crescer.
- * O hero é o lugar mais visível do site e cada foto carrega o nome da própria
- * categoria na legenda — deixar Blackwork e Fine Line aqui reforçaria
- * exatamente o público que o site já tem.
+ * Escolha da Clara: o floral no peito na vaga grande, e duas peças de
+ * Blackwork nas menores — faixas em preto sólido e vegvisir com corvo.
+ *
+ * A combinação funciona nos dois sentidos. A foto grande é uma Cobertura, que
+ * é justamente a categoria que o site quer fazer crescer, e as duas menores
+ * são as peças que melhor sobrevivem à miniatura. Como cada vaga imprime o
+ * nome da própria categoria na legenda, o hero também deixa de repetir
+ * "Blackwork" três vezes.
  *
  * Troque os ids aqui para mudar a vitrine sem mexer no componente.
  */
-export const HERO_SHOWCASE_IDS = [1, 7, 13] as const;
+export const HERO_SHOWCASE_IDS = [4, 20, 21] as const;
 
 export const portfolioItems: PortfolioItem[] = [
   // ------------------------------------------------------------- Coberturas
