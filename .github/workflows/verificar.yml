@@ -45,6 +45,14 @@ jobs:
         env:
           BASE_URL: http://localhost:4321
 
+      # Roda mesmo se a anterior falhar: as duas cobrem áreas diferentes e
+      # esconder o resultado da galeria não ajuda a diagnosticar a outra.
+      - name: Verificação da galeria
+        if: always()
+        run: npm run verificar:galeria
+        env:
+          BASE_URL: http://localhost:4321
+
       # Sobe as capturas mesmo quando a verificação falha — são elas que
       # mostram o que aconteceu.
       - name: Publicar capturas
