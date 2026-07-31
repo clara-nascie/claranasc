@@ -97,7 +97,7 @@
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.15em;
-    color: var(--accent-gold);
+    color: var(--accent-gold-on-dark);
     margin-bottom: 6px;
     transform: translateY(10px);
     transition: var(--transition-smooth);
@@ -106,7 +106,8 @@
 
 .item-title {
     font-size: 1.3rem;
-    color: var(--text-primary);
+    /* Sobre o gradiente escuro do .portfolio-hover, nao sobre o fundo do site. */
+    color: var(--text-on-dark);
     text-transform: uppercase;
     transform: translateY(10px);
     transition: var(--transition-smooth);
@@ -117,8 +118,11 @@
     position: absolute;
     top: 30px;
     right: 30px;
-    color: var(--text-primary);
-    background-color: rgba(255, 255, 255, 0.08);
+    color: var(--text-on-dark);
+    /* Fundo escuro proprio, e nao um veu claro: a lupa fica no topo do
+       overlay, onde o gradiente e quase transparente, entao o contraste
+       nao pode depender de a foto atras ser clara ou escura. */
+    background-color: rgba(10, 10, 10, 0.45);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     width: 40px;

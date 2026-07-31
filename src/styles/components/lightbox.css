@@ -28,7 +28,7 @@
     position: absolute;
     top: 30px;
     right: 30px;
-    color: var(--text-primary);
+    color: var(--text-on-dark);
     font-size: 2rem;
     transition: var(--transition-smooth);
     background-color: rgba(255, 255, 255, 0.05);
@@ -78,11 +78,14 @@
     font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.2em;
-    color: var(--accent-gold);
+    color: var(--accent-gold-on-dark);
 }
 
 .lightbox-title {
     font-size: 1.4rem;
     margin-top: 5px;
     text-transform: uppercase;
+    /* Sem isto herda o --text-primary do body, que e quase preto, e some
+       contra o fundo rgba(10,10,10,0.95) do modal. */
+    color: var(--text-on-dark);
 }
