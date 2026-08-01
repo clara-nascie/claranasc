@@ -11,6 +11,11 @@
  */
 import { SITE, CONTACT, LOCATION, SOCIAL, OPENING_HOURS, OG_IMAGE } from '../../data/siteData';
 import { PORTFOLIO_CATEGORIES } from '../../data/portfolioData';
+/* Importada, e não escrita como caminho fixo: o arquivo saiu de `public/` e
+   entrou no pipeline do astro:assets junto com a GitHub #18. O `.src` resolve
+   para o caminho com hash gerado no build, que é estável enquanto a foto não
+   mudar. Caminho fixo aqui viraria 404 silencioso. */
+import fotoArtista from '../../assets/about-artist.webp';
 
 const businessId = `${SITE.url}/#business`;
 const personId = `${SITE.url}/#clara`;
@@ -90,7 +95,7 @@ const person: Record<string, unknown> = {
   name: SITE.name,
   jobTitle: SITE.jobTitle,
   url: SITE.url,
-  image: new URL('/assets/about-artist.webp', SITE.url).href,
+  image: new URL(fotoArtista.src, SITE.url).href,
   description:
     'Tatuadora especializada em traços finos meticulosos e contrastes marcantes, com mais de 5 anos de experiência em Belo Horizonte.',
   worksFor: { '@id': businessId },

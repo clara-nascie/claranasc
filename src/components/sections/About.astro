@@ -1,0 +1,89 @@
+---
+import { Image } from 'astro:assets';
+import { Pencil, ShieldCheck } from 'lucide-react';
+import fotoArtista from '../../assets/about-artist.webp';
+
+/**
+ * Virou Astro pelo mesmo motivo do Hero e da galeria: `<Image>` só existe aqui.
+ *
+ * A conversão foi o conserto de raiz da GitHub #18. A foto sumia em qualquer
+ * tela até 992px, e a cadeia era esta:
+ *
+ *   1. abaixo de 992px o `.about-grid` vira coluna única e o
+ *      `.about-image-column` ganha `margin: 0 auto`;
+ *   2. margem automática em item de grid CANCELA o `stretch` padrão — o item
+ *      passa a ter largura de conteúdo;
+ *   3. o conteúdo era uma `<div>` vazia, porque a foto entrava por
+ *      `background-image`, que não tem tamanho intrínseco;
+ *   4. sobravam 2px de borda, e o `aspect-ratio` virava isso em 3px de altura.
+ *
+ * Com `<img>` de verdade o passo 3 deixa de existir: imagem tem tamanho
+ * intrínseco, então o colapso não volta por outro caminho.
+ *
+ * Efeitos colaterais bons: a foto entra no pipeline responsivo (era um arquivo
+ * único de 325 KB servido igual para celular e desktop) e deixa de ser
+ * invisível ao preload scanner, que é a mesma classe de problema apontada na
+ * #12 sobre o hero.
+ *
+ * O componente não tinha `client:` nenhum em `index.astro`, ou seja, já era
+ * renderizado estático. A conversão não tira interatividade de nada — os
+ * ícones do lucide seguem sendo componentes React, renderizados no build.
+ */
+
+/**
+ * A coluna da foto tem `max-width: 450px` e ocupa ~40% de um container de
+ * 1200px. O maior valor da lista cobre densidade 2x.
+ */
+const LARGURAS = [340, 450, 900];
+const TAMANHOS = '(max-width: 992px) min(90vw, 450px), 450px';
+---
+
+<section class="about-section" id="sobre">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-image-column reveal">
+        <div class="about-image-wrapper">
+          <Image
+            class="about-image-foto"
+            src={fotoArtista}
+            alt="Clara Nasc tatuando uma cliente em seu estúdio em Belo Horizonte"
+            widths={LARGURAS}
+            sizes={TAMANHOS}
+            format="webp"
+            quality={80}
+            loading="lazy"
+            decoding="async"
+          />
+          <div class="about-image-frame"></div>
+        </div>
+      </div>
+      <div class="about-content-column reveal">
+        <span class="section-tag">A Artista</span>
+        <h2 class="section-title text-left">Clara Nasc</h2>
+        <div class="header-divider left"></div>
+        <p class="about-text highlight">
+          Especialista em eternizar histórias e conceitos através de traços finos meticulosos e contrastes marcantes.
+        </p>
+        <p class="about-text">
+          Com mais de 5 anos de experiência e um espaço privativo focado em conforto e biossegurança, meu propósito é traduzir sentimentos em desenhos autorais e únicos. Acredito que cada tatuagem é um ritual de expressão individual e respeito ao corpo.
+        </p>
+        <div class="about-details">
+          <div class="detail-item">
+            <ShieldCheck aria-hidden="true" />
+            <div>
+              <h4>Materiais Descartáveis</h4>
+              <p>Segurança total e assepsia rigorosa.</p>
+            </div>
+          </div>
+          <div class="detail-item">
+            <Pencil aria-hidden="true" />
+            <div>
+              <h4>Arte 100% Autoral</h4>
+              <p>Desenhos criados exclusivamente para você.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

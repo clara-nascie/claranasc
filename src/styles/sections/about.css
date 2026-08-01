@@ -18,11 +18,19 @@
     width: 100%;
 }
 
-.about-image-placeholder {
+/*
+  Era `.about-image-placeholder`, uma div vazia com `background-image`. Virou
+  `<img>` de verdade na GitHub #18: imagem de fundo não tem tamanho intrínseco,
+  e era isso que deixava o contêiner colapsar para 2px abaixo de 992px.
+
+  `display: block` evita a folga de linha de base que o `<img>` inline deixaria
+  embaixo, o que desalinharia a moldura dourada por alguns pixels.
+*/
+.about-image-foto {
+    display: block;
     width: 100%;
     height: 100%;
-    background-size: cover;
-    background-position: center;
+    object-fit: cover;
     border-radius: 8px;
     position: relative;
     z-index: 2;

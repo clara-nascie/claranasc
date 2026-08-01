@@ -128,13 +128,34 @@ try {
     await checarVisibilidade(cta, true, `[${rotulo}] botão flutuante visível no portfólio`);
     await page.screenshot({ path: `${OUT_DIR}/${rotulo}-2-portfolio.png` });
 
-    // --- 3. Deve sumir sobre o formulário de agendamento ---
+    /*
+      --- 3. A foto da artista precisa ter tamanho de verdade ---
+
+      Existir no DOM não é aparecer. A GitHub #18 viveu em produção com este
+      contêiner colapsado para 2x3 pixels em toda tela até 992px: o elemento
+      estava lá, o CSS estava lá, e a foto simplesmente não tinha tamanho.
+      Nenhuma checagem daqui olhava esta seção.
+
+      Mede a caixa renderizada em vez de conferir se o seletor existe. O limite
+      de 50px é folgado de propósito — não é sobre enquadramento, é sobre
+      distinguir "foto" de "resíduo de borda".
+    */
+    await page.locator('#sobre').scrollIntoViewIfNeeded();
+    await page.waitForTimeout(600);
+    const foto = await page.locator('.about-image-foto').boundingBox();
+    checar(
+      `[${rotulo}] foto da artista visível`,
+      Boolean(foto) && foto.width > 50 && foto.height > 50,
+      foto ? `${Math.round(foto.width)}x${Math.round(foto.height)}px` : 'elemento não encontrado'
+    );
+
+    // --- 4. Deve sumir sobre o formulário de agendamento ---
     await page.locator('#contato').scrollIntoViewIfNeeded();
     await page.waitForTimeout(800);
     await checarVisibilidade(cta, false, `[${rotulo}] botão flutuante oculto sobre o formulário`);
     await page.screenshot({ path: `${OUT_DIR}/${rotulo}-3-contato.png` });
 
-    // --- 4. Contraste dos botões do hero ---
+    // --- 5. Contraste dos botões do hero ---
     await page.evaluate(() => window.scrollTo(0, 0));
     await page.waitForTimeout(600);
 
@@ -184,7 +205,7 @@ try {
       );
     }
 
-    // --- 5. Erros de console e requisições falhas ---
+    // --- 6. Erros de console e requisições falhas ---
     checar(`[${rotulo}] sem erros no console`, errosConsole.length === 0, errosConsole.join(' | ') || 'nenhum');
     checar(
       `[${rotulo}] sem requisições falhas`,
