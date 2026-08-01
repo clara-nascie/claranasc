@@ -199,9 +199,55 @@
     font-size: clamp(0.98rem, 1.6vw, 1.12rem);
     color: var(--text-secondary);
     max-width: 46ch;
-    margin: 0 0 36px 0;
+    margin: 0 0 20px 0;
     font-weight: 300;
     line-height: 1.6;
+}
+
+/*
+  Endereço do estúdio, acima da dobra.
+
+  `font-style: normal` desfaz o itálico que o navegador aplica por padrão ao
+  `<address>`. O elemento foi escolhido por semântica, não por aparência.
+
+  Usa `--text-secondary`, o mesmo token do subtítulo, que é o mais claro que
+  sobrevive ao fundo do hero. `--text-muted` reprovaria: sobre o creme ele nem
+  chega perto dos 4,5:1.
+*/
+.hero-endereco {
+    font-style: normal;
+    margin: 0 0 32px 0;
+    font-size: 0.92rem;
+    line-height: 1.5;
+}
+
+/*
+  Sublinhado presente em repouso, e nao so no hover. Sobrou so o nome do
+  estudio aqui, sem o endereco: sem nenhuma marca, "Iuna Tattoo" leria como
+  texto comum e ninguem descobriria que leva ao mapa. O alfinete sugere lugar,
+  nao clique.
+*/
+.hero-endereco a {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 8px;
+    color: var(--text-primary);
+    font-weight: 500;
+    text-decoration: none;
+    border-bottom: 1px solid var(--border-color);
+    transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.hero-endereco a:hover {
+    color: var(--accent-gold-hover);
+    border-bottom-color: var(--accent-gold);
+}
+
+/* O alfinete alinha pela base do texto e desce 1px para o eixo do ícone
+   coincidir com o da linha, em vez de flutuar acima dela. */
+.hero-endereco svg {
+    flex-shrink: 0;
+    transform: translateY(1px);
 }
 
 .hero-actions {

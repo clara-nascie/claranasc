@@ -36,7 +36,8 @@ const LARGURAS = [1440, 1280, 1100, 993, 900, 768, 600, 390];
   cheia. E a regiao de pior caso da pagina, nao a de melhor.
 */
 const ALVOS = [
-  '.hero-tagline', '.hero-title-name', '.hero-title-role', '.hero-subtitle', '#hero-secondary-btn',
+  '.hero-tagline', '.hero-title-name', '.hero-title-role', '.hero-subtitle', '.hero-endereco a',
+  '#hero-secondary-btn',
   '#nav-link-portfolio', '#nav-link-sobre', '#nav-link-contato'
 ];
 

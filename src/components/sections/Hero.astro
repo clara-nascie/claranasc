@@ -1,4 +1,6 @@
 ---
+import { LOCATION, enderecoLinha, mapsUrl } from '../../data/siteData';
+
 /**
  * Hero tipográfico sobre fundo desenhado.
  *
@@ -37,6 +39,50 @@
       <p class="hero-subtitle fade-in-delay-2">
         A resposta para a vida, o universo e tudo mais é sempre uma tatuagem nova!
       </p>
+
+      {/*
+        Onde fica o estúdio, acima da dobra — sem precisar rolar até o rodapé
+        ou perguntar no WhatsApp.
+
+        Na tela aparece só o nome: o endereço inteiro aqui competia com o
+        subtítulo e poluía o bloco. Ele não se perde, porém — vai no
+        `aria-label`, que é o nome acessível do link. Leitor de tela lê o
+        endereço completo, e o texto continua no DOM para quem rastreia.
+
+        `<address>` de verdade, e não um `<p>`: é o elemento semântico para
+        dados de contato. O navegador o deixa em itálico por padrão, o que o
+        CSS desfaz.
+
+        O endereço sai de `enderecoLinha()` em vez de escrito aqui. O Google
+        cruza o endereço do site com o do Business Profile e o de diretórios;
+        duas grafias do mesmo lugar enfraquecem essa associação, e endereço
+        copiado à mão é como as grafias divergem.
+      */}
+      <address class="hero-endereco fade-in-delay-2">
+        <a
+          href={mapsUrl()}
+          target="_blank"
+          rel="noopener"
+          aria-label={`${LOCATION.studioName} — ${enderecoLinha()}. Abrir no Google Maps`}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0" />
+            <circle cx="12" cy="10" r="3" />
+          </svg>
+          <span>{LOCATION.studioName}</span>
+        </a>
+      </address>
       <div class="hero-actions fade-in-delay-3">
         <a href="#contato" class="btn btn-primary" id="hero-cta-btn">
           <span>Orçamento &amp; Agendamento</span>

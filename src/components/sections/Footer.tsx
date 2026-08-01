@@ -1,7 +1,7 @@
 import React from 'react';
 import { Phone } from 'lucide-react';
 import { InstagramIcon } from '../ui/InstagramIcon';
-import { whatsappUrl, SOCIAL } from '../../data/siteData';
+import { whatsappUrl, SOCIAL, LOCATION, mapsUrl } from '../../data/siteData';
 
 export const Footer: React.FC = () => {
   return (
@@ -20,6 +20,26 @@ export const Footer: React.FC = () => {
               <li><a href="#sobre">A Artista</a></li>
               <li><a href="#contato">Agendar</a></li>
             </ul>
+          </div>
+          {/*
+            Endereço por extenso. O hero mostra só o nome do estúdio, para não
+            poluir o bloco de entrada; aqui é onde ele cabe inteiro.
+
+            Não é só conveniência para quem quer conferir a rua antes de sair
+            de casa: endereço visível na página é sinal de negócio local, e o
+            Google cruza essa grafia com a do Business Profile e a de
+            diretórios. Por isso sai de `LOCATION`, e não escrito à mão — duas
+            grafias do mesmo lugar enfraquecem a associação.
+          */}
+          <div className="footer-studio">
+            <h3>Estúdio</h3>
+            <address className="footer-endereco">
+              <strong>{LOCATION.studioName}</strong>
+              <span>{LOCATION.streetAddress}</span>
+              <span>{LOCATION.neighborhood}, {LOCATION.city} — {LOCATION.region}</span>
+              <span>CEP {LOCATION.postalCode}</span>
+              <a href={mapsUrl()} target="_blank" rel="noopener">Ver no mapa</a>
+            </address>
           </div>
           <div className="footer-social">
             <h3>Redes Sociais</h3>

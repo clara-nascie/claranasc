@@ -8,10 +8,12 @@
     padding-bottom: 30px;
 }
 
+/* Quatro colunas desde que o endereco entrou. O `media.css` colapsa para duas
+   em 992px e para uma em 768px, e a marca ocupa a linha inteira nos dois. */
 .footer-grid {
     display: grid;
-    grid-template-columns: 1.5fr 1fr 1fr;
-    gap: 60px;
+    grid-template-columns: 1.5fr 1fr 1.2fr 1fr;
+    gap: 50px;
     margin-bottom: 60px;
 }
 
@@ -32,6 +34,7 @@
 }
 
 .footer-links h3,
+.footer-studio h3,
 .footer-social h3 {
     font-family: 'Syne', sans-serif;
     font-size: 1rem;
@@ -56,6 +59,42 @@
 .footer-links a:hover {
     color: var(--accent-gold);
     padding-left: 5px;
+}
+
+/*
+  `font-style: normal` desfaz o italico que o navegador aplica ao `<address>`.
+  O elemento foi escolhido por semantica, nao por aparencia.
+
+  Usa `--text-secondary` e nao `--text-muted` como o paragrafo da marca ao
+  lado: o muted e claro demais para texto pequeno sobre o creme. Endereco e
+  informacao que a pessoa precisa conseguir ler, nao decoracao.
+*/
+.footer-endereco {
+    font-style: normal;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.footer-endereco strong {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+}
+
+.footer-endereco a {
+    margin-top: 10px;
+    align-self: flex-start;
+    color: var(--accent-gold);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s ease;
+}
+
+.footer-endereco a:hover {
+    border-bottom-color: var(--accent-gold);
 }
 
 .social-icons {

@@ -43,14 +43,36 @@ export function whatsappUrl(message?: string): string {
  * sinal mais forte para o local pack do Google. Campos em `null` são omitidos do
  * JSON-LD — schema.org com string vazia é pior que campo ausente.
  *
- * TODO(clara): preencher os 4 campos abaixo com os dados reais do estúdio.
+ * Dados reais informados pela Clara em 01/08/2026.
  */
 export const LOCATION = {
-  streetAddress: null as string | null,
-  neighborhood: null as string | null,
-  postalCode: null as string | null,
-  /** Coordenadas do estúdio. Pegue no Google Maps: clique no ponto > copiar lat/long. */
-  geo: null as { latitude: number; longitude: number } | null,
+  /**
+   * Nome do estúdio onde ela atende. Aparece no hero, para a visitante saber
+   * de imediato onde fica.
+   *
+   * ⚠️ Não é o mesmo que `SITE.businessName` ("Clara Nasc Tattoo"), e isso é
+   * uma questão em aberto, não um descuido: o schema declara um TattooParlor
+   * com o nome dela no endereço de um estúdio que tem nome próprio. Ver a
+   * nota em `SOCIAL` — já são três nomes para a mesma entidade.
+   */
+  studioName: 'Iuna Tattoo',
+  streetAddress: 'Av. Brasil, 673, sala 105' as string | null,
+  neighborhood: 'Santa Efigênia' as string | null,
+  /**
+   * Confirmado na base dos Correios (ViaCEP): o trecho "até 999, lado ímpar"
+   * da Avenida Brasil em Santa Efigênia é o 30140-000, e 673 é ímpar.
+   */
+  postalCode: '30140-000' as string | null,
+  /**
+   * ⚠️ Precisão de VIA, não de prédio. O OpenStreetMap não tem o número 673
+   * cadastrado, então este ponto é do trecho da Avenida Brasil em Santa
+   * Efigênia com o CEP certo — pode estar algumas dezenas de metros fora.
+   *
+   * Para trocar pelo ponto exato: Google Maps > clicar sobre o estúdio >
+   * copiar lat/long. Vale fazer quando o Google Business Profile for criado,
+   * porque aí o ponto exato já vai existir.
+   */
+  geo: { latitude: -19.9241341, longitude: -43.9214529 } as { latitude: number; longitude: number } | null,
 
   city: 'Belo Horizonte',
   /** Sigla do estado, como o schema.org espera em addressRegion. */
@@ -60,6 +82,30 @@ export const LOCATION = {
   /** Cidades/regiões atendidas — usado em `areaServed`. */
   areaServed: ['Belo Horizonte', 'Nova Lima', 'Contagem', 'Betim', 'Região Metropolitana de Belo Horizonte']
 } as const;
+
+/**
+ * Endereço em uma linha, para exibir na tela.
+ *
+ * Existe para o endereço não ser reescrito à mão em componente nenhum: o
+ * Google cruza o endereço do site com o do perfil e o de diretórios, e duas
+ * grafias diferentes do mesmo lugar enfraquecem essa associação.
+ */
+export function enderecoLinha(): string {
+  return `${LOCATION.streetAddress} · ${LOCATION.neighborhood}, ${LOCATION.city}`;
+}
+
+/**
+ * Link para o Google Maps a partir do endereço em texto.
+ *
+ * Busca por endereço, e não por `place_id`: o estúdio ainda não tem ficha no
+ * Google ([[sem Business Profile]]), então não existe id para apontar. Quando
+ * existir, trocar por `https://www.google.com/maps/place/?q=place_id:...`
+ * passa a ser melhor — cai na ficha em vez de num resultado de busca.
+ */
+export function mapsUrl(): string {
+  const consulta = `${LOCATION.studioName}, ${LOCATION.streetAddress}, ${LOCATION.neighborhood}, ${LOCATION.city} - ${LOCATION.region}, ${LOCATION.postalCode}`;
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(consulta)}`;
+}
 
 /**
  * Perfis sociais oficiais. Viram `sameAs` no JSON-LD, que é como o Google
