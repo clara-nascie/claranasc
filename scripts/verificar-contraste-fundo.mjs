@@ -30,7 +30,30 @@
 import { chromium } from 'playwright';
 
 const LARGURAS = [1440, 1280, 1100, 993, 900, 768, 600, 390];
-const ALVOS = ['.hero-tagline', '.hero-title-name', '.hero-title-role', '.hero-subtitle', '#hero-secondary-btn'];
+/*
+  O cabecalho entra na lista porque ele flutua SOBRE o hero: os links ficam no
+  topo direito, que e onde a mascara nao apaga nada e a flor esta em forca
+  cheia. E a regiao de pior caso da pagina, nao a de melhor.
+*/
+const ALVOS = [
+  '.hero-tagline', '.hero-title-name', '.hero-title-role', '.hero-subtitle', '#hero-secondary-btn',
+  '#nav-link-portfolio', '#nav-link-sobre', '#nav-link-contato'
+];
+
+/**
+ * Falhas conhecidas e aceitas por decisao. Aparecem como AVISO e nao reprovam,
+ * pelo mesmo motivo do verificar-visual.mjs: um relatorio permanentemente
+ * vermelho deixa de ser lido, e a proxima regressao de verdade passa batida.
+ *
+ * Ao corrigir, **remova a entrada**. E de proposito que isso exija uma decisao
+ * explicita, em vez de uma flag generica de "ignorar erros".
+ */
+const FALHAS_ACEITAS = [
+  {
+    padrao: /\.hero-tagline|#nav-link-contato/,
+    motivo: 'Clara decidiu em 31/07/2026 nao mexer no --accent-gold. Dourado sobre fundo claro nao alcanca 4,5:1; e a mesma raiz do botao primario na GitHub #8.'
+  }
+];
 
 const canal = (v) => { const c = v / 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); };
 const lum = ([r, g, b]) => 0.2126 * canal(r) + 0.7152 * canal(g) + 0.0722 * canal(b);
@@ -40,6 +63,7 @@ const rgbDe = (s) => s.match(/rgba?\(([^)]+)\)/)[1].split(/[,\s/]+/).map(Number)
 const browser = await chromium.launch();
 const leitor = await browser.newPage();
 const reprovas = [];
+const avisos = new Set();
 
 for (const largura of LARGURAS) {
   const page = await browser.newPage({ viewport: { width: largura, height: 1000 } });
@@ -50,15 +74,44 @@ for (const largura of LARGURAS) {
     const el = document.querySelector(sel);
     if (!el) return null;
     const r = el.getBoundingClientRect();
+    const s = getComputedStyle(el);
+    /*
+      Encolhe a caixa antes de amostrar. Borda e canto arredondado nao sao
+      fundo, e entravam na conta como se fossem:
+        - a borda do `.btn-header-cta` e do mesmo dourado do rotulo dele, entao
+          o pixel "mais escuro do fundo" era a propria borda e o contraste dava
+          1,00:1;
+        - fora do raio do canto o fundo do botao nao pinta, e o desenho do hero
+          aparecia por ali.
+      O texto nunca chega nessa faixa -- ha padding entre ele e a borda.
+    */
+    const recuo = Math.ceil(Math.max(
+      parseFloat(s.borderTopWidth) || 0,
+      parseFloat(s.borderLeftWidth) || 0,
+      parseFloat(s.borderTopLeftRadius) || 0
+    )) + 1;
     return {
-      sel, cor: getComputedStyle(el).color,
-      grande: parseFloat(getComputedStyle(el).fontSize) >= 24,
-      caixa: { x: Math.round(r.x), y: Math.round(r.y), w: Math.round(r.width), h: Math.round(r.height) }
+      sel, cor: s.color,
+      grande: parseFloat(s.fontSize) >= 24,
+      recuo,
+      caixa: {
+        x: Math.round(r.x) + recuo,
+        y: Math.round(r.y) + recuo,
+        w: Math.round(r.width) - recuo * 2,
+        h: Math.round(r.height) - recuo * 2
+      }
     };
   }).filter(Boolean), ALVOS);
 
   await page.addStyleTag({
-    content: `.hero-content, .hero-content * {
+    /*
+      `.nav-menu a.nav-link` e mais especifico de proposito: o `.btn-header-cta`
+      declara `color: ... !important`, e um seletor de uma classe so empatava
+      com ele. O empate fazia o rotulo continuar pintado, e a medicao lia a
+      propria letra como se fosse o fundo -- dava 1,00:1.
+    */
+    content: `.hero-content, .hero-content *, .nav-menu, .nav-menu *,
+      .nav-menu a.nav-link, .nav-menu a.nav-link * {
       color: transparent !important;
       -webkit-text-fill-color: transparent !important;
     }`
@@ -97,10 +150,22 @@ for (const largura of LARGURAS) {
     const minimo = m.grande ? 3 : 4.5;
     const r1 = razao(cor, m.p1), rMin = razao(cor, m.min);
     const ok = r1 >= minimo;
-    if (!ok) reprovas.push(`${largura}px ${m.sel} ${r1.toFixed(2)}:1`);
-    console.log(`  ${ok ? 'PASSOU' : 'FALHOU'}  ${m.sel.padEnd(22)} p1 ${r1.toFixed(2)}:1  (min absoluto ${rMin.toFixed(2)}:1, exigido ${minimo})`);
+    const aceita = ok ? null : FALHAS_ACEITAS.find((f) => f.padrao.test(m.sel));
+    if (!ok && !aceita) reprovas.push(`${largura}px ${m.sel} ${r1.toFixed(2)}:1`);
+    if (!ok && aceita) avisos.add(m.sel);
+    const rotulo = ok ? 'PASSOU' : aceita ? 'AVISO ' : 'FALHOU';
+    console.log(`  ${rotulo}  ${m.sel.padEnd(22)} p1 ${r1.toFixed(2)}:1  (min absoluto ${rMin.toFixed(2)}:1, exigido ${minimo})`);
   }
 }
 
 await browser.close();
+
+if (avisos.size) {
+  console.log(`\nAVISO(S) -- falha conhecida, nao reprova:`);
+  for (const sel of avisos) {
+    console.log(`  - ${sel}: ${FALHAS_ACEITAS.find((f) => f.padrao.test(sel)).motivo}`);
+  }
+}
+
 console.log(reprovas.length ? `\n${reprovas.length} reprova(s):\n  ${reprovas.join('\n  ')}` : '\nNenhuma reprova.');
+process.exit(reprovas.length ? 1 : 0);
