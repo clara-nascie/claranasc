@@ -1,6 +1,6 @@
 # Clara Nasc | Tattoo Portfolio
 
-Este repositório contém o código-fonte do portfólio pessoal e profissional de **Clara Nasc**, tatuadora especializada em traços finos (Fine Line) e trabalhos autorais contrastantes (Blackwork / Ornamental). 
+Este repositório contém o código-fonte do portfólio pessoal e profissional de **Clara Nasc**, tatuadora em Belo Horizonte. A especialidade é **Blackwork**, e o portfólio cobre cinco nichos — Blackwork, Fine Line, Botânico, Geek & Animes e Coberturas — apresentados em pé de igualdade, porque o objetivo comercial é ampliar público, não estreitar o posicionamento.
 
 O projeto adota uma estética *Premium Light Mode* — fundo creme, tons terrosos e acentos em marrom mel — priorizando desempenho de carregamento, SEO local em Belo Horizonte e agendamento direto via WhatsApp.
 
@@ -11,20 +11,29 @@ O projeto adota uma estética *Premium Light Mode* — fundo creme, tons terroso
 ```text
 claranasc/
 ├── assets/                     # Arte original em alta resolucao (NAO e servida na web)
-│   └── site-icon.png           # Logo original; fonte do favicon
-├── public/                     # Servido literalmente na raiz do site
-│   ├── assets/                 # Imagens institucionais (hero, foto da artista)
-│   ├── portfolio/              # Fotos do portfolio
+│   ├── site-icon.png           # Logo original; fonte do favicon
+│   └── hero-crisantemo-original.svg  # Fonte do fundo do hero
+├── public/                     # Servido literalmente; NAO passa pelo pipeline de imagem
+│   ├── assets/
+│   │   ├── hero-crisantemo.svg # Fundo do hero (decorativo)
+│   │   └── og-clara-nasc.jpg   # Imagem de compartilhamento (1200x630)
 │   ├── favicon.png
 │   └── robots.txt
-├── scripts/
-│   └── verificar-visual.mjs    # Verificacao visual e de a11y via Playwright
+├── scripts/                    # Verificacao via Playwright (ver secao abaixo)
+│   ├── verificar-visual.mjs
+│   ├── verificar-galeria.mjs
+│   └── verificar-contraste-fundo.mjs
 ├── src/
+│   ├── assets/                 # Imagens que ENTRAM pelo astro:assets
+│   │   ├── portfolio/          # Fotos do portfolio
+│   │   └── about-artist.webp   # Foto da artista
 │   ├── components/
 │   │   ├── layout/             # AppLayout
 │   │   ├── seo/                # Seo.astro e LocalBusinessSchema.astro (JSON-LD)
-│   │   ├── sections/           # Header, Hero, Portfolio, About, ContactForm, Footer
+│   │   ├── sections/           # Header.tsx, ContactForm.tsx, Footer.tsx
+│   │   │                       # Hero.astro, Portfolio.astro, About.astro
 │   │   ├── ui/                 # Primitivos: Button, Input, Select, Textarea
+│   │   │                       # Marca: InstagramIcon, TiktokIcon
 │   │   ├── FloatingCta.astro   # Botao flutuante de agendamento
 │   │   └── Lightbox.tsx        # Galeria ampliada
 │   ├── data/
@@ -38,8 +47,11 @@ claranasc/
 └── wrangler.jsonc              # Deploy na Cloudflare
 ```
 
-> `assets/` e `public/` têm papéis distintos e não devem ser confundidos: só o
-> conteúdo de `public/` é enviado ao visitante. Ver `assets/README.md`.
+> **`assets/`, `public/` e `src/assets/` têm papéis distintos.** `assets/` na raiz
+> guarda arte original e não é servida. `public/` é servido byte a byte e **não
+> passa pelo pipeline de imagem** — só entra ali o que precisa de URL fixa e
+> previsível. **Foto do site vai em `src/assets/`**, para o `astro:assets` gerar
+> as variantes responsivas. Ver `assets/README.md`.
 
 ---
 
@@ -82,19 +94,35 @@ O projeto utiliza Node.js e Astro para gerenciamento de dependências e servidor
 
 ## 🔍 Verificação Visual e de Acessibilidade
 
-O projeto inclui um script que sobe um Chromium headless (Playwright), navega
-pelo site como uma visitante e checa o que análise de código não alcança:
-comportamento dependente de scroll, erros de JavaScript no console e razão de
-contraste calculada a partir das cores efetivamente renderizadas.
+O projeto inclui três scripts que sobem um Chromium headless (Playwright),
+navegam pelo site como uma visitante e checam o que análise de código não
+alcança.
 
 ```bash
-npm run dev          # em um terminal
-npm run verificar    # em outro
+npm run dev                  # em um terminal
+npm run verificar            # em outro
+npm run verificar:galeria
+npm run verificar:contraste
 ```
 
+| Script | Cobre |
+| --- | --- |
+| `verificar` | comportamento por scroll, erros de console, requisições falhas, contraste computado e se a foto da artista tem tamanho de verdade |
+| `verificar:galeria` | filtro por categoria, lightbox e se a grade fica visível |
+| `verificar:contraste` | contraste pixel a pixel contra o fundo **renderizado**, em 8 larguras |
+
 Sai um relatório de PASSOU/FALHOU no terminal e capturas em `.playwright/`
-(desktop 1280px e mobile 390px). O script encerra com código de saída 1 quando
-alguma verificação falha, então serve em CI.
+(desktop 1280px e mobile 390px). Os scripts encerram com código de saída 1
+quando alguma verificação falha, então servem em CI — o workflow roda os dois
+primeiros.
+
+> O que os três têm em comum: **existir no DOM não é aparecer**. Cada um nasceu
+> de um bug que sobreviveu em produção porque nada olhava aquilo — a galeria
+> invisível no celular, a foto da artista colapsada em 2x3 pixels, e o texto do
+> hero em 2,10:1 sobre a imagem de fundo que o verificador antigo não enxergava.
+>
+> Ao adicionar checagem nova, **valide-a contra o bug**: injete o defeito e
+> confirme que ela reprova. Checagem que nunca falhou não prova nada.
 
 ---
 

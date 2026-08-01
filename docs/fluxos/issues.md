@@ -34,7 +34,14 @@ histórico fica visível para quem olha o repositório.
 
 ## Prioridade sugerida
 
-1. **[#14](https://github.com/clara-nascie/claranasc/issues/14)** — dados do estúdio. Destrava a presença no Google Maps, que é o maior canal de busca local.
-2. **[#8](https://github.com/clara-nascie/claranasc/issues/8)** — contraste. É a falha mais visível para uma cliente: um dos dois botões do hero está ilegível.
-3. **[#5](https://github.com/clara-nascie/claranasc/issues/5)** / **[#6](https://github.com/clara-nascie/claranasc/issues/6)** — imagens. Bloqueiam as páginas por nicho.
-4. **[#11](https://github.com/clara-nascie/claranasc/issues/11)** — páginas por nicho. Maior teto de ranqueamento restante.
+> A lista de prioridades vive em [`docs/fases/tarefas.md`](../fases/tarefas.md),
+> junto do histórico das fases. Mantida em um lugar só para não divergir — que é
+> exatamente o problema que aposentou este arquivo.
+
+Em 01/08/2026, o resumo: o maior gargalo é o **Google Business Profile**, que
+não é issue do repositório. Depois dele, a [#11](https://github.com/clara-nascie/claranasc/issues/11)
+(páginas por nicho).
+
+A **[#14](https://github.com/clara-nascie/claranasc/issues/14)** foi concluída, e
+a **[#8](https://github.com/clara-nascie/claranasc/issues/8)** saiu da lista: o
+que resta dela é o `--accent-gold`, e a Clara decidiu não mexer na cor da marca.

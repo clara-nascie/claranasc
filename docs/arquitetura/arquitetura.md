@@ -9,13 +9,15 @@ interatividade — as "ilhas".
 ```
 src/
 ├── assets/
-│   └── portfolio/   Fotos do portfolio (entram pelo pipeline de imagem)
+│   ├── portfolio/   Fotos do portfolio (entram pelo pipeline de imagem)
+│   └── about-artist.webp
 ├── components/
 │   ├── layout/      AppLayout (wrapper estatico)
 │   ├── seo/         Seo.astro + LocalBusinessSchema.astro
-│   ├── sections/    Header.tsx, About.tsx, ContactForm.tsx, Footer.tsx
-│   │                Hero.astro, Portfolio.astro
-│   ├── ui/          Primitivos: Button, Input, Select, Textarea, InstagramIcon
+│   ├── sections/    Header.tsx, ContactForm.tsx, Footer.tsx
+│   │                Hero.astro, Portfolio.astro, About.astro
+│   ├── ui/          Primitivos: Button, Input, Select, Textarea
+│   │                Marca: InstagramIcon, TiktokIcon
 │   ├── FloatingCta.astro
 │   └── Lightbox.tsx
 ├── data/            siteData.ts (negocio) e portfolioData.ts (galeria)
@@ -43,11 +45,16 @@ Três componentes hidratam hoje, todos com `client:load`:
 O resto — `Hero`, `Portfolio`, `About`, `Footer`, `AppLayout`, `FloatingCta` —
 é HTML estático, sem JavaScript de componente.
 
-`Hero` e `Portfolio` são `.astro`, não React. Dois motivos: o `<Image>` do
-`astro:assets` só existe em componente Astro, e o filtro da galeria é mostrar e
-esconder elemento — `classList.toggle`, não estado de framework. O componente
+`Hero`, `Portfolio` e `About` são `.astro`, não React. Dois motivos: o `<Image>`
+do `astro:assets` só existe em componente Astro, e o filtro da galeria é mostrar
+e esconder elemento — `classList.toggle`, não estado de framework. O componente
 tem um `<script>` próprio para isso e dispara o mesmo `CustomEvent` que o
 Lightbox já escutava.
+
+> Converter React para `.astro` é seguro quando o componente **não tem `client:`
+> em `index.astro`** — nesse caso ele já era renderizado estático e nada de
+> interatividade se perde. Foi o critério nas três conversões. Componente Astro
+> continua podendo usar ícone do `lucide-react`: ele renderiza no build.
 
 > Há espaço para melhorar: `Header` poderia ser CSS + script mínimo, e
 > `ContactForm`/`Lightbox` poderiam ser `client:visible` em vez de `client:load`.
@@ -94,6 +101,27 @@ da visitante.
 
 Efeito medido na home: 4.296 KB antes, 70 KB no celular e 294 KB em desktop 2x.
 
+### ⚠️ Foto de conteúdo é `<img>`, nunca `background-image`
+
+**Imagem de fundo não tem tamanho intrínseco.** Se o contêiner perder a largura
+própria, a foto some sem erro nenhum.
+
+Foi o que aconteceu com a foto da artista, invisível em produção em **toda tela
+até 992px** ([#18](https://github.com/clara-nascie/claranasc/issues/18)): abaixo
+de 992px o `.about-grid` vira coluna única e o item ganha `margin: 0 auto` —
+**margem automática em item de grid cancela o `stretch` padrão**, e o item passa
+a se ajustar ao conteúdo. O conteúdo era uma `<div>` vazia, então sobraram 2px
+de borda.
+
+A exceção legítima é decoração pura: o crisântemo do hero (`.hero-flor`) é
+`background-image` com `aria-hidden`, `width` e `aspect-ratio` explícitos. A
+regra vale para foto que carrega informação.
+
+> ⚠️ Ao importar imagem de `src/assets/` para dentro do JSON-LD, **confira o
+> resultado em `dist/`, não no dev server**. No dev o `.src` resolve para
+> `/@fs/C:/Users/...` — um caminho da máquina local. No build resolve certo,
+> para `/_astro/nome.<hash>.webp`.
+
 ## Scripts no cliente
 
 * `index.astro` tem um único `<script>` (módulo, portanto deferido) com um `IntersectionObserver` que adiciona `.active` para as animações de entrada, e dá `unobserve` após revelar cada elemento.
@@ -114,6 +142,20 @@ Efeito medido na home: 4.296 KB antes, 70 KB no celular e 294 KB em desktop 2x.
 * `Seo.astro` centraliza title, description, canonical, Open Graph e Twitter Card. Páginas novas devem reusá-lo.
 * `LocalBusinessSchema.astro` emite JSON-LD com `TattooParlor` + `Person` + `WebSite`, ligados por `@id`. Campos sem dado real são **omitidos**, nunca vazios — campo ausente é lido como "não informado", campo errado como informação falsa.
 * URLs absolutas dependem de `site` estar definido em `astro.config.mjs`.
+* Desde 01/08/2026 **nenhum campo está vazio**: endereço, CEP, coordenadas, horários, telefone, imagem e `sameAs` (Instagram e TikTok) têm dado real. Tudo sai de `siteData.ts`.
+* A imagem de compartilhamento é `public/assets/og-clara-nasc.jpg`, recorte 1200x630 de uma foto real. É **JPEG e não WebP** de propósito: alguns raspadores de link ainda tropeçam em WebP, e essa é a imagem que precisa abrir em qualquer lugar. Receita em `assets/README.md`.
+* O `image` do negócio lê `OG_IMAGE.path` em vez de repetir o caminho. Foi a duplicação que deixou um placeholder gerado por IA sobreviver ali: ele sumiu da tela e ninguém lembrou que havia uma segunda referência mandando-o para o Google.
+
+### ⚠️ O que o site **não** resolve sozinho
+
+O JSON-LD confirma e conecta a entidade, mas **não coloca o estúdio no mapa**. O
+bloco de três resultados com mapa é alimentado pelo **Google Business Profile**,
+que ainda não existe. Refinar o schema não substitui criar a ficha.
+
+Antes de criar, há um nome a decidir: hoje são três — `Clara Nasc Tattoo`
+(`SITE.businessName`), `Iuna Tattoo` (o estúdio) e `Clara Nascimento TATTOO`
+(o Instagram). O Google usa consistência de nome para concluir que registros
+são a mesma entidade.
 
 ## Hospedagem e deploy
 
@@ -123,19 +165,33 @@ Efeito medido na home: 4.296 KB antes, 70 KB no celular e 294 KB em desktop 2x.
 
 ## Verificação
 
-Dois scripts, ambos com Chromium headless (Playwright) e ambos no CI a cada push:
+Três scripts, todos com Chromium headless (Playwright):
 
 | Comando | Cobre |
 | --- | --- |
-| `npm run verificar` | botão flutuante por scroll, erros de console, requisições falhas e contraste computado a partir das cores renderizadas |
+| `npm run verificar` | botão flutuante por scroll, erros de console, requisições falhas, contraste computado a partir das cores renderizadas e **se a foto da artista tem tamanho de verdade** |
 | `npm run verificar:galeria` | filtro por categoria, abertura e fechamento do lightbox, e se a grade **fica de fato visível** |
+| `npm run verificar:contraste` | contraste de cada texto do hero e do cabeçalho contra o fundo **renderizado**, pixel a pixel, em 8 larguras |
 
-A checagem de opacidade da galeria parece redundante e não é. Contar itens no
-DOM não prova que a visitante os vê: `.reveal` começa em `opacity: 0` e depende
-do `IntersectionObserver`. Já houve um caso com os 30 itens presentes,
-corretamente filtrados, e a galeria invisível no celular sem nenhuma outra
-verificação reclamar.
+O tema comum aos três: **existir no DOM não é aparecer.** Cada um nasceu de um
+bug que sobreviveu em produção porque nada olhava aquilo.
 
-Falhas conhecidas e já rastreadas estão declaradas em `FALHAS_ACEITAS`, dentro do
-`verificar-visual.mjs`: aparecem como aviso e não reprovam. Ao corrigir uma,
-remova a entrada.
+* A galeria teve os 30 itens presentes e corretamente filtrados, e invisível no
+  celular — `.reveal` começa em `opacity: 0`.
+* A foto da artista ficou colapsada em 2x3 pixels em toda tela até 992px.
+* O `verificar-visual.mjs` mede contraste procurando `background-color` nos
+  ancestrais, e por isso é **cego para imagem de fundo**: aprovou 12/14 enquanto
+  o subtítulo do hero media 2,10:1 sobre o crisântemo. Daí o terceiro script,
+  que pinta o texto de transparente, captura só o fundo e lê o pixel mais
+  escuro sob cada trecho.
+
+> Ao adicionar checagem nova, **valide-a contra o bug**: injete o defeito e
+> confirme que ela reprova. Checagem que nunca falhou não prova nada.
+
+Falhas conhecidas e já rastreadas estão declaradas em `FALHAS_ACEITAS`, presente
+nos dois scripts de contraste: aparecem como aviso e não reprovam. Ao corrigir
+uma, remova a entrada. Hoje são as três do `--accent-gold`, que a Clara decidiu
+não alterar por ser cor de marca.
+
+⚠️ O CI (`.github/workflows/verificar.yml`) roda apenas `verificar` e
+`verificar:galeria`. O `verificar:contraste` é manual por enquanto.
