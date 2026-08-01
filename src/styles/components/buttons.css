@@ -37,14 +37,24 @@
     transform: translateX(4px);
 }
 
+/*
+  Fundo solido, nao `transparent`. O botao vive sobre o crisantemo do hero, e
+  transparente ele deixava o traco atravessar o proprio rotulo. Solido, ele
+  recorta o desenho e o texto passa a ter um fundo previsivel -- o que tambem
+  libera a flor para escurecer sem que este botao seja o fator limitante.
+
+  `--bg-secondary` e a cor do fim do degrade do hero, que e onde os botoes
+  ficam. Por isso o retangulo nao aparece como caixa: ele coincide com o fundo
+  atras dele.
+*/
 .btn-secondary {
-    background-color: transparent;
+    background-color: var(--bg-secondary);
     color: var(--text-primary);
     border: 1px solid var(--border-color);
 }
 
 .btn-secondary:hover {
-    background-color: rgba(255, 255, 255, 0.03);
+    background-color: var(--bg-tertiary);
     border-color: var(--accent-gold);
     transform: translateY(-2px);
 }

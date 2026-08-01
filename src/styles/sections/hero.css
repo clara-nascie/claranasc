@@ -1,5 +1,5 @@
 /* ==========================================================================
-   HERO SECTION — layout dividido: tipografia + vitrine de trabalhos
+   HERO SECTION — tipografia sobre fundo desenhado
    ========================================================================== */
 
 /*
@@ -17,27 +17,145 @@
     position: relative;
     display: flex;
     align-items: center;
-    background-color: var(--bg-primary);
+    /* Degrade em vez de cor chapada: o --bg-primary sozinho lia como branco.
+       Comeca no --bg-hero-top e termina no --bg-secondary, a cor da galeria,
+       para as duas secoes se encontrarem sem linha de emenda.
+
+       O background-color fica embaixo mesmo sendo 100% coberto pelo degrade:
+       e o fallback se o gradiente nao renderizar, e e o que o
+       verificar-visual.mjs le ao medir contraste (ele procura o primeiro
+       ancestral com background-color opaco). Sem ele, a medicao cairia no
+       body e usaria um creme mais claro que o real. Usa o tom mais escuro do
+       degrade de proposito: mede o pior caso para o texto escuro. */
+    background-color: var(--bg-hero-top);
+    background-image: linear-gradient(to bottom, var(--bg-hero-top) 0%, var(--bg-secondary) 100%);
     padding-top: var(--header-height);
     overflow: hidden;
+}
+
+/* --- Camadas de fundo ------------------------------------------------------
+
+   Tres camadas, de baixo para cima:
+     .hero-flor              z-index 0  — o crisantemo
+     .hero-section::after    z-index 1  — o grao
+     .hero-content           z-index 2  — o texto
+
+   O grao vem por cima da flor de proposito: assim as duas leem como uma
+   superficie so, em vez de um desenho colado sobre um fundo texturizado.
+   ---------------------------------------------------------------------- */
+
+/*
+  Crisantemo em line art, imagem de fundo de um elemento vazio e `aria-hidden`.
+
+  O arquivo teve o viewBox apertado ate a bbox real do desenho (ver
+  public/assets/hero-crisantemo.svg). Isso importa: no original, 31,8% da
+  altura era margem vazia embaixo e 18,5% em cima, entao qualquer
+  posicionamento aqui centralizaria a caixa e nao a flor. Com o viewBox
+  apertado, `right`/`top` valem para o desenho de verdade.
+
+  Ele mora dentro de `.hero-grid`, mas `.hero-grid` NAO e `position: relative`
+  de proposito: assim o `absolute` aqui resolve contra `.hero-section` e a flor
+  sangra para fora do container, contra a borda da tela. Se alguem posicionar
+  o `.hero-grid`, a flor encolhe para dentro dele sem aviso.
+*/
+.hero-flor {
+    position: absolute;
+    z-index: 0;
+    top: 50%;
+    right: -4%;
+    transform: translateY(-50%);
+    width: min(72vw, 1000px);
+    /* Proporcao da bbox do desenho: nao deformar o traco. */
+    aspect-ratio: 1089 / 1137;
+    background-image: url('/assets/hero-crisantemo.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.85;
+    pointer-events: none;
+
+    /*
+      A flor e larga o bastante para passar por tras do texto -- e e para
+      passar mesmo, foi pedido. Mas o subtitulo usa `--text-secondary`, que
+      sobre o creme tem folga para escurecer o fundo em no maximo ~7% de tinta
+      antes de furar os 4,5:1 da WCAG AA. A flor esta a 55%: um traco cheio
+      atras do subtitulo mediria perto de 2:1.
+
+      Dai a mascara. Ela nao move nem encolhe a flor: reduz o desenho a um
+      fantasma na faixa da esquerda, onde o texto esta, e o devolve inteiro a
+      direita. E o que permite ter as duas coisas -- sobreposicao e contraste.
+
+      Sao muitos pontos de parada de proposito. Com apenas tres, a mascara ia
+      do piso a 100% em 26% da largura e a rampa aparecia como uma linha
+      divisoria no meio do desenho. Os pontos intermediarios espalham a
+      transicao por quase toda a flor e desenham uma curva no lugar de uma
+      reta -- a aceleracao e gradual, entao nao ha nenhum ponto onde o olho
+      encontre uma borda. Ao mudar o piso, reescalone os sete valores em vez de
+      so levantar o primeiro, senao a curva perde o formato e o cotovelo volta.
+
+      Uma versao anterior zerava a mascara a esquerda (`transparent 8%`). Ficou
+      conservadora demais: a flor so comecava a aparecer bem depois do fim do
+      texto e a sobreposicao pedida nao acontecia.
+
+      CONTRASTE -- o que chega ao texto e `opacity x piso da mascara`. Hoje
+      0.85 x 0.13 da ~11% de tinta efetiva sob o texto. Isso e MAIS do que o
+      `--text-secondary` original suportava: foi preciso escurecer o token para
+      32% para o subtitulo voltar a passar. Os dois andam juntos -- clarear o
+      token de novo sem baixar isto aqui reprova o hero.
+
+      Verifique com `node scripts/verificar-contraste-fundo.mjs` (o
+      verificar-visual.mjs NAO enxerga esta flor: ele mede contraste procurando
+      `background-color` nos ancestrais, e aqui o fundo e `background-image`
+      num elemento a parte).
+    */
+    -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0.13) 0%, rgba(0, 0, 0, 0.15) 20%, rgba(0, 0, 0, 0.22) 36%, rgba(0, 0, 0, 0.36) 50%, rgba(0, 0, 0, 0.58) 64%, rgba(0, 0, 0, 0.81) 80%, #000 94%);
+    mask-image: linear-gradient(to right, rgba(0, 0, 0, 0.13) 0%, rgba(0, 0, 0, 0.15) 20%, rgba(0, 0, 0, 0.22) 36%, rgba(0, 0, 0, 0.36) 50%, rgba(0, 0, 0, 0.58) 64%, rgba(0, 0, 0, 0.81) 80%, #000 94%);
+}
+
+/*
+  Textura de grao. E um SVG de ruido embutido como data URI, nao um arquivo:
+  sao ~350 bytes dentro do proprio CSS, entao nao custa nenhuma requisicao a
+  mais nem entra na disputa pelo LCP. `fractalNoise` gera o grao e o
+  `feColorMatrix saturate=0` o deixa cinza, para o ruido nao puxar cor e sujar
+  o creme.
+
+  A opacidade foi medida, nao chutada: 0.05 e 0.10 sao imperceptiveis mesmo
+  ampliando 3x, e 0.24 ja puxa o creme para um cinza sujo. 0.16 e o ponto em
+  que se le como papel. Se mexer, compare capturas ampliadas -- em tamanho
+  real qualquer valor entre 0.05 e 0.24 parece igual.
+*/
+.hero-section::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.16;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
 }
 
 .hero-grid {
     width: 90%;
     max-width: var(--container-max-width);
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    gap: 60px;
 }
 
 /* --- Coluna de texto ------------------------------------------------------ */
 
+/*
+  Largura limitada mesmo sem a segunda coluna: sem as fotos, nada mais segura o
+  texto, e uma linha de 1200px seria ilegivel.
+
+  O `52%` nao e estetico, e de contraste: garante que o texto nunca alcance a
+  flor. So o `620px` nao bastava -- entre 992px e 1200px de viewport a caixa
+  fixa era larga demais para o container e o subtitulo entrava por cima do
+  traco. Ver a nota de largura em `.hero-section::before`.
+*/
 .hero-content {
     position: relative;
     z-index: 2;
     text-align: left;
+    max-width: min(620px, 52%);
 }
 
 .hero-tagline {
@@ -92,79 +210,20 @@
     flex-wrap: wrap;
 }
 
-/* --- Vitrine de trabalhos ------------------------------------------------- */
-
-/*
-  Grade de 2 colunas: a imagem principal ocupa a coluna esquerda inteira, e as
-  duas secundárias empilham à direita. Assim a principal fica grande o bastante
-  para avaliar traço, e as outras duas comunicam leque de estilos sem virar
-  miniatura ilegível.
-*/
-.hero-showcase {
-    display: grid;
-    grid-template-columns: 1.35fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    gap: 14px;
-    height: min(66vh, 560px);
-}
-
-.hero-showcase-item {
-    position: relative;
-    margin: 0;
-    overflow: hidden;
-    border-radius: 6px;
-    background-color: var(--bg-secondary);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-}
-
-.hero-showcase-item--principal {
-    grid-row: span 2;
-}
-
-.hero-showcase-item img {
-    width: 100%;
-    height: 100%;
-    /* Sem filtro nem overlay: as fotos autorais mantêm as cores originais. */
-    object-fit: cover;
-    display: block;
-}
-
-.hero-showcase-label {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    padding: 5px 12px;
-    border-radius: 40px;
-    font-family: 'Syne', sans-serif;
-    font-size: 0.65rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--text-primary);
-    /* Pastilha clara garante contraste do rótulo qualquer que seja a foto. */
-    background-color: rgba(255, 253, 248, 0.92);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-}
-
 /* --- Responsivo ---------------------------------------------------------- */
 
 @media (max-width: 992px) {
-    /* Empilha: texto primeiro, vitrine abaixo. `auto` na altura evita que o
-       hero estique demais no celular. */
+    /* `auto` na altura evita que o hero estique demais no celular. */
     .hero-section {
         height: auto;
         min-height: 0;
-        padding-top: calc(var(--header-height) + 40px);
-        padding-bottom: 50px;
-    }
-
-    .hero-grid {
-        grid-template-columns: 1fr;
-        gap: 40px;
+        padding-top: calc(var(--header-height) + 50px);
+        padding-bottom: 40px;
     }
 
     .hero-content {
         text-align: center;
+        max-width: none;
     }
 
     .hero-subtitle {
@@ -176,28 +235,36 @@
         justify-content: center;
     }
 
-    .hero-showcase {
-        height: 52vh;
-        max-height: 420px;
-    }
-}
+    /*
+      Empilhado nao ha "ao lado", entao a flor sai do posicionamento absoluto e
+      entra no FLUXO, depois do texto. E o que torna a sobreposicao impossivel
+      por construcao: nenhuma altura de hero, nenhum numero de linhas do
+      subtitulo e nenhuma largura de tela conseguem faze-la subir.
 
-@media (max-width: 480px) {
-    /* Em tela estreita, três imagens ficariam pequenas demais para avaliar
-       traço. Mostra só a principal e esconde as secundárias — a galeria logo
-       abaixo já cobre a variedade. */
-    .hero-showcase {
-        grid-template-columns: 1fr;
-        grid-template-rows: 1fr;
-        height: 44vh;
-        max-height: 340px;
-    }
+      A tentativa anterior era manter absoluto e empurrar para o rodape com um
+      deslocamento fixo. Media 2,10:1 de contraste entre 600px e 992px --
+      naquelas larguras o texto ocupa menos linhas, o hero encolhe e a flor
+      alcancava o subtitulo. Nao havia deslocamento que servisse para todas as
+      larguras.
 
-    .hero-showcase-item--secundaria {
-        display: none;
-    }
+      A opacidade nao e sobrescrita aqui: herda os 0.85 do desktop. Como no
+      empilhado nao ha texto sobre a flor nem mascara, 0.85 e a forca cheia do
+      desenho -- que e o mesmo que o desktop mostra no lado direito, onde
+      tambem nao ha texto. Os dois passam a ler igual.
 
-    .hero-showcase-item--principal {
-        grid-row: span 1;
+      A margem negativa deixa o `overflow: hidden` do hero cortar a base da
+      flor, para ela florescer para dentro da galeria em vez de terminar numa
+      borda reta.
+    */
+    .hero-flor {
+        position: static;
+        width: min(80vw, 420px);
+        margin: 44px auto -90px;
+        transform: none;
+        /* Sem mascara aqui: ela existe para desbotar a flor sob o texto, e no
+           empilhado a flor nao fica sob texto nenhum. Mantida, so deixaria um
+           lado apagado sem motivo. */
+        -webkit-mask-image: none;
+        mask-image: none;
     }
 }

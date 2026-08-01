@@ -1,28 +1,24 @@
 ---
-import { Image } from 'astro:assets';
-import { heroShowcase } from '../../data/portfolioData';
-
 /**
- * O hero virou Astro pelo mesmo motivo da galeria: `<Image>` só existe aqui.
+ * Hero tipográfico sobre fundo desenhado.
  *
- * Aqui pesa ainda mais que na galeria — a primeira imagem da vitrine é o
- * elemento LCP da página, a métrica que o Google usa para julgar velocidade.
- * Antes ela era servida como arquivo único de ~800 KB para qualquer tela.
+ * A vitrine de 3 fotos foi removida em 31/07/2026 (GitHub #19). Ela existia
+ * para anunciar leque de estilos, mas na prática mostrava duas categorias
+ * repetidas no desktop e uma só no celular — e as miniaturas ficavam pequenas
+ * demais para avaliar traço, que é o que a visitante veio ver. As fotos agora
+ * vivem só na galeria, onde têm espaço.
  *
- * O componente não tinha `client:` nenhum, ou seja, já era renderizado
- * estático. A conversão não tira interatividade de nada.
+ * O crisântemo em line art entrou no lugar, como fundo em CSS
+ * (`.hero-section::before`). É decorativo puro: não é `<img>` de propósito,
+ * porque não carrega informação e não deve aparecer para leitor de tela nem
+ * competir por atenção com o H1.
+ *
+ * Efeito colateral bom: sem imagem no hero, o elemento LCP passa a ser o texto
+ * do H1, que renderiza junto com o HTML. Ajuda a GitHub #12.
+ *
+ * Sem `<Image>` e sem `client:`, este componente não precisaria mais ser
+ * `.astro` — mas continua sendo porque é o padrão das seções do site.
  */
-
-/**
- * A vitrine é uma grade de `1.35fr 1fr` dentro de metade de um container de
- * 1200px: a principal fica com ~340px de largura e as secundárias com ~250px.
- * O maior valor de cada lista cobre densidade 2x.
- */
-const LARGURAS_PRINCIPAL = [340, 500, 680];
-const TAMANHOS_PRINCIPAL = '(max-width: 992px) 50vw, 340px';
-
-const LARGURAS_SECUNDARIA = [250, 380, 500];
-const TAMANHOS_SECUNDARIA = '(max-width: 992px) 35vw, 250px';
 ---
 
 <section class="hero-section" id="home">
@@ -67,30 +63,20 @@ const TAMANHOS_SECUNDARIA = '(max-width: 992px) 35vw, 250px';
     </div>
 
     {/*
-      Vitrine sem overlay escurecedor: a primeira imagem é grande o suficiente
-      para o traço ser avaliado de perto, e as duas menores comunicam leque de
-      estilos sem virar miniatura ilegível.
+      O crisântemo. É elemento de verdade, e não um pseudo-elemento, por um
+      motivo de acessibilidade e não de estilo: no layout empilhado ele precisa
+      entrar no FLUXO, abaixo do texto.
 
-      A primeira é o LCP, por isso `loading="eager"` e `fetchpriority="high"` —
-      o oposto do resto do site, que é lazy.
+      Posicionado (absoluto ou fixo em relação ao rodapé do hero) ele sempre
+      alcançava o subtítulo em alguma largura — a altura do hero empilhado
+      depende de quantas linhas o texto ocupa, então não existe deslocamento
+      que sirva para todas. Medido: 2,10:1 de contraste entre 600px e 992px,
+      contra os 4,5:1 da WCAG AA. No fluxo, a sobreposição fica impossível por
+      construção, sem número mágico.
+
+      `aria-hidden` porque é decoração: não carrega informação nenhuma que já
+      não esteja no texto ao lado.
     */}
-    <div class="hero-showcase">
-      {heroShowcase.map((item, indice) => (
-        <figure class={`hero-showcase-item hero-showcase-item--${indice === 0 ? 'principal' : 'secundaria'}`}>
-          <Image
-            src={item.image}
-            alt={item.alt}
-            widths={indice === 0 ? LARGURAS_PRINCIPAL : LARGURAS_SECUNDARIA}
-            sizes={indice === 0 ? TAMANHOS_PRINCIPAL : TAMANHOS_SECUNDARIA}
-            format="webp"
-            quality={indice === 0 ? 78 : 72}
-            loading={indice === 0 ? 'eager' : 'lazy'}
-            fetchpriority={indice === 0 ? 'high' : 'auto'}
-            decoding={indice === 0 ? 'sync' : 'async'}
-          />
-          <figcaption class="hero-showcase-label">{item.categoryLabel}</figcaption>
-        </figure>
-      ))}
-    </div>
+    <div class="hero-flor" aria-hidden="true"></div>
   </div>
 </section>
