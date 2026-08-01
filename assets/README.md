@@ -57,3 +57,26 @@ negativa e devolve coordenadas internas, não as do `viewBox`).
 ⚠️ São 165 KB (55 KB comprimido), pesado para um elemento decorativo. Passar
 por um otimizador de SVG (SVGO) cortaria bastante, reduzindo a precisão dos
 830 `path`. Não foi feito para não adicionar dependência ao projeto.
+
+## Como `public/assets/og-clara-nasc.jpg` foi gerado
+
+É a imagem que o Google e o WhatsApp mostram como sendo o negócio — o cartão
+de visita do site em todo lugar onde ele aparece sem ser navegado.
+
+Recorte de `src/assets/portfolio/cobertura-floral-peito.webp` (901x1600) para
+**1200x630**, o formato que o Open Graph pede. Feito renderizando a foto num
+viewport de 1200x630 com `object-fit: cover` e `object-position: 50% 30%`, e
+capturando com o Playwright.
+
+O `50% 30%` não é centro: centralizado, o corte pegava só uma faixa do meio do
+peito e a foto deixava de se ler como pele. Subindo o enquadramento, entram a
+clavícula, o pescoço e o ombro, que dão o contexto de que aquilo é uma
+tatuagem num corpo.
+
+⚠️ **JPEG, não WebP** como o resto do site. Alguns raspadores de link ainda
+tropeçam em WebP, e esta é justamente a imagem que precisa abrir em qualquer
+lugar. O Playwright também só exporta png/jpeg.
+
+Ao trocar a foto, atualize `width`/`height` em `OG_IMAGE` (`src/data/siteData.ts`)
+se as dimensões mudarem. O schema.org lê o mesmo caminho, então acompanha
+sozinho.

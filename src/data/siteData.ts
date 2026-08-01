@@ -86,11 +86,24 @@ export const OPENING_HOURS = null as
   | { days: string[]; opens: string; closes: string }[]
   | null;
 
-/** Imagem padrão de compartilhamento (Open Graph / Twitter Card). */
+/**
+ * Imagem padrão de compartilhamento (Open Graph / Twitter Card).
+ *
+ * É o que o Google e o WhatsApp mostram como sendo o negócio. Até 31/07/2026
+ * era o `hero-bg.webp`, uma tatuagem gerada por IA que não é trabalho da
+ * Clara — invisível navegando o site, mas o cartão de visita dele em toda
+ * busca e todo link compartilhado.
+ *
+ * Agora é um recorte de `cobertura-floral-peito`, trabalho real dela.
+ *
+ * JPEG, e não WebP como o resto do site: alguns raspadores de link ainda
+ * tropeçam em WebP, e esta é justamente a imagem que precisa abrir em
+ * qualquer lugar. Receita do recorte em assets/README.md.
+ */
 export const OG_IMAGE = {
-  path: '/assets/hero-bg.webp',
-  /** Dimensões reais do arquivo — o ideal para OG é 1200x630. */
-  width: 1024,
-  height: 1024,
-  alt: 'Tatuagem autoral em traço fino por Clara Nasc, tatuadora em Belo Horizonte'
+  path: '/assets/og-clara-nasc.jpg',
+  /** Dimensões reais do arquivo. 1200x630 é o formato que o OG pede. */
+  width: 1200,
+  height: 630,
+  alt: 'Cobertura floral em traço fino no peito, feita por Clara Nasc, tatuadora em Belo Horizonte'
 } as const;

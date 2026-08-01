@@ -9,7 +9,7 @@
  * Campos sem dado real são omitidos do JSON, nunca emitidos vazios: string vazia
  * ou coordenada zerada é lida como informação incorreta, não como ausência.
  */
-import { SITE, CONTACT, LOCATION, SOCIAL, OPENING_HOURS } from '../../data/siteData';
+import { SITE, CONTACT, LOCATION, SOCIAL, OPENING_HOURS, OG_IMAGE } from '../../data/siteData';
 import { PORTFOLIO_CATEGORIES } from '../../data/portfolioData';
 
 const businessId = `${SITE.url}/#business`;
@@ -36,7 +36,13 @@ const business: Record<string, unknown> = {
   '@id': businessId,
   name: SITE.businessName,
   url: SITE.url,
-  image: new URL('/assets/hero-bg.webp', SITE.url).href,
+  /* Mesma imagem do Open Graph, de propósito: é a foto que representa o
+     negócio nos dois lugares onde ele aparece sem ser navegado — o resultado
+     do Google e o cartão de link. Manter as duas apontando para o mesmo
+     arquivo evita que uma seja trocada e a outra fique para trás, que foi
+     exatamente como o `hero-bg.webp` gerado por IA sobreviveu aqui depois de
+     sumir da tela. */
+  image: new URL(OG_IMAGE.path, SITE.url).href,
   telephone: CONTACT.telephone,
   ...(CONTACT.email ? { email: CONTACT.email } : {}),
   priceRange: SITE.priceRange,
