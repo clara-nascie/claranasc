@@ -65,10 +65,21 @@ export const LOCATION = {
  * Perfis sociais oficiais. Viram `sameAs` no JSON-LD, que é como o Google
  * conecta o site à mesma entidade nas outras plataformas.
  *
- * TODO(clara): trocar o handle do Instagram pelo real.
+ * URL completa, não o handle: o valor vai direto para o `sameAs` e para o
+ * `href` do rodapé, e os dois precisam de URL.
+ *
+ * No caso da Clara isto pesa mais que o normal. O Instagram tem histórico,
+ * público e conteúdo; o site foi ao ar sem nenhuma impressão no Search
+ * Console. Herdar a associação com um perfil já estabelecido é o sinal de
+ * entidade mais forte disponível enquanto não existe Google Business Profile.
+ *
+ * ⚠️ O perfil se chama "Clara Nascimento TATTOO" e o `SITE.businessName` acima
+ * diz "Clara Nasc Tattoo". O Google usa consistência de nome para juntar as
+ * entidades — vale alinhar os dois quando o Business Profile for criado.
  */
 export const SOCIAL = {
-  instagram: null as string | null,
+  instagram: 'https://www.instagram.com/clara.nasc/' as string | null,
+  /** Não use TikTok por ora. Preencher com URL completa, como o Instagram. */
   tiktok: null as string | null
 } as const;
 
