@@ -85,17 +85,39 @@ export const SOCIAL = {
 
 /**
  * Horário de atendimento, no formato do schema.org `OpeningHoursSpecification`.
- * Dias válidos: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday.
+ * Dias válidos: Monday a Sunday, mais `PublicHolidays`.
  *
- * Deixe como `null` enquanto não for o horário real — horário errado no schema
+ * Horário real da Clara, confirmado por ela em 01/08/2026: segunda a sábado
+ * **e feriados**, das 11h às 22h.
+ *
+ * ⚠️ Isto NÃO é horário de porta aberta — ela atende só por agendamento. O
+ * schema.org não tem como declarar "somente com hora marcada" (o Google
+ * Business Profile tem, quando o perfil for criado), então o que se declara
+ * aqui é a janela em que ela trabalha. Não gera expectativa de visita sem
+ * aviso porque o site inteiro leva ao formulário e ao WhatsApp: nenhum texto
+ * convida a aparecer no estúdio.
+ *
+ * Os feriados vão numa entrada separada de propósito. `PublicHolidays` é um
+ * valor válido de `DayOfWeek` no schema.org, mas é o menos comum dos dois --
+ * separado, ele pode ser removido sem tocar na entrada dos dias úteis se algum
+ * validador implicar. E é informação que diferencia: a maioria dos estúdios
+ * fecha em feriado.
+ *
+ * Deixe como `null` se deixar de ser o horário real — horário errado no schema
  * gera reclamação de cliente e o Google trata como sinal de baixa qualidade.
- *
- * TODO(clara): preencher com os dias e horários reais de atendimento.
- * Exemplo: [{ days: ['Monday','Tuesday','Wednesday','Thursday','Friday'], opens: '10:00', closes: '19:00' }]
  */
-export const OPENING_HOURS = null as
-  | { days: string[]; opens: string; closes: string }[]
-  | null;
+export const OPENING_HOURS = [
+  {
+    days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    opens: '11:00',
+    closes: '22:00'
+  },
+  {
+    days: ['PublicHolidays'],
+    opens: '11:00',
+    closes: '22:00'
+  }
+] as { days: string[]; opens: string; closes: string }[] | null;
 
 /**
  * Imagem padrão de compartilhamento (Open Graph / Twitter Card).
