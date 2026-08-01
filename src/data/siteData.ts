@@ -125,8 +125,11 @@ export function mapsUrl(): string {
  */
 export const SOCIAL = {
   instagram: 'https://www.instagram.com/clara.nasc/' as string | null,
-  /** Não use TikTok por ora. Preencher com URL completa, como o Instagram. */
-  tiktok: null as string | null
+  /**
+   * ⚠️ Handle diferente do Instagram: `clara.nasc13`, não `clara.nasc`.
+   * Não "corrija" para igualar aos outros.
+   */
+  tiktok: 'https://www.tiktok.com/@clara.nasc13' as string | null
 } as const;
 
 /**

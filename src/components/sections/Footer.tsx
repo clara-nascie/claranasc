@@ -1,6 +1,7 @@
 import React from 'react';
 import { Phone } from 'lucide-react';
 import { InstagramIcon } from '../ui/InstagramIcon';
+import { TiktokIcon } from '../ui/TiktokIcon';
 import { whatsappUrl, SOCIAL, LOCATION, mapsUrl } from '../../data/siteData';
 
 export const Footer: React.FC = () => {
@@ -49,6 +50,11 @@ export const Footer: React.FC = () => {
               {SOCIAL.instagram && (
                 <a href={SOCIAL.instagram} target="_blank" rel="noreferrer" aria-label="Perfil de Clara Nasc no Instagram" className="social-link">
                   <InstagramIcon size={22} />
+                </a>
+              )}
+              {SOCIAL.tiktok && (
+                <a href={SOCIAL.tiktok} target="_blank" rel="noreferrer" aria-label="Perfil de Clara Nasc no TikTok" className="social-link">
+                  <TiktokIcon size={20} />
                 </a>
               )}
               <a href={whatsappUrl('Olá Clara! Vim pelo site e gostaria de saber mais sobre suas tatuagens.')} target="_blank" rel="noreferrer" aria-label="Conversar com Clara Nasc no WhatsApp" className="social-link">
