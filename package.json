@@ -12,6 +12,7 @@
     "astro": "astro",
     "verificar": "node scripts/verificar-visual.mjs",
     "verificar:galeria": "node scripts/verificar-galeria.mjs",
+    "verificar:nichos": "node scripts/verificar-nichos.mjs",
     "verificar:contraste": "node scripts/verificar-contraste-fundo.mjs"
   },
   "dependencies": {

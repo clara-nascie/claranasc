@@ -53,6 +53,13 @@ jobs:
         env:
           BASE_URL: http://localhost:4321
 
+      # As cinco páginas por nicho: masonry, breadcrumb, texto e links internos.
+      - name: Verificação das páginas por nicho
+        if: always()
+        run: npm run verificar:nichos
+        env:
+          BASE_URL: http://localhost:4321
+
       # Sobe as capturas mesmo quando a verificação falha — são elas que
       # mostram o que aconteceu.
       - name: Publicar capturas
