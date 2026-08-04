@@ -13,13 +13,14 @@ export const Footer: React.FC = () => {
             <span className="logo-text">CLARA<span>NASC</span></span>
             <p>Tatuadora em Belo Horizonte especializada em Blackwork, Fine Line, Botânico, Geek &amp; Animes e Coberturas.</p>
           </div>
+          {/* `/#secao` e não `#secao` — mesma razão do Header.tsx. */}
           <div className="footer-links">
             <h3>Navegação</h3>
             <ul>
-              <li><a href="#home">Início</a></li>
-              <li><a href="#portfolio">Portfólio</a></li>
-              <li><a href="#sobre">A Artista</a></li>
-              <li><a href="#contato">Agendar</a></li>
+              <li><a href="/">Início</a></li>
+              <li><a href="/#portfolio">Portfólio</a></li>
+              <li><a href="/#sobre">A Artista</a></li>
+              <li><a href="/#contato">Agendar</a></li>
             </ul>
           </div>
           {/*

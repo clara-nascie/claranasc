@@ -11,8 +11,9 @@
  */
 ---
 
+{/* `/#contato` com barra: só a home tem o formulário. */}
 <a
-  href="#contato"
+  href="/#contato"
   class="floating-cta"
   id="floating-cta"
   aria-label="Ir para o formulário de orçamento e agendamento"
@@ -48,7 +49,10 @@
   const cta = document.getElementById('floating-cta');
 
   if (cta) {
-    const hero = document.getElementById('home');
+    // `[data-cta-apos]` marca o bloco de entrada da página: o botão só aparece
+    // depois dele. Cada página declara o seu — com id fixo (`#home`) o botão
+    // ficava visível no topo das páginas por nicho, cobrindo o texto.
+    const hero = document.querySelector('[data-cta-apos]');
     // Onde o botão seria redundante: o próprio formulário e o rodapé, que já
     // tem contato de WhatsApp.
     const hideZones = [
