@@ -54,6 +54,75 @@
     display: none;
 }
 
+/* ==========================================================================
+   VARIANTE MASONRY (paginas por nicho)
+   Motivos e alternativas descartadas: docs/arquitetura/arquitetura.md.
+   ========================================================================== */
+.portfolio-grid--masonry {
+    /* Desfaz o `display: grid` de .portfolio-grid: nao convivem no mesmo no. */
+    display: block;
+    columns: 3;
+    column-gap: 30px;
+}
+
+@media (max-width: 991px) {
+    .portfolio-grid--masonry {
+        columns: 2;
+    }
+}
+
+@media (max-width: 639px) {
+    .portfolio-grid--masonry {
+        columns: 1;
+    }
+}
+
+.portfolio-item--livre {
+    /* `break-inside` impede a coluna de cortar o item e jogar a legenda para a
+       coluna seguinte. */
+    aspect-ratio: auto;
+    break-inside: avoid;
+    -webkit-column-break-inside: avoid;
+    overflow: visible;
+    border-radius: 0;
+    background-color: transparent;
+    /* Faz o papel do `gap` do grid, que multi-coluna nao tem no eixo vertical. */
+    margin-bottom: 34px;
+}
+
+.portfolio-item--livre .portfolio-img-wrapper {
+    /* O arredondamento migra para ca: o item deixou de ter `overflow: hidden`. */
+    height: auto;
+    border-radius: 8px;
+    background-color: var(--bg-tertiary);
+}
+
+/* Sem `object-fit: cover` e sem altura fixa: a altura sai da proporcao da foto.
+   O `<Image>` escreve width/height no HTML, entao nao ha salto de layout. */
+.portfolio-item--livre .portfolio-img-wrapper img {
+    width: 100%;
+    height: auto;
+    object-fit: initial;
+}
+
+.portfolio-legenda {
+    padding: 14px 2px 0;
+}
+
+.legenda-titulo {
+    font-size: 1.05rem;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    color: var(--text-primary);
+}
+
+.legenda-texto {
+    margin-top: 6px;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
 .portfolio-img-wrapper {
     position: relative;
     width: 100%;

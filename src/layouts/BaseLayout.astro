@@ -1,0 +1,81 @@
+---
+/**
+ * Casca comum às seis páginas: `<head>`, cabeçalho, rodapé, lightbox e o
+ * observador das animações de entrada. Cada página só decide title, description
+ * e conteúdo.
+ */
+import '../styles/global.css';
+
+import { SITE } from '../data/siteData';
+import Seo from '../components/seo/Seo.astro';
+import LocalBusinessSchema from '../components/seo/LocalBusinessSchema.astro';
+
+import { AppLayout } from '../components/layout/AppLayout';
+import { Header } from '../components/sections/Header';
+import { Footer } from '../components/sections/Footer';
+import { Lightbox } from '../components/Lightbox';
+import FloatingCta from '../components/FloatingCta.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  ogType?: 'website' | 'article';
+}
+
+const { title, description, ogType = 'website' } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang={SITE.lang}>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <Seo title={title} description={description} ogType={ogType} />
+    {/* Vai em todas as páginas. Todos os blocos usam o mesmo `@id`, então o
+        Google lê o mesmo estúdio seis vezes, e não seis estúdios. */}
+    <LocalBusinessSchema />
+
+    {/* Schema específico da página: breadcrumb, FAQ. */}
+    <slot name="head" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <AppLayout>
+        <Header client:load />
+        <slot />
+        <Footer />
+        <Lightbox client:load />
+        <FloatingCta />
+    </AppLayout>
+
+    <script>
+        // Animações de entrada por scroll: adiciona .active ao entrar na viewport.
+        const scrollObserver = new IntersectionObserver(
+            (entries) => {
+                for (const entry of entries) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        scrollObserver.unobserve(entry.target);
+                    }
+                }
+            },
+            // ⚠️ `rootMargin`, nunca `threshold` por fração de área: a fração
+            // fica inalcançável em elemento muito mais alto que a tela, e a
+            // galeria já ficou permanentemente invisível por isso.
+            // Coberto por `npm run verificar:galeria`.
+            { threshold: 0, rootMargin: '0px 0px -12% 0px' }
+        );
+
+        const seletorRevelaveis = '.reveal, .fade-in, .fade-in-delay-1, .fade-in-delay-2, .fade-in-delay-3';
+        for (const el of document.querySelectorAll(seletorRevelaveis)) {
+            scrollObserver.observe(el);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+---
+import { Image, getImage } from 'astro:assets';
+import type { PortfolioItem } from '../../data/portfolioData';
+
+/**
+ * A grade de fotos, compartilhada entre a home e as páginas por nicho.
+ *
+ * É Astro e não React: `<Image>` do astro:assets só existe em componente Astro,
+ * e as fotos precisam estar no HTML estático para o Google Imagens vê-las.
+ */
+
+interface Props {
+  itens: PortfolioItem[];
+  /** `id` do elemento da grade. A home usa `portfolio-grid`. */
+  id?: string;
+  /**
+   * `grade`: recorte em 4/5, altura uniforme — a home, onde o filtro esconde
+   * itens e altura variável faria a página saltar a cada clique.
+   * `masonry`: cada foto na proporção original — as páginas por nicho.
+   */
+  layout?: 'grade' | 'masonry';
+}
+
+const { itens, id, layout = 'grade' } = Astro.props;
+const eMasonry = layout === 'masonry';
+
+// A miniatura tem ~380px; abrir o lightbox com ela ficaria borrado.
+// `getImage()` gera a variante grande no build e devolve a URL final.
+const ampliadas = new Map(
+  await Promise.all(
+    itens.map(async (item) => {
+      const grande = await getImage({ src: item.image, width: 1400, format: 'webp' });
+      return [item.id, grande.src] as const;
+    })
+  )
+);
+
+// Os dois layouts chegam a 380px de coluna no desktop (container de 1200px,
+// 3 colunas, 30px de gap), 2 no tablet e 1 no celular. 760 cobre densidade 2x.
+const LARGURAS = [280, 380, 560, 760];
+const TAMANHOS = '(max-width: 639px) 90vw, (max-width: 991px) 43vw, 380px';
+---
+
+<div
+  class:list={['portfolio-grid', eMasonry && 'portfolio-grid--masonry']}
+  id={id}
+  data-galeria
+>
+  {itens.map((item) => (
+    <figure class:list={['portfolio-item', eMasonry && 'portfolio-item--livre']} data-category={item.category}>
+      <div class="portfolio-img-wrapper">
+        <Image
+          src={item.image}
+          alt={item.alt}
+          widths={LARGURAS}
+          sizes={TAMANHOS}
+          format="webp"
+          quality={72}
+          loading="lazy"
+          decoding="async"
+        />
+        <div class="portfolio-hover">
+          {/* No masonry a legenda fica visível embaixo da foto — repetir título
+              e categoria aqui seria dizer a mesma coisa duas vezes. */}
+          {!eMasonry && (
+            <>
+              <span class="item-category">{item.categoryLabel}</span>
+              <h3 class="item-title">{item.title}</h3>
+            </>
+          )}
+          <button
+            type="button"
+            class="btn-zoom lightbox-trigger"
+            aria-label={`Ampliar imagem de ${item.title}`}
+            data-src={ampliadas.get(item.id)}
+            data-title={item.title}
+            data-category={item.categoryLabel}
+          >
+            {/* SVG inline (ícone "maximize-2" do lucide): importar o componente
+                React traria o React de volta a um componente estático. */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M15 3h6v6" />
+              <path d="m21 3-7 7" />
+              <path d="m3 21 7-7" />
+              <path d="M9 21H3v-6" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      {/* Título visível, e não só no hover: em celular não existe hover. */}
+      {eMasonry && (
+        <figcaption class="portfolio-legenda">
+          <h3 class="legenda-titulo">{item.title}</h3>
+          {item.description && <p class="legenda-texto">{item.description}</p>}
+        </figcaption>
+      )}
+    </figure>
+  ))}
+</div>
+
+<script>
+  // Abertura do lightbox por delegação: um listener por galeria.
+  // O seletor é `[data-galeria]` e não um id fixo porque o componente aparece
+  // em seis páginas. Contrato com o Lightbox.tsx: CustomEvent('open-lightbox').
+  for (const grade of document.querySelectorAll<HTMLElement>('[data-galeria]')) {
+    grade.addEventListener('click', (evento) => {
+      const gatilho = (evento.target as HTMLElement).closest<HTMLElement>('.lightbox-trigger');
+      if (!gatilho) return;
+
+      window.dispatchEvent(
+        new CustomEvent('open-lightbox', {
+          detail: {
+            src: gatilho.dataset.src,
+            title: gatilho.dataset.title,
+            category: gatilho.dataset.category
+          }
+        })
+      );
+    });
+  }
+</script>

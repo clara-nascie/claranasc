@@ -1,0 +1,148 @@
+---
+/**
+ * Uma página por nicho: /tatuagem/coberturas, /tatuagem/fine-line, etc.
+ * Ver `docs/arquitetura/arquitetura.md`, seção "As seis páginas".
+ */
+import type { GetStaticPaths } from 'astro';
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BreadcrumbSchema from '../../components/seo/BreadcrumbSchema.astro';
+import FaqSchema from '../../components/seo/FaqSchema.astro';
+import GaleriaGrid from '../../components/portfolio/GaleriaGrid.astro';
+
+import { whatsappUrl, LOCATION } from '../../data/siteData';
+import {
+  NICHOS,
+  type Nicho,
+  rotuloDoNicho,
+  fotosDoNicho,
+  caminhoDoNicho
+} from '../../data/nichosData';
+
+export const getStaticPaths = (() => {
+  return NICHOS.map((nicho) => ({
+    params: { categoria: nicho.slug },
+    props: { nicho }
+  }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  nicho: Nicho;
+}
+
+const { nicho } = Astro.props;
+
+const rotulo = rotuloDoNicho(nicho);
+const fotos = fotosDoNicho(nicho);
+const caminho = caminhoDoNicho(nicho);
+
+// A trilha visível e a do JSON-LD saem desta mesma lista: schema que descreve
+// navegação inexistente na tela conta como divergência.
+// O nível do meio é `/#portfolio` porque não existe página em `/tatuagem/`.
+const trilha = [
+  { nome: 'Início', caminho: '/' },
+  { nome: 'Portfólio', caminho: '/#portfolio' },
+  { nome: rotulo, caminho }
+];
+
+const outrosNichos = NICHOS.filter((outro) => outro.slug !== nicho.slug);
+---
+
+<BaseLayout title={nicho.seoTitle} description={nicho.seoDescription}>
+  <BreadcrumbSchema slot="head" itens={trilha} />
+  <FaqSchema slot="head" perguntas={nicho.faq} />
+
+  <main class="nicho-page">
+    {/* `data-cta-apos`: o botão flutuante só aparece depois deste bloco. */}
+    <section class="nicho-intro" data-cta-apos>
+      <div class="container">
+        {/* `aria-label` porque a página tem duas navegações e leitor de tela
+            lista os landmarks pelo rótulo. */}
+        <nav class="trilha" aria-label="Trilha de navegação">
+          <ol>
+            {trilha.map((passo, indice) => (
+              <li>
+                {indice < trilha.length - 1 ? (
+                  <a href={passo.caminho}>{passo.nome}</a>
+                ) : (
+                  <span aria-current="page">{passo.nome}</span>
+                )}
+              </li>
+            ))}
+          </ol>
+        </nav>
+
+        <header class="nicho-header reveal">
+          <span class="section-tag">{rotulo}</span>
+          <h1 class="nicho-titulo">{nicho.h1}</h1>
+          <div class="header-divider left"></div>
+          <p class="nicho-chamada">{nicho.chamada}</p>
+        </header>
+      </div>
+    </section>
+
+    <section class="nicho-galeria" aria-labelledby="titulo-galeria">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-tag">Galeria</span>
+          <h2 class="section-title" id="titulo-galeria">
+            {rotulo} — {fotos.length} {fotos.length === 1 ? 'trabalho' : 'trabalhos'}
+          </h2>
+          <div class="header-divider"></div>
+        </div>
+
+        <div class="reveal">
+          <GaleriaGrid itens={fotos} layout="masonry" />
+        </div>
+      </div>
+    </section>
+
+    <div class="container nicho-fim">
+      {/* `<details>` nativo: abrir/fechar, foco por teclado e `aria-expanded`
+          já vêm prontos. Fechado ≠ oculto — ver a seção sobre accordion em
+          docs/arquitetura/arquitetura.md antes de mexer. */}
+      <section class="nicho-faq reveal" aria-labelledby="titulo-faq">
+        <h2 id="titulo-faq">Perguntas frequentes</h2>
+        <div class="faq-lista">
+          {nicho.faq.map((item) => (
+            <details class="faq-item">
+              <summary>{item.pergunta}</summary>
+              <p class="faq-resposta">{item.resposta}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      <section class="nicho-cta reveal" aria-labelledby="titulo-cta">
+        <h2 id="titulo-cta">Quer uma assim?</h2>
+        <p>
+          Atendo com hora marcada no {LOCATION.studioName}, na {LOCATION.streetAddress},
+          {' '}{LOCATION.neighborhood}, {LOCATION.city}.
+        </p>
+        <div class="nicho-cta-acoes">
+          <a href={whatsappUrl(nicho.mensagemWhatsapp)} target="_blank" rel="noreferrer" class="btn btn-primary">
+            Falar no WhatsApp
+          </a>
+          <a href="/#contato" class="btn btn-secondary">
+            Formulário de orçamento
+          </a>
+        </div>
+      </section>
+
+      {/* Link recíproco: sem isto as cinco páginas ficam órfãs para o Google. */}
+      <nav class="nicho-outros reveal" aria-label="Outros estilos">
+        <h2>Outros estilos</h2>
+        <ul>
+          {outrosNichos.map((outro) => (
+            <li>
+              <a href={caminhoDoNicho(outro)}>{rotuloDoNicho(outro)}</a>
+            </li>
+          ))}
+          <li>
+            <a href="/#portfolio">Ver o portfólio completo</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </main>
+</BaseLayout>

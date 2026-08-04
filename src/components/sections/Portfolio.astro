@@ -1,47 +1,12 @@
 ---
-import { Image, getImage } from 'astro:assets';
 import { portfolioItems, PORTFOLIO_CATEGORIES } from '../../data/portfolioData';
+import { NICHOS, caminhoDoNicho, rotuloDoNicho } from '../../data/nichosData';
+import GaleriaGrid from '../portfolio/GaleriaGrid.astro';
 
 /**
- * A galeria é Astro, não React, por três motivos:
- *
- * 1. `<Image>` do `astro:assets` só existe em componente Astro. É ele que gera
- *    as variantes responsivas no build — sem isso a foto original inteira vai
- *    para o navegador.
- * 2. As imagens ficam no HTML estático, onde o Google Imagens as enxerga. Uma
- *    galeria renderizada por JS depende do robô executar o script.
- * 3. Filtrar é mostrar e esconder elemento. Não precisa de React, e cortar o
- *    `client:load` daqui tira a maior hidratação da página (Issue #12).
- *
- * O contrato com o Lightbox continua o mesmo: um `CustomEvent('open-lightbox')`
- * com `{ src, title, category }`. Quem dispara mudou; o que é disparado, não.
+ * A galeria da home. A grade está em `GaleriaGrid.astro`, compartilhada com as
+ * páginas por nicho; aqui fica só o que é da home — filtros e links por estilo.
  */
-
-/**
- * Versão ampliada de cada foto, para o lightbox.
- *
- * A miniatura da grade tem no máximo ~380px — abrir a ampliação com ela ficaria
- * borrado. `getImage()` gera no build uma variante maior e devolve a URL final,
- * que vai num `data-` do botão.
- */
-const ampliadas = new Map(
-  await Promise.all(
-    portfolioItems.map(async (item) => {
-      const grande = await getImage({ src: item.image, width: 1400, format: 'webp' });
-      return [item.id, grande.src] as const;
-    })
-  )
-);
-
-/**
- * Larguras servidas e como o navegador escolhe entre elas.
- *
- * A grade é `repeat(auto-fill, minmax(280px, 1fr))` dentro de um container de
- * 1200px, o que dá 3 colunas de ~380px no desktop, 2 no tablet e 1 no celular.
- * O maior valor (760) cobre os 380px em tela de densidade 2x.
- */
-const LARGURAS = [280, 380, 560, 760];
-const TAMANHOS = '(max-width: 639px) 90vw, (max-width: 991px) 43vw, 380px';
 ---
 
 <section class="portfolio-section" id="portfolio">
@@ -68,61 +33,29 @@ const TAMANHOS = '(max-width: 639px) 90vw, (max-width: 991px) 43vw, 380px';
       ))}
     </div>
 
-    <div class="portfolio-grid reveal" id="portfolio-grid">
-      {portfolioItems.map((item) => (
-        <div class="portfolio-item" data-category={item.category}>
-          <div class="portfolio-img-wrapper">
-            <Image
-              src={item.image}
-              alt={item.alt}
-              widths={LARGURAS}
-              sizes={TAMANHOS}
-              format="webp"
-              quality={72}
-              loading="lazy"
-              decoding="async"
-            />
-            <div class="portfolio-hover">
-              <span class="item-category">{item.categoryLabel}</span>
-              <h3 class="item-title">{item.title}</h3>
-              <button
-                type="button"
-                class="btn-zoom lightbox-trigger"
-                aria-label={`Ampliar imagem de ${item.title}`}
-                data-src={ampliadas.get(item.id)}
-                data-title={item.title}
-                data-category={item.categoryLabel}
-              >
-                {/* Ícone "maximize-2" do lucide, desenhado direto no HTML.
-                    Importar o componente React só para uma lupa traria o React
-                    de volta a um componente que agora é estático. */}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  aria-hidden="true"
-                >
-                  <path d="M15 3h6v6" />
-                  <path d="m21 3-7 7" />
-                  <path d="m3 21 7-7" />
-                  <path d="M9 21H3v-6" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-      ))}
+    <div class="reveal">
+      <GaleriaGrid itens={portfolioItems} id="portfolio-grid" layout="grade" />
     </div>
+
+    {/* Link recíproco: sem isto as cinco páginas ficam órfãs para o Google.
+        A lista sai de NICHOS porque "Todos" não tem página e o slug da URL nem
+        sempre é o id da categoria (`fineline` no código, `fine-line` na URL). */}
+    <nav class="portfolio-nichos reveal" aria-label="Páginas por estilo de tatuagem">
+      <h3>Ver por estilo</h3>
+      <ul>
+        {NICHOS.map((nicho) => (
+          <li>
+            <a href={caminhoDoNicho(nicho)}>{rotuloDoNicho(nicho)}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
   </div>
 </section>
 
 <script>
+  // Filtro por categoria. Fica aqui e não no GaleriaGrid porque só a home
+  // filtra — as páginas por nicho já chegam filtradas pela URL.
   const grade = document.getElementById('portfolio-grid');
   const botoesFiltro = document.querySelectorAll<HTMLButtonElement>('[data-filtro]');
 
@@ -145,21 +78,5 @@ const TAMANHOS = '(max-width: 639px) 90vw, (max-width: 991px) 43vw, 380px';
         }
       });
     }
-
-    // Delegação: um listener na grade em vez de um por botão de lupa.
-    grade.addEventListener('click', (evento) => {
-      const gatilho = (evento.target as HTMLElement).closest<HTMLElement>('.lightbox-trigger');
-      if (!gatilho) return;
-
-      window.dispatchEvent(
-        new CustomEvent('open-lightbox', {
-          detail: {
-            src: gatilho.dataset.src,
-            title: gatilho.dataset.title,
-            category: gatilho.dataset.category
-          }
-        })
-      );
-    });
   }
 </script>

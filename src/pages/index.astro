@@ -1,103 +1,23 @@
 ---
-import '../styles/global.css';
+import BaseLayout from '../layouts/BaseLayout.astro';
 
-import { SITE } from '../data/siteData';
-import Seo from '../components/seo/Seo.astro';
-import LocalBusinessSchema from '../components/seo/LocalBusinessSchema.astro';
-
-import { AppLayout } from '../components/layout/AppLayout';
-import { Header } from '../components/sections/Header';
-// Hero e Portfolio são Astro, não React: nenhum dos dois precisa de estado que
-// justifique hidratar uma ilha, e só componente Astro pode usar o <Image> do
-// astro:assets — que é quem gera as variantes responsivas no build.
+// Astro e não React: só componente Astro pode usar o <Image> do astro:assets,
+// e nenhum deles precisa de estado que justifique hidratar uma ilha.
 import Hero from '../components/sections/Hero.astro';
 import Portfolio from '../components/sections/Portfolio.astro';
 import About from '../components/sections/About.astro';
 import { ContactForm } from '../components/sections/ContactForm';
-import { Footer } from '../components/sections/Footer';
 
-import { Lightbox } from '../components/Lightbox';
-import FloatingCta from '../components/FloatingCta.astro';
-
-// Title com 57 caracteres: abaixo do limite de ~60 que o Google exibe sem cortar.
-// Ordem intencional — "Tatuadora em BH" logo após o nome, porque é o termo de
-// busca, e Blackwork antes dos outros nichos por ser a especialidade.
+// Ordem intencional: "Tatuadora em BH" logo após o nome porque é o termo de
+// busca. 57 caracteres, abaixo do limite de ~60 que o Google exibe sem cortar.
 const title = 'Clara Nasc | Tatuadora em BH - Blackwork e Fine Line';
 const description =
   'Tatuadora em Belo Horizonte especializada em Blackwork, Fine Line, Botânico, Geek & Animes e Coberturas. Veja o portfólio autoral e solicite seu orçamento pelo WhatsApp.';
 ---
 
-<!DOCTYPE html>
-<html lang={SITE.lang}>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="/favicon.png">
-
-    <Seo title={title} description={description} />
-    <LocalBusinessSchema />
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
-</head>
-<body>
-
-    
-    <AppLayout>
-        <Header client:load />
-        <Hero />
-        <Portfolio />
-        <About />
-        <ContactForm client:load />
-        <Footer />
-        <Lightbox client:load />
-        <FloatingCta />
-    </AppLayout>
-
-    <script>
-        // Animações de entrada por scroll: adiciona .active quando o elemento
-        // entra na viewport.
-        //
-        // Este script é um módulo, portanto já roda com `defer` — depois do parse
-        // do documento e da hidratação do React. Como os ícones agora são SVG
-        // renderizados pelo próprio React (e não injetados por um script externo
-        // depois), o HTML do servidor e o do cliente batem: o React preserva os
-        // nós em vez de recriá-los. É por isso que uma única passada basta e não
-        // existe mais MutationObserver reobservando `document.body` a cada mutação.
-        const scrollObserver = new IntersectionObserver(
-            (entries) => {
-                for (const entry of entries) {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                        // Uma vez revelado, não há motivo para continuar observando.
-                        scrollObserver.unobserve(entry.target);
-                    }
-                }
-            },
-            /*
-              Não use `threshold` por fração de área aqui.
-
-              `threshold: 0.15` exige que 15% da área do elemento esteja na tela,
-              e essa fração fica impossível quando o elemento é muito mais alto
-              que a viewport: a galeria com 30 fotos mede 14.000px no celular
-              contra 844px de tela, ou seja, no máximo 6% dela aparece de uma vez.
-              O observador nunca dispararia e a grade ficaria invisível para
-              sempre — foi exatamente o que aconteceu ao crescer de 6 para 30.
-
-              `rootMargin` não depende da altura do elemento: encolhe a borda de
-              baixo da viewport em 12%, e `threshold: 0` dispara assim que
-              qualquer parte cruza essa linha. Funciona igual para um título
-              curto e para uma galeria de 168 fotos.
-            */
-            { threshold: 0, rootMargin: '0px 0px -12% 0px' }
-        );
-
-        const seletorRevelaveis = '.reveal, .fade-in, .fade-in-delay-1, .fade-in-delay-2, .fade-in-delay-3';
-        for (const el of document.querySelectorAll(seletorRevelaveis)) {
-            scrollObserver.observe(el);
-        }
-    </script>
-</body>
-</html>
+<BaseLayout title={title} description={description}>
+  <Hero />
+  <Portfolio />
+  <About />
+  <ContactForm client:load />
+</BaseLayout>

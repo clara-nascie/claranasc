@@ -1,0 +1,260 @@
+/* ==========================================================================
+   PAGINAS POR NICHO  (/tatuagem/blackwork, /tatuagem/fine-line, ...)
+   A galeria em si vive em portfolio.css, na variante `--masonry`.
+   ========================================================================== */
+
+/* ⚠️ O degrade precisa comecar em `--bg-hero-top`: o cabecalho e absoluto e
+   flutua aqui, e o fundo solido dos links dele usa essa cor. Sobre outra cor,
+   viram caixas. O `padding-top` reserva a altura do cabecalho, que por ser
+   absoluto nao ocupa espaco no fluxo. */
+.nicho-intro {
+    padding-top: var(--header-height);
+    background-color: var(--bg-hero-top);
+    background-image: linear-gradient(to bottom, var(--bg-hero-top) 0%, var(--bg-secondary) 100%);
+}
+
+/* --- Trilha de navegacao (breadcrumb) --------------------------------- */
+
+.trilha ol {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    list-style: none;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+}
+
+/* Separador em `::before` e nao no HTML: dentro do <a> ele entraria no nome
+   acessivel do link ("/ Blackwork" em vez de "Blackwork"). */
+.trilha li + li::before {
+    content: '/';
+    margin-right: 8px;
+    color: var(--text-muted);
+}
+
+.trilha a:hover {
+    color: var(--accent-gold);
+}
+
+.trilha [aria-current='page'] {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* --- Cabecalho da pagina ---------------------------------------------- */
+
+.nicho-header {
+    margin-top: 28px;
+    max-width: 720px;
+}
+
+/* `clamp` em vez de media query: o titulo mais longo tem 42 caracteres e
+   precisa encolher de forma continua, nao em degraus. */
+.nicho-titulo {
+    font-size: clamp(1.9rem, 5vw, 2.9rem);
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+
+/* `ch` e nao pixel: a medida de linha acompanha o tamanho da fonte. */
+.nicho-chamada {
+    font-size: 1.2rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    max-width: 56ch;
+}
+
+/* --- Galeria ----------------------------------------------------------- */
+
+.nicho-galeria {
+    background-color: var(--bg-secondary);
+}
+
+/* --- Perguntas frequentes ---------------------------------------------- */
+
+.nicho-faq {
+    max-width: 760px;
+    margin: 0 auto 70px;
+}
+
+.nicho-faq h2 {
+    font-size: 1.6rem;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    text-align: center;
+}
+
+.faq-item {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.faq-item summary {
+    /* `list-style: none` some com o triangulo padrao no Firefox e no Chrome;
+       o `::-webkit-details-marker` cobre Safari, que ignora o primeiro. */
+    list-style: none;
+    cursor: pointer;
+    padding: 20px 40px 20px 0;
+    position: relative;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.02rem;
+    line-height: 1.4;
+    color: var(--text-primary);
+    transition: var(--transition-smooth);
+}
+
+.faq-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.faq-item summary:hover {
+    color: var(--accent-gold);
+}
+
+/* ⚠️ Nao remova: o `outline: none` do reset apagaria o foco de teclado, e
+   `<summary>` e focavel por natureza. */
+.faq-item summary:focus-visible {
+    outline: 2px solid var(--accent-gold);
+    outline-offset: 4px;
+    border-radius: 2px;
+}
+
+/* O "+": duas barras. Vira "−" ao abrir, girando a vertical em 90 graus. */
+.faq-item summary::before,
+.faq-item summary::after {
+    content: '';
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    width: 14px;
+    height: 2px;
+    background-color: var(--accent-gold);
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.faq-item summary::before {
+    transform: translateY(-50%);
+}
+
+.faq-item summary::after {
+    transform: translateY(-50%) rotate(90deg);
+}
+
+.faq-item[open] summary::after {
+    transform: translateY(-50%) rotate(0deg);
+}
+
+.faq-resposta {
+    padding: 0 40px 24px 0;
+    font-size: 0.98rem;
+    line-height: 1.8;
+    color: var(--text-secondary);
+}
+
+/* --- Chamada final ----------------------------------------------------- */
+
+.nicho-cta {
+    text-align: center;
+    padding: 50px 30px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--bg-secondary);
+}
+
+.nicho-cta h2 {
+    font-size: 1.8rem;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.nicho-cta p {
+    color: var(--text-secondary);
+    max-width: 48ch;
+    margin: 0 auto 28px;
+}
+
+.nicho-cta-acoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+/* --- Outros estilos ---------------------------------------------------- */
+
+.nicho-outros {
+    margin-top: 70px;
+    padding-top: 35px;
+    border-top: 1px solid var(--border-color);
+}
+
+.nicho-outros h2 {
+    font-size: 0.8rem;
+    font-family: 'Syne', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--accent-gold);
+    margin-bottom: 18px;
+}
+
+.nicho-outros ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    list-style: none;
+}
+
+.nicho-outros a {
+    display: inline-block;
+    padding: 9px 20px;
+    font-size: 0.85rem;
+    border: 1px solid var(--border-color);
+    border-radius: 30px;
+    color: var(--text-secondary);
+}
+
+.nicho-outros a:hover {
+    border-color: var(--accent-gold);
+    color: var(--text-primary);
+}
+
+/* ==========================================================================
+   LINKS PARA OS NICHOS A PARTIR DA HOME (abaixo da grade)
+   ========================================================================== */
+.portfolio-nichos {
+    margin-top: 50px;
+    text-align: center;
+}
+
+.portfolio-nichos h3 {
+    font-size: 0.8rem;
+    font-family: 'Syne', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--accent-gold);
+    margin-bottom: 18px;
+}
+
+.portfolio-nichos ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    list-style: none;
+}
+
+.portfolio-nichos a {
+    display: inline-block;
+    padding: 10px 22px;
+    font-size: 0.85rem;
+    border: 1px solid var(--border-color);
+    border-radius: 30px;
+    background-color: var(--bg-primary);
+    color: var(--text-secondary);
+}
+
+.portfolio-nichos a:hover {
+    border-color: var(--accent-gold);
+    color: var(--text-primary);
+}
