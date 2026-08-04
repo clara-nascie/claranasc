@@ -13,15 +13,20 @@ src/
 │   └── about-artist.webp
 ├── components/
 │   ├── layout/      AppLayout (wrapper estatico)
-│   ├── seo/         Seo.astro + LocalBusinessSchema.astro
+│   ├── portfolio/   GaleriaGrid.astro (grade + lightbox, compartilhada)
+│   ├── seo/         Seo.astro, LocalBusinessSchema.astro,
+│   │                BreadcrumbSchema.astro, FaqSchema.astro
 │   ├── sections/    Header.tsx, ContactForm.tsx, Footer.tsx
 │   │                Hero.astro, Portfolio.astro, About.astro
 │   ├── ui/          Primitivos: Button, Input, Select, Textarea
 │   │                Marca: InstagramIcon, TiktokIcon
 │   ├── FloatingCta.astro
 │   └── Lightbox.tsx
-├── data/            siteData.ts (negocio) e portfolioData.ts (galeria)
+├── data/            siteData.ts (negocio), portfolioData.ts (galeria),
+│                    nichosData.ts (texto das paginas por nicho)
+├── layouts/         BaseLayout.astro (head + header + rodape + reveal)
 ├── pages/           index.astro
+│                    tatuagem/[categoria].astro  -> 5 paginas
 └── styles/          base/ + components/ + sections/, agregados por global.css
 ```
 
@@ -31,6 +36,102 @@ passa pelo pipeline de imagem** (ver a seção abaixo).
 
 `Anúncios/` (raiz) é o acervo de fotos originais, ~1,3 GB, fora do repositório
 via `.gitignore`. O que vai ao ar são as cópias processadas em `src/assets/`.
+
+## As seis páginas
+
+O site deixou de ter uma página só em 04/08/2026, com a
+[#11](https://github.com/clara-nascie/claranasc/issues/11).
+
+| URL | Papel |
+| --- | --- |
+| `/` | home: hero, galeria com filtro, bio, formulário |
+| `/tatuagem/coberturas` | cobertura de tatuagem bh |
+| `/tatuagem/botanico` | tatuagem botânica bh |
+| `/tatuagem/geek` | tatuagem geek bh / anime bh |
+| `/tatuagem/blackwork` | blackwork bh |
+| `/tatuagem/fine-line` | tatuagem fine line bh |
+
+O motivo é de SEO, não de organização: **uma página ranqueia realisticamente
+para um cluster de busca**. A home tentando cobrir cinco nichos vira a segunda
+melhor resposta para cinco buscas em vez da melhor para uma.
+
+As cinco vêm de uma rota dinâmica só, `pages/tatuagem/[categoria].astro`, com
+`getStaticPaths` sobre `NICHOS`. Cinco arquivos iguais divergiriam na primeira
+correção feita em quatro deles. O que muda entre as páginas é **dado**, e dado
+mora em `data/nichosData.ts`.
+
+> ⚠️ O `slug` da URL nem sempre é o `id` da categoria: `fineline` no código,
+> `fine-line` na URL, porque é assim que se busca. Mudar um slug depois que a
+> página tiver tráfego quebra o link e zera o histórico da URL no Google —
+> exige redirecionamento.
+
+**Uma linha de texto por página, não parágrafos.** A primeira versão trouxe as
+200-300 palavras que a issue #11 pedia. A Clara cortou tudo em 04/08/2026 — "as
+pessoas não leem" —, e o que ficou é uma frase de contraste abaixo do H1.
+
+O texto voltou no mesmo dia, em outro formato: **FAQ em accordion**, 3 perguntas
+por nicho, fechadas por padrão (a outra metade da
+[#13](https://github.com/clara-nascie/claranasc/issues/13)). Três linhas na
+tela; quem só quer ver foto rola e ignora, quem está decidindo clica e lê. As
+respostas são o texto cortado, reaproveitado.
+
+A pergunta é conteúdo de SEO tanto quanto a resposta: escrita como a pessoa
+digita ("*fine line dura?*"), ela faz a página poder responder buscas em forma
+de pergunta, e não só "tatuagem fine line bh".
+
+### ⚠️ Accordion fechado **não** é conteúdo oculto
+
+A distinção que o Google faz não é "aparece de primeira?", é **"a pessoa
+consegue ver?"**.
+
+| | Texto oculto | Accordion |
+| --- | --- | --- |
+| Está no HTML | sim | sim |
+| A pessoa consegue abrir | **nunca** | sim, um clique |
+| Robô e visitante recebem o mesmo | sim | sim |
+| Permitido | ❌ infração | ✅ |
+
+Duas coisas que o projeto **não** pode fazer, e que têm nome: *hidden text*
+(texto que ninguém consegue ver — branco no branco, `font-size: 0`, fora da
+tela) e *cloaking* (servir conteúdo diferente para o Googlebot). A penalidade
+não é ranquear menos, é ação manual.
+
+> Vale registrar que aqui **nem seria possível**: o site é estático. O build
+> gera arquivos `.html` na borda da Cloudflare, e o Googlebot baixa exatamente
+> o mesmo arquivo que a visitante. Não existe código no servidor para decidir
+> "para este aqui eu mando texto a mais".
+
+O accordion é `<details>`/`<summary>` nativo, **sem JavaScript**. Não é
+economia: o elemento já traz abrir/fechar, foco por teclado, `Enter`/`Espaço` e
+`aria-expanded` correto — tudo que um accordion de `<div>` + script precisaria
+reimplementar, e costuma errar.
+
+`FaqSchema.astro` emite `FAQPage`. **Não conte com o resultado expandido**: em
+2023 o Google restringiu esse rich result a sites de governo e saúde, então para
+um estúdio de tatuagem ele não aparece. O schema fica porque custa zero e
+continua descrevendo a estrutura da página; o ganho real está no texto existir
+no HTML.
+
+> `npm run verificar:nichos` compara **toda pergunta e resposta do JSON-LD com
+> o texto renderizado da página**. É a checagem que impede o schema e a tela de
+> divergirem — validada injetando uma pergunta fantasma no schema e confirmando
+> que as 5 páginas reprovam.
+
+**Portfólio em duas camadas.** A home mostra 6 fotos por categoria, igual para
+todas, para nenhuma pesar mais que outra no que se vê primeiro. As páginas por
+nicho recebem o volume, sem cota — é o que dissolve o conflito entre "equilibrar
+as categorias" e "mostrar quantidade de trabalho". Hoje elas ainda mostram as
+mesmas 6, porque as outras 138 fotos dependem do texto da
+[#16](https://github.com/clara-nascie/claranasc/issues/16).
+
+**Masonry, e não a grade da home.** A grade recorta tudo em `4/5` porque o
+filtro esconde e mostra itens, e altura uniforme evita que a página salte a cada
+clique. Nas páginas por nicho não há filtro, e o acervo mistura costas,
+antebraço e costela — recortar todas na mesma proporção corta desenho no meio.
+O masonry é `columns` do CSS, sem JS: a alternativa nativa
+(`grid-template-rows: masonry`) ainda não saiu de flag experimental, e
+biblioteca de masonry mede as fotos no cliente, ou seja, só acerta o layout
+depois que elas carregam, com salto visível.
 
 ## Ilhas de interatividade
 
@@ -124,9 +225,17 @@ regra vale para foto que carrega informação.
 
 ## Scripts no cliente
 
-* `index.astro` tem um único `<script>` (módulo, portanto deferido) com um `IntersectionObserver` que adiciona `.active` para as animações de entrada, e dá `unobserve` após revelar cada elemento.
-* `Portfolio.astro` tem o script do filtro de categoria e a delegação de clique que abre o lightbox.
-* `FloatingCta.astro` tem o próprio script, que observa `#home` para aparecer e `#contato`/`.main-footer` para se esconder.
+* `BaseLayout.astro` tem um único `<script>` (módulo, portanto deferido) com um `IntersectionObserver` que adiciona `.active` para as animações de entrada, e dá `unobserve` após revelar cada elemento. Morava em `index.astro` até as seis páginas existirem.
+* `Portfolio.astro` tem o script do filtro de categoria — só a home filtra; as páginas por nicho já chegam filtradas pela URL.
+* `GaleriaGrid.astro` tem a delegação de clique que abre o lightbox. O seletor é `[data-galeria]`, e não um id fixo, porque o componente agora aparece em seis páginas.
+* `FloatingCta.astro` tem o próprio script, que observa `[data-cta-apos]` para aparecer e `#contato`/`.main-footer` para se esconder.
+
+> ⚠️ O gatilho do `FloatingCta` era `#home`, o hero — o que dava no mesmo
+> enquanto só existia a home. Nas páginas por nicho não há `#home`, e o fallback
+> do componente ligava o botão já no topo, por cima do primeiro parágrafo do
+> texto (medido a 390px de largura). Hoje cada página **declara** seu bloco de
+> entrada com `data-cta-apos`: o hero na home, o `.nicho-intro` nas outras.
+> Coberto por `npm run verificar:nichos`.
 * Todos usam `IntersectionObserver` em vez de listener de `scroll`: o navegador reporta o cruzamento em vez de executar código a cada pixel rolado, o que mantém a main thread livre.
 
 > ⚠️ **Não use `threshold` por fração de área em elemento que pode crescer.**
@@ -139,7 +248,11 @@ regra vale para foto que carrega informação.
 
 ## SEO
 
-* `Seo.astro` centraliza title, description, canonical, Open Graph e Twitter Card. Páginas novas devem reusá-lo.
+* `Seo.astro` centraliza title, description, canonical, Open Graph e Twitter Card. Páginas novas devem reusá-lo — o `BaseLayout` já faz isso, então basta passar `title` e `description`.
+* `BreadcrumbSchema.astro` emite o `BreadcrumbList` das páginas por nicho. É o que troca a URL crua no resultado do Google pela trilha legível (`Clara Nasc › Portfólio › Fine Line`). A trilha visível e a do JSON-LD saem da **mesma lista** na página: schema que descreve navegação inexistente conta como divergência.
+* O `LocalBusinessSchema` vai em **todas** as páginas, não só na home. Todos os blocos usam o mesmo `@id`, então o Google lê o mesmo estúdio descrito seis vezes, e não seis estúdios. A página por nicho é justamente a que pode ser a porta de entrada de quem busca "cobertura de tatuagem bh", e precisa carregar endereço e telefone junto.
+* **Links recíprocos**: a home linka as cinco páginas (bloco "Ver por estilo", abaixo da grade) e cada nicho linka os outros quatro e a home. Página órfã o Google demora muito mais para descobrir e trata como menos importante.
+* Links do cabeçalho e do rodapé são `/#secao`, e **não** `#secao`. A âncora nua só funciona na página que tem a seção; em cinco das seis URLs ela não fazia nada.
 * `LocalBusinessSchema.astro` emite JSON-LD com `TattooParlor` + `Person` + `WebSite`, ligados por `@id`. Campos sem dado real são **omitidos**, nunca vazios — campo ausente é lido como "não informado", campo errado como informação falsa.
 * URLs absolutas dependem de `site` estar definido em `astro.config.mjs`.
 * Desde 01/08/2026 **nenhum campo está vazio**: endereço, CEP, coordenadas, horários, telefone, imagem e `sameAs` (Instagram e TikTok) têm dado real. Tudo sai de `siteData.ts`.
@@ -165,13 +278,22 @@ são a mesma entidade.
 
 ## Verificação
 
-Três scripts, todos com Chromium headless (Playwright):
+Quatro scripts, todos com Chromium headless (Playwright):
 
 | Comando | Cobre |
 | --- | --- |
 | `npm run verificar` | botão flutuante por scroll, erros de console, requisições falhas, contraste computado a partir das cores renderizadas e **se a foto da artista tem tamanho de verdade** |
 | `npm run verificar:galeria` | filtro por categoria, abertura e fechamento do lightbox, e se a grade **fica de fato visível** |
+| `npm run verificar:nichos` | as 5 páginas por nicho: H1 único, limites de title/description, canonical vs. sitemap, tamanho da chamada, masonry em 3 colunas, proporção das fotos, `BreadcrumbList` vs. trilha da tela, **`FAQPage` vs. texto visível**, links internos sem 404 e o botão flutuante |
 | `npm run verificar:contraste` | contraste de cada texto do hero e do cabeçalho contra o fundo **renderizado**, pixel a pixel, em 8 larguras |
+
+> ⚠️ Rode o `verificar:nichos` contra `npm run preview`, não contra
+> `npm run dev`. Duas razões, ambas descobertas rodando errado: o Playwright
+> **atravessa shadow DOM aberto**, e a barra de ferramentas do Astro no dev é um
+> web component cheio de `<h1>` — a checagem de "um H1 por página" acusava
+> quatro numa página que tem um só. E o sitemap só existe no build, então a
+> comparação entre canonical e sitemap não roda no dev (o script avisa quando
+> pula).
 
 O tema comum aos três: **existir no DOM não é aparecer.** Cada um nasceu de um
 bug que sobreviveu em produção porque nada olhava aquilo.
@@ -188,10 +310,24 @@ bug que sobreviveu em produção porque nada olhava aquilo.
 > Ao adicionar checagem nova, **valide-a contra o bug**: injete o defeito e
 > confirme que ela reprova. Checagem que nunca falhou não prova nada.
 
+Duas lições que custaram falsos negativos no `verificar:nichos`:
+
+* **Ancore em elemento, nunca em pixel.** Um `scrollTo(0, 2000)` passou enquanto
+  as páginas tinham 300 palavras e reprovou quatro das cinco assim que o texto
+  foi cortado — as páginas encolheram e o rodapé passou a estar visível naquela
+  altura, onde esconder o botão flutuante é o comportamento *correto*. Rolar até
+  `.portfolio-grid--masonry` mede a intenção; rolar até `y=2000` mede o layout
+  de ontem.
+* **Meça a propriedade, não o sintoma.** A checagem de masonry contou primeiro
+  "posições de topo distintas", que reprovava Blackwork porque suas seis fotos
+  têm só duas proporções e as colunas se alinham sozinhas — sem defeito algum. O
+  que o layout precisa ter é altura vinda da própria foto.
+
 Falhas conhecidas e já rastreadas estão declaradas em `FALHAS_ACEITAS`, presente
 nos dois scripts de contraste: aparecem como aviso e não reprovam. Ao corrigir
 uma, remova a entrada. Hoje são as três do `--accent-gold`, que a Clara decidiu
 não alterar por ser cor de marca.
 
-⚠️ O CI (`.github/workflows/verificar.yml`) roda apenas `verificar` e
-`verificar:galeria`. O `verificar:contraste` é manual por enquanto.
+⚠️ O CI (`.github/workflows/verificar.yml`) roda `verificar`,
+`verificar:galeria` e `verificar:nichos`, os três contra o `preview` do build.
+O `verificar:contraste` é manual por enquanto.
