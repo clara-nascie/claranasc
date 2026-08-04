@@ -71,6 +71,26 @@
     background-color: var(--bg-secondary);
 }
 
+/*
+  Respiro menor que o padrao do `.container` e do `.section-header`.
+
+  Aqueles valores (80px de padding, 50px abaixo do cabecalho) foram calibrados
+  para uma secao que abre com titulo grande. Aqui a intro termina numa linha de
+  texto e a galeria abre so com a etiqueta "Galeria" -- com o espacamento
+  padrao, sobrava um vao de 160px lido como pagina quebrada.
+*/
+.nicho-intro .container {
+    padding-bottom: 45px;
+}
+
+.nicho-galeria .container {
+    padding-top: 55px;
+}
+
+.nicho-galeria .section-header {
+    margin-bottom: 30px;
+}
+
 /* --- Perguntas frequentes ---------------------------------------------- */
 
 .nicho-faq {

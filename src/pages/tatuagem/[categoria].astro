@@ -83,11 +83,11 @@ const outrosNichos = NICHOS.filter((outro) => outro.slug !== nicho.slug);
 
     <section class="nicho-galeria" aria-labelledby="titulo-galeria">
       <div class="container">
+        {/* "Galeria" é o próprio H2, e não um `<span>` decorativo acima de um:
+            o título que estava aqui repetia o H1 e saiu. Sem heading a seção
+            ficaria sem nome acessível — o `aria-labelledby` aponta para este id. */}
         <div class="section-header reveal">
-          <span class="section-tag">Galeria</span>
-          <h2 class="section-title" id="titulo-galeria">
-            {rotulo} — {fotos.length} {fotos.length === 1 ? 'trabalho' : 'trabalhos'}
-          </h2>
+          <h2 class="section-tag" id="titulo-galeria">Galeria</h2>
           <div class="header-divider"></div>
         </div>
 
