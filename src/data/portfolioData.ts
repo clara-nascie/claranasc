@@ -21,7 +21,7 @@ import coberturaCrisantemo from '../assets/portfolio/cobertura-crisantemo-ombro.
 import coberturaOnca from '../assets/portfolio/cobertura-onca-flores-braco.webp';
 import coberturaFloralPeito from '../assets/portfolio/cobertura-floral-peito.webp';
 import coberturaSamurai from '../assets/portfolio/cobertura-samurai-braco.webp';
-import coberturaGeometrica from '../assets/portfolio/cobertura-composicao-geometrica-braco.webp';
+import coberturaFullmetal from '../assets/portfolio/cobertura-fullmetal-alchemist-braco.webp';
 import coberturaGuitarra from '../assets/portfolio/cobertura-guitarra-trash-polka-braco.webp';
 import coberturaMargaridas from '../assets/portfolio/cobertura-margaridas-braco.webp';
 import coberturaAguaViva from '../assets/portfolio/cobertura-agua-viva-panturrilha.webp';
@@ -245,12 +245,12 @@ export const portfolioItems: PortfolioItem[] = [
   {
     id: 6,
     destaque: true,
-    title: 'Composição Geométrica',
+    title: 'Fullmetal Alchemist',
     category: 'coberturas',
     categoryLabel: 'Coberturas',
-    image: coberturaGeometrica,
-    alt: 'Cobertura de tatuagem com composição geométrica e figuras em braço fechado',
-    description: 'Geometria e pontilhismo dividindo o espaço para reaproveitar áreas já pigmentadas.'
+    image: coberturaFullmetal,
+    alt: 'Cobertura de tatuagem de Fullmetal Alchemist com círculo de transmutação e personagens em braço fechado',
+    description: 'Cena inteira construída por cima do trabalho anterior, com o círculo de transmutação ancorando a composição.'
   },
   /*
     A partir daqui, a camada de volume (Issue #16). Os ids seguem a ordem de
@@ -308,7 +308,7 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 46,
-    title: 'Água-viva na Panturrilha, de Lado',
+    title: 'Cobertura com Água-viva',
     category: 'coberturas',
     categoryLabel: 'Coberturas',
     image: coberturaAguaVivaLado,
