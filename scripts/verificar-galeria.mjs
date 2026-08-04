@@ -70,6 +70,25 @@ try {
   checar('todos os itens aparecem no início', total > 0 && visiveisInicio === total,
          `${visiveisInicio}/${total}`);
 
+  /*
+    A home é a camada de destaque: 6 por categoria, igual para todas.
+    Sem esta checagem, cada lote importado para as páginas por nicho inflaria a
+    home em silêncio — no primeiro lote ela pulou de 30 para 36 fotos.
+  */
+  const porCategoria = await page.locator('.portfolio-item').evaluateAll((nos) => {
+    const conta = {};
+    for (const n of nos) {
+      const c = n.dataset.category;
+      conta[c] = (conta[c] ?? 0) + 1;
+    }
+    return conta;
+  });
+  const fora = Object.entries(porCategoria).filter(([, n]) => n !== 6);
+  checar('home mostra 6 fotos por categoria', fora.length === 0,
+         fora.length
+           ? fora.map(([c, n]) => `${c}=${n}`).join(', ')
+           : Object.keys(porCategoria).length + ' categorias com 6');
+
   await page.locator('[data-filtro="blackwork"]').click();
   await page.waitForTimeout(150);
   const visiveisBw = await page.locator('.portfolio-item:not(.hidden)').count();

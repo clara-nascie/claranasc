@@ -1,5 +1,5 @@
 ---
-import { portfolioItems, PORTFOLIO_CATEGORIES } from '../../data/portfolioData';
+import { itensDestaque, PORTFOLIO_CATEGORIES } from '../../data/portfolioData';
 import { NICHOS, caminhoDoNicho, rotuloDoNicho } from '../../data/nichosData';
 import GaleriaGrid from '../portfolio/GaleriaGrid.astro';
 
@@ -34,7 +34,9 @@ import GaleriaGrid from '../portfolio/GaleriaGrid.astro';
     </div>
 
     <div class="reveal">
-      <GaleriaGrid itens={portfolioItems} id="portfolio-grid" layout="grade" />
+      {/* Só a camada de destaque: 6 por categoria. As páginas por nicho é que
+          mostram o acervo inteiro. */}
+      <GaleriaGrid itens={itensDestaque} id="portfolio-grid" layout="grade" />
     </div>
 
     {/* Link recíproco: sem isto as cinco páginas ficam órfãs para o Google.

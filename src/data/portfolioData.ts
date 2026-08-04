@@ -22,6 +22,12 @@ import coberturaOnca from '../assets/portfolio/cobertura-onca-flores-braco.webp'
 import coberturaFloralPeito from '../assets/portfolio/cobertura-floral-peito.webp';
 import coberturaSamurai from '../assets/portfolio/cobertura-samurai-braco.webp';
 import coberturaGeometrica from '../assets/portfolio/cobertura-composicao-geometrica-braco.webp';
+import coberturaGuitarra from '../assets/portfolio/cobertura-guitarra-trash-polka-braco.webp';
+import coberturaMargaridas from '../assets/portfolio/cobertura-margaridas-braco.webp';
+import coberturaAguaViva from '../assets/portfolio/cobertura-agua-viva-panturrilha.webp';
+import coberturaPlanetas from '../assets/portfolio/cobertura-planetas-ombro.webp';
+import coberturaFloresColuna from '../assets/portfolio/cobertura-flores-coluna.webp';
+import coberturaCoracao from '../assets/portfolio/cobertura-coracao-anatomico-braco.webp';
 
 // --- Botânico ---
 import botanicoRamo from '../assets/portfolio/botanico-ramo-ombro.webp';
@@ -69,6 +75,18 @@ export interface PortfolioItem {
    *  não da URL. Traz `src`, `width`, `height` e `format` já resolvidos. */
   image: ImageMetadata;
   alt: string;
+  /**
+   * Marca a foto como parte da **camada de destaque**: as que aparecem na home.
+   *
+   * A home mostra 6 por categoria, igual para todas, para nenhuma pesar mais
+   * que outra no que se vê primeiro. As páginas por nicho mostram tudo, sem
+   * cota. Sem esta marca a home cresceria junto com o acervo — no primeiro
+   * lote importado ela pulou de 30 para 36 fotos.
+   *
+   * Para trocar o que aparece na home, mova o `destaque: true` de uma foto
+   * para outra da mesma categoria. Mantenha 6 por categoria.
+   */
+  destaque?: boolean;
   /**
    * ⚠️ Não é renderizado em lugar nenhum desde 04/08/2026.
    *
@@ -123,6 +141,7 @@ export const portfolioItems: PortfolioItem[] = [
   // ------------------------------------------------------------- Coberturas
   {
     id: 1,
+    destaque: true,
     title: 'Girassol em Pontilhismo',
     category: 'coberturas',
     categoryLabel: 'Coberturas',
@@ -132,6 +151,7 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 2,
+    destaque: true,
     title: 'Crisântemo no Ombro',
     category: 'coberturas',
     categoryLabel: 'Coberturas',
@@ -141,6 +161,7 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 3,
+    destaque: true,
     title: 'Onça entre Flores',
     category: 'coberturas',
     categoryLabel: 'Coberturas',
@@ -150,6 +171,7 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 4,
+    destaque: true,
     title: 'Floral no Peito',
     category: 'coberturas',
     categoryLabel: 'Coberturas',
@@ -159,6 +181,7 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 5,
+    destaque: true,
     title: 'Samurai em Braço Fechado',
     category: 'coberturas',
     categoryLabel: 'Coberturas',
@@ -168,6 +191,7 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 6,
+    destaque: true,
     title: 'Composição Geométrica',
     category: 'coberturas',
     categoryLabel: 'Coberturas',
@@ -175,10 +199,65 @@ export const portfolioItems: PortfolioItem[] = [
     alt: 'Cobertura de tatuagem com composição geométrica e figuras em braço fechado',
     description: 'Geometria e pontilhismo dividindo o espaço para reaproveitar áreas já pigmentadas.'
   },
+  /*
+    A partir daqui, a camada de volume (Issue #16). Os ids seguem a ordem de
+    importação e não a posição no array — 31 vem depois de 6 porque 7 a 30 já
+    estavam em uso. Só a unicidade importa: o id indexa o lightbox e o
+    HERO_SHOWCASE_IDS, nunca a ordem de exibição. Renumerar quebraria o hero.
+  */
+  {
+    id: 31,
+    title: 'Guitarra em Trash Polka',
+    category: 'coberturas',
+    categoryLabel: 'Coberturas',
+    image: coberturaGuitarra,
+    alt: 'Cobertura de tatuagem em trash polka com guitarra, letras e respingos vermelhos no braço'
+  },
+  {
+    id: 32,
+    title: 'Margaridas no Braço',
+    category: 'coberturas',
+    categoryLabel: 'Coberturas',
+    image: coberturaMargaridas,
+    alt: 'Cobertura de tatuagem com margaridas e folhagem em preto e cinza no braço'
+  },
+  {
+    id: 33,
+    title: 'Água-viva na Panturrilha',
+    category: 'coberturas',
+    categoryLabel: 'Coberturas',
+    image: coberturaAguaViva,
+    alt: 'Cobertura de tatuagem com água-viva em preto e cinza cobrindo a panturrilha'
+  },
+  {
+    id: 34,
+    title: 'Planetas no Ombro',
+    category: 'coberturas',
+    categoryLabel: 'Coberturas',
+    image: coberturaPlanetas,
+    alt: 'Cobertura de tatuagem com planetas e cauda de cometa em pontilhismo no ombro e clavícula'
+  },
+  {
+    id: 35,
+    title: 'Flores na Coluna',
+    category: 'coberturas',
+    categoryLabel: 'Coberturas',
+    image: coberturaFloresColuna,
+    alt: 'Cobertura de tatuagem com ramo de flores em traço fino na parte alta das costas'
+  },
+  {
+    id: 36,
+    title: 'Coração Anatômico',
+    category: 'coberturas',
+    categoryLabel: 'Coberturas',
+    image: coberturaCoracao,
+    alt: 'Cobertura de tatuagem com coração anatômico e linha de eletrocardiograma contornando o braço'
+  },
 
   // --------------------------------------------------------------- Botânico
   {
     id: 7,
+    destaque: true,
     title: 'Ramo Botânico no Ombro',
     category: 'botanico',
     categoryLabel: 'Botânico',
@@ -188,6 +267,7 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 8,
+    destaque: true,
     title: 'Dente-de-leão na Clavícula',
     category: 'botanico',
     categoryLabel: 'Botânico',
@@ -197,6 +277,7 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 9,
+    destaque: true,
     title: 'Flores nas Costas',
     category: 'botanico',
     categoryLabel: 'Botânico',
@@ -206,6 +287,7 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 10,
+    destaque: true,
     title: 'Braçadeira Floral',
     category: 'botanico',
     categoryLabel: 'Botânico',
@@ -215,6 +297,7 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 11,
+    destaque: true,
     title: 'Folhas e Flores no Braço',
     category: 'botanico',
     categoryLabel: 'Botânico',
@@ -224,6 +307,7 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 12,
+    destaque: true,
     title: 'Girassol na Costela',
     category: 'botanico',
     categoryLabel: 'Botânico',
@@ -235,6 +319,7 @@ export const portfolioItems: PortfolioItem[] = [
   // ----------------------------------------------------------- Geek & Animes
   {
     id: 13,
+    destaque: true,
     title: 'Torre e Anel',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
@@ -244,6 +329,7 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 14,
+    destaque: true,
     title: 'Gato de Cheshire nas Costas',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
@@ -253,6 +339,7 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 15,
+    destaque: true,
     title: 'Coringa no Braço',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
@@ -262,6 +349,7 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 16,
+    destaque: true,
     title: 'Dragão com Detalhe em Vermelho',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
@@ -271,6 +359,7 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 17,
+    destaque: true,
     title: 'Árvore Branca no Ombro',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
@@ -280,6 +369,7 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 18,
+    destaque: true,
     title: 'Caveira Alada',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
@@ -291,6 +381,7 @@ export const portfolioItems: PortfolioItem[] = [
   // -------------------------------------------------------------- Blackwork
   {
     id: 19,
+    destaque: true,
     title: 'Lobo Geométrico',
     category: 'blackwork',
     categoryLabel: 'Blackwork',
@@ -300,6 +391,7 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 20,
+    destaque: true,
     title: 'Faixas em Preto Sólido',
     category: 'blackwork',
     categoryLabel: 'Blackwork',
@@ -309,6 +401,7 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 21,
+    destaque: true,
     title: 'Vegvisir e Corvo',
     category: 'blackwork',
     categoryLabel: 'Blackwork',
@@ -318,6 +411,7 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 22,
+    destaque: true,
     title: 'Máscara Tribal',
     category: 'blackwork',
     categoryLabel: 'Blackwork',
@@ -327,6 +421,7 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 23,
+    destaque: true,
     title: 'Tucano em Losango',
     category: 'blackwork',
     categoryLabel: 'Blackwork',
@@ -336,6 +431,7 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 24,
+    destaque: true,
     title: 'Navio e Polvo',
     category: 'blackwork',
     categoryLabel: 'Blackwork',
@@ -347,6 +443,7 @@ export const portfolioItems: PortfolioItem[] = [
   // -------------------------------------------------------------- Fine Line
   {
     id: 25,
+    destaque: true,
     title: 'Figura entre Nuvens',
     category: 'fineline',
     categoryLabel: 'Fine Line',
@@ -356,6 +453,7 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 26,
+    destaque: true,
     title: 'Medusa',
     category: 'fineline',
     categoryLabel: 'Fine Line',
@@ -365,6 +463,7 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 27,
+    destaque: true,
     title: 'Espelho e Tesoura',
     category: 'fineline',
     categoryLabel: 'Fine Line',
@@ -374,6 +473,7 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 28,
+    destaque: true,
     title: 'Livros e Cartola',
     category: 'fineline',
     categoryLabel: 'Fine Line',
@@ -383,6 +483,7 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 29,
+    destaque: true,
     title: 'Borboleta',
     category: 'fineline',
     categoryLabel: 'Fine Line',
@@ -392,6 +493,7 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 30,
+    destaque: true,
     title: 'Cavalo',
     category: 'fineline',
     categoryLabel: 'Fine Line',
@@ -400,6 +502,15 @@ export const portfolioItems: PortfolioItem[] = [
     description: 'Economia de traço: a crina é sugerida, não desenhada.'
   }
 ];
+
+/**
+ * A camada de destaque: o que a home mostra.
+ *
+ * 6 por categoria, igual para todas. As páginas por nicho consomem
+ * `portfolioItems` inteiro, sem cota — é o que separa "equilibrar as
+ * categorias" de "mostrar volume de trabalho" sem ter que escolher um dos dois.
+ */
+export const itensDestaque: PortfolioItem[] = portfolioItems.filter((item) => item.destaque);
 
 /**
  * Itens da vitrine do hero, resolvidos a partir de `HERO_SHOWCASE_IDS`.
