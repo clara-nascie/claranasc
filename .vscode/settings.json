@@ -1,0 +1,18 @@
+{
+  // Quebra visualmente as linhas longas em vez de exigir rolagem lateral.
+  //
+  // Não muda o arquivo: a linha continua sendo uma só no disco. Precisa existir
+  // porque os textos do site (respostas do FAQ, descrições de SEO) são frases
+  // de prosa, e frase de prosa não pode ser quebrada no meio — em JavaScript,
+  // string entre aspas tem que terminar na mesma linha em que começa.
+  "editor.wordWrap": "on",
+  // Quebra alinhada com a indentação, para o texto continuar parecendo um bloco.
+  "editor.wrappingIndent": "indent",
+
+  // Régua visual nos 80 caracteres. Serve para o código; o texto passa direto.
+  "editor.rulers": [80],
+
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true
+}
