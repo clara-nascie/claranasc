@@ -46,6 +46,23 @@
  *
  * Repetir "Cobertura de tatuagem com..." em todas é intencional, não descuido:
  * é o termo de busca, e o Google Imagens lê o `alt` de cada foto isoladamente.
+ *
+ * ## O que NÃO descartar
+ *
+ * Regra da Clara (04/08/2026), depois de eu ter cortado fotos demais:
+ *
+ * - **Ângulo diferente da mesma tatuagem entra.** Uma peça que dá a volta no
+ *   braço não cabe em uma foto só, e cada ângulo mostra uma parte que a outra
+ *   não mostra. Descartar como "repetida" apaga metade do trabalho.
+ * - **Marca d'água do @tattookapala não é impedimento.** É o estúdio antigo, e
+ *   ela considera irrelevante.
+ *
+ * O que sobra para descartar: arquivo ilegível e duplicata exata — que é o que
+ * o `inventario-fotos.mjs` já detecta sozinho.
+ *
+ * Quando duas fotos são a mesma peça, o nome descreve o que aquela vista tem
+ * de próprio (`-outro-lado`, `-completa`) em vez de virar `-2`. O nome do
+ * arquivo é conteúdo, não identificador.
  */
 import { readFile, writeFile, stat } from 'node:fs/promises';
 import path from 'node:path';

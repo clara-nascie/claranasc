@@ -41,6 +41,10 @@ import botanicoRamoFolhas from '../assets/portfolio/botanico-ramo-folhas-antebra
 import botanicoCafe from '../assets/portfolio/botanico-ramo-de-cafe-punho.webp';
 import botanicoMargarida from '../assets/portfolio/botanico-margarida-colorida-antebraco.webp';
 import botanicoFloresMiudas from '../assets/portfolio/botanico-ramo-flores-miudas-braco.webp';
+import botanicoLetteringFrente from '../assets/portfolio/botanico-flores-e-lettering-antebraco-de-frente.webp';
+import botanicoRamoOutroLado from '../assets/portfolio/botanico-ramo-folhas-antebraco-outro-lado.webp';
+import botanicoHortensia from '../assets/portfolio/botanico-hortensia-e-abelha-braco.webp';
+import botanicoBracadeiraCompleta from '../assets/portfolio/botanico-bracadeira-floral-antebraco-completa.webp';
 
 // --- Geek & Animes ---
 import geekTorre from '../assets/portfolio/geek-torre-e-anel-ombro.webp';
@@ -359,6 +363,44 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Botânico',
     image: botanicoFloresMiudas,
     alt: 'Tatuagem botânica de ramo com folhas e flores miúdas em traço fino no braço, acima do cotovelo'
+  },
+  /*
+    As quatro abaixo são outras vistas de peças que já aparecem acima ou no
+    destaque. Não são repetição: uma tatuagem que dá a volta no braço não cabe
+    em uma foto só, e cada ângulo mostra o que o outro esconde. Decisão da
+    Clara — não "limpe" isso achando que é duplicata.
+  */
+  {
+    id: 42,
+    title: 'Flores e Lettering de Frente',
+    category: 'botanico',
+    categoryLabel: 'Botânico',
+    image: botanicoLetteringFrente,
+    alt: 'Tatuagem botânica com flores em traço fino e lettering no antebraço, vista de frente'
+  },
+  {
+    id: 43,
+    title: 'Volta do Ramo no Antebraço',
+    category: 'botanico',
+    categoryLabel: 'Botânico',
+    image: botanicoRamoOutroLado,
+    alt: 'Tatuagem botânica de ramo com folhas dando a volta no antebraço, vista pelo lado interno'
+  },
+  {
+    id: 44,
+    title: 'Hortênsia e Abelha',
+    category: 'botanico',
+    categoryLabel: 'Botânico',
+    image: botanicoHortensia,
+    alt: 'Tatuagem botânica de hortênsia com abelha em traço fino no braço, acima do cotovelo'
+  },
+  {
+    id: 45,
+    title: 'Braçadeira Floral Completa',
+    category: 'botanico',
+    categoryLabel: 'Botânico',
+    image: botanicoBracadeiraCompleta,
+    alt: 'Tatuagem botânica em braçadeira floral com ramo fino contornando o antebraço, vista completa'
   },
 
   // ----------------------------------------------------------- Geek & Animes
