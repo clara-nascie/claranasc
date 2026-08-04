@@ -36,6 +36,11 @@ import botanicoFloresCostas from '../assets/portfolio/botanico-flores-costas.web
 import botanicoBracadeira from '../assets/portfolio/botanico-bracadeira-floral-antebraco.webp';
 import botanicoFolhasFlores from '../assets/portfolio/botanico-folhas-flores-braco.webp';
 import botanicoGirassol from '../assets/portfolio/botanico-girassol-costela.webp';
+import botanicoLettering from '../assets/portfolio/botanico-flores-e-lettering-antebraco.webp';
+import botanicoRamoFolhas from '../assets/portfolio/botanico-ramo-folhas-antebraco.webp';
+import botanicoCafe from '../assets/portfolio/botanico-ramo-de-cafe-punho.webp';
+import botanicoMargarida from '../assets/portfolio/botanico-margarida-colorida-antebraco.webp';
+import botanicoFloresMiudas from '../assets/portfolio/botanico-ramo-flores-miudas-braco.webp';
 
 // --- Geek & Animes ---
 import geekTorre from '../assets/portfolio/geek-torre-e-anel-ombro.webp';
@@ -211,7 +216,7 @@ export const portfolioItems: PortfolioItem[] = [
     category: 'coberturas',
     categoryLabel: 'Coberturas',
     image: coberturaGuitarra,
-    alt: 'Cobertura de tatuagem em trash polka com guitarra, letras e respingos vermelhos no braço'
+    alt: 'Cobertura de tatuagem em trash polka com guitarra, letras e respingos vermelhos no braço, do ombro ao bíceps'
   },
   {
     id: 32,
@@ -219,7 +224,7 @@ export const portfolioItems: PortfolioItem[] = [
     category: 'coberturas',
     categoryLabel: 'Coberturas',
     image: coberturaMargaridas,
-    alt: 'Cobertura de tatuagem com margaridas e folhagem em preto e cinza no braço'
+    alt: 'Cobertura de tatuagem com margaridas e folhagem em preto e cinza no braço, sobre o tríceps'
   },
   {
     id: 33,
@@ -251,7 +256,7 @@ export const portfolioItems: PortfolioItem[] = [
     category: 'coberturas',
     categoryLabel: 'Coberturas',
     image: coberturaCoracao,
-    alt: 'Cobertura de tatuagem com coração anatômico e linha de eletrocardiograma contornando o braço'
+    alt: 'Cobertura de tatuagem com coração anatômico e linha de eletrocardiograma no braço, sobre o bíceps'
   },
 
   // --------------------------------------------------------------- Botânico
@@ -314,6 +319,46 @@ export const portfolioItems: PortfolioItem[] = [
     image: botanicoGirassol,
     alt: 'Tatuagem de girassol com folhas na lateral da costela',
     description: 'Região sensível, resolvida em uma sessão com linha contínua e pouco preenchimento.'
+  },
+  {
+    id: 37,
+    title: 'Flores e Lettering',
+    category: 'botanico',
+    categoryLabel: 'Botânico',
+    image: botanicoLettering,
+    alt: 'Tatuagem botânica com flores em traço fino e a palavra Família em lettering no antebraço'
+  },
+  {
+    id: 38,
+    title: 'Ramo de Folhas no Antebraço',
+    category: 'botanico',
+    categoryLabel: 'Botânico',
+    image: botanicoRamoFolhas,
+    alt: 'Tatuagem botânica de ramo com folhas contornando o antebraço, em traço fino com pontilhismo'
+  },
+  {
+    id: 39,
+    title: 'Ramo de Café',
+    category: 'botanico',
+    categoryLabel: 'Botânico',
+    image: botanicoCafe,
+    alt: 'Tatuagem botânica de ramo de café com frutos e folhas em pontilhismo, contornando o punho'
+  },
+  {
+    id: 40,
+    title: 'Margarida',
+    category: 'botanico',
+    categoryLabel: 'Botânico',
+    image: botanicoMargarida,
+    alt: 'Tatuagem botânica de margarida com miolo amarelo e folhas verdes no antebraço'
+  },
+  {
+    id: 41,
+    title: 'Ramo com Flores Miúdas',
+    category: 'botanico',
+    categoryLabel: 'Botânico',
+    image: botanicoFloresMiudas,
+    alt: 'Tatuagem botânica de ramo com folhas e flores miúdas em traço fino no braço, acima do cotovelo'
   },
 
   // ----------------------------------------------------------- Geek & Animes

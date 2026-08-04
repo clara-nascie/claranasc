@@ -30,6 +30,22 @@
  *       }
  *     ]
  *   }
+ *
+ * ## Como escrever o `alt`
+ *
+ *   <categoria> de tatuagem com <assunto> em <técnica> no <região>, sobre o
+ *   <sub-região>
+ *
+ * **Cite a região geral E a específica.** Regra da Clara (04/08/2026): ela
+ * diferencia bíceps de tríceps, mas quem busca digita "tatuagem braço" — e
+ * descobre que quer no bíceps ao ver um exemplo. "no braço, sobre o bíceps"
+ * atende as duas buscas; só "bíceps" perde a maior das duas.
+ *
+ * Onde não der para afirmar a sub-região olhando a foto, fique no termo geral.
+ * `alt` errado é pior que `alt` genérico.
+ *
+ * Repetir "Cobertura de tatuagem com..." em todas é intencional, não descuido:
+ * é o termo de busca, e o Google Imagens lê o `alt` de cada foto isoladamente.
  */
 import { readFile, writeFile, stat } from 'node:fs/promises';
 import path from 'node:path';
