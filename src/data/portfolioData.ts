@@ -32,7 +32,7 @@ import coberturaAguaVivaLado from '../assets/portfolio/cobertura-agua-viva-pantu
 
 // --- Botânico ---
 import botanicoRamo from '../assets/portfolio/botanico-ramo-ombro.webp';
-import botanicoDenteDeLeao from '../assets/portfolio/botanico-dente-de-leao-clavicula.webp';
+import botanicoSempreViva from '../assets/portfolio/botanico-sempre-viva-clavicula.webp';
 import botanicoFloresCostas from '../assets/portfolio/botanico-flores-costas.webp';
 import botanicoBracadeira from '../assets/portfolio/botanico-bracadeira-floral-antebraco.webp';
 import botanicoFolhasFlores from '../assets/portfolio/botanico-folhas-flores-braco.webp';
@@ -41,10 +41,10 @@ import botanicoLettering from '../assets/portfolio/botanico-flores-e-lettering-a
 import botanicoRamoFolhas from '../assets/portfolio/botanico-ramo-folhas-antebraco.webp';
 import botanicoCafe from '../assets/portfolio/botanico-ramo-de-cafe-punho.webp';
 import botanicoMargarida from '../assets/portfolio/botanico-margarida-colorida-antebraco.webp';
-import botanicoFloresMiudas from '../assets/portfolio/botanico-ramo-flores-miudas-braco.webp';
+import botanicoBuqueDeNoiva from '../assets/portfolio/botanico-ramo-de-buque-de-noiva-braco.webp';
 import botanicoLetteringFrente from '../assets/portfolio/botanico-flores-e-lettering-antebraco-de-frente.webp';
 import botanicoRamoOutroLado from '../assets/portfolio/botanico-ramo-folhas-antebraco-outro-lado.webp';
-import botanicoHortensia from '../assets/portfolio/botanico-hortensia-e-abelha-braco.webp';
+import botanicoFloralDelicado from '../assets/portfolio/botanico-floral-delicado-braco.webp';
 import botanicoBracadeiraCompleta from '../assets/portfolio/botanico-bracadeira-floral-antebraco-completa.webp';
 
 // --- Geek & Animes ---
@@ -229,7 +229,7 @@ export const portfolioItems: PortfolioItem[] = [
     category: 'coberturas',
     categoryLabel: 'Coberturas',
     image: coberturaFloralPeito,
-    alt: 'Cobertura de tatuagem com composição floral simétrica no peito',
+    alt: 'Cobertura de tatuagem com composição floral no peito',
     description: 'Composição simétrica que acompanha as clavículas e distribui o peso do preto.'
   },
   {
@@ -239,7 +239,7 @@ export const portfolioItems: PortfolioItem[] = [
     category: 'coberturas',
     categoryLabel: 'Coberturas',
     image: coberturaSamurai,
-    alt: 'Cobertura de tatuagem com samurai, montanhas e torii em braço fechado',
+    alt: 'Cobertura de tatuagem com  samurai, montanhas e torii em braço fechado',
     description: 'Cena inteira construída por cima do trabalho anterior, do ombro ao cotovelo.'
   },
   {
@@ -654,17 +654,17 @@ export const portfolioItems: PortfolioItem[] = [
   {
     id: 8,
     destaque: true,
-    title: 'Dente-de-leão na Clavícula',
+    title: 'Sempre-viva na Clavícula',
     category: 'botanico',
     categoryLabel: 'Botânico',
-    image: botanicoDenteDeLeao,
-    alt: 'Tatuagem de dente-de-leão em traço fino sobre a clavícula',
-    description: 'Sementes soltas em pontos finos, que envelhecem melhor do que linhas muito próximas.'
+    image: botanicoSempreViva,
+    alt: 'Tatuagem botânica de sempre-viva em traço fino sobre a clavícula',
+    description: 'Florzinhas em pontos finos e separados, que envelhecem melhor do que linhas muito próximas.'
   },
   {
     id: 9,
     destaque: true,
-    title: 'Flores nas Costas',
+    title: 'Floral nas Costas',
     category: 'botanico',
     categoryLabel: 'Botânico',
     image: botanicoFloresCostas,
@@ -735,11 +735,11 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 41,
-    title: 'Ramo com Flores Miúdas',
+    title: 'Ramo de Buquê-de-noiva',
     category: 'botanico',
     categoryLabel: 'Botânico',
-    image: botanicoFloresMiudas,
-    alt: 'Tatuagem botânica de ramo com folhas e flores miúdas em traço fino no braço, acima do cotovelo'
+    image: botanicoBuqueDeNoiva,
+    alt: 'Tatuagem botânica de ramo de buquê-de-noiva em traço fino no braço, acima do cotovelo'
   },
   /*
     As quatro abaixo são outras vistas de peças que já aparecem acima ou no
@@ -749,7 +749,7 @@ export const portfolioItems: PortfolioItem[] = [
   */
   {
     id: 42,
-    title: 'Flores e Lettering de Frente',
+    title: 'Flores e Fineline',
     category: 'botanico',
     categoryLabel: 'Botânico',
     image: botanicoLetteringFrente,
@@ -765,11 +765,11 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 44,
-    title: 'Hortênsia e Abelha',
+    title: 'Floral Delicado',
     category: 'botanico',
     categoryLabel: 'Botânico',
-    image: botanicoHortensia,
-    alt: 'Tatuagem botânica de hortênsia com abelha em traço fino no braço, acima do cotovelo'
+    image: botanicoFloralDelicado,
+    alt: 'Tatuagem botânica de floral delicado em traço fino no braço, acima do cotovelo'
   },
   {
     id: 45,
