@@ -80,22 +80,38 @@ try {
     checar('página responde 200', resposta?.status() === 200, `status=${resposta?.status()}`);
 
     /*
-      Rola a página inteira antes de medir qualquer coisa da galeria.
+      Força o carregamento das fotos antes de medir qualquer coisa da galeria.
 
-      As fotos são `loading="lazy"`: as que estão abaixo da dobra têm
-      `naturalWidth` zero até entrarem na tela, e a checagem de proporção
-      dividia por zero. Passou com 6 fotos e reprovou com 26 — e a página
-      estava certa nas duas vezes (medida depois de rolar, a divergência é
-      0.0000). É teste medindo antes de a foto existir.
+      As fotos são `loading="lazy"`: as de baixo da dobra têm `naturalWidth`
+      zero até entrarem na tela, e a checagem de proporção dividia por zero.
+      Passou com 6 fotos, reprovou com 26, e a página estava certa nas duas.
+
+      Duas tentativas anteriores erraram por simular o que a visitante faz em
+      vez de pedir o que o teste precisa: rolar + esperar 1,2s quebrou com 46
+      fotos, e rolar + esperar a condição estourou o tempo porque a altura da
+      página cresce enquanto as imagens chegam, e o laço de rolagem termina
+      antes de alcançar o fim.
+
+      Trocar `loading` para `eager` manda o navegador buscar todas de uma vez,
+      sem depender de posição de scroll. E a espera virou uma checagem própria:
+      se alguma não carregar, isso é defeito da página e deve aparecer como
+      falha nomeada, não como exceção do script.
     */
-    await page.evaluate(async () => {
-      for (let y = 0; y < document.body.scrollHeight; y += 600) {
-        window.scrollTo(0, y);
-        await new Promise((r) => setTimeout(r, 120));
-      }
-      window.scrollTo(0, 0);
+    await page.locator('.portfolio-item--livre img').evaluateAll((imgs) => {
+      for (const img of imgs) img.loading = 'eager';
     });
-    await page.waitForTimeout(1200);
+    const todasCarregaram = await page
+      .waitForFunction(
+        () =>
+          [...document.querySelectorAll('.portfolio-item--livre img')].every(
+            (img) => img.complete && img.naturalWidth > 0
+          ),
+        null,
+        { timeout: 30000 }
+      )
+      .then(() => true)
+      .catch(() => false);
+    checar('todas as fotos da galeria carregam', todasCarregaram);
 
     // --- identidade da página ---
     // `main h1` e não `h1`: o Playwright atravessa shadow DOM, e a barra de

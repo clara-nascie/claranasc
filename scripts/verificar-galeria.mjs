@@ -1,20 +1,3 @@
-/**
- * Verificação da galeria do portfólio.
- *
- * Complementa `verificar-visual.mjs`, que olha o botão flutuante, contraste e
- * console. Aqui o alvo são as duas interações reescritas quando a galeria
- * deixou de ser React: o filtro por categoria e a abertura do lightbox.
- *
- * Existe uma checagem que parece redundante mas não é — a de opacidade. Contar
- * itens no DOM não prova que a visitante os vê: `.reveal` começa em
- * `opacity: 0` e depende de um IntersectionObserver. Um `threshold` medido por
- * fração de área já deixou a galeria permanentemente invisível no celular com
- * os 30 itens no lugar certo e nenhuma outra verificação reclamando.
- *
- * Uso:
- *   npm run preview        (em outro terminal)
- *   npm run verificar:galeria
- */
 import { chromium } from 'playwright';
 
 const BASE_URL = process.env.BASE_URL ?? 'http://localhost:4321';
