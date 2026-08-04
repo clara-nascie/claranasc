@@ -60,14 +60,8 @@ const TAMANHOS = '(max-width: 639px) 90vw, (max-width: 991px) 43vw, 380px';
           decoding="async"
         />
         <div class="portfolio-hover">
-          {/* No masonry a legenda fica visível embaixo da foto — repetir título
-              e categoria aqui seria dizer a mesma coisa duas vezes. */}
-          {!eMasonry && (
-            <>
-              <span class="item-category">{item.categoryLabel}</span>
-              <h3 class="item-title">{item.title}</h3>
-            </>
-          )}
+          <span class="item-category">{item.categoryLabel}</span>
+          <h3 class="item-title">{item.title}</h3>
           <button
             type="button"
             class="btn-zoom lightbox-trigger"
@@ -98,14 +92,6 @@ const TAMANHOS = '(max-width: 639px) 90vw, (max-width: 991px) 43vw, 380px';
           </button>
         </div>
       </div>
-
-      {/* Título visível, e não só no hover: em celular não existe hover. */}
-      {eMasonry && (
-        <figcaption class="portfolio-legenda">
-          <h3 class="legenda-titulo">{item.title}</h3>
-          {item.description && <p class="legenda-texto">{item.description}</p>}
-        </figcaption>
-      )}
     </figure>
   ))}
 </div>

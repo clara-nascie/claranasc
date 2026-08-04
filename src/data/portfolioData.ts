@@ -70,9 +70,13 @@ export interface PortfolioItem {
   image: ImageMetadata;
   alt: string;
   /**
-   * Texto de apoio do item. Ainda não é renderizado na home — será consumido
-   * pelas páginas por nicho (Issue 11), onde cada item ganha legenda própria.
-   * Não remova como código morto: o conteúdo é autoral.
+   * ⚠️ Não é renderizado em lugar nenhum desde 04/08/2026.
+   *
+   * Chegou a virar legenda embaixo da foto nas páginas por nicho e a Clara
+   * removeu no mesmo dia — "só as fotos fica melhor". Os 30 textos que existem
+   * ficam porque são autorais e não custam nada; **fotos novas não precisam
+   * deste campo**. O que descreve a foto para o Google e para leitor de tela
+   * é o `alt`, que é obrigatório.
    */
   description?: string;
 }

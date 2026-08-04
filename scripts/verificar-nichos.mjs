@@ -152,9 +152,14 @@ try {
            alturasDistintas >= proporcoesDistintas,
            `${alturasDistintas} alturas para ${proporcoesDistintas} proporções`);
 
-    // --- legendas ---
-    const legendas = await page.locator('.portfolio-legenda .legenda-titulo').count();
-    checar('toda foto tem legenda visível', legendas === totalFotos, `${legendas}/${totalFotos}`);
+    // Sem legenda visível desde 04/08/2026, o `alt` é o único texto que descreve
+    // cada foto — para leitor de tela e para o Google Imagens.
+    const alts = await page
+      .locator('.portfolio-item--livre img')
+      .evaluateAll((imgs) => imgs.map((i) => i.getAttribute('alt') ?? ''));
+    const semAlt = alts.filter((a) => a.trim().length < 15);
+    checar('toda foto tem alt descritivo', semAlt.length === 0,
+           semAlt.length ? `${semAlt.length} sem alt útil` : `${alts.length} fotos`);
 
     // --- perguntas frequentes ---
     const perguntasNaTela = (await page.locator('.faq-item summary').allTextContents())

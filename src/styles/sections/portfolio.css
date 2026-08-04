@@ -105,23 +105,9 @@
     object-fit: initial;
 }
 
-.portfolio-legenda {
-    padding: 14px 2px 0;
-}
-
-.legenda-titulo {
-    font-size: 1.05rem;
-    text-transform: uppercase;
-    letter-spacing: 0.01em;
-    color: var(--text-primary);
-}
-
-.legenda-texto {
-    margin-top: 6px;
-    font-size: 0.9rem;
-    line-height: 1.6;
-    color: var(--text-secondary);
-}
+/* Sem legenda embaixo da foto: decisao da Clara em 04/08/2026 -- "so as fotos
+   fica melhor". O titulo e a categoria seguem no overlay de hover, igual a
+   grade da home. */
 
 .portfolio-img-wrapper {
     position: relative;
