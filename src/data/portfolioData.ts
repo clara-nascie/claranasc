@@ -71,6 +71,29 @@ import finelineLivros from '../assets/portfolio/fineline-livros-e-cartola-coxa.w
 import finelineBorboleta from '../assets/portfolio/fineline-borboleta-antebraco.webp';
 import finelineCavalo from '../assets/portfolio/fineline-cavalo-costas.webp';
 
+// IMPORTS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
+// Não remova o marcador nem escreva abaixo dele à mão.
+import geekSimboloCircularPeito from '../assets/portfolio/geek-simbolo-circular-peito.webp';
+import geekOnePieceLetteringPeito from '../assets/portfolio/geek-one-piece-lettering-peito.webp';
+import geekOnePiecePeitoCompleto from '../assets/portfolio/geek-one-piece-peito-completo.webp';
+import geekPersonagensEmAquarelaPerna from '../assets/portfolio/geek-personagens-em-aquarela-perna.webp';
+import geekCalciferAntebraco from '../assets/portfolio/geek-calcifer-antebraco.webp';
+import geekDeadpoolQuadrinhoAntebraco from '../assets/portfolio/geek-deadpool-quadrinho-antebraco.webp';
+import geekBobEsponjaNoLapisBraco from '../assets/portfolio/geek-bob-esponja-no-lapis-braco.webp';
+import geekColagemRetroAntebraco from '../assets/portfolio/geek-colagem-retro-antebraco.webp';
+import geekManoplaDoInfinitoAntebraco from '../assets/portfolio/geek-manopla-do-infinito-antebraco.webp';
+import geekPokemonLinhaDoCharmanderAntebraco from '../assets/portfolio/geek-pokemon-linha-do-charmander-antebraco.webp';
+import geekSenhorDosAneisEspadaArcoMachadoAntebraco from '../assets/portfolio/geek-senhor-dos-aneis-espada-arco-machado-antebraco.webp';
+import geekSenhorDosAneisEspadaArcoMachadoAntebracoDeLado from '../assets/portfolio/geek-senhor-dos-aneis-espada-arco-machado-antebraco-de-lado.webp';
+import geekBioshockFarolPanturrilha from '../assets/portfolio/geek-bioshock-farol-panturrilha.webp';
+import geekTheWitcherMedalhaoPanturrilha from '../assets/portfolio/geek-the-witcher-medalhao-panturrilha.webp';
+import geekCenaDeCoelhosAntebraco from '../assets/portfolio/geek-cena-de-coelhos-antebraco.webp';
+import geekTRexPunkPerna from '../assets/portfolio/geek-t-rex-punk-perna.webp';
+import geekLifeIsStrangeBorboletaPanturrilha from '../assets/portfolio/geek-life-is-strange-borboleta-panturrilha.webp';
+import geekPersonagemEmCirculoDeChamasPanturrilha from '../assets/portfolio/geek-personagem-em-circulo-de-chamas-panturrilha.webp';
+import geekVanEmBlackworkCoxa from '../assets/portfolio/geek-van-em-blackwork-coxa.webp';
+import geekCenaEmMolduraCircularPanturrilha from '../assets/portfolio/geek-cena-em-moldura-circular-panturrilha.webp';
+
 export interface PortfolioCategory {
   id: string;
   label: string;
@@ -270,6 +293,171 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Coberturas',
     image: coberturaAguaVivaLado,
     alt: 'Cobertura de tatuagem com água-viva em preto e cinza na panturrilha, vista pela lateral da perna'
+  },
+
+  // ITENS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
+  // A partir deste ponto os itens vêm na ordem de importação, não por
+  // categoria: a página filtra por `category`, então a ordem no array não
+  // muda nada do que aparece na tela.
+  {
+    id: 47,
+    title: 'Símbolo em Blackwork no Peito',
+    category: 'geek',
+    categoryLabel: 'Geek & Animes',
+    image: geekSimboloCircularPeito,
+    alt: 'Tatuagem geek de símbolo circular em traço pincelado e preto sólido no peito'
+  },
+  {
+    id: 48,
+    title: '3D2Y e ASCE',
+    category: 'geek',
+    categoryLabel: 'Geek & Animes',
+    image: geekOnePieceLetteringPeito,
+    alt: 'Tatuagem geek de One Piece com as inscrições 3D2Y e ASCE em lettering no peito'
+  },
+  {
+    id: 49,
+    title: 'Peito Fechado em One Piece',
+    category: 'geek',
+    categoryLabel: 'Geek & Animes',
+    image: geekOnePiecePeitoCompleto,
+    alt: 'Tatuagem geek de One Piece no peito, com símbolo circular e lettering 3D2Y e ASCE, vista completa'
+  },
+  {
+    id: 50,
+    title: 'Personagens em Aquarela',
+    category: 'geek',
+    categoryLabel: 'Geek & Animes',
+    image: geekPersonagensEmAquarelaPerna,
+    alt: 'Tatuagem geek de personagens de animação em aquarela colorida na perna'
+  },
+  {
+    id: 51,
+    title: 'Calcifer',
+    category: 'geek',
+    categoryLabel: 'Geek & Animes',
+    image: geekCalciferAntebraco,
+    alt: 'Tatuagem geek do Calcifer, de O Castelo Animado, em cores no antebraço'
+  },
+  {
+    id: 52,
+    title: 'Deadpool em Quadrinho',
+    category: 'geek',
+    categoryLabel: 'Geek & Animes',
+    image: geekDeadpoolQuadrinhoAntebraco,
+    alt: 'Tatuagem geek do Deadpool em quadro de história em quadrinhos com a legenda Maximum Effort, no antebraço'
+  },
+  {
+    id: 53,
+    title: 'Bob Esponja no Lápis',
+    category: 'geek',
+    categoryLabel: 'Geek & Animes',
+    image: geekBobEsponjaNoLapisBraco,
+    alt: 'Tatuagem geek do Bob Esponja em traço de rabisco pendurado em um lápis, em blackwork no braço'
+  },
+  {
+    id: 54,
+    title: 'Colagem Retrô',
+    category: 'geek',
+    categoryLabel: 'Geek & Animes',
+    image: geekColagemRetroAntebraco,
+    alt: 'Tatuagem geek em colagem de eletrônicos antigos, robô e gato, com detalhes coloridos no antebraço'
+  },
+  {
+    id: 55,
+    title: 'Manopla do Infinito',
+    category: 'geek',
+    categoryLabel: 'Geek & Animes',
+    image: geekManoplaDoInfinitoAntebraco,
+    alt: 'Tatuagem geek da Manopla do Infinito em traço fino com a frase Parte da jornada é o fim, no antebraço'
+  },
+  {
+    id: 56,
+    title: 'Linha Evolutiva do Charmander',
+    category: 'geek',
+    categoryLabel: 'Geek & Animes',
+    image: geekPokemonLinhaDoCharmanderAntebraco,
+    alt: 'Tatuagem geek de Pokémon com Charmander, Charmeleon e Charizard e chamas em laranja, no antebraço'
+  },
+  {
+    id: 57,
+    title: 'Espada, Arco e Machado',
+    category: 'geek',
+    categoryLabel: 'Geek & Animes',
+    image: geekSenhorDosAneisEspadaArcoMachadoAntebraco,
+    alt: 'Tatuagem geek de O Senhor dos Anéis com espada, arco e machado e a frase You have my sword, no antebraço'
+  },
+  {
+    id: 58,
+    title: 'Espada, Arco e Machado, de Lado',
+    category: 'geek',
+    categoryLabel: 'Geek & Animes',
+    image: geekSenhorDosAneisEspadaArcoMachadoAntebracoDeLado,
+    alt: 'Tatuagem geek de O Senhor dos Anéis com espada, arco e machado no antebraço, vista pela lateral'
+  },
+  {
+    id: 59,
+    title: 'Farol de BioShock',
+    category: 'geek',
+    categoryLabel: 'Geek & Animes',
+    image: geekBioshockFarolPanturrilha,
+    alt: 'Tatuagem geek de BioShock com farol e a frase No gods or kings, only man, em pontilhismo na panturrilha'
+  },
+  {
+    id: 60,
+    title: 'Medalhão do Bruxo',
+    category: 'geek',
+    categoryLabel: 'Geek & Animes',
+    image: geekTheWitcherMedalhaoPanturrilha,
+    alt: 'Tatuagem geek de The Witcher com o medalhão do lobo e as duas espadas, em blackwork na panturrilha'
+  },
+  {
+    id: 61,
+    title: 'Cena de Coelhos',
+    category: 'geek',
+    categoryLabel: 'Geek & Animes',
+    image: geekCenaDeCoelhosAntebraco,
+    alt: 'Tatuagem geek com cena de coelhos e figuras em pontilhismo, com respingos em vermelho, no antebraço'
+  },
+  {
+    id: 62,
+    title: 'T-Rex Punk',
+    category: 'geek',
+    categoryLabel: 'Geek & Animes',
+    image: geekTRexPunkPerna,
+    alt: 'Tatuagem geek de T-Rex punk com moicano colorido e lettering em grafite, na perna'
+  },
+  {
+    id: 63,
+    title: 'Borboleta e Polaroid',
+    category: 'geek',
+    categoryLabel: 'Geek & Animes',
+    image: geekLifeIsStrangeBorboletaPanturrilha,
+    alt: 'Tatuagem geek de Life is Strange com polaroid e borboleta azul em aquarela, na panturrilha'
+  },
+  {
+    id: 64,
+    title: 'Personagem em Círculo de Chamas',
+    category: 'geek',
+    categoryLabel: 'Geek & Animes',
+    image: geekPersonagemEmCirculoDeChamasPanturrilha,
+    alt: 'Tatuagem geek de personagem de anime correndo dentro de um círculo de chamas em vermelho, na panturrilha'
+  },
+  {
+    id: 65,
+    title: 'Van em Blackwork',
+    category: 'geek',
+    categoryLabel: 'Geek & Animes',
+    image: geekVanEmBlackworkCoxa,
+    alt: 'Tatuagem geek de van antiga vista de frente, em blackwork com pontilhismo, na coxa'
+  },
+  {
+    id: 66,
+    title: 'Cena em Moldura Circular',
+    category: 'geek',
+    categoryLabel: 'Geek & Animes',
+    image: geekCenaEmMolduraCircularPanturrilha,
+    alt: 'Tatuagem geek com figura feminina e ave dentro de moldura circular, em blackwork na panturrilha'
   },
 
   // --------------------------------------------------------------- Botânico

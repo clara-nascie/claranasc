@@ -79,6 +79,24 @@ try {
     const resposta = await page.goto(`${BASE_URL}/tatuagem/${nicho.slug}`, { waitUntil: 'networkidle' });
     checar('página responde 200', resposta?.status() === 200, `status=${resposta?.status()}`);
 
+    /*
+      Rola a página inteira antes de medir qualquer coisa da galeria.
+
+      As fotos são `loading="lazy"`: as que estão abaixo da dobra têm
+      `naturalWidth` zero até entrarem na tela, e a checagem de proporção
+      dividia por zero. Passou com 6 fotos e reprovou com 26 — e a página
+      estava certa nas duas vezes (medida depois de rolar, a divergência é
+      0.0000). É teste medindo antes de a foto existir.
+    */
+    await page.evaluate(async () => {
+      for (let y = 0; y < document.body.scrollHeight; y += 600) {
+        window.scrollTo(0, y);
+        await new Promise((r) => setTimeout(r, 120));
+      }
+      window.scrollTo(0, 0);
+    });
+    await page.waitForTimeout(1200);
+
     // --- identidade da página ---
     // `main h1` e não `h1`: o Playwright atravessa shadow DOM, e a barra de
     // ferramentas do dev server tem títulos próprios.

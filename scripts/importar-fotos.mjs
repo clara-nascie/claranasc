@@ -154,19 +154,70 @@ for (const [indice, foto] of fotos.entries()) {
 const camelo = (s) =>
   s.split('-').map((p, i) => (i === 0 ? p : p[0].toUpperCase() + p.slice(1))).join('');
 
-console.log(`\n--- imports para portfolioData.ts ---\n`);
-for (const f of importados) {
-  console.log(`import ${camelo(f.arquivo)} from '../assets/portfolio/${f.arquivo}.webp';`);
+/** Aspas simples, como o resto do `portfolioData.ts`. */
+const texto = (s) => `'${s.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`;
+
+const linhasImport = importados.map(
+  (f) => `import ${camelo(f.arquivo)} from '../assets/portfolio/${f.arquivo}.webp';`
+);
+
+const linhasItem = importados.map(
+  (f) => `  {
+    id: ${f.id},
+    title: ${texto(f.titulo)},
+    category: ${texto(categoria)},
+    categoryLabel: ${texto(categoriaLabel)},
+    image: ${camelo(f.arquivo)},
+    alt: ${texto(f.alt)}
+  },`
+);
+
+if (!flags.includes('--aplicar')) {
+  console.log('\n--- imports para portfolioData.ts ---\n' + linhasImport.join('\n'));
+  console.log('\n--- itens para o array ---\n' + linhasItem.join('\n'));
+  console.log('\n(rode com --aplicar para escrever direto no portfolioData.ts)');
+  process.exit(0);
 }
 
-console.log(`\n--- itens para o array ---\n`);
-for (const f of importados) {
-  console.log(`  {
-    id: ${f.id},
-    title: ${JSON.stringify(f.titulo)},
-    category: ${JSON.stringify(categoria)},
-    categoryLabel: ${JSON.stringify(categoriaLabel)},
-    image: ${camelo(f.arquivo)},
-    alt: ${JSON.stringify(f.alt)}
-  },`);
+/*
+  Escreve direto no `portfolioData.ts`, logo abaixo de dois marcadores.
+  Copiar e colar 145 blocos à mão é onde entra erro de digitação — e o erro
+  típico (id repetido, import sem item) só aparece no build, longe da causa.
+*/
+const DADOS = path.join(RAIZ, 'src', 'data', 'portfolioData.ts');
+const MARCA_IMPORT = '// IMPORTS-AUTOMATICOS';
+const MARCA_ITEM = '// ITENS-AUTOMATICOS';
+
+let fonte = await readFile(DADOS, 'utf8');
+for (const marca of [MARCA_IMPORT, MARCA_ITEM]) {
+  if (!fonte.includes(marca)) {
+    console.error(`Marcador ausente em portfolioData.ts: ${marca}`);
+    process.exit(1);
+  }
 }
+
+/** Insere depois da última linha do bloco de comentário que segue o marcador. */
+function inserirApos(src, marca, bloco) {
+  const inicio = src.indexOf(marca);
+  const linhas = src.slice(inicio).split('\n');
+  let i = 0;
+  while (i < linhas.length && linhas[i].trim().startsWith('//')) i++;
+  const posicao = inicio + linhas.slice(0, i).join('\n').length;
+  return src.slice(0, posicao) + '\n' + bloco + src.slice(posicao);
+}
+
+// Item primeiro: inserir os imports antes deslocaria o índice do outro marcador.
+fonte = inserirApos(fonte, MARCA_ITEM, linhasItem.join('\n'));
+fonte = inserirApos(fonte, MARCA_IMPORT, linhasImport.join('\n'));
+
+// Guarda contra id repetido — o defeito que só apareceria no lightbox.
+const ids = [...fonte.matchAll(/^    id: (\d+),$/gm)].map((m) => Number(m[1]));
+const repetidos = ids.filter((id, i) => ids.indexOf(id) !== i);
+if (repetidos.length) {
+  console.error(`ERRO: ids repetidos em portfolioData.ts: ${[...new Set(repetidos)].join(', ')}`);
+  console.error('Nada foi escrito. Ajuste `primeiroId` no manifesto.');
+  process.exit(1);
+}
+
+await writeFile(DADOS, fonte);
+console.log(`\n${importados.length} itens escritos em src/data/portfolioData.ts (ids ${importados[0].id}–${importados.at(-1).id}).`);
