@@ -28,6 +28,7 @@ import coberturaAguaViva from '../assets/portfolio/cobertura-agua-viva-panturril
 import coberturaPlanetas from '../assets/portfolio/cobertura-planetas-ombro.webp';
 import coberturaFloresColuna from '../assets/portfolio/cobertura-flores-coluna.webp';
 import coberturaCoracao from '../assets/portfolio/cobertura-coracao-anatomico-braco.webp';
+import coberturaAguaVivaLado from '../assets/portfolio/cobertura-agua-viva-panturrilha-de-lado.webp';
 
 // --- Botânico ---
 import botanicoRamo from '../assets/portfolio/botanico-ramo-ombro.webp';
@@ -261,6 +262,14 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Coberturas',
     image: coberturaCoracao,
     alt: 'Cobertura de tatuagem com coração anatômico e linha de eletrocardiograma no braço, sobre o bíceps'
+  },
+  {
+    id: 46,
+    title: 'Água-viva na Panturrilha, de Lado',
+    category: 'coberturas',
+    categoryLabel: 'Coberturas',
+    image: coberturaAguaVivaLado,
+    alt: 'Cobertura de tatuagem com água-viva em preto e cinza na panturrilha, vista pela lateral da perna'
   },
 
   // --------------------------------------------------------------- Botânico
