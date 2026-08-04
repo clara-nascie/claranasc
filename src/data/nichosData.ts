@@ -42,12 +42,12 @@ export const NICHOS: Nicho[] = [
     h1: "Cobertura de tatuagem em Belo Horizonte",
 
     chamada:
-      "Cobertura boa é quando você sai do studio sem nem lembrar do que existia por baixo da tatto nova.",
+      "Cobertura boa é quando você sai do estúdio sem nem lembrar do que existia por baixo da tatuagem nova.",
     faq: [
       {
         pergunta: "Qualquer tatuagem pode ser coberta?",
         resposta:
-          "O que decide não é o quanto você gosta menos dela: é o quanto de preto ela tem. Traço fino e cinza claro dão mais liberdade, e cabe quase qualquer desenho novo em cima. Preto sólido e áreas muito saturadas exigem um estudo de caso maior — por isso, na maioria das vezes, é necessária uma visita ao studio, para que eu possa avaliar pessoalmente e propor tipo de trabalho que vão entregar um resultado satisfatório.",
+          "O que decide não é o quanto você gosta menos dela: é o quanto de preto ela tem. Traço fino e cinza claro dão mais liberdade, e cabe quase qualquer desenho novo em cima. Preto sólido e áreas muito saturadas exigem um estudo de caso maior — por isso, na maioria das vezes, é necessária uma visita ao estúdio, para que eu possa avaliar pessoalmente e propor o tipo de trabalho que vai entregar um resultado satisfatório.",
       },
       {
         pergunta: "A cobertura sai em uma sessão só?",
