@@ -49,17 +49,30 @@
     max-width: 720px;
 }
 
-/* `clamp` em vez de media query: o titulo mais longo tem 42 caracteres e
-   precisa encolher de forma continua, nao em degraus. */
+/*
+  Dois passos acima da chamada (1,2rem) numa escala de 1,25: 1,5 -> 1,875.
+  Continua sendo o maior texto da pagina sem destoar do resto -- a 2,9rem ele
+  competia com o proprio conteudo.
+
+  `clamp` em vez de media query: o titulo mais longo tem 42 caracteres e
+  precisa encolher de forma continua, nao em degraus.
+*/
 .nicho-titulo {
-    font-size: clamp(1.9rem, 5vw, 2.9rem);
+    font-size: clamp(1.5rem, 3.2vw, 1.875rem);
     text-transform: uppercase;
     margin-bottom: 15px;
 }
 
-/* `ch` e nao pixel: a medida de linha acompanha o tamanho da fonte. */
+/*
+  Tambem fluida, e nao fixa em 1,2rem, para a distancia ate o titulo se manter.
+  Com a chamada travada, o titulo encolhia no celular e ela nao: a razao caia
+  de 1,56x para 1,25x e os dois passavam a ter quase o mesmo peso.
+
+  `ch` e nao pixel no `max-width`: a medida de linha acompanha o tamanho da
+  fonte em vez de ser um numero fixo.
+*/
 .nicho-chamada {
-    font-size: 1.2rem;
+    font-size: clamp(1rem, 1.6vw, 1.2rem);
     line-height: 1.7;
     color: var(--text-secondary);
     max-width: 56ch;
@@ -77,14 +90,15 @@
   Aqueles valores (80px de padding, 50px abaixo do cabecalho) foram calibrados
   para uma secao que abre com titulo grande. Aqui a intro termina numa linha de
   texto e a galeria abre so com a etiqueta "Galeria" -- com o espacamento
-  padrao, sobrava um vao de 160px lido como pagina quebrada.
+  padrao sobrava um vao de 160px, lido como pagina quebrada. Os 50px somados
+  abaixo sao metade do primeiro ajuste, que ainda separava demais.
 */
 .nicho-intro .container {
-    padding-bottom: 45px;
+    padding-bottom: 22px;
 }
 
 .nicho-galeria .container {
-    padding-top: 55px;
+    padding-top: 28px;
 }
 
 .nicho-galeria .section-header {
