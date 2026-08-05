@@ -346,6 +346,13 @@ regra vale para foto que carrega informação.
 > texto (medido a 390px de largura). Hoje cada página **declara** seu bloco de
 > entrada com `data-cta-apos`: o hero na home, o `.nicho-intro` nas outras.
 > Coberto por `npm run verificar:nichos`.
+>
+> ⚠️ **Limiar de saída no `FloatingCta`**: o gatilho usa `intersectionRatio < 0.2`
+> em vez de `!isIntersecting`. `isIntersecting` falso exige que o elemento saia
+> inteiramente da viewport. Como a área de intersecção pode ter altura zero
+> (ex: topo da página rolando para cima) e ainda reportar como visível, o botão 
+> falhava ao rolar a página de volta ao topo. A proporção é um estado robusto.
+
 * Todos usam `IntersectionObserver` em vez de listener de `scroll`: o navegador reporta o cruzamento em vez de executar código a cada pixel rolado, o que mantém a main thread livre.
 
 > ⚠️ **Não use `threshold` por fração de área em elemento que pode crescer.**
