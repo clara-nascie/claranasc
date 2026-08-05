@@ -2,7 +2,7 @@ import React from 'react';
 import { Phone } from 'lucide-react';
 import { InstagramIcon } from '../ui/InstagramIcon';
 import { TiktokIcon } from '../ui/TiktokIcon';
-import { whatsappUrl, SOCIAL, LOCATION, mapsUrl } from '../../data/siteData';
+import { whatsappUrl, SOCIAL, LOCATION, mapsUrl, LICENCIAMENTO } from '../../data/siteData';
 
 export const Footer: React.FC = () => {
   return (
@@ -21,6 +21,9 @@ export const Footer: React.FC = () => {
               <li><a href="/#portfolio">Portfólio</a></li>
               <li><a href="/#sobre">A Artista</a></li>
               <li><a href="/#contato">Agendar</a></li>
+              {/* Sem este link a página de licenciamento fica órfã: existiria só
+                  no sitemap e no `license` dos dados estruturados. */}
+              <li><a href={LICENCIAMENTO.caminho}>Uso das imagens</a></li>
             </ul>
           </div>
           {/*

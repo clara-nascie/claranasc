@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BreadcrumbSchema from '../components/seo/BreadcrumbSchema.astro';
+import { whatsappUrl, LICENCIAMENTO } from '../data/siteData';
+
+/**
+ * A página que a propriedade `license` dos dados estruturados aponta.
+ *
+ * Ela existe por exigência do Google — sem uma página descrevendo os termos, o
+ * selo "Licenciável" no Google Imagens não aparece. Mas serve a dois donos: é
+ * também onde quem quiser usar uma foto encontra o caminho de pedir.
+ */
+
+const trilha = [
+  { nome: 'Início', caminho: '/' },
+  { nome: 'Uso das imagens', caminho: LICENCIAMENTO.caminho }
+];
+
+const MENSAGEM =
+  'Oi, Clara! Vi a página sobre uso das imagens e gostaria de falar sobre usar uma foto do seu portfólio.';
+---
+
+<BaseLayout
+  title="Uso das imagens | Clara Nasc"
+  description="Termos de uso das fotografias do portfólio de Clara Nasc, tatuadora em Belo Horizonte. Todas as imagens são autorais e protegidas por direito autoral."
+>
+  <BreadcrumbSchema slot="head" itens={trilha} />
+
+  <main class="pagina-texto">
+    <div class="container">
+      {/* `data-cta-apos`: o botão flutuante só aparece depois deste bloco,
+          como nas páginas de nicho. Sem o marcador ele nasce visível. */}
+      <div class="pagina-cabecalho" data-cta-apos>
+        <nav class="trilha" aria-label="Trilha de navegação">
+          <ol>
+            <li><a href="/">Início</a></li>
+            <li aria-current="page">Uso das imagens</li>
+          </ol>
+        </nav>
+
+        <h1>Uso das imagens</h1>
+        <div class="header-divider left"></div>
+
+        <p class="destaque">
+          Todas as fotografias deste site são de {LICENCIAMENTO.titular}. Cada
+          tatuagem é obra autoral, criada para uma pessoa específica, e cada foto
+          registra esse trabalho.
+        </p>
+      </div>
+
+      <h2>O que isso significa</h2>
+      <p>
+        As imagens são protegidas por direito autoral. Não é permitido copiar,
+        republicar, redistribuir nem usar essas fotos — inteiras ou em parte, com
+        ou sem alteração, com ou sem fim comercial — sem a minha autorização por
+        escrito.
+      </p>
+      <p>
+        Isso inclui, de forma explícita, usar as fotos para treinar modelos de
+        inteligência artificial ou alimentar sistemas de geração de imagem.
+      </p>
+
+      <h2>Tem uma segunda pessoa em cada foto</h2>
+      <p>
+        Tatuagem fica na pele de alguém. Além do meu direito sobre a arte e sobre
+        a fotografia, existe o direito de imagem de quem aparece ali — e esse não
+        é meu para ceder. Por isso todo pedido de uso passa por uma conversa, e
+        não por um formulário.
+      </p>
+
+      <h2>Quer usar uma foto?</h2>
+      <p>
+        Me chama. Uso editorial, matéria, referência para estudo, divulgação de
+        evento — quase sempre dá para chegar num acordo. O que não dá é usar sem
+        combinar.
+      </p>
+
+      <a href={whatsappUrl(MENSAGEM)} target="_blank" rel="noreferrer" class="btn btn-primary">
+        Falar no WhatsApp
+      </a>
+
+      <p class="aviso">{LICENCIAMENTO.aviso}</p>
+    </div>
+  </main>
+</BaseLayout>

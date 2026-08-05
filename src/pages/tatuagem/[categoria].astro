@@ -4,6 +4,7 @@ import type { GetStaticPaths } from 'astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BreadcrumbSchema from '../../components/seo/BreadcrumbSchema.astro';
 import FaqSchema from '../../components/seo/FaqSchema.astro';
+import ImagensSchema from '../../components/seo/ImagensSchema.astro';
 import GaleriaGrid from '../../components/portfolio/GaleriaGrid.astro';
 
 import { whatsappUrl, LOCATION } from '../../data/siteData';
@@ -44,6 +45,7 @@ const outrosNichos = NICHOS.filter((outro) => outro.slug !== nicho.slug);
 <BaseLayout title={nicho.seoTitle} description={nicho.seoDescription}>
   <BreadcrumbSchema slot="head" itens={trilha} />
   <FaqSchema slot="head" perguntas={nicho.faq} />
+  <ImagensSchema slot="head" fotos={fotos} />
 
   <main class="nicho-page">
     <section class="nicho-intro" data-cta-apos>

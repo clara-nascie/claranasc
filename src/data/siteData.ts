@@ -10,6 +10,20 @@ export const SITE = {
   priceRange: '$$'
 } as const;
 
+/**
+ * Titularidade das fotos, para os dados estruturados de imagem.
+ *
+ * O `license` precisa ser uma página que descreva os termos — é requisito do
+ * Google para o selo "Licenciável" no Google Imagens, e é o que impede que a
+ * declaração fique valendo só dentro do repositório.
+ */
+export const LICENCIAMENTO = {
+  caminho: '/licenciamento/',
+  titular: 'Clara Nascimento',
+  credito: 'Clara Nasc',
+  aviso: '© 2026 Clara Nascimento. Todos os direitos reservados.'
+} as const;
+
 export const CONTACT = {
   whatsapp: '5531983529270',
   telephone: '+5531983529270',

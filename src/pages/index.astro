@@ -4,13 +4,19 @@ import Hero from '../components/sections/Hero.astro';
 import Portfolio from '../components/sections/Portfolio.astro';
 import About from '../components/sections/About.astro';
 import { ContactForm } from '../components/sections/ContactForm';
+import ImagensSchema from '../components/seo/ImagensSchema.astro';
+import { portfolioItems } from '../data/portfolioData';
 
 const title = 'Clara Nasc | Tatuadora em BH - Blackwork e Fine Line';
 const description =
   'Tatuadora em Belo Horizonte especializada em Blackwork, Fine Line, Botânico, Geek & Animes e Coberturas. Veja o portfólio autoral e solicite seu orçamento pelo WhatsApp.';
+
+// Só as fotos que a home realmente mostra — as mesmas do sitemap de imagens.
+const fotosDaHome = portfolioItems.filter((foto) => foto.destaque);
 ---
 
 <BaseLayout title={title} description={description}>
+  <ImagensSchema slot="head" fotos={fotosDaHome} />
   <Hero />
   <Portfolio />
   <About />

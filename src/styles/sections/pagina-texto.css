@@ -1,0 +1,56 @@
+/* Página de texto corrido — hoje só a de licenciamento. */
+
+.pagina-texto {
+    padding: 140px 0 80px;
+    max-width: 100%;
+}
+
+.pagina-texto .container {
+    max-width: 720px;
+}
+
+.pagina-texto h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 5cqi, 2.75rem);
+    font-weight: 800;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    line-height: 1.1;
+    margin-bottom: 16px;
+}
+
+.pagina-texto h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 40px 0 12px;
+}
+
+.pagina-texto p {
+    color: var(--text-secondary);
+    font-weight: 300;
+    line-height: 1.7;
+    margin-bottom: 16px;
+}
+
+.pagina-texto .destaque {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.5;
+    margin: 24px 0 8px;
+}
+
+.pagina-texto .btn {
+    margin-top: 16px;
+}
+
+/* O aviso de copyright fecha a página, discreto. */
+.pagina-texto .aviso {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border-subtle, rgba(44, 36, 33, 0.12));
+    font-size: 0.875rem;
+}
