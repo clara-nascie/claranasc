@@ -28,6 +28,14 @@ src/
 ├── pages/           index.astro
 │                    tatuagem/[categoria].astro  -> 5 paginas
 └── styles/          base/ + components/ + sections/, agregados por global.css
+
+scripts/
+├── inventario-fotos.mjs   o que do acervo ja esta no site
+├── importar-fotos.mjs     converte, renomeia e escreve no portfolioData
+├── verificar-visual.mjs   botao flutuante, console, contraste, foto da artista
+├── verificar-galeria.mjs  home: carrosseis, filtro, lightbox
+├── verificar-nichos.mjs   as 5 paginas por nicho
+└── verificar-contraste-fundo.mjs   contraste sobre imagem de fundo
 ```
 
 `assets/` (raiz) guarda arte original e **não é servida**. `public/` é servido
@@ -42,14 +50,14 @@ via `.gitignore`. O que vai ao ar são as cópias processadas em `src/assets/`.
 O site deixou de ter uma página só em 04/08/2026, com a
 [#11](https://github.com/clara-nascie/claranasc/issues/11).
 
-| URL | Papel |
-| --- | --- |
-| `/` | home: hero, galeria com filtro, bio, formulário |
-| `/tatuagem/coberturas` | cobertura de tatuagem bh |
-| `/tatuagem/botanico` | tatuagem botânica bh |
-| `/tatuagem/geek` | tatuagem geek bh / anime bh |
-| `/tatuagem/blackwork` | blackwork bh |
-| `/tatuagem/fine-line` | tatuagem fine line bh |
+| URL | Papel | Fotos |
+| --- | --- | --- |
+| `/` | home: hero, carrosséis por categoria, bio, formulário | 15 |
+| `/tatuagem/coberturas` | cobertura de tatuagem bh | 13 |
+| `/tatuagem/botanico` | tatuagem botânica bh | 15 |
+| `/tatuagem/geek` | tatuagem geek bh / anime bh | 46 |
+| `/tatuagem/blackwork` | blackwork bh | 34 |
+| `/tatuagem/fine-line` | tatuagem fine line bh | 68 |
 
 O motivo é de SEO, não de organização: **uma página ranqueia realisticamente
 para um cluster de busca**. A home tentando cobrir cinco nichos vira a segunda
@@ -117,21 +125,67 @@ no HTML.
 > divergirem — validada injetando uma pergunta fantasma no schema e confirmando
 > que as 5 páginas reprovam.
 
-**Portfólio em duas camadas.** A home mostra 6 fotos por categoria, igual para
-todas, para nenhuma pesar mais que outra no que se vê primeiro. As páginas por
-nicho recebem o volume, sem cota — é o que dissolve o conflito entre "equilibrar
-as categorias" e "mostrar quantidade de trabalho". Hoje elas ainda mostram as
-mesmas 6, porque as outras 138 fotos dependem do texto da
-[#16](https://github.com/clara-nascie/claranasc/issues/16).
+## Portfólio em duas camadas
 
-**Masonry, e não a grade da home.** A grade recorta tudo em `4/5` porque o
-filtro esconde e mostra itens, e altura uniforme evita que a página salte a cada
-clique. Nas páginas por nicho não há filtro, e o acervo mistura costas,
-antebraço e costela — recortar todas na mesma proporção corta desenho no meio.
+O acervo inteiro está no site desde 05/08/2026: **176 fotos**. Elas aparecem em
+dois lugares, com papéis diferentes.
+
+| | Camada de destaque | Camada de volume |
+| --- | --- | --- |
+| Onde | home | páginas por nicho |
+| Quantas | 3 por categoria, igual para todas | tudo, sem cota |
+| Para quê | ampliar público: nenhuma categoria pesa mais no que se vê primeiro | mostrar volume, que é o que lê como experiência |
+
+Isso dissolve um conflito que não cabia numa camada só: o acervo é desigual por
+natureza (Coberturas tem 13 fotos, Fine Line tem 68). Equilibrar obrigaria a
+cortar tudo para ~13; mostrar volume obrigaria a desequilibrar.
+
+O campo **`destaque: true`** no `portfolioData.ts` marca as 15 da home;
+`itensDestaque` é a lista que o `Portfolio.astro` consome. Trocar o que aparece
+na home é mover um `destaque` de uma foto para outra da mesma categoria.
+
+> ⚠️ Sem essa marca a home cresceria junto com o acervo — num lote importado ela
+> pulou de 30 para 36 fotos sozinha. `npm run verificar:galeria` exige 3 por
+> categoria, e a checagem foi validada devolvendo uma foto ao destaque:
+> reprova com `coberturas=4`.
+
+### A home: um carrossel por categoria
+
+Cinco fileiras que rolam na horizontal, cada uma com 3 fotos e um cartão final
+com o link para a página do nicho e o total do acervo ("Ver todas · 68
+trabalhos"). Substituiu uma grade de 30 fotos que media 19.037px no celular; a
+home passou a medir **6.763px**.
+
+Cada fileira carrega rótulo e destino próprios. O filtro obrigava a visitante a
+escolher antes de ver; uma fileira rotulada deixa ver um exemplo de cada e
+clicar no que interessou. O filtro continua existindo, mas agora esconde
+fileiras inteiras em vez de foto a foto.
+
+> ⚠️ **Não é um widget de carrossel.** Sem autoplay, sem bolinhas, sem setas —
+> é `scroll-snap` em CSS puro. No desktop as 4 vagas cabem e não há o que rolar;
+> no celular transbordam e a visitante arrasta. Widget de carrossel precisa
+> reimplementar teclado, leitor de tela e busca na página dentro dele, e é onde
+> a acessibilidade quebra. Contêiner que rola ganha os três do navegador.
+>
+> A largura da vaga é `calc((100% - 60px) / 4)`, nunca pixel fixo: com 285px —
+> a conta feita sobre `--container-max-width` — o cartão ficava cortado a
+> 1280px, onde o `.container` mede 1152px, porque ele é 90% da largura e só
+> chega no teto acima de ~1333px.
+
+### As páginas por nicho: masonry
+
+Cada foto na proporção em que foi tirada. O acervo mistura costas, antebraço e
+costela — recortar todas em `4/5` corta desenho no meio, e é justamente a
+proporção que conta o que a peça é.
+
 O masonry é `columns` do CSS, sem JS: a alternativa nativa
 (`grid-template-rows: masonry`) ainda não saiu de flag experimental, e
 biblioteca de masonry mede as fotos no cliente, ou seja, só acerta o layout
 depois que elas carregam, com salto visível.
+
+Sem legenda embaixo da foto — decisão da Clara em 04/08: "só as fotos fica
+melhor". O título e a categoria seguem no overlay de hover, e quem descreve a
+foto para o Google Imagens e para leitor de tela é o `alt`.
 
 ## Ilhas de interatividade
 
@@ -189,9 +243,9 @@ build gera as variantes responsivas em WebP e monta o `srcset`. Arquivo em
 da visitante.
 
 * `portfolioData.ts` importa cada imagem e expõe `image: ImageMetadata`.
-* `Hero.astro` e `Portfolio.astro` usam `<Image>` com `widths` e `sizes`
-  derivados do layout real (grade de 3 colunas de ~380px; vitrine do hero de
-  ~340px e ~250px), mais o dobro para telas 2x.
+* `GaleriaGrid.astro` usa `<Image>` com `widths` e `sizes` derivados do layout
+  real — 380px na coluna do masonry, 280px na vaga do carrossel —, mais o dobro
+  para telas 2x.
 * O lightbox precisa de uma versão maior que a miniatura: `getImage()` gera uma
   variante de 1400px no build e a URL vai num `data-` do botão.
 * Os arquivos em `src/assets/portfolio/` já vêm reduzidos para 1600px — o
@@ -201,6 +255,62 @@ da visitante.
   descreve a foto para busca por imagem. Ao trocar uma foto, troque o nome.
 
 Efeito medido na home: 4.296 KB antes, 70 KB no celular e 294 KB em desktop 2x.
+
+### Importar fotos do acervo
+
+Duas ferramentas em `scripts/`. Elas existem porque fazer isso à mão erra.
+
+**`inventario-fotos.mjs`** responde o que não dá para saber olhando: quais
+arquivos de `Anúncios/` já estão no site, quais são duplicatas e quais o sharp
+não abre. O casamento é por **impressão digital de imagem** (miniatura 16×16 em
+tons de cinza), não por nome nem por hash de bytes — a foto publicada foi
+redimensionada e reconvertida, então nenhum byte dela bate com o original.
+
+**`importar-fotos.mjs <manifesto.json> --aplicar`** reduz para 1600px, converte
+para WebP **de verdade**, aplica o EXIF antes de redimensionar e escreve os
+`import` e os itens direto no `portfolioData.ts`, em dois marcadores. Valida o
+manifesto antes de escrever qualquer arquivo e **aborta se achar id repetido**.
+
+> ⚠️ O script confere o **formato do arquivo gravado** em vez de confiar no que
+> pediu. O `.webp` deste projeto já foi JPEG renomeado uma vez: a conversão
+> nunca tinha acontecido, e ninguém percebeu porque a extensão estava certa.
+
+`failOn: 'none'` aceita JPEG truncado e recupera 2 fotos que o padrão rejeita.
+Outras 4 do acervo estão corrompidas de verdade ("bad seek") e seguem
+ilegíveis — já foram descartadas por decisão da Clara; não tente de novo.
+
+### Como escrever `alt` e nome de arquivo
+
+Convenção no cabeçalho do `importar-fotos.mjs`, que é o arquivo aberto na hora
+de montar um lote:
+
+```
+<categoria> de tatuagem com <assunto> em <técnica> no <região>, sobre o <sub-região>
+```
+
+* **Cite a região geral E a específica.** Ela diferencia bíceps de tríceps, mas
+  quem busca digita "tatuagem braço" — e descobre que quer no bíceps ao ver um
+  exemplo. "no braço, sobre o bíceps" atende as duas buscas.
+* **Genérico quando não se sabe.** Alt genérico se corrige num lugar; alt errado
+  vai para o Google Imagens antes de alguém notar.
+* **Ângulo diferente da mesma peça entra.** Uma tatuagem que dá a volta no braço
+  não cabe em uma foto só. O nome descreve o que a vista tem de próprio
+  (`-outro-lado`, `-de-frente`, `-completa`), nunca `-2`.
+* Repetir "Cobertura de tatuagem com…" em todas é intencional: é o termo de
+  busca, e o Google Imagens lê o `alt` de cada foto isoladamente.
+
+> **Mostre os nomes à Clara antes de importar.** Medido: importar e corrigir
+> depois custou 30 correções e 30 renomeações em Geek; revisar antes custou 12
+> correções e **zero** renomeações em Fine Line. Eu vejo a foto, ela conhece a
+> sessão — nenhuma análise minha diria que duas portas são o copo da Lagoinha
+> ou que a gueixa é a Mulan.
+>
+> O formato é uma página local autocontida (miniaturas em base64), no
+> `.gitignore` e **nunca publicada**: são fotos de clientes.
+
+Títulos e `alt` são **únicos** — 176 de cada, conferido. É o que permite à Clara
+corrigir mandando só o texto ("troque X por Y") sem a foto; dois iguais tornariam
+a correção ambígua, e dois `alt` iguais confundiriam o Google Imagens.
 
 ### ⚠️ Foto de conteúdo é `<img>`, nunca `background-image`
 
@@ -283,7 +393,7 @@ Quatro scripts, todos com Chromium headless (Playwright):
 | Comando | Cobre |
 | --- | --- |
 | `npm run verificar` | botão flutuante por scroll, erros de console, requisições falhas, contraste computado a partir das cores renderizadas e **se a foto da artista tem tamanho de verdade** |
-| `npm run verificar:galeria` | filtro por categoria, abertura e fechamento do lightbox, e se a grade **fica de fato visível** |
+| `npm run verificar:galeria` | home: 5 fileiras com 3 fotos cada, os links dos cartões, o filtro escondendo fileiras, os trilhos rolando no celular, o lightbox, e se a fileira **fica de fato visível** |
 | `npm run verificar:nichos` | as 5 páginas por nicho: H1 único, limites de title/description, canonical vs. sitemap, tamanho da chamada, masonry em 3 colunas, proporção das fotos, `BreadcrumbList` vs. trilha da tela, **`FAQPage` vs. texto visível**, links internos sem 404 e o botão flutuante |
 | `npm run verificar:contraste` | contraste de cada texto do hero e do cabeçalho contra o fundo **renderizado**, pixel a pixel, em 8 larguras |
 

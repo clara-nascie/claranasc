@@ -74,18 +74,40 @@ este arquivo registra o que já foi percorrido.
 - [x] `About` convertido para `.astro`; a foto entrou no pipeline responsivo (325 KB → 17 KB no celular)
 - [x] `npm run verificar` passou a checar se a foto tem tamanho renderizado
 
+## ✅ Páginas por nicho _(04/08/2026)_
+- [x] Cinco URLs indexáveis a partir de uma rota dinâmica só ([#11](https://github.com/clara-nascie/claranasc/issues/11)) — o sitemap passou de 1 para 6 páginas
+- [x] `BaseLayout.astro` e `GaleriaGrid.astro` extraídos: o `<head>`, o cabeçalho e a grade deixaram de ser copiados a cada página
+- [x] Galeria em masonry (`columns` do CSS, sem JS) — cada foto na proporção em que foi tirada
+- [x] `BreadcrumbList` e `FAQPage` em JSON-LD, ambos espelhando o que está visível
+- [x] FAQ em accordion `<details>` nativo, 3 perguntas por nicho ([#13](https://github.com/clara-nascie/claranasc/issues/13) parcial)
+- [x] Links do cabeçalho e do rodapé viraram `/#secao` — a âncora nua não fazia nada em 5 das 6 páginas
+- [x] Botão flutuante passou a usar `data-cta-apos`; com id fixo ele cobria o texto no topo das páginas novas
+- [x] `npm run verificar:nichos` — 29 checagens por página
+
+## ✅ Acervo completo no site _(05/08/2026)_
+- [x] As 176 fotos importadas; `inventario-fotos.mjs` reporta zero pendentes ([#16](https://github.com/clara-nascie/claranasc/issues/16), [#5](https://github.com/clara-nascie/claranasc/issues/5))
+- [x] `scripts/inventario-fotos.mjs` e `scripts/importar-fotos.mjs` — conversão real para WebP, com conferência do formato gravado
+- [x] Nome de arquivo, título e `alt` escritos um a um e revisados pela Clara; 176 de cada, todos únicos
+- [x] Processo invertido na última categoria: **revisar antes de importar** levou o retrabalho de 30 renomeações para zero
+- [x] Camada de destaque explícita (`destaque: true`), para a home não crescer junto com o acervo
+
+## ✅ Home em carrosséis _(05/08/2026)_
+- [x] Grade de 30 fotos substituída por 5 fileiras que rolam na horizontal, 3 fotos cada ([#21](https://github.com/clara-nascie/claranasc/issues/21))
+- [x] Cada fileira termina num cartão com o link para o nicho e o total do acervo
+- [x] `scroll-snap` em CSS puro — sem autoplay, sem bolinhas, sem JS
+- [x] Altura no celular: 19.037px → 6.763px; 1.013 KB → 619 KB
+- [x] Filtro mantido, agora escondendo fileiras inteiras
+
 ## ⏳ Em aberto
 
 Ver as [issues](https://github.com/clara-nascie/claranasc/issues). Prioridade:
 
 1. **Google Business Profile** — não é issue do repositório, e é o maior gargalo. O local pack é alimentado por ele, não pelo site; o JSON-LD confirma a entidade mas não cria presença no mapa. Antes de criar, decidir o nome (hoje são três: `Clara Nasc Tattoo`, `Iuna Tattoo`, `Clara Nascimento TATTOO`).
-2. [#11](https://github.com/clara-nascie/claranasc/issues/11) — páginas por nicho. O sitemap tem **uma URL só**; são elas que multiplicam as portas de entrada e destravam as 138 fotos restantes.
-3. [#17](https://github.com/clara-nascie/claranasc/issues/17) — tagline do hero. Virou o único sinal de leque acima da dobra depois que a vitrine saiu.
-4. [#5](https://github.com/clara-nascie/claranasc/issues/5) / [#16](https://github.com/clara-nascie/claranasc/issues/16) — o resto do portfólio. O gargalo não é técnico, é escrever `alt` e título de 138 fotos.
+2. **Enviar o sitemap no Search Console** — as 5 URLs novas ainda não foram submetidas. É o que separa o Google achá-las em dias ou em semanas.
+3. [#22](https://github.com/clara-nascie/claranasc/issues/22) — o sitemap não declara nenhuma das 176 fotos. Todo o trabalho de nomenclatura existiu para busca por imagem, e ela é provavelmente o maior canal de entrada de um portfólio visual.
+4. [#20](https://github.com/clara-nascie/claranasc/issues/20) — páginas de nicho longas (Fine Line: 68 fotos, 41.909px). ⚠️ **Não é problema de desempenho**: a página baixa 464 KB inicialmente, menos que a home. É navegabilidade.
 5. [#12](https://github.com/clara-nascie/claranasc/issues/12) — Core Web Vitals restantes (fontes bloqueantes; o LCP do hero deixou de ser imagem).
-6. [#13](https://github.com/clara-nascie/claranasc/issues/13) — conteúdo (FAQ, guia de cuidados).
-
-[#6](https://github.com/clara-nascie/claranasc/issues/6) (otimização de imagens) foi concluída em 30/07/2026 e pode ser fechada. A [#19](https://github.com/clara-nascie/claranasc/issues/19) está resolvida em produção e segue aberta só à espera do comentário que registra a decisão tomada.
+6. [#13](https://github.com/clara-nascie/claranasc/issues/13) — o guia de pós-tatuagem, que ficou de fora da parte já entregue.
 
 ⚠️ A [#8](https://github.com/clara-nascie/claranasc/issues/8) saiu da lista de prioridades: as três falhas de contraste que restam são todas do `--accent-gold`, e **a Clara decidiu em 31/07/2026 não alterar a cor da marca**. Estão declaradas como falha aceita nos dois verificadores. Não reabra a proposta.
 
@@ -97,5 +119,7 @@ Ver as [issues](https://github.com/clara-nascie/claranasc/issues). Prioridade:
 * **Imagem nova entra por `src/assets/`, nunca por `public/`.** O que está em `public/` é copiado byte a byte para o build e não passa pelo `astro:assets` — a foto original inteira iria para o navegador. Foi o defeito que a fase de mídia de 30/07/2026 corrigiu, e é fácil de reintroduzir sem perceber. A exceção é arquivo que precisa de **URL fixa e previsível**: a imagem de Open Graph e o SVG decorativo do hero, que são referenciados de fora do pipeline.
 * **Foto de conteúdo é `<img>`, nunca `background-image`.** Imagem de fundo não tem tamanho intrínseco e some sem erro quando o contêiner perde largura própria. Detalhe em `docs/arquitetura/arquitetura.md`.
 * **O site não coloca o estúdio no mapa.** Refinar o JSON-LD melhora o sinal, mas o local pack depende do Google Business Profile, que não existe. Não trate as issues de SEO do repositório como caminho para o Maps.
-* **A home ainda carrega a galeria inteira numa grade só.** Com 30 fotos está de bom tamanho; as outras 138 do acervo dependem das páginas por nicho ([#11](https://github.com/clara-nascie/claranasc/issues/11)) para não inchar o DOM da home.
+* **A home mostra só a camada de destaque.** São 3 fotos por categoria, marcadas com `destaque: true` no `portfolioData.ts`. Sem essa marca ela cresceria junto com o acervo — num lote importado pulou de 30 para 36 fotos sozinha. `npm run verificar:galeria` exige 3 por categoria.
+* **Não filtre o acervo por conta própria.** Ângulo diferente da mesma tatuagem **entra**: uma peça que dá a volta no braço não cabe em uma foto só. Marca d'água do estúdio antigo (`@tattookapala`) é irrelevante. Descarte só arquivo ilegível e duplicata byte-a-byte — o que o `inventario-fotos.mjs` já detecta sozinho.
+* **Mostre os nomes das fotos à Clara antes de importar.** Medido: corrigir depois custou 30 renomeações em Geek; revisar antes custou zero em Fine Line. Ela conhece a sessão, o agente só vê a foto.
 * **Lighthouse deve ser rodado contra `npm run preview`**, nunca contra o dev server — o dev server não é representativo do build de produção.
