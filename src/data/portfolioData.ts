@@ -53,7 +53,7 @@ import geekAliceNoPais from '../assets/portfolio/geek-alice-no-pais-das-maravilh
 import geekBerserkGuts from '../assets/portfolio/geek-berserk-guts-braco.webp';
 import geekOkamiAmaterasu from '../assets/portfolio/geek-okami-amaterasu-antebraco.webp';
 import geekArvore from '../assets/portfolio/geek-arvore-branca-ombro.webp';
-import geekCaveira from '../assets/portfolio/geek-caveira-alada-antebraco.webp';
+import geekBaraggan from '../assets/portfolio/geek-bleach-baraggan-antebraco.webp';
 
 // --- Blackwork ---
 import blackworkLobo from '../assets/portfolio/blackwork-lobo-geometrico-braco.webp';
@@ -834,11 +834,11 @@ export const portfolioItems: PortfolioItem[] = [
   {
     id: 18,
     destaque: true,
-    title: 'Caveira Alada',
+    title: 'Baraggan — Bleach',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
-    image: geekCaveira,
-    alt: 'Tatuagem de caveira com asas e correntes no antebraço',
+    image: geekBaraggan,
+    alt: 'Tatuagem geek do Baraggan, de Bleach, com caveira, asas e correntes no antebraço',
     description: 'Sombreado pesado nas asas para a caveira saltar do fundo.'
   },
 
