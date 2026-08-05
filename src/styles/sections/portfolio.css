@@ -102,6 +102,8 @@
     scroll-padding-inline: 0;
 }
 
+
+
 .carrossel-trilho::-webkit-scrollbar {
     height: 8px;
 }
@@ -142,7 +144,7 @@
   chega no teto acima de ~1333px.
 */
 .portfolio-grid--carrossel .portfolio-item {
-    flex: 0 0 calc((100% - 60px) / 4);
+    flex: 1 0 calc((100% - 60px) / 4);
     scroll-snap-align: start;
 }
 
