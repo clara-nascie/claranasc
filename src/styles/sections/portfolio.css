@@ -96,8 +96,22 @@
     scroll-snap-type: x mandatory;
     padding-bottom: 12px;
     scrollbar-width: thin;
+    scrollbar-color: var(--accent-gold) transparent;
     /* Encosta o comeco e o fim do trilho na borda do container ao rolar. */
     scroll-padding-inline: 0;
+}
+
+.carrossel-trilho::-webkit-scrollbar {
+    height: 8px;
+}
+
+.carrossel-trilho::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.carrossel-trilho::-webkit-scrollbar-thumb {
+    background-color: var(--accent-gold);
+    border-radius: 4px;
 }
 
 /* Esconde a barra apenas em telas de toque (celulares), onde o swipe é natural. 
