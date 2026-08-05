@@ -73,6 +73,68 @@ import finelineCavalo from '../assets/portfolio/fineline-cavalo-costas.webp';
 
 // IMPORTS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
 // Não remova o marcador nem escreva abaixo dele à mão.
+import finelineSimboloDeCapricornioBraco from '../assets/portfolio/fineline-simbolo-de-capricornio-braco.webp';
+import finelineTatuagemDeCasalCruzAntebraco from '../assets/portfolio/fineline-tatuagem-de-casal-cruz-antebraco.webp';
+import finelineLetteringLetGoBraco from '../assets/portfolio/fineline-lettering-let-go-braco.webp';
+import finelineTatuagemDeIrmasLetteringBraco from '../assets/portfolio/fineline-tatuagem-de-irmas-lettering-braco.webp';
+import finelineRosaVermelhaAntebraco from '../assets/portfolio/fineline-rosa-vermelha-antebraco.webp';
+import finelineSimboloDeGraduacaoPunho from '../assets/portfolio/fineline-simbolo-de-graduacao-punho.webp';
+import finelineTatuagemDeAmigosCopoLagoinhaAntebraco from '../assets/portfolio/fineline-tatuagem-de-amigos-copo-lagoinha-antebraco.webp';
+import finelineDigitaisEPatinhaAntebraco from '../assets/portfolio/fineline-digitais-e-patinha-antebraco.webp';
+import finelineSimboloDoBtsAntebraco from '../assets/portfolio/fineline-simbolo-do-bts-antebraco.webp';
+import finelineRunasPescoco from '../assets/portfolio/fineline-runas-pescoco.webp';
+import finelineLetteringIfNotNowAntebraco from '../assets/portfolio/fineline-lettering-if-not-now-antebraco.webp';
+import finelineAmericaDoSulInvertidaAntebraco from '../assets/portfolio/fineline-america-do-sul-invertida-antebraco.webp';
+import finelineEscritaVerticalNaColunaCostas from '../assets/portfolio/fineline-escrita-vertical-na-coluna-costas.webp';
+import finelineOndaEmCirculoBraco from '../assets/portfolio/fineline-onda-em-circulo-braco.webp';
+import finelineBaleiaAntebraco from '../assets/portfolio/fineline-baleia-antebraco.webp';
+import finelineLetteringKaizenPescoco from '../assets/portfolio/fineline-lettering-kaizen-pescoco.webp';
+import finelineTatuagemDelicadaViagensAntebraco from '../assets/portfolio/fineline-tatuagem-delicada-viagens-antebraco.webp';
+import finelineLetteringTendernessAntebraco from '../assets/portfolio/fineline-lettering-tenderness-antebraco.webp';
+import finelineLetteringEnjoyTheButterfliesBraco from '../assets/portfolio/fineline-lettering-enjoy-the-butterflies-braco.webp';
+import finelineMaeEBebeAntebraco from '../assets/portfolio/fineline-mae-e-bebe-antebraco.webp';
+import finelineLetteringObstinacaoAntebraco from '../assets/portfolio/fineline-lettering-obstinacao-antebraco.webp';
+import finelineLetteringRespeitoAntebraco from '../assets/portfolio/fineline-lettering-respeito-antebraco.webp';
+import finelineLetteringResilienciaAntebraco from '../assets/portfolio/fineline-lettering-resiliencia-antebraco.webp';
+import finelineLetteringRespiraPunho from '../assets/portfolio/fineline-lettering-respira-punho.webp';
+import finelinePataEMaoAntebraco from '../assets/portfolio/fineline-pata-e-mao-antebraco.webp';
+import finelineDatasEmCirculoAntebraco from '../assets/portfolio/fineline-datas-em-circulo-antebraco.webp';
+import finelineBorboletaEmLinhaContinuaBraco from '../assets/portfolio/fineline-borboleta-em-linha-continua-braco.webp';
+import finelineCoracoesDeDigitaisBraco from '../assets/portfolio/fineline-coracoes-de-digitais-braco.webp';
+import finelineLetteringNomeBraco from '../assets/portfolio/fineline-lettering-nome-braco.webp';
+import finelineCachorroEmMolduraBraco from '../assets/portfolio/fineline-cachorro-em-moldura-braco.webp';
+import finelineFamiliaEDatasAntebraco from '../assets/portfolio/fineline-familia-e-datas-antebraco.webp';
+import finelineStitchAntebraco from '../assets/portfolio/fineline-stitch-antebraco.webp';
+import finelineLetteringLiberteAntebraco from '../assets/portfolio/fineline-lettering-liberte-antebraco.webp';
+import finelineLetteringLongaHistoriaAntebraco from '../assets/portfolio/fineline-lettering-longa-historia-antebraco.webp';
+import finelineNossaSenhoraAparecidaAntebraco from '../assets/portfolio/fineline-nossa-senhora-aparecida-antebraco.webp';
+import finelineFamiliaIlustradaPanturrilha from '../assets/portfolio/fineline-familia-ilustrada-panturrilha.webp';
+import finelineLetteringReverdecerBraco from '../assets/portfolio/fineline-lettering-reverdecer-braco.webp';
+import finelinePatinhaDeCachorroAntebraco from '../assets/portfolio/fineline-patinha-de-cachorro-antebraco.webp';
+import finelineStarWarsMayTheForceAntebraco from '../assets/portfolio/fineline-star-wars-may-the-force-antebraco.webp';
+import finelineCitacaoFerrisBuellerAntebraco from '../assets/portfolio/fineline-citacao-ferris-bueller-antebraco.webp';
+import finelineStarTrekVidaLongaEProsperaBraco from '../assets/portfolio/fineline-star-trek-vida-longa-e-prospera-braco.webp';
+import finelineNossaSenhoraEmLinhaContinuaAntebraco from '../assets/portfolio/fineline-nossa-senhora-em-linha-continua-antebraco.webp';
+import finelineBastaoDeAsclepioAtrasDaOrelha from '../assets/portfolio/fineline-bastao-de-asclepio-atras-da-orelha.webp';
+import finelineCruzEmPretoSolidoBraco from '../assets/portfolio/fineline-cruz-em-preto-solido-braco.webp';
+import finelineCactoPunho from '../assets/portfolio/fineline-cacto-punho.webp';
+import finelineLetteringTentarSempreClavicula from '../assets/portfolio/fineline-lettering-tentar-sempre-clavicula.webp';
+import finelineMulanAntebraco from '../assets/portfolio/fineline-mulan-antebraco.webp';
+import finelineLampadaComCerebroAntebraco from '../assets/portfolio/fineline-lampada-com-cerebro-antebraco.webp';
+import finelineBaleiaJubarteBraco from '../assets/portfolio/fineline-baleia-jubarte-braco.webp';
+import finelineLetteringStillIRisePeito from '../assets/portfolio/fineline-lettering-still-i-rise-peito.webp';
+import finelineSimboloDeTresEspiraisAntebraco from '../assets/portfolio/fineline-simbolo-de-tres-espirais-antebraco.webp';
+import finelinePassarosClavicula from '../assets/portfolio/fineline-passaros-clavicula.webp';
+import finelineTravelerNotATouristBraco from '../assets/portfolio/fineline-traveler-not-a-tourist-braco.webp';
+import finelineMachadosCruzadosAntebraco from '../assets/portfolio/fineline-machados-cruzados-antebraco.webp';
+import finelineEspadaAntebraco from '../assets/portfolio/fineline-espada-antebraco.webp';
+import finelineBorboletaMonarcaBraco from '../assets/portfolio/fineline-borboleta-monarca-braco.webp';
+import finelineEspelhoDeIemanjaAntebraco from '../assets/portfolio/fineline-espelho-de-iemanja-antebraco.webp';
+import finelineChocalhoMinimalistaBraco from '../assets/portfolio/fineline-chocalho-minimalista-braco.webp';
+import finelinePatinhaEmContornoBraco from '../assets/portfolio/fineline-patinha-em-contorno-braco.webp';
+import finelineLetteringAmorFatiCostas from '../assets/portfolio/fineline-lettering-amor-fati-costas.webp';
+import finelineFenixOmbro from '../assets/portfolio/fineline-fenix-ombro.webp';
+import finelineLetteringObstinadoPescoco from '../assets/portfolio/fineline-lettering-obstinado-pescoco.webp';
 import blackworkUroboros from '../assets/portfolio/blackwork-uroboros-e-bussola-nordica-peito.webp';
 import blackworkAstronautaEEntropiaAntebraco from '../assets/portfolio/blackwork-astronauta-e-entropia-antebraco.webp';
 import blackworkPomoDeOuroNuca from '../assets/portfolio/blackwork-pomo-de-ouro-nuca.webp';
@@ -330,6 +392,502 @@ export const portfolioItems: PortfolioItem[] = [
   // A partir deste ponto os itens vêm na ordem de importação, não por
   // categoria: a página filtra por `category`, então a ordem no array não
   // muda nada do que aparece na tela.
+  {
+    id: 115,
+    title: 'Símbolo de Capricórnio',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineSimboloDeCapricornioBraco,
+    alt: 'Tatuagem fine line com o símbolo de Capricórnio em traço contínuo no braço'
+  },
+  {
+    id: 116,
+    title: 'Tatuagem de Casal',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineTatuagemDeCasalCruzAntebraco,
+    alt: 'Tatuagem de casal em fine line, com cruz formada por galhos no antebraço de duas pessoas'
+  },
+  {
+    id: 117,
+    title: 'Let Go',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineLetteringLetGoBraco,
+    alt: 'Tatuagem fine line com o lettering Let Go no braço'
+  },
+  {
+    id: 118,
+    title: 'Tatuagem de Irmãs',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineTatuagemDeIrmasLetteringBraco,
+    alt: 'Tatuagem de irmãs em fine line, com lettering em traço fino no braço de duas pessoas'
+  },
+  {
+    id: 119,
+    title: 'Rosa Vermelha',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineRosaVermelhaAntebraco,
+    alt: 'Tatuagem fine line de rosa vermelha com caule em espiral no antebraço'
+  },
+  {
+    id: 120,
+    title: 'Símbolo de Graduação',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineSimboloDeGraduacaoPunho,
+    alt: 'Tatuagem fine line com símbolo de letras de graduação, em pontilhismo no punho'
+  },
+  {
+    id: 121,
+    title: 'Tatuagem de Amigos — Copo Lagoinha',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineTatuagemDeAmigosCopoLagoinhaAntebraco,
+    alt: 'Tatuagem de amigos em fine line, com o copo da Lagoinha em traço mínimo no antebraço de duas pessoas'
+  },
+  {
+    id: 122,
+    title: 'Digitais e Patinha',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineDigitaisEPatinhaAntebraco,
+    alt: 'Tatuagem fine line com digitais dentro de triângulos e patinha de cachorro, no antebraço'
+  },
+  {
+    id: 123,
+    title: 'Símbolo do BTS',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineSimboloDoBtsAntebraco,
+    alt: 'Tatuagem fine line com o símbolo do BTS em linha contínua no antebraço'
+  },
+  {
+    id: 124,
+    title: 'Runas',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineRunasPescoco,
+    alt: 'Tatuagem fine line com runas nórdicas em traço fino no pescoço'
+  },
+  {
+    id: 125,
+    title: 'If Not Now, Then When',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineLetteringIfNotNowAntebraco,
+    alt: 'Tatuagem fine line com o lettering If not now then when no antebraço'
+  },
+  {
+    id: 126,
+    title: 'América do Sul Invertida',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineAmericaDoSulInvertidaAntebraco,
+    alt: 'Tatuagem fine line com o mapa da América do Sul invertido e lettering em espanhol, no antebraço'
+  },
+  {
+    id: 127,
+    title: 'Escrita Vertical na Coluna',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineEscritaVerticalNaColunaCostas,
+    alt: 'Tatuagem fine line com escrita vertical descendo pela coluna, nas costas'
+  },
+  {
+    id: 128,
+    title: 'Onda em Círculo',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineOndaEmCirculoBraco,
+    alt: 'Tatuagem fine line de onda dentro de um círculo, em pontilhismo no braço'
+  },
+  {
+    id: 129,
+    title: 'Baleia',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineBaleiaAntebraco,
+    alt: 'Tatuagem fine line de baleia jubarte em pontilhismo no antebraço'
+  },
+  {
+    id: 130,
+    title: 'Kaizen',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineLetteringKaizenPescoco,
+    alt: 'Tatuagem fine line com o lettering Kaizen na vertical, no pescoço'
+  },
+  {
+    id: 131,
+    title: 'Viagens',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineTatuagemDelicadaViagensAntebraco,
+    alt: 'Tatuagem fine line delicada sobre viagens, com globo, avião e viajante de mochila, no antebraço'
+  },
+  {
+    id: 132,
+    title: 'Tenderness Is a Virtue',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineLetteringTendernessAntebraco,
+    alt: 'Tatuagem fine line com o lettering tenderness is a virtue no antebraço'
+  },
+  {
+    id: 133,
+    title: 'Enjoy the Butterflies',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineLetteringEnjoyTheButterfliesBraco,
+    alt: 'Tatuagem fine line com o lettering Enjoy the butterflies no braço'
+  },
+  {
+    id: 134,
+    title: 'Mãe e Bebê',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineMaeEBebeAntebraco,
+    alt: 'Tatuagem fine line de mãe com bebê, flores e dados de nascimento, no antebraço'
+  },
+  {
+    id: 135,
+    title: 'Obstinação',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineLetteringObstinacaoAntebraco,
+    alt: 'Tatuagem fine line com o lettering Obstinação no antebraço'
+  },
+  {
+    id: 136,
+    title: 'Respeito',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineLetteringRespeitoAntebraco,
+    alt: 'Tatuagem fine line com o lettering Respeito em cursiva, descendo o antebraço'
+  },
+  {
+    id: 137,
+    title: 'Resiliência',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineLetteringResilienciaAntebraco,
+    alt: 'Tatuagem fine line com o lettering Resiliência na vertical, no antebraço'
+  },
+  {
+    id: 138,
+    title: 'Respira',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineLetteringRespiraPunho,
+    alt: 'Tatuagem fine line com o lettering respira contornando o punho'
+  },
+  {
+    id: 139,
+    title: 'Pata e Mão',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelinePataEMaoAntebraco,
+    alt: 'Tatuagem fine line de pata de cachorro e mão humana em traço contínuo, no antebraço'
+  },
+  {
+    id: 140,
+    title: 'Datas em Círculo',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineDatasEmCirculoAntebraco,
+    alt: 'Tatuagem fine line com datas dispostas em círculo no antebraço'
+  },
+  {
+    id: 141,
+    title: 'Borboleta em Linha Contínua',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineBorboletaEmLinhaContinuaBraco,
+    alt: 'Tatuagem fine line de borboleta em linha contínua no braço'
+  },
+  {
+    id: 142,
+    title: 'Corações de Digitais',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineCoracoesDeDigitaisBraco,
+    alt: 'Tatuagem fine line de corações formados por digitais, no braço de duas pessoas'
+  },
+  {
+    id: 143,
+    title: 'Nome em Cursiva',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineLetteringNomeBraco,
+    alt: 'Tatuagem fine line com um nome em cursiva contornando o braço'
+  },
+  {
+    id: 144,
+    title: 'Cachorro em Moldura',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineCachorroEmMolduraBraco,
+    alt: 'Tatuagem fine line de cachorro dentro de moldura oval, no braço'
+  },
+  {
+    id: 145,
+    title: 'Família e Datas',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineFamiliaEDatasAntebraco,
+    alt: 'Tatuagem fine line com datas em círculo, coração, a palavra família e um terço, no antebraço'
+  },
+  {
+    id: 146,
+    title: 'Stitch',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineStitchAntebraco,
+    alt: 'Tatuagem fine line do Stitch, de Lilo & Stitch, em pontilhismo no antebraço'
+  },
+  {
+    id: 147,
+    title: 'Liberté',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineLetteringLiberteAntebraco,
+    alt: 'Tatuagem fine line com o lettering liberté no antebraço'
+  },
+  {
+    id: 148,
+    title: 'Eu Sou uma Longa História',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineLetteringLongaHistoriaAntebraco,
+    alt: 'Tatuagem fine line com o lettering Eu sou uma longa história no antebraço'
+  },
+  {
+    id: 149,
+    title: 'Nossa Senhora Aparecida',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineNossaSenhoraAparecidaAntebraco,
+    alt: 'Tatuagem fine line de Nossa Senhora Aparecida com a palavra família e um terço, no antebraço'
+  },
+  {
+    id: 150,
+    title: 'Família Ilustrada',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineFamiliaIlustradaPanturrilha,
+    alt: 'Tatuagem fine line de família ilustrada com cachorros, da panturrilha ao tornozelo'
+  },
+  {
+    id: 151,
+    title: 'Reverdecer',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineLetteringReverdecerBraco,
+    alt: 'Tatuagem fine line com o lettering Reverdecer em vermelho, ao lado de uma flor, no braço'
+  },
+  {
+    id: 152,
+    title: 'Patinha de Cachorro',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelinePatinhaDeCachorroAntebraco,
+    alt: 'Tatuagem fine line com a impressão da patinha de um cachorro, no antebraço'
+  },
+  {
+    id: 153,
+    title: 'May the Force Be with You',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineStarWarsMayTheForceAntebraco,
+    alt: 'Tatuagem fine line do símbolo da Aliança Rebelde, de Star Wars, com a frase May the force be with you, no antebraço'
+  },
+  {
+    id: 154,
+    title: 'Citação do Ferris Bueller',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineCitacaoFerrisBuellerAntebraco,
+    alt: 'Tatuagem fine line com uma citação do filme Curtindo a Vida Adoidado, no antebraço'
+  },
+  {
+    id: 155,
+    title: 'Vida Longa e Próspera',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineStarTrekVidaLongaEProsperaBraco,
+    alt: 'Tatuagem fine line com a saudação vulcana de Star Trek e a frase Vida longa e próspera, no braço'
+  },
+  {
+    id: 156,
+    title: 'Nossa Senhora em Linha Contínua',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineNossaSenhoraEmLinhaContinuaAntebraco,
+    alt: 'Tatuagem fine line de Nossa Senhora em rosto minimalista de linha contínua, no antebraço'
+  },
+  {
+    id: 157,
+    title: 'Bastão de Asclépio',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineBastaoDeAsclepioAtrasDaOrelha,
+    alt: 'Tatuagem fine line do bastão de Asclépio em pontilhismo, atrás da orelha'
+  },
+  {
+    id: 158,
+    title: 'Cruz',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineCruzEmPretoSolidoBraco,
+    alt: 'Tatuagem de cruz em traço pincelado e preto sólido, com referência bíblica, no braço'
+  },
+  {
+    id: 159,
+    title: 'Cacto',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineCactoPunho,
+    alt: 'Tatuagem fine line de cacto em pontilhismo no punho'
+  },
+  {
+    id: 160,
+    title: 'Tentar Sempre, Desistir Nunca',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineLetteringTentarSempreClavicula,
+    alt: 'Tatuagem fine line com o lettering Tentar sempre, desistir nunca na clavícula'
+  },
+  {
+    id: 161,
+    title: 'Mulan',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineMulanAntebraco,
+    alt: 'Tatuagem fine line da Mulan dentro de círculo enso com ramo de cerejeira, no antebraço'
+  },
+  {
+    id: 162,
+    title: 'Lâmpada com Cérebro',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineLampadaComCerebroAntebraco,
+    alt: 'Tatuagem fine line de lâmpada com cérebro e geometria, no antebraço'
+  },
+  {
+    id: 163,
+    title: 'Baleia Jubarte',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineBaleiaJubarteBraco,
+    alt: 'Tatuagem fine line de baleia jubarte em pontilhismo no braço'
+  },
+  {
+    id: 164,
+    title: 'Still I Rise',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineLetteringStillIRisePeito,
+    alt: 'Tatuagem fine line com o lettering Still I Rise e uma data em algarismos romanos, no peito'
+  },
+  {
+    id: 165,
+    title: 'Símbolo de Três Espirais',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineSimboloDeTresEspiraisAntebraco,
+    alt: 'Tatuagem fine line de símbolo com três espirais dentro de um círculo, no antebraço'
+  },
+  {
+    id: 166,
+    title: 'Pássaros',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelinePassarosClavicula,
+    alt: 'Tatuagem de pássaros em preto sólido na clavícula e no ombro'
+  },
+  {
+    id: 167,
+    title: 'Traveler, Not a Tourist',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineTravelerNotATouristBraco,
+    alt: 'Tatuagem fine line com globo, bússola e a frase I am a traveler not a tourist, no braço'
+  },
+  {
+    id: 168,
+    title: 'Machados Cruzados',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineMachadosCruzadosAntebraco,
+    alt: 'Tatuagem fine line de dois machados cruzados em pontilhismo no antebraço'
+  },
+  {
+    id: 169,
+    title: 'Espada',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineEspadaAntebraco,
+    alt: 'Tatuagem fine line de espada em pontilhismo no antebraço'
+  },
+  {
+    id: 170,
+    title: 'Borboleta Monarca',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineBorboletaMonarcaBraco,
+    alt: 'Tatuagem fine line de borboleta com asas detalhadas no braço'
+  },
+  {
+    id: 171,
+    title: 'Espelho de Iemanjá',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineEspelhoDeIemanjaAntebraco,
+    alt: 'Tatuagem fine line do espelho de Iemanjá com lua crescente e estrela, no antebraço'
+  },
+  {
+    id: 172,
+    title: 'Chocalho Minimalista',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineChocalhoMinimalistaBraco,
+    alt: 'Tatuagem fine line de chocalho em traço minimalista e pontilhismo, no braço'
+  },
+  {
+    id: 173,
+    title: 'Patinha em Contorno',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelinePatinhaEmContornoBraco,
+    alt: 'Tatuagem fine line de patinha de cachorro só em contorno, no braço'
+  },
+  {
+    id: 174,
+    title: 'Amor Fati',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineLetteringAmorFatiCostas,
+    alt: 'Tatuagem fine line com o lettering amor fati na lombar'
+  },
+  {
+    id: 175,
+    title: 'Fênix',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineFenixOmbro,
+    alt: 'Tatuagem fine line de fênix em voo no ombro e nas costas'
+  },
+  {
+    id: 176,
+    title: 'Obstinado',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineLetteringObstinadoPescoco,
+    alt: 'Tatuagem fine line com o lettering Obstinado na vertical, no pescoço'
+  },
   {
     id: 87,
     title: 'Uroboros e Bússola Nórdica',

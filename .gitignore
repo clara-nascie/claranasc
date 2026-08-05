@@ -41,3 +41,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Página local de revisão de nomes de fotos — transitória, não versionar.
+revisao-fine-line.html
