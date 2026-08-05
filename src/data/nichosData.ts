@@ -197,9 +197,16 @@ export function fotosDoNicho(nicho: Nicho): PortfolioItem[] {
   return portfolioItems.filter((item) => item.category === nicho.categoriaId);
 }
 
-/** Caminho da página, para os links internos. Um lugar só monta a URL. */
+/**
+ * Caminho da página, para os links internos. Um lugar só monta a URL.
+ *
+ * A barra final não é enfeite: o build gera `tatuagem/{slug}/index.html`, e
+ * sem ela o servidor responde 307 para a versão com barra. Cada link interno
+ * pagava esse desvio, e o `BreadcrumbList` declarava uma URL diferente da que
+ * o canonical da própria página aponta.
+ */
 export function caminhoDoNicho(nicho: Nicho): string {
-  return `/tatuagem/${nicho.slug}`;
+  return `/tatuagem/${nicho.slug}/`;
 }
 
 /** `undefined` quando a categoria não tem página — é o caso do filtro "Todos". */
