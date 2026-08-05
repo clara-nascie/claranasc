@@ -167,6 +167,11 @@ fileiras inteiras em vez de foto a foto.
 > reimplementar teclado, leitor de tela e busca na página dentro dele, e é onde
 > a acessibilidade quebra. Contêiner que rola ganha os três do navegador.
 >
+> A barra de rolagem foi intencionalmente escondida no celular (`scrollbar-width: none`) 
+> para um visual mais limpo de *swipe*. Para compensar a falta da barra, um indicador
+> visual `.carrossel-hint` ("Deslize ➔" animado) é exibido no canto inferior direito
+> das fileiras em telas até 991px.
+>
 > A largura da vaga é `calc((100% - 60px) / 4)`, nunca pixel fixo: com 285px —
 > a conta feita sobre `--container-max-width` — o cartão ficava cortado a
 > 1280px, onde o `.container` mede 1152px, porque ele é 90% da largura e só
@@ -186,6 +191,12 @@ depois que elas carregam, com salto visível.
 Sem legenda embaixo da foto — decisão da Clara em 04/08: "só as fotos fica
 melhor". O título e a categoria seguem no overlay de hover, e quem descreve a
 foto para o Google Imagens e para leitor de tela é o `alt`.
+
+> 💡 **Container Queries (`@container`)**: O tamanho da fonte das legendas e
+> o padding do hover utilizam `cqi` (container query inline-size) em vez de `vw` 
+> ou px fixo. Como a grade muda de 3 colunas (desktop) para 2 colunas (celular), 
+> o texto encolhe e cresce **em proporção à foto**, garantindo que as palavras não
+> fiquem cortadas. O item de portfólio atua como contêiner (`container-type: inline-size`).
 
 ## Ilhas de interatividade
 
