@@ -57,7 +57,7 @@ import geekBaraggan from '../assets/portfolio/geek-bleach-baraggan-antebraco.web
 
 // --- Blackwork ---
 import blackworkLobo from '../assets/portfolio/blackwork-lobo-geometrico-braco.webp';
-import blackworkFaixas from '../assets/portfolio/blackwork-faixas-antebraco.webp';
+import blackworkEscher from '../assets/portfolio/blackwork-escher-the-rind-antebraco.webp';
 import blackworkVegvisir from '../assets/portfolio/blackwork-vegvisir-corvo-ombro.webp';
 import blackworkMascara from '../assets/portfolio/blackwork-mascara-tribal-braco.webp';
 import blackworkTucano from '../assets/portfolio/blackwork-tucano-losango-braco.webp';
@@ -73,32 +73,32 @@ import finelineCavalo from '../assets/portfolio/fineline-cavalo-costas.webp';
 
 // IMPORTS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
 // Não remova o marcador nem escreva abaixo dele à mão.
-import blackworkVegvisirEmCirculoPeito from '../assets/portfolio/blackwork-vegvisir-em-circulo-peito.webp';
+import blackworkUroboros from '../assets/portfolio/blackwork-uroboros-e-bussola-nordica-peito.webp';
 import blackworkAstronautaEEntropiaAntebraco from '../assets/portfolio/blackwork-astronauta-e-entropia-antebraco.webp';
 import blackworkPomoDeOuroNuca from '../assets/portfolio/blackwork-pomo-de-ouro-nuca.webp';
 import blackworkLanternaEMariposaPanturrilha from '../assets/portfolio/blackwork-lanterna-e-mariposa-panturrilha.webp';
-import blackworkFiguraNaMolduraPanturrilha from '../assets/portfolio/blackwork-figura-na-moldura-panturrilha.webp';
+import blackworkMacMiller from '../assets/portfolio/blackwork-capa-de-album-mac-miller-panturrilha.webp';
 import blackworkAtlasEGeometriaAntebraco from '../assets/portfolio/blackwork-atlas-e-geometria-antebraco.webp';
 import blackworkMulherComPlanetasAntebraco from '../assets/portfolio/blackwork-mulher-com-planetas-antebraco.webp';
 import blackworkSamuraiEGalhosAntebraco from '../assets/portfolio/blackwork-samurai-e-galhos-antebraco.webp';
 import blackworkTeaRexBraco from '../assets/portfolio/blackwork-tea-rex-braco.webp';
-import blackworkGaloCoxa from '../assets/portfolio/blackwork-galo-coxa.webp';
-import blackworkCartaDeTaroDeathCoxa from '../assets/portfolio/blackwork-carta-de-taro-death-coxa.webp';
-import blackworkCartaDeTaroTheCupidCoxa from '../assets/portfolio/blackwork-carta-de-taro-the-cupid-coxa.webp';
+import blackworkGaloDeBarcelos from '../assets/portfolio/blackwork-galo-de-barcelos-coxa.webp';
+import blackworkCartaMorte from '../assets/portfolio/blackwork-carta-de-taro-da-morte-coxa.webp';
+import blackworkCartaCupido from '../assets/portfolio/blackwork-carta-de-taro-do-cupido-coxa.webp';
 import blackworkSerpentePerna from '../assets/portfolio/blackwork-serpente-perna.webp';
-import blackworkPersonagemComTenisBraco from '../assets/portfolio/blackwork-personagem-com-tenis-braco.webp';
-import blackworkPersonagemComTenisBracoDeFrente from '../assets/portfolio/blackwork-personagem-com-tenis-braco-de-frente.webp';
-import blackworkAdaptadorDeVinilPanturrilha from '../assets/portfolio/blackwork-adaptador-de-vinil-panturrilha.webp';
-import blackworkAdaptadorDeVinilPanturrilhaDePerto from '../assets/portfolio/blackwork-adaptador-de-vinil-panturrilha-de-perto.webp';
-import blackworkMulherComFloresEChifresBraco from '../assets/portfolio/blackwork-mulher-com-flores-e-chifres-braco.webp';
+import blackworkCapaDeAlbum from '../assets/portfolio/blackwork-capa-de-album-braco.webp';
+import blackworkCapaDeAlbumFrente from '../assets/portfolio/blackwork-capa-de-album-braco-de-frente.webp';
+import blackworkLinkinPark from '../assets/portfolio/blackwork-simbolo-do-linkin-park-panturrilha.webp';
+import blackworkLinkinParkPerto from '../assets/portfolio/blackwork-simbolo-do-linkin-park-panturrilha-de-perto.webp';
+import blackworkNeotrad from '../assets/portfolio/blackwork-neotrad-braco.webp';
 import blackworkCapaceteDoAyrtonSennaBraco from '../assets/portfolio/blackwork-capacete-do-ayrton-senna-braco.webp';
-import blackworkSilhuetaComViolaoBraco from '../assets/portfolio/blackwork-silhueta-com-violao-braco.webp';
+import blackworkJohnnyCash from '../assets/portfolio/blackwork-johnny-cash-braco.webp';
 import blackworkCoracaoRemendadoAntebraco from '../assets/portfolio/blackwork-coracao-remendado-antebraco.webp';
-import blackworkPolvoPerna from '../assets/portfolio/blackwork-polvo-perna.webp';
+import blackworkFechamentoPolvo from '../assets/portfolio/blackwork-fechamento-com-polvo-perna.webp';
 import blackworkMinasGeraisUaiManoPanturrilha from '../assets/portfolio/blackwork-minas-gerais-uai-mano-panturrilha.webp';
 import blackworkMulherComPlanetasAntebracoDePerto from '../assets/portfolio/blackwork-mulher-com-planetas-antebraco-de-perto.webp';
 import blackworkEsqueletoBigHeartAbdomen from '../assets/portfolio/blackwork-esqueleto-big-heart-abdomen.webp';
-import blackworkMulherEGuerreiroBraco from '../assets/portfolio/blackwork-mulher-e-guerreiro-braco.webp';
+import blackworkYemanjaEOgum from '../assets/portfolio/blackwork-yemanja-e-ogum-braco.webp';
 import blackworkCartasDeTaroNasDuasCoxas from '../assets/portfolio/blackwork-cartas-de-taro-nas-duas-coxas.webp';
 import blackworkDivindadeComAnkhAntebraco from '../assets/portfolio/blackwork-divindade-com-ankh-antebraco.webp';
 import geekTheLastOfUsComposicao from '../assets/portfolio/geek-the-last-of-us-composicao-panturrilha.webp';
@@ -202,22 +202,6 @@ export const PORTFOLIO_CATEGORIES: PortfolioCategory[] = [
   { id: 'fineline', label: 'Fine Line' }
 ];
 
-/**
- * As três imagens da vitrine do hero, em ordem: a primeira é a grande.
- *
- * Escolha da Clara: o floral no peito na vaga grande, e duas peças de
- * Blackwork nas menores — faixas em preto sólido e vegvisir com corvo.
- *
- * A combinação funciona nos dois sentidos. A foto grande é uma Cobertura, que
- * é justamente a categoria que o site quer fazer crescer, e as duas menores
- * são as peças que melhor sobrevivem à miniatura. Como cada vaga imprime o
- * nome da própria categoria na legenda, o hero também deixa de repetir
- * "Blackwork" três vezes.
- *
- * Troque os ids aqui para mudar a vitrine sem mexer no componente.
- */
-export const HERO_SHOWCASE_IDS = [4, 20, 21] as const;
-
 export const portfolioItems: PortfolioItem[] = [
   // ------------------------------------------------------------- Coberturas
   {
@@ -283,8 +267,7 @@ export const portfolioItems: PortfolioItem[] = [
   /*
     A partir daqui, a camada de volume (Issue #16). Os ids seguem a ordem de
     importação e não a posição no array — 31 vem depois de 6 porque 7 a 30 já
-    estavam em uso. Só a unicidade importa: o id indexa o lightbox e o
-    HERO_SHOWCASE_IDS, nunca a ordem de exibição. Renumerar quebraria o hero.
+    estavam em uso. Só a unicidade importa: o id indexa o lightbox, nunca a ordem de exibição.
   */
   {
     id: 31,
@@ -349,11 +332,11 @@ export const portfolioItems: PortfolioItem[] = [
   // muda nada do que aparece na tela.
   {
     id: 87,
-    title: 'Vegvísir em Círculo',
+    title: 'Uroboros e Bússola Nórdica',
     category: 'blackwork',
     categoryLabel: 'Blackwork',
-    image: blackworkVegvisirEmCirculoPeito,
-    alt: 'Tatuagem blackwork de vegvísir dentro de círculo em preto sólido, no peito'
+    image: blackworkUroboros,
+    alt: 'Tatuagem blackwork de uroboros envolvendo uma bússola nórdica, em preto sólido no peito'
   },
   {
     id: 88,
@@ -381,11 +364,11 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 91,
-    title: 'Figura na Moldura',
+    title: 'Capa de Álbum do Mac Miller',
     category: 'blackwork',
     categoryLabel: 'Blackwork',
-    image: blackworkFiguraNaMolduraPanturrilha,
-    alt: 'Tatuagem blackwork de figura sentada dentro de moldura, com borboleta e flores, em pontilhismo na panturrilha'
+    image: blackworkMacMiller,
+    alt: 'Tatuagem blackwork da capa de álbum do Mac Miller, em pontilhismo na panturrilha'
   },
   {
     id: 92,
@@ -421,27 +404,27 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 96,
-    title: 'Galo',
+    title: 'Galo de Barcelos',
     category: 'blackwork',
     categoryLabel: 'Blackwork',
-    image: blackworkGaloCoxa,
-    alt: 'Tatuagem de galo estilizado com detalhes em cor e estrela amarela na coxa'
+    image: blackworkGaloDeBarcelos,
+    alt: 'Tatuagem de galo de Barcelos com detalhes em cor e estrela amarela na coxa'
   },
   {
     id: 97,
-    title: 'Carta Death',
+    title: 'Carta de Tarô da Morte',
     category: 'blackwork',
     categoryLabel: 'Blackwork',
-    image: blackworkCartaDeTaroDeathCoxa,
-    alt: 'Tatuagem blackwork de carta de tarô Death com caveira encapuzada e teia de aranha, na coxa'
+    image: blackworkCartaMorte,
+    alt: 'Tatuagem blackwork da carta de tarô da Morte com caveira encapuzada e teia de aranha, na coxa'
   },
   {
     id: 98,
-    title: 'Carta The Cupid',
+    title: 'Carta de Tarô do Cupido',
     category: 'blackwork',
     categoryLabel: 'Blackwork',
-    image: blackworkCartaDeTaroTheCupidCoxa,
-    alt: 'Tatuagem blackwork de carta de tarô The Cupid com anjo e nuvens, na coxa'
+    image: blackworkCartaCupido,
+    alt: 'Tatuagem blackwork da carta de tarô do Cupido com anjo e nuvens, na coxa'
   },
   {
     id: 99,
@@ -453,43 +436,43 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 100,
-    title: 'Personagem com Tênis',
+    title: 'Capa de Álbum',
     category: 'blackwork',
     categoryLabel: 'Blackwork',
-    image: blackworkPersonagemComTenisBraco,
-    alt: 'Tatuagem blackwork de personagem em traço de rabisco usando tênis, no braço'
+    image: blackworkCapaDeAlbum,
+    alt: 'Tatuagem blackwork de capa de álbum em traço de rabisco, no braço'
   },
   {
     id: 101,
-    title: 'Personagem com Tênis, de Frente',
+    title: 'Capa de Álbum, de Frente',
     category: 'blackwork',
     categoryLabel: 'Blackwork',
-    image: blackworkPersonagemComTenisBracoDeFrente,
-    alt: 'Tatuagem blackwork de personagem em traço de rabisco usando tênis, no braço, vista de frente'
+    image: blackworkCapaDeAlbumFrente,
+    alt: 'Tatuagem blackwork de capa de álbum em traço de rabisco, no braço, vista de frente'
   },
   {
     id: 102,
-    title: 'Adaptador de Vinil',
+    title: 'Símbolo do Linkin Park',
     category: 'blackwork',
     categoryLabel: 'Blackwork',
-    image: blackworkAdaptadorDeVinilPanturrilha,
-    alt: 'Tatuagem blackwork de adaptador de disco de vinil com uma data, em pontilhismo na panturrilha'
+    image: blackworkLinkinPark,
+    alt: 'Tatuagem blackwork do símbolo do Linkin Park com uma data, em pontilhismo na panturrilha'
   },
   {
     id: 103,
-    title: 'Adaptador de Vinil, de Perto',
+    title: 'Símbolo do Linkin Park, de Perto',
     category: 'blackwork',
     categoryLabel: 'Blackwork',
-    image: blackworkAdaptadorDeVinilPanturrilhaDePerto,
-    alt: 'Tatuagem blackwork de adaptador de disco de vinil em pontilhismo na panturrilha, vista de perto'
+    image: blackworkLinkinParkPerto,
+    alt: 'Tatuagem blackwork do símbolo do Linkin Park em pontilhismo na panturrilha, vista de perto'
   },
   {
     id: 104,
-    title: 'Mulher com Flores e Chifres',
+    title: 'Neotrad em Blackwork',
     category: 'blackwork',
     categoryLabel: 'Blackwork',
-    image: blackworkMulherComFloresEChifresBraco,
-    alt: 'Tatuagem blackwork de mulher com flores, chifres e felino em braço fechado'
+    image: blackworkNeotrad,
+    alt: 'Tatuagem blackwork em neotrad de mulher com flores, chifres e felino em braço fechado'
   },
   {
     id: 105,
@@ -501,11 +484,11 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 106,
-    title: 'Silhueta com Violão',
+    title: 'Johnny Cash',
     category: 'blackwork',
     categoryLabel: 'Blackwork',
-    image: blackworkSilhuetaComViolaoBraco,
-    alt: 'Tatuagem blackwork de silhueta de homem com violão em preto sólido, no braço'
+    image: blackworkJohnnyCash,
+    alt: 'Tatuagem blackwork do Johnny Cash em silhueta de preto sólido, no braço'
   },
   {
     id: 107,
@@ -517,11 +500,11 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 108,
-    title: 'Polvo na Perna',
+    title: 'Fechamento com Polvo',
     category: 'blackwork',
     categoryLabel: 'Blackwork',
-    image: blackworkPolvoPerna,
-    alt: 'Tatuagem de polvo em preto e cinza cobrindo a perna inteira, da coxa ao tornozelo'
+    image: blackworkFechamentoPolvo,
+    alt: 'Tatuagem de polvo em preto e cinza em fechamento de perna, da coxa ao tornozelo'
   },
   {
     id: 109,
@@ -549,11 +532,11 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 112,
-    title: 'Mulher e Guerreiro',
+    title: 'Yemanjá e Ogum',
     category: 'blackwork',
     categoryLabel: 'Blackwork',
-    image: blackworkMulherEGuerreiroBraco,
-    alt: 'Tatuagem blackwork ornamental de mulher e figura guerreira em braço fechado'
+    image: blackworkYemanjaEOgum,
+    alt: 'Tatuagem blackwork de Yemanjá e Ogum em braço fechado, com traço ornamental'
   },
   {
     id: 113,
@@ -1108,11 +1091,11 @@ export const portfolioItems: PortfolioItem[] = [
   {
     id: 20,
     destaque: true,
-    title: 'Faixas em Preto Sólido',
+    title: 'The Rind — Escher',
     category: 'blackwork',
     categoryLabel: 'Blackwork',
-    image: blackworkFaixas,
-    alt: 'Tatuagem blackwork de faixas em preto sólido envolvendo o antebraço',
+    image: blackworkEscher,
+    alt: 'Tatuagem blackwork inspirada em The Rind, de Escher, com faixas em preto sólido envolvendo o antebraço',
     description: 'Preto chapado sem contorno: o desenho é feito pelo vazio entre as faixas.'
   },
   {
@@ -1228,13 +1211,3 @@ export const portfolioItems: PortfolioItem[] = [
  */
 export const itensDestaque: PortfolioItem[] = portfolioItems.filter((item) => item.destaque);
 
-/**
- * Itens da vitrine do hero, resolvidos a partir de `HERO_SHOWCASE_IDS`.
- *
- * O `filter` garante que um id inexistente não gere buraco na vitrine, e a
- * ordem declarada em HERO_SHOWCASE_IDS é preservada (a ordem do array de itens
- * é irrelevante aqui).
- */
-export const heroShowcase: PortfolioItem[] = HERO_SHOWCASE_IDS.map((id) =>
-  portfolioItems.find((item) => item.id === id)
-).filter((item): item is PortfolioItem => item !== undefined);
