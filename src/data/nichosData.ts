@@ -4,7 +4,6 @@ import {
   type PortfolioItem,
 } from "./portfolioData";
 
-
 export interface Nicho {
   /** Vira a URL: /tatuagem/{slug}. ⚠️ Não troque depois que a página tiver tráfego. */
   slug: string;
@@ -47,17 +46,17 @@ export const NICHOS: Nicho[] = [
       {
         pergunta: "Qualquer tatuagem pode ser coberta?",
         resposta:
-          "O que decide não é o quanto você gosta menos dela: é o quanto de preto ela tem. Traço fino e cinza claro dão mais liberdade, e cabe quase qualquer desenho novo em cima. Preto sólido e áreas muito saturadas exigem um estudo de caso maior — por isso, na maioria das vezes, é necessária uma visita ao estúdio, para que eu possa avaliar pessoalmente e propor o tipo de trabalho que vai entregar um resultado satisfatório.",
+          "O que decide não é o quanto você gosta menos dela: é o quanto de preto ela tem. Traço fino e cinza claro dão mais liberdade, e cabe quase qualquer desenho novo em cima. Preto sólido e áreas muito saturadas exigem um estudo maior de caso — por isso, na maioria das vezes, é necessária uma visita ao estúdio, para que eu possa avaliar pessoalmente e propor tipos de trabalhos que irão entregar um resultado satisfatório.",
       },
       {
         pergunta: "A cobertura sai em uma sessão só?",
         resposta:
-          "Nem sempre. A peça nova costuma pedir mais espaço que a antiga, porque as bordas precisam de área para se resolver, e isso já aumenta o tempo. Quando a tatuagem antiga é muito escura, o caminho mais honesto é clarear antes com algumas sessões de laser e cobrir depois — o resultado é outro patamar, e eu prefiro dizer isso antes de começar.",
+          "Varia muito em cada caso, mas não é impossível. Coberturas exigem um processo completamente diferente de uma tattoo que é feita do zero, aumentando bastante o nível de complexidade. Quando a tatuagem antiga é muito escura, o caminho mais honesto é clarear antes com algumas sessões de laser e cobrir depois — o resultado é outro patamar, e eu prefiro dizer isso antes de começar.",
       },
       {
         pergunta: "Como faço para saber se a minha cobre?",
         resposta:
-          "Me manda uma foto da tatuagem atual pelo WhatsApp, com luz natural e sem filtro — é o que mostra a saturação de verdade. Eu respondo com o que dá para fazer, o tamanho que a peça nova precisa ter e quantas sessões seriam.",
+          "Me manda uma foto da tatuagem atual pelo WhatsApp, com luz natural e sem filtro — é o que mostra a saturação de verdade. Eu respondo com o que dá para fazer, o tamanho que a peça nova precisa ter e quantas sessões em média seriam necessárias para o trabalho ser finalizado.",
       },
     ],
     mensagemWhatsapp:
@@ -77,17 +76,17 @@ export const NICHOS: Nicho[] = [
       {
         pergunta: "Tatuagem botânica em traço fino dura?",
         resposta:
-          "Dura, se for desenhada contando com o tempo. Traço muito fino e muito junto se fecha: a tinta espalha alguns décimos de milímetro dentro da pele ao longo dos anos, e o que era um vão vira mancha. Nos meus botânicos isso aparece como decisão de espaçamento — sementes de dente-de-leão em pontos separados, folhagem com sombreado só nas bordas, e preenchimento sólido reservado para o que precisa ancorar o desenho.",
+          "Dura, se for desenhada contando com o tempo. Traço muito fino e muito junto se fecha, já que a expansão do traço é um processo natural que acontece na nossa pele ao longo dos anos. É importante saber criar uma arte que saiba equilibrar detalhes com clareza, e que consequentemente, envelheça bem.",
       },
       {
         pergunta: "Você faz desenho de catálogo ou é tudo autoral?",
         resposta:
-          "Autoral, e não por preciosismo. Desenho botânico é composição antes de ser ilustração: um ramo no ombro funciona quando acompanha a curva do deltoide em vez de disputar com ela, e uma braçadeira fecha a volta do antebraço sem virar faixa cheia. O mesmo galho fica certo na costela e errado nas costas.",
+          "Autoral, e não por preciosismo! Desenho botânico é composição antes de ser ilustração: um ramo no ombro funciona quando acompanha a curva do corpo em vez de disputar com ele. É sempre importante levar em consideração o tamanho e o local que a tatuagem será realizada para que ela orne no corpo da forma mais orgânica possível.",
       },
       {
         pergunta: "Que referência eu levo?",
         resposta:
-          "Foto da planta de verdade — a planta, não a tatuagem de outra pessoa. É de foto de planta que saem os desenhos que ninguém mais tem. Se você já sabe a região do corpo, manda junto: é o que define o formato da composição.",
+          "Toda referência é válida! De outra tatuagem, desenhos, flores reais ou um esboço que você mesmo fez. O importante é eu conseguir entender sua ideia pra assim, construir uma arte do jeitinho que você imaginou.",
       },
     ],
     mensagemWhatsapp:
@@ -102,22 +101,22 @@ export const NICHOS: Nicho[] = [
       "Tatuagem geek e de anime em Belo Horizonte: personagens, cenas e símbolos em preto e cinza. Veja o portfólio autoral e faça seu orçamento pelo WhatsApp.",
     h1: "Tatuagem geek e de anime em Belo Horizonte",
     chamada:
-      "Personagens, cenas e símbolos de anime, quadrinho, jogo e livro — redesenhados do zero.",
+      "De uma nerd para o outro(a): traz a referência que eu transformo em tatuagem!",
     faq: [
       {
         pergunta: "Dá para tatuar qualquer personagem?",
         resposta:
-          "Quase sempre, mas nem sempre no tamanho que a pessoa imaginou. A tela tem cor e resolução infinitas; a pele não. O que sustenta um desenho por vinte anos é contraste, não detalhe — então um personagem cheio de detalhe miúdo ou cresce, ou é simplificado. Eu digo qual dos dois antes de fechar o orçamento.",
+          "Sim! Porém desenho na pele tem limitações. O que sustenta um desenho por vinte anos é contraste, não detalhe — então um personagem cheio de detalhes pequenos ou cresce, ou é simplificado. Eu sempre explico o que funciona ou não como tatuagem, pra chegarmos em um consenso que atenda tanto a sua ideia, quanto te entregue um trabalho que vai envelhecer bem.",
       },
       {
         pergunta: "Você copia uma tatuagem que eu vi na internet?",
         resposta:
-          "Não copio arte de outro tatuador. Se você trouxer uma referência que já é tatuagem, eu uso como direção — o estilo, o enquadramento, a densidade — e desenho a cena de novo, medida para o seu corpo. Referência de anime, quadrinho, jogo ou livro é ponto de partida; tatuagem de outra pessoa é ponto de partida também, nunca de chegada.",
+          "Não copio arte de outro tatuador. Se você trouxer uma referência que já é tatuagem, eu uso como direção — o estilo, o enquadramento, a densidade — e desenho a cena de novo, medida para o seu corpo. Referência de anime, quadrinho, jogo ou livro é ponto de partida; tatuagem de outra pessoa é ponto de partida também, nunca de chegada (além de ser muito mais legal ter algo que é só seu <3).",
       },
       {
         pergunta: "Precisa ser colorida?",
         resposta:
-          "Não, e na maioria das vezes é melhor que não seja. Preto e cinza com bom contraste continua legível de longe e envelhece por igual. Quando entra cor, ela funciona melhor em pontos: a Amaterasu do antebraço, aqui na galeria, tem vermelho em três lugares só, porque cor demais compete com o preto e some primeiro.",
+          "Não, tattoo geek funciona de várias formas! É só adaptarmos sua ideia pro estilo de tatuagem que você mais se identifica.",
       },
     ],
     mensagemWhatsapp:
@@ -137,12 +136,12 @@ export const NICHOS: Nicho[] = [
       {
         pergunta: "Quanto tempo leva um braço fechado em blackwork?",
         resposta:
-          "Mais de uma sessão, sempre. Preto sólido é a técnica menos perdoadora que existe: uma área chapada mostra qualquer falha de profundidade, e se a tinta não entrou parelha isso aparece meses depois como um clarão no meio do preto, sem retoque discreto possível. É trabalho lento, feito em passadas — um braço fechado não sai em uma tarde.",
+          "O número de sessões depende de vários fatores, como resistência do próprio cliente, horas de sessão, complexidade do desenho, entre outros. Portanto, é algo bem imprevisível, mas durante o orçamento eu sempre dou uma estimativa do quanto vamos gastar de acordo com o trabalho.",
       },
       {
         pergunta: "Preto sólido desbota?",
         resposta:
-          "Clareia, mas por igual — e é justamente por isso que blackwork é o estilo que melhor envelhece. Pigmento colorido desbota mudando de tom; o preto não vira outra cor. Uma peça pensada com vão suficiente entre as massas continua legível vinte anos depois, que é o oposto do que acontece com detalhe fino demais.",
+          "Toda tatuagem desbota, esse é um processo natural da nossa pele que está sempre em constante renovação. Porém, o que faz uma tatuagem legível depois de anos é a habilidade e técnica da tatuadora no momento da aplicação. Durante o orçamento eu sempre deixo claro o que funciona ou não ao longo prazo e os caminhos que podemos seguir pra termos o melhor trabalho possível.",
       },
       {
         pergunta: "Blackwork serve para cobrir uma tatuagem antiga?",
@@ -162,17 +161,17 @@ export const NICHOS: Nicho[] = [
       "Tatuagem fine line em Belo Horizonte: traço fino feito para durar. Veja o portfólio, entenda onde o fine line funciona melhor e agende pelo WhatsApp.",
     h1: "Tatuagem fine line em Belo Horizonte",
     chamada:
-      "Traço fino, pouco preenchimento — desenhado contando com o que o tempo faz com a linha.",
+      "Pra quem gosta de tattoos com traços finos e delicados.",
     faq: [
       {
         pergunta: "Fine line dura? Vou precisar retocar?",
         resposta:
-          "Traço fino espalha — a tinta migra alguns décimos de milímetro dentro da pele ao longo dos anos. Em uma linha grossa isso não se nota; em uma linha de meio milímetro, é a diferença entre duas linhas separadas e uma mancha só. Não é defeito de execução, é como a pele funciona. O que dá para fazer é desenhar contando com isso: espaço entre as linhas, menos detalhe por centímetro, e sombreado interno onde o volume precisa vir sem engrossar o contorno.",
+          "Sim, e nem sempre a tatuagem vai precisar de retoque. Após o período de cicatrização, eu sempre peço foto da tatuagem para avaliar se será preciso ou não uma nova aplicação.",
       },
       {
         pergunta: "Onde no corpo o fine line funciona melhor?",
         resposta:
-          "Antebraço, costas, coxa e clavícula seguram traço fino muito bem. Mão, dedo, pé e costela são pele fina, com muito movimento ou muita renovação — ali o fine line pede retoque mais cedo. Eu prefiro combinar isso antes, e não depois.",
+          "Qualquer região do corpo. Entretanto, regiões com pele mais fina como, mão, dedos, pé e costela, com muito movimento ou muita renovação — pedem retoque mais cedo. Eu sempre deixo claro os riscos de desbotamento dependendo da área do corpo escolhida.",
       },
       {
         pergunta: "Dá para fazer bem pequenininho?",
