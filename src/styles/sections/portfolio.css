@@ -114,8 +114,7 @@
   1280px, onde o container mede 1152px -- o `.container` e 90% da largura, e so
   chega no teto acima de ~1333px.
 */
-.portfolio-grid--carrossel .portfolio-item,
-.carrossel-cartao {
+.portfolio-grid--carrossel .portfolio-item {
     flex: 0 0 calc((100% - 60px) / 4);
     scroll-snap-align: start;
 }
@@ -123,29 +122,24 @@
 /* --- O cartao que fecha a fileira --------------------------------------- */
 
 .carrossel-cartao {
-    aspect-ratio: 4 / 5;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    background-color: var(--bg-primary);
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 6px;
-    text-align: center;
-    padding: 20px;
-    color: var(--text-secondary);
+    gap: 8px;
+    padding: 0 20px 0 10px;
+    color: var(--text-primary);
     transition: var(--transition-smooth);
+    text-decoration: none;
+    scroll-snap-align: start;
+    flex: 0 0 auto;
 }
 
 .carrossel-cartao:hover {
-    border-color: var(--accent-gold);
-    color: var(--text-primary);
-    transform: translateY(-2px);
+    color: var(--accent-gold);
 }
 
 .carrossel-cartao svg {
-    margin-top: 8px;
     color: var(--accent-gold);
     transition: var(--transition-smooth);
 }
@@ -163,14 +157,11 @@
     color: var(--text-primary);
 }
 
-.carrossel-cartao-total {
-    font-size: 0.85rem;
-}
+
 
 @media (max-width: 991px) {
     /* Tres vagas nao cabem: passa a rolar, e a vaga vira fracao da tela. */
-    .portfolio-grid--carrossel .portfolio-item,
-    .carrossel-cartao {
+    .portfolio-grid--carrossel .portfolio-item {
         flex-basis: 38vw;
     }
 }
@@ -178,8 +169,7 @@
 @media (max-width: 639px) {
     /* Uma vaga e meia na tela: a segunda foto aparece cortada, que e o que
        sinaliza "tem mais aqui, arrasta". */
-    .portfolio-grid--carrossel .portfolio-item,
-    .carrossel-cartao {
+    .portfolio-grid--carrossel .portfolio-item {
         flex-basis: 62vw;
     }
 }
