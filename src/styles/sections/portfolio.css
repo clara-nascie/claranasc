@@ -94,13 +94,22 @@
     gap: 20px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    scrollbar-width: none; /* Firefox */
+    padding-bottom: 12px;
+    scrollbar-width: thin;
     /* Encosta o comeco e o fim do trilho na borda do container ao rolar. */
     scroll-padding-inline: 0;
 }
 
-.carrossel-trilho::-webkit-scrollbar {
-    display: none; /* Chrome, Safari e Edge */
+/* Esconde a barra apenas em telas de toque (celulares), onde o swipe é natural. 
+   No desktop com mouse, a barra continua visível para acessibilidade. */
+@media (hover: none) and (pointer: coarse) {
+    .carrossel-trilho {
+        scrollbar-width: none;
+        padding-bottom: 0;
+    }
+    .carrossel-trilho::-webkit-scrollbar {
+        display: none;
+    }
 }
 
 .portfolio-grid--carrossel {
