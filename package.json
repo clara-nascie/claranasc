@@ -13,7 +13,8 @@
     "verificar": "node scripts/verificar-visual.mjs",
     "verificar:galeria": "node scripts/verificar-galeria.mjs",
     "verificar:nichos": "node scripts/verificar-nichos.mjs",
-    "verificar:contraste": "node scripts/verificar-contraste-fundo.mjs"
+    "verificar:contraste": "node scripts/verificar-contraste-fundo.mjs",
+    "analytics": "node scripts/analytics-cloudflare.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^6.0.1",
