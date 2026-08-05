@@ -186,9 +186,9 @@
 
 
 @media (max-width: 991px) {
-    /* Tres vagas nao cabem: passa a rolar, e a vaga vira fracao da tela. */
+    /* Três vagas e um pedaço na tela para manter 3 colunas em telas médias/metade. */
     .portfolio-grid--carrossel .portfolio-item {
-        flex-basis: 38vw;
+        flex-basis: 28vw;
     }
 }
 
