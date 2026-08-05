@@ -58,6 +58,20 @@ const urlsDoSitemap = await (async () => {
 if (!urlsDoSitemap) {
   console.log('\n⚠ Sem sitemap nesta URL (é o dev server). Rode contra `npm run preview`');
   console.log('  para verificar também a consistência entre canonical e sitemap.');
+} else {
+  // A Issue #22 pede que verifiquemos se todas as fotos estão no sitemap
+  try {
+    const res = await fetch(new URL('/sitemap-imagens.xml', BASE_URL));
+    if (res.ok) {
+      const xml = await res.text();
+      const urlsUnicas = new Set([...xml.matchAll(/<image:loc>([^<]+)<\/image:loc>/g)].map(m => m[1]));
+      checar('sitemap de imagens lista as 176 fotos exclusivas', urlsUnicas.size === 176, `${urlsUnicas.size} fotos únicas declaradas`);
+    } else {
+      checar('sitemap de imagens acessível', false, 'arquivo não existe');
+    }
+  } catch {
+    checar('sitemap de imagens acessível', false, 'falha no fetch');
+  }
 }
 
 const browser = await chromium.launch();
