@@ -192,7 +192,7 @@
     }
 }
 
-@media (max-width: 639px) {
+@media (max-width: 480px) {
     /* Duas vagas e um pedaço na tela: a terceira foto aparece cortada, que e o que
        sinaliza "tem mais aqui, arrasta". */
     .portfolio-grid--carrossel .portfolio-item {
@@ -211,7 +211,7 @@
     column-gap: 30px;
 }
 
-@media (max-width: 639px) {
+@media (max-width: 480px) {
     .portfolio-grid--masonry {
         columns: 2;
         column-gap: 15px; /* Reduzindo o gap para caber melhor no celular */
@@ -275,7 +275,7 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: 30px;
+    padding: clamp(15px, 4vw, 30px);
     transition: var(--transition-smooth);
     border: 1px solid transparent;
 }
@@ -290,7 +290,7 @@
 }
 
 .item-category {
-    font-size: 0.75rem;
+    font-size: clamp(0.65rem, 1.5vw, 0.75rem);
     text-transform: uppercase;
     letter-spacing: 0.15em;
     color: var(--accent-gold-on-dark);
@@ -301,7 +301,7 @@
 }
 
 .item-title {
-    font-size: 1.3rem;
+    font-size: clamp(1rem, 2.2vw, 1.3rem);
     /* Sobre o gradiente escuro do .portfolio-hover, nao sobre o fundo do site. */
     color: var(--text-on-dark);
     text-transform: uppercase;
@@ -312,8 +312,8 @@
 
 .btn-zoom {
     position: absolute;
-    top: 30px;
-    right: 30px;
+    top: clamp(12px, 3vw, 30px);
+    right: clamp(12px, 3vw, 30px);
     color: var(--text-on-dark);
     /* Fundo escuro proprio, e nao um veu claro: a lupa fica no topo do
        overlay, onde o gradiente e quase transparente, entao o contraste
