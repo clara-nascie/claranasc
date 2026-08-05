@@ -1,9 +1,4 @@
 ---
-/**
- * Casca comum às seis páginas: `<head>`, cabeçalho, rodapé, lightbox e o
- * observador das animações de entrada. Cada página só decide title, description
- * e conteúdo.
- */
 import '../styles/global.css';
 
 import { SITE } from '../data/siteData';
@@ -33,8 +28,6 @@ const { title, description, ogType = 'website' } = Astro.props;
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <Seo title={title} description={description} ogType={ogType} />
-    {/* Vai em todas as páginas. Todos os blocos usam o mesmo `@id`, então o
-        Google lê o mesmo estúdio seis vezes, e não seis estúdios. */}
     <LocalBusinessSchema />
 
     {/* Schema específico da página: breadcrumb, FAQ. */}
@@ -65,10 +58,6 @@ const { title, description, ogType = 'website' } = Astro.props;
                     }
                 }
             },
-            // ⚠️ `rootMargin`, nunca `threshold` por fração de área: a fração
-            // fica inalcançável em elemento muito mais alto que a tela, e a
-            // galeria já ficou permanentemente invisível por isso.
-            // Coberto por `npm run verificar:galeria`.
             { threshold: 0, rootMargin: '0px 0px -12% 0px' }
         );
 

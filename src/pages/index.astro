@@ -1,15 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-
-// Astro e não React: só componente Astro pode usar o <Image> do astro:assets,
-// e nenhum deles precisa de estado que justifique hidratar uma ilha.
 import Hero from '../components/sections/Hero.astro';
 import Portfolio from '../components/sections/Portfolio.astro';
 import About from '../components/sections/About.astro';
 import { ContactForm } from '../components/sections/ContactForm';
 
-// Ordem intencional: "Tatuadora em BH" logo após o nome porque é o termo de
-// busca. 57 caracteres, abaixo do limite de ~60 que o Google exibe sem cortar.
 const title = 'Clara Nasc | Tatuadora em BH - Blackwork e Fine Line';
 const description =
   'Tatuadora em Belo Horizonte especializada em Blackwork, Fine Line, Botânico, Geek & Animes e Coberturas. Veja o portfólio autoral e solicite seu orçamento pelo WhatsApp.';

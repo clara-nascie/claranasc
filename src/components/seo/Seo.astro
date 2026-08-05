@@ -1,10 +1,4 @@
 ---
-/**
- * Meta tags de SEO, canonical e Open Graph.
- *
- * Centraliza o <head> para que as páginas por nicho (/tatuagem/fine-line etc.)
- * reaproveitem a mesma base sem duplicar tags.
- */
 import { SITE, OG_IMAGE } from '../../data/siteData';
 
 interface Props {
@@ -26,9 +20,6 @@ const {
   noindex = false
 } = Astro.props;
 
-// Astro.site vem do campo `site` em astro.config.mjs. Sem ele, não há como gerar
-// URL absoluta — e og:image com caminho relativo simplesmente não renderiza
-// prévia no WhatsApp, Facebook ou Instagram.
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site).href;
 const ogImageUrl = new URL(image, Astro.site).href;
 ---

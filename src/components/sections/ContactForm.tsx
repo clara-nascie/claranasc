@@ -17,15 +17,12 @@ export const ContactForm: React.FC = () => {
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    // A mapping since IDs use "input-name", "select-style", etc.
     const key = e.target.id.replace('input-', '').replace('select-', '');
     setFormData({ ...formData, [key]: e.target.value });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Newlines reais em vez de '%0A' cru: whatsappUrl() faz o encode, então
-    // caracteres como & e # digitados pela cliente não quebram mais a mensagem.
     const message = [
       'Olá Clara! Gostaria de solicitar um orçamento para tatuagem.',
       '',

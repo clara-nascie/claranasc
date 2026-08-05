@@ -2,23 +2,10 @@
 import { Image, getImage } from 'astro:assets';
 import type { PortfolioItem } from '../../data/portfolioData';
 
-/**
- * A grade de fotos, compartilhada entre a home e as páginas por nicho.
- *
- * É Astro e não React: `<Image>` do astro:assets só existe em componente Astro,
- * e as fotos precisam estar no HTML estático para o Google Imagens vê-las.
- */
 
 interface Props {
   itens: PortfolioItem[];
-  /** `id` do elemento da grade. A home usa `portfolio-grid`. */
   id?: string;
-  /**
-   * `carrossel`: fileira que rola na horizontal, recorte em 4/5 — a home.
-   * `masonry`: cada foto na proporção original — as páginas por nicho.
-   * `grade`: grade vertical em 4/5. Sem uso hoje; fica porque é o padrão de
-   * qualquer galeria futura que não seja fileira nem masonry.
-   */
   layout?: 'grade' | 'masonry' | 'carrossel';
 }
 
@@ -26,8 +13,6 @@ const { itens, id, layout = 'grade' } = Astro.props;
 const eMasonry = layout === 'masonry';
 const eCarrossel = layout === 'carrossel';
 
-// A miniatura tem ~380px; abrir o lightbox com ela ficaria borrado.
-// `getImage()` gera a variante grande no build e devolve a URL final.
 const ampliadas = new Map(
   await Promise.all(
     itens.map(async (item) => {
@@ -37,9 +22,6 @@ const ampliadas = new Map(
   )
 );
 
-// Grade e masonry chegam a 380px de coluna no desktop (container de 1200px,
-// 3 colunas, 30px de gap), 2 no tablet e 1 no celular. 760 cobre densidade 2x.
-// O carrossel é mais estreito: 4 vagas na mesma largura dão ~280px.
 const LARGURAS = [280, 380, 560, 760];
 const TAMANHOS = eCarrossel
   ? '(max-width: 639px) 66vw, (max-width: 991px) 40vw, 280px'
@@ -79,8 +61,6 @@ const TAMANHOS = eCarrossel
             data-title={item.title}
             data-category={item.categoryLabel}
           >
-            {/* SVG inline (ícone "maximize-2" do lucide): importar o componente
-                React traria o React de volta a um componente estático. */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -106,9 +86,6 @@ const TAMANHOS = eCarrossel
 </div>
 
 <script>
-  // Abertura do lightbox por delegação: um listener por galeria.
-  // O seletor é `[data-galeria]` e não um id fixo porque o componente aparece
-  // em seis páginas. Contrato com o Lightbox.tsx: CustomEvent('open-lightbox').
   for (const grade of document.querySelectorAll<HTMLElement>('[data-galeria]')) {
     grade.addEventListener('click', (evento) => {
       const gatilho = (evento.target as HTMLElement).closest<HTMLElement>('.lightbox-trigger');

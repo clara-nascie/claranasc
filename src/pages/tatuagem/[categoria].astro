@@ -1,8 +1,4 @@
 ---
-/**
- * Uma página por nicho: /tatuagem/coberturas, /tatuagem/fine-line, etc.
- * Ver `docs/arquitetura/arquitetura.md`, seção "As seis páginas".
- */
 import type { GetStaticPaths } from 'astro';
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
@@ -36,9 +32,6 @@ const rotulo = rotuloDoNicho(nicho);
 const fotos = fotosDoNicho(nicho);
 const caminho = caminhoDoNicho(nicho);
 
-// A trilha visível e a do JSON-LD saem desta mesma lista: schema que descreve
-// navegação inexistente na tela conta como divergência.
-// O nível do meio é `/#portfolio` porque não existe página em `/tatuagem/`.
 const trilha = [
   { nome: 'Início', caminho: '/' },
   { nome: 'Portfólio', caminho: '/#portfolio' },
@@ -53,11 +46,8 @@ const outrosNichos = NICHOS.filter((outro) => outro.slug !== nicho.slug);
   <FaqSchema slot="head" perguntas={nicho.faq} />
 
   <main class="nicho-page">
-    {/* `data-cta-apos`: o botão flutuante só aparece depois deste bloco. */}
     <section class="nicho-intro" data-cta-apos>
       <div class="container">
-        {/* `aria-label` porque a página tem duas navegações e leitor de tela
-            lista os landmarks pelo rótulo. */}
         <nav class="trilha" aria-label="Trilha de navegação">
           <ol>
             {trilha.map((passo, indice) => (
@@ -83,9 +73,6 @@ const outrosNichos = NICHOS.filter((outro) => outro.slug !== nicho.slug);
 
     <section class="nicho-galeria" aria-labelledby="titulo-galeria">
       <div class="container">
-        {/* "Galeria" é o próprio H2, e não um `<span>` decorativo acima de um:
-            o título que estava aqui repetia o H1 e saiu. Sem heading a seção
-            ficaria sem nome acessível — o `aria-labelledby` aponta para este id. */}
         <div class="section-header reveal">
           <h2 class="section-tag" id="titulo-galeria">Galeria</h2>
           <div class="header-divider"></div>
@@ -98,9 +85,6 @@ const outrosNichos = NICHOS.filter((outro) => outro.slug !== nicho.slug);
     </section>
 
     <div class="container nicho-fim">
-      {/* `<details>` nativo: abrir/fechar, foco por teclado e `aria-expanded`
-          já vêm prontos. Fechado ≠ oculto — ver a seção sobre accordion em
-          docs/arquitetura/arquitetura.md antes de mexer. */}
       <section class="nicho-faq reveal" aria-labelledby="titulo-faq">
         <h2 id="titulo-faq">Perguntas frequentes</h2>
         <div class="faq-lista">
@@ -129,7 +113,6 @@ const outrosNichos = NICHOS.filter((outro) => outro.slug !== nicho.slug);
         </div>
       </section>
 
-      {/* Link recíproco: sem isto as cinco páginas ficam órfãs para o Google. */}
       <nav class="nicho-outros reveal" aria-label="Outros estilos">
         <h2>Outros estilos</h2>
         <ul>

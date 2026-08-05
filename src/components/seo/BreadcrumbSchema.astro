@@ -1,16 +1,8 @@
 ---
-/**
- * JSON-LD `BreadcrumbList` — troca a URL crua no resultado do Google pela
- * trilha legível.
- *
- * ⚠️ Precisa espelhar a trilha visível na página. Quem chama monta as duas a
- * partir da mesma lista.
- */
 import { SITE } from '../../data/siteData';
 
 export interface Rastro {
   nome: string;
-  /** Caminho relativo, como `/tatuagem/blackwork`. Vira URL absoluta aqui. */
   caminho: string;
 }
 
@@ -25,7 +17,6 @@ const schema = {
   '@type': 'BreadcrumbList',
   itemListElement: itens.map((item, indice) => ({
     '@type': 'ListItem',
-    // `position` começa em 1, não em 0.
     position: indice + 1,
     name: item.nome,
     item: new URL(item.caminho, SITE.url).href

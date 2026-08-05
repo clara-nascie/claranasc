@@ -7,21 +7,11 @@ import {
 import { nichoDaCategoria, caminhoDoNicho } from '../../data/nichosData';
 import GaleriaGrid from '../portfolio/GaleriaGrid.astro';
 
-/**
- * A galeria da home: um carrossel por categoria.
- *
- * Cada fileira mostra 3 fotos em destaque e termina num cartão com o link para
- * a página do nicho, que traz o acervo inteiro. Ver `docs/arquitetura/`,
- * seção "As seis páginas".
- */
-
-/** Categorias de verdade — 'all' é só o botão de filtro. */
 const categorias = PORTFOLIO_CATEGORIES.filter((cat) => cat.id !== 'all');
 
 const fileiras = categorias.map((cat) => ({
   ...cat,
   fotos: itensDestaque.filter((item) => item.category === cat.id),
-  // O total do acervo, não o do destaque: é ele que anuncia o volume no botão.
   total: portfolioItems.filter((item) => item.category === cat.id).length,
   caminho: (() => {
     const nicho = nichoDaCategoria(cat.id);
@@ -59,16 +49,6 @@ const fileiras = categorias.map((cat) => ({
         <section class="carrossel reveal" data-category={fileira.id} aria-labelledby={`fileira-${fileira.id}`}>
           <h3 class="carrossel-titulo" id={`fileira-${fileira.id}`}>{fileira.label}</h3>
 
-          {/*
-            `scroll-snap` puro, sem JavaScript: no desktop as 3 fotos e o cartão
-            cabem lado a lado e não há o que rolar; no celular transbordam e a
-            visitante arrasta com o dedo.
-
-            Não é um widget de carrossel — não avança sozinho, não tem bolinhas
-            e nada fica escondido. Um contêiner que rola já vem com teclado,
-            leitor de tela e busca funcionando; widget com autoplay precisa
-            reconstruir os três e costuma errar.
-          */}
           <div class="carrossel-trilho">
             <GaleriaGrid itens={fileira.fotos} layout="carrossel" />
 
@@ -99,9 +79,6 @@ const fileiras = categorias.map((cat) => ({
 </section>
 
 <script>
-  // Filtro por categoria: esconde as fileiras que não são a escolhida.
-  // Antes escondia foto por foto; com uma fileira por categoria, o alvo é a
-  // fileira inteira — e o `.hidden` do portfolio.css resolve os dois.
   const botoesFiltro = document.querySelectorAll<HTMLButtonElement>('[data-filtro]');
   const fileiras = document.querySelectorAll<HTMLElement>('.carrossel[data-category]');
 

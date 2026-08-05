@@ -1,20 +1,6 @@
 ---
-/**
- * Dados estruturados JSON-LD (schema.org) para negócio local.
- *
- * É o principal sinal que o Google usa para entender que este site pertence a um
- * estúdio de tatuagem físico em Belo Horizonte, e o que alimenta rich results e
- * o local pack. Valide em https://search.google.com/test/rich-results
- *
- * Campos sem dado real são omitidos do JSON, nunca emitidos vazios: string vazia
- * ou coordenada zerada é lida como informação incorreta, não como ausência.
- */
 import { SITE, CONTACT, LOCATION, SOCIAL, OPENING_HOURS, OG_IMAGE } from '../../data/siteData';
 import { PORTFOLIO_CATEGORIES } from '../../data/portfolioData';
-/* Importada, e não escrita como caminho fixo: o arquivo saiu de `public/` e
-   entrou no pipeline do astro:assets junto com a GitHub #18. O `.src` resolve
-   para o caminho com hash gerado no build, que é estável enquanto a foto não
-   mudar. Caminho fixo aqui viraria 404 silencioso. */
 import fotoArtista from '../../assets/about-artist.webp';
 
 const businessId = `${SITE.url}/#business`;
@@ -24,7 +10,6 @@ const sameAs = [SOCIAL.instagram, SOCIAL.tiktok].filter(
   (url): url is string => typeof url === 'string' && url.length > 0
 );
 
-/** Os 5 nichos viram um catálogo de serviços — reforça relevância temática. */
 const services = PORTFOLIO_CATEGORIES.filter((cat) => cat.id !== 'all').map((cat) => ({
   '@type': 'Offer',
   itemOffered: {
@@ -41,12 +26,6 @@ const business: Record<string, unknown> = {
   '@id': businessId,
   name: SITE.businessName,
   url: SITE.url,
-  /* Mesma imagem do Open Graph, de propósito: é a foto que representa o
-     negócio nos dois lugares onde ele aparece sem ser navegado — o resultado
-     do Google e o cartão de link. Manter as duas apontando para o mesmo
-     arquivo evita que uma seja trocada e a outra fique para trás, que foi
-     exatamente como o `hero-bg.webp` gerado por IA sobreviveu aqui depois de
-     sumir da tela. */
   image: new URL(OG_IMAGE.path, SITE.url).href,
   telephone: CONTACT.telephone,
   ...(CONTACT.email ? { email: CONTACT.email } : {}),
@@ -59,7 +38,6 @@ const business: Record<string, unknown> = {
     addressLocality: LOCATION.city,
     addressRegion: LOCATION.region,
     addressCountry: LOCATION.country,
-    // Só entram no JSON quando preenchidos em siteData.ts
     ...(LOCATION.streetAddress ? { streetAddress: LOCATION.streetAddress } : {}),
     ...(LOCATION.postalCode ? { postalCode: LOCATION.postalCode } : {})
   },

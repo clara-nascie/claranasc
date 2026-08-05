@@ -1,27 +1,16 @@
 ---
 /**
  * Botão flutuante de agendamento.
- *
- * Mantém o CTA principal sempre ao alcance sem fixar o cabeçalho — o header
- * rola junto com a página por decisão de design, preservando o hero limpo.
- *
- * É um componente Astro, não React, de propósito: o comportamento é uma classe
- * alternada por scroll, o que não justifica o custo de hidratar React só por isso.
- * O `<script>` abaixo é empacotado pelo Astro e roda com `defer`.
  */
 ---
 
-{/* `/#contato` com barra: só a home tem o formulário. */}
+
 <a
   href="/#contato"
   class="floating-cta"
   id="floating-cta"
   aria-label="Ir para o formulário de orçamento e agendamento"
->
-  {/* SVG inline do ícone `calendar-plus` do Lucide, extraído do pacote
-      lucide-react para ficar idêntico aos ícones dos componentes React.
-      Inline em vez de <i data-lucide>: qualquer script que substitua nós do DOM
-      após a renderização quebra a hidratação do React. */}
+  >
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="18"
@@ -49,12 +38,7 @@
   const cta = document.getElementById('floating-cta');
 
   if (cta) {
-    // `[data-cta-apos]` marca o bloco de entrada da página: o botão só aparece
-    // depois dele. Cada página declara o seu — com id fixo (`#home`) o botão
-    // ficava visível no topo das páginas por nicho, cobrindo o texto.
     const hero = document.querySelector('[data-cta-apos]');
-    // Onde o botão seria redundante: o próprio formulário e o rodapé, que já
-    // tem contato de WhatsApp.
     const hideZones = [
       document.getElementById('contato'),
       document.querySelector('.main-footer')
@@ -67,15 +51,6 @@
       cta.classList.toggle('is-visible', pastHero && visibleHideZones.size === 0);
     };
 
-    // IntersectionObserver em vez de listener de scroll: o navegador avisa
-    // quando o cruzamento acontece, sem rodar código a cada pixel rolado.
-    //
-    // O gatilho é `intersectionRatio`, não `isIntersecting`, de propósito.
-    // `isIntersecting` exige que o hero saia por completo da viewport, e esse é
-    // um limiar exato: quando a base do hero fica em y=0, a área de interseção
-    // tem altura zero e o navegador ainda o reporta como visível. Resultado, já
-    // medido: o botão não aparecia ao rolar a galeria para o topo da tela.
-    // Com proporção, "o hero praticamente saiu" é um estado robusto.
     const LIMITE_HERO = 0.2;
     if (hero) {
       new IntersectionObserver(
