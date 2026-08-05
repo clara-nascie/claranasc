@@ -126,16 +126,52 @@ primeiros.
 
 ---
 
-## 🚀 Deploy (Cloudflare Pages)
+## 🚀 Deploy (Cloudflare Workers)
 
 O deploy é **automático a cada push na branch `main`**. Um push publica direto
 em produção, sem etapa de aprovação.
 
-Configuração de build no painel da Cloudflare (**Workers & Pages** > **Pages**):
+O site roda como um **Worker servindo assets estáticos**, e não no Cloudflare
+Pages. Quem manda na configuração é o [`wrangler.jsonc`](wrangler.jsonc) na
+raiz — não o painel:
 
-| Campo | Valor |
-| --- | --- |
-| Framework preset | `Astro` |
-| Build command | `npm run build` |
-| Build output directory | `dist` |
-| Node version | `22.12.0` ou superior |
+| Campo | Valor | Significa |
+| --- | --- | --- |
+| `name` | `claranasc` | nome do Worker |
+| `assets.directory` | `dist` | a pasta publicada, saída do `npm run build` |
+| `observability.enabled` | `true` | liga os logs do Worker no painel |
+
+A build roda do lado da Cloudflare, pela integração com o GitHub: `wrangler`
+não é dependência do projeto e não há workflow de deploy no repositório.
+Publicar é dar push.
+
+### Ver os acessos
+
+`npm run analytics` puxa tráfego e Core Web Vitals pela API da Cloudflare.
+Precisa de um token em `.env` — ver [`.env.example`](.env.example).
+
+> ⚠️ **Não rode `npm run build` com o `npm run dev` no ar.** Os dois usam o
+> mesmo cache de dependências do Vite (`node_modules/.vite/`), e o build o
+> reescreve por baixo do servidor vivo. O dev passa a servir arquivos que já
+> não existem, os componentes React param de hidratar e o console enche de
+> `504 (Outdated Optimize Dep)`. Reiniciar o dev server resolve.
+
+---
+
+## ⚖️ Licença
+
+Este repositório é licenciado em duas camadas, porque código e conteúdo têm
+propósitos diferentes aqui.
+
+| O quê | Licença | Onde |
+| --- | --- | --- |
+| **Código-fonte** — componentes, estilos, scripts, configuração | MIT | [`LICENSE`](LICENSE) |
+| **Conteúdo** — fotografias, textos, identidade visual, marca | Todos os direitos reservados | [`LICENSE-CONTEUDO.md`](LICENSE-CONTEUDO.md) |
+
+Em resumo: **a estrutura pode ser reaproveitada, o conteúdo não.** Clone,
+estude, adapte e publique o seu site com as suas fotos e os seus textos — mas
+as fotografias de tatuagem e os textos deste repositório são de Clara
+Nascimento e não acompanham a licença do código.
+
+As fotos têm ainda a camada de direito de imagem das pessoas retratadas, que
+não é da autora renunciar.
