@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import { Pencil, ShieldCheck } from 'lucide-react';
 import fotoArtista from '../../assets/about-artist.webp';
+import { whatsappUrl } from '../../data/siteData';
 
 /**
  * Virou Astro pelo mesmo motivo do Hero e da galeria: `<Image>` só existe aqui.
@@ -36,6 +37,9 @@ import fotoArtista from '../../assets/about-artist.webp';
  */
 const LARGURAS = [340, 450, 900];
 const TAMANHOS = '(max-width: 992px) min(90vw, 450px), 450px';
+
+const MENSAGEM_WHATSAPP =
+  'Oi, Clara! Vim pelo site e queria trocar uma ideia sobre um projeto de tatuagem.';
 ---
 
 <section class="about-section" id="sobre">
@@ -62,10 +66,17 @@ const TAMANHOS = '(max-width: 992px) min(90vw, 450px), 450px';
         <h2 class="section-title text-left">Clara Nasc</h2>
         <div class="header-divider left"></div>
         <p class="about-text highlight">
-          Especialista em eternizar histórias e conceitos através de traços finos meticulosos e contrastes marcantes.
+          Eii, eu sou a Clara, nerdola de carteirinha nascida e criada em BH!
         </p>
         <p class="about-text">
-          Com mais de 5 anos de experiência e um espaço privativo focado em conforto e biossegurança, meu propósito é traduzir sentimentos em desenhos autorais e únicos. Acredito que cada tatuagem é um ritual de expressão individual e respeito ao corpo.
+          Comecei como aprendiz de tatuagem no meio da faculdade de Gestão Pública e de lá pra cá são 5 anos deixando um pedacinho do meu trabalho em cada um que já tatuou comigo! Prezo bastante pela conversa antes da sessão, por entender as referências trazidas e sanar todas as suas dúvidas antes de realizarmos esse trabalho incrível juntos. Meu traço junta delicadeza e contraste, porque tatuagem boa é aquela que consegue resistir bem ao tempo.
+        </p>
+        <p class="about-text">
+          Gostou do meu trabalho? É só chamar no <a
+            href={whatsappUrl(MENSAGEM_WHATSAPP)}
+            target="_blank"
+            rel="noreferrer">WhatsApp</a
+          > para trocarmos uma ideia sobre seu projeto, sem compromisso, vai que você decide fazer uma tattoo nova?
         </p>
         <div class="about-details">
           <div class="detail-item">
