@@ -86,18 +86,21 @@
   O trilho e a area que rola. `overflow-x: auto` no celular, e no desktop as 4
   vagas cabem na largura do container -- entao nao ha rolagem nenhuma.
 
-  Os 12px de padding embaixo reservam espaco para a barra de rolagem em
-  navegadores que a desenham sobre o conteudo; sem isso ela corta a foto.
+  A barra de rolagem foi escondida (scrollbar-width: none) para criar uma
+  experiência de "swipe" parecida com redes sociais.
 */
 .carrossel-trilho {
     display: flex;
     gap: 20px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    padding-bottom: 12px;
-    scrollbar-width: thin;
+    scrollbar-width: none; /* Firefox */
     /* Encosta o comeco e o fim do trilho na borda do container ao rolar. */
     scroll-padding-inline: 0;
+}
+
+.carrossel-trilho::-webkit-scrollbar {
+    display: none; /* Chrome, Safari e Edge */
 }
 
 .portfolio-grid--carrossel {
@@ -167,10 +170,10 @@
 }
 
 @media (max-width: 639px) {
-    /* Uma vaga e meia na tela: a segunda foto aparece cortada, que e o que
+    /* Duas vagas e um pedaço na tela: a terceira foto aparece cortada, que e o que
        sinaliza "tem mais aqui, arrasta". */
     .portfolio-grid--carrossel .portfolio-item {
-        flex-basis: 62vw;
+        flex-basis: 42vw;
     }
 }
 
