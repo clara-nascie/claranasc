@@ -211,15 +211,10 @@
     column-gap: 30px;
 }
 
-@media (max-width: 991px) {
-    .portfolio-grid--masonry {
-        columns: 2;
-    }
-}
-
 @media (max-width: 639px) {
     .portfolio-grid--masonry {
-        columns: 1;
+        columns: 2;
+        column-gap: 15px; /* Reduzindo o gap para caber melhor no celular */
     }
 }
 
