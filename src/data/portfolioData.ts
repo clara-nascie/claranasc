@@ -218,43 +218,9 @@ export interface PortfolioItem {
    *  não da URL. Traz `src`, `width`, `height` e `format` já resolvidos. */
   image: ImageMetadata;
   alt: string;
-  /**
-   * Marca a foto como parte da **camada de destaque**: as que aparecem na home.
-   *
-   * A home mostra 6 por categoria, igual para todas, para nenhuma pesar mais
-   * que outra no que se vê primeiro. As páginas por nicho mostram tudo, sem
-   * cota. Sem esta marca a home cresceria junto com o acervo — no primeiro
-   * lote importado ela pulou de 30 para 36 fotos.
-   *
-   * Para trocar o que aparece na home, mova o `destaque: true` de uma foto
-   * para outra da mesma categoria. Mantenha 6 por categoria.
-   */
   destaque?: boolean;
-  /**
-   * ⚠️ Não é renderizado em lugar nenhum desde 04/08/2026.
-   *
-   * Chegou a virar legenda embaixo da foto nas páginas por nicho e a Clara
-   * removeu no mesmo dia — "só as fotos fica melhor". Os 30 textos que existem
-   * ficam porque são autorais e não custam nada; **fotos novas não precisam
-   * deste campo**. O que descreve a foto para o Google e para leitor de tela
-   * é o `alt`, que é obrigatório.
-   */
-  description?: string;
 }
 
-/**
- * Ordem intencional — e o motivo mudou.
- *
- * Blackwork continua sendo a especialidade da Clara, mas o objetivo comercial
- * do site é **ampliar o público** para Coberturas, Botânico e Geek, que hoje
- * recebem muito menos procura. Por isso essas três vêm primeiro: a ordem
- * aparece nos filtros e é reaproveitada no JSON-LD, então ela comunica
- * prioridade tanto para a visitante quanto para o Google.
- *
- * Blackwork e Fine Line já trazem público sozinhas e seguem encontráveis logo
- * abaixo. Não reordene "porque Blackwork é a especialidade" — isso já foi
- * tentado e trabalha contra a meta.
- */
 export const PORTFOLIO_CATEGORIES: PortfolioCategory[] = [
   { id: 'all', label: 'Todos' },
   { id: 'coberturas', label: 'Coberturas' },
@@ -274,7 +240,6 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Coberturas',
     image: coberturaGirassol,
     alt: 'Cobertura de tatuagem antiga com girassol em pontilhismo no ombro e clavícula',
-    description: 'Pontilhismo denso no miolo da flor para apagar o traço anterior sem endurecer o desenho.'
   },
   {
     id: 2,
@@ -284,7 +249,6 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Coberturas',
     image: coberturaCrisantemo,
     alt: 'Cobertura de tatuagem com crisântemo e pequenas flores cobrindo o ombro',
-    description: 'As pétalas em camadas dão volume suficiente para esconder marcas antigas.'
   },
   {
     id: 3,
@@ -294,7 +258,6 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Coberturas',
     image: coberturaOnca,
     alt: 'Cobertura em braço fechado com rosto de onça entre flores em preto e cinza',
-    description: 'Braço fechado: a mancha da onça resolve as áreas de maior saturação da tatuagem coberta.'
   },
   {
     id: 4,
@@ -303,7 +266,6 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Coberturas',
     image: coberturaFloralPeito,
     alt: 'Cobertura de tatuagem com composição floral no peito',
-    description: 'Composição simétrica que acompanha as clavículas e distribui o peso do preto.'
   },
   {
     id: 5,
@@ -312,7 +274,6 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Coberturas',
     image: coberturaSamurai,
     alt: 'Cobertura de tatuagem com tema oriental, samurai, montanhas e torii em braço fechado',
-    description: 'Cena inteira construída por cima do trabalho anterior, do ombro ao cotovelo.'
   },
   {
     id: 6,
@@ -321,7 +282,6 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Coberturas',
     image: coberturaFullmetal,
     alt: 'Cobertura de tatuagem de Fullmetal Alchemist com círculo de transmutação e personagens em braço fechado',
-    description: 'Cena inteira construída por cima do trabalho anterior, com o círculo de transmutação ancorando a composição.'
   },
   /*
     A partir daqui, a camada de volume (Issue #16). Os ids seguem a ordem de
@@ -1439,7 +1399,6 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Botânico',
     image: botanicoRamo,
     alt: 'Tatuagem botânica de ramo com folhas descendo do ombro pelo braço',
-    description: 'O ramo acompanha a curva do deltoide em vez de disputar com ela.'
   },
   {
     id: 8,
@@ -1449,7 +1408,6 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Botânico',
     image: botanicoSempreViva,
     alt: 'Tatuagem botânica de sempre-viva em traço fino sobre a clavícula',
-    description: 'Florzinhas em pontos finos e separados, que envelhecem melhor do que linhas muito próximas.'
   },
   {
     id: 9,
@@ -1459,7 +1417,6 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Botânico',
     image: botanicoFloresCostas,
     alt: 'Tatuagem botânica com flores e folhas atravessando as costas e o ombro',
-    description: 'Desenho aberto, pensado para receber continuação no braço mais tarde.'
   },
   {
     id: 10,
@@ -1468,7 +1425,6 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Botânico',
     image: botanicoBracadeira,
     alt: 'Tatuagem botânica em forma de braçadeira floral contornando o antebraço',
-    description: 'Fecha a volta do antebraço sem virar faixa cheia, mantendo pele respirando entre os elementos.'
   },
   {
     id: 11,
@@ -1477,7 +1433,6 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Botânico',
     image: botanicoFolhasFlores,
     alt: 'Tatuagem botânica de folhas e flores em traço fino no braço',
-    description: 'Folhagem em traço fino com sombreado leve só nas bordas.'
   },
   {
     id: 12,
@@ -1486,7 +1441,6 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Botânico',
     image: botanicoGirassol,
     alt: 'Tatuagem de girassol com folhas na lateral da costela',
-    description: 'Região sensível, resolvida em uma sessão com linha contínua e pouco preenchimento.'
   },
   {
     id: 37,
@@ -1576,7 +1530,6 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Geek & Animes',
     image: geekTorre,
     alt: 'Tatuagem geek de torre sombria e anel dentro de moldura em blackwork, no ombro',
-    description: 'Moldura em preto sólido contra pontilhismo no interior — o contraste é o que dá profundidade à cena.'
   },
   {
     id: 14,
@@ -1586,7 +1539,6 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Geek & Animes',
     image: geekAliceNoPais,
     alt: 'Tatuagem geek de Alice no País das Maravilhas com o Gato de Cheshire e xícaras nas costas',
-    description: 'Peça grande de costas, com os elementos empilhados seguindo a coluna.'
   },
   {
     id: 15,
@@ -1596,7 +1548,6 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Geek & Animes',
     image: geekBerserkGuts,
     alt: 'Tatuagem geek do Guts, de Berserk, em preto e cinza no braço',
-    description: 'Alto contraste para o rosto continuar legível de longe.'
   },
   {
     id: 16,
@@ -1605,7 +1556,6 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Geek & Animes',
     image: geekOkamiAmaterasu,
     alt: 'Tatuagem geek da Amaterasu, de Okami, com detalhes em vermelho no antebraço',
-    description: 'O vermelho aparece em três pontos só, para marcar sem competir com o preto.'
   },
   {
     id: 17,
@@ -1614,7 +1564,6 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Geek & Animes',
     image: geekArvore,
     alt: 'Tatuagem de árvore branca com espada e inscrições élficas no ombro',
-    description: 'Negativo trabalhado: a árvore é a pele, não a tinta.'
   },
   {
     id: 18,
@@ -1623,7 +1572,6 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Geek & Animes',
     image: geekBaraggan,
     alt: 'Tatuagem geek do Baraggan, de Bleach, com caveira, asas e correntes no antebraço',
-    description: 'Sombreado pesado nas asas para a caveira saltar do fundo.'
   },
 
   // -------------------------------------------------------------- Blackwork
@@ -1635,7 +1583,6 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Blackwork',
     image: blackworkLobo,
     alt: 'Tatuagem blackwork de lobo dividido entre realismo e formas geométricas no braço',
-    description: 'Metade em pontilhismo, metade em geometria sólida, separadas por uma única linha reta.'
   },
   {
     id: 20,
@@ -1645,7 +1592,6 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Blackwork',
     image: blackworkEscher,
     alt: 'Tatuagem blackwork inspirada em The Rind, de Escher, com faixas em preto sólido envolvendo o antebraço',
-    description: 'Preto chapado sem contorno: o desenho é feito pelo vazio entre as faixas.'
   },
   {
     id: 21,
@@ -1655,7 +1601,6 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Blackwork',
     image: blackworkVegvisir,
     alt: 'Tatuagem blackwork de bússola viking vegvisir com corvo em preto sólido no ombro',
-    description: 'Runas em traço seco contra o corvo totalmente preenchido.'
   },
   {
     id: 22,
@@ -1664,7 +1609,6 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Blackwork',
     image: blackworkMascara,
     alt: 'Tatuagem blackwork de máscara tribal ocupando o braço inteiro',
-    description: 'Braço fechado em uma peça só, com textura construída por hachura.'
   },
   {
     id: 23,
@@ -1673,7 +1617,6 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Blackwork',
     image: blackworkTucano,
     alt: 'Tatuagem blackwork de tucano e paisagem dentro de moldura em losango, no braço',
-    description: 'Moldura fechada obriga a paisagem a caber — é o que segura a composição.'
   },
   {
     id: 24,
@@ -1682,7 +1625,6 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Blackwork',
     image: blackworkNavio,
     alt: 'Tatuagem blackwork de navio, lanterna e polvo na coxa',
-    description: 'Três elementos em uma cena só, com os tentáculos costurando o conjunto.'
   },
 
   // -------------------------------------------------------------- Fine Line
@@ -1694,7 +1636,6 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Fine Line',
     image: finelineFigura,
     alt: 'Tatuagem fine line de figura feminina entre nuvens pontilhadas no antebraço',
-    description: 'Traço fino contínuo com as nuvens em pontilhismo — volume sem engrossar a linha.'
   },
   {
     id: 26,
@@ -1704,7 +1645,6 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Fine Line',
     image: finelineMedusa,
     alt: 'Tatuagem fine line de Medusa com serpentes no abdômen',
-    description: 'Fine line com sombreado interno, que é o que dá relevo às serpentes.'
   },
   {
     id: 27,
@@ -1714,7 +1654,6 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Fine Line',
     image: finelineEspelho,
     alt: 'Tatuagem fine line de espelho de mão, tesoura e flores nas costas',
-    description: 'Objetos cruzados formando um X, centralizados entre as escápulas.'
   },
   {
     id: 28,
@@ -1723,7 +1662,6 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Fine Line',
     image: finelineLivros,
     alt: 'Tatuagem fine line de pilha de livros, cartola e cartas na coxa',
-    description: 'Narrativa inteira construída só com linha e pontos, sem preenchimento sólido.'
   },
   {
     id: 29,
@@ -1732,7 +1670,6 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Fine Line',
     image: finelineBorboleta,
     alt: 'Tatuagem fine line de borboleta com asas detalhadas no antebraço',
-    description: 'Asas em linha fina com o corpo em preto para ancorar o desenho.'
   },
   {
     id: 30,
@@ -1741,7 +1678,6 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Fine Line',
     image: finelineCavalo,
     alt: 'Tatuagem fine line de cabeça de cavalo em traço contínuo nas costas',
-    description: 'Economia de traço: a crina é sugerida, não desenhada.'
   }
 ];
 
