@@ -14,15 +14,17 @@ interface Props {
   /** `id` do elemento da grade. A home usa `portfolio-grid`. */
   id?: string;
   /**
-   * `grade`: recorte em 4/5, altura uniforme — a home, onde o filtro esconde
-   * itens e altura variável faria a página saltar a cada clique.
+   * `carrossel`: fileira que rola na horizontal, recorte em 4/5 — a home.
    * `masonry`: cada foto na proporção original — as páginas por nicho.
+   * `grade`: grade vertical em 4/5. Sem uso hoje; fica porque é o padrão de
+   * qualquer galeria futura que não seja fileira nem masonry.
    */
-  layout?: 'grade' | 'masonry';
+  layout?: 'grade' | 'masonry' | 'carrossel';
 }
 
 const { itens, id, layout = 'grade' } = Astro.props;
 const eMasonry = layout === 'masonry';
+const eCarrossel = layout === 'carrossel';
 
 // A miniatura tem ~380px; abrir o lightbox com ela ficaria borrado.
 // `getImage()` gera a variante grande no build e devolve a URL final.
@@ -35,14 +37,21 @@ const ampliadas = new Map(
   )
 );
 
-// Os dois layouts chegam a 380px de coluna no desktop (container de 1200px,
+// Grade e masonry chegam a 380px de coluna no desktop (container de 1200px,
 // 3 colunas, 30px de gap), 2 no tablet e 1 no celular. 760 cobre densidade 2x.
+// O carrossel é mais estreito: 4 vagas na mesma largura dão ~280px.
 const LARGURAS = [280, 380, 560, 760];
-const TAMANHOS = '(max-width: 639px) 90vw, (max-width: 991px) 43vw, 380px';
+const TAMANHOS = eCarrossel
+  ? '(max-width: 639px) 66vw, (max-width: 991px) 40vw, 280px'
+  : '(max-width: 639px) 90vw, (max-width: 991px) 43vw, 380px';
 ---
 
 <div
-  class:list={['portfolio-grid', eMasonry && 'portfolio-grid--masonry']}
+  class:list={[
+    'portfolio-grid',
+    eMasonry && 'portfolio-grid--masonry',
+    eCarrossel && 'portfolio-grid--carrossel'
+  ]}
   id={id}
   data-galeria
 >

@@ -55,6 +55,136 @@
 }
 
 /* ==========================================================================
+   VARIANTE CARROSSEL (home)
+   ==========================================================================
+   Uma fileira por categoria: 3 fotos em destaque e um cartao com o link para
+   a pagina do nicho. Substituiu a grade de 30 fotos, que media 19.000px de
+   altura no celular.
+
+   ⚠️ Nao e um widget de carrossel. Nao avanca sozinho, nao tem bolinhas e
+   nada fica escondido -- e um conteiner que rola com `scroll-snap`. Widget com
+   autoplay precisa reimplementar teclado, leitor de tela e busca dentro dele, e
+   e onde a acessibilidade costuma quebrar. Aqui os tres funcionam de graca.
+   ========================================================================== */
+.carrossel {
+    margin-bottom: 48px;
+}
+
+.carrossel.hidden {
+    display: none;
+}
+
+.carrossel-titulo {
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 16px;
+    color: var(--text-primary);
+}
+
+/*
+  O trilho e a area que rola. `overflow-x: auto` no celular, e no desktop as 4
+  vagas cabem na largura do container -- entao nao ha rolagem nenhuma.
+
+  Os 12px de padding embaixo reservam espaco para a barra de rolagem em
+  navegadores que a desenham sobre o conteudo; sem isso ela corta a foto.
+*/
+.carrossel-trilho {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 12px;
+    scrollbar-width: thin;
+    /* Encosta o comeco e o fim do trilho na borda do container ao rolar. */
+    scroll-padding-inline: 0;
+}
+
+.portfolio-grid--carrossel {
+    display: contents;
+}
+
+/*
+  `flex: 0 0 <largura>` em vez de `width`: item de flex encolhe por padrao para
+  caber, e encolhendo nao ha o que rolar -- as 3 fotos ficariam espremidas.
+
+  A largura e `calc`, nao um pixel fixo: as 4 vagas precisam caber exatamente na
+  largura do trilho, seja ela qual for. Com 285px fixos (a conta feita sobre os
+  1200px do `--container-max-width`) o cartao ficava cortado numa tela de
+  1280px, onde o container mede 1152px -- o `.container` e 90% da largura, e so
+  chega no teto acima de ~1333px.
+*/
+.portfolio-grid--carrossel .portfolio-item,
+.carrossel-cartao {
+    flex: 0 0 calc((100% - 60px) / 4);
+    scroll-snap-align: start;
+}
+
+/* --- O cartao que fecha a fileira --------------------------------------- */
+
+.carrossel-cartao {
+    aspect-ratio: 4 / 5;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--bg-primary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    text-align: center;
+    padding: 20px;
+    color: var(--text-secondary);
+    transition: var(--transition-smooth);
+}
+
+.carrossel-cartao:hover {
+    border-color: var(--accent-gold);
+    color: var(--text-primary);
+    transform: translateY(-2px);
+}
+
+.carrossel-cartao svg {
+    margin-top: 8px;
+    color: var(--accent-gold);
+    transition: var(--transition-smooth);
+}
+
+.carrossel-cartao:hover svg {
+    transform: translateX(4px);
+}
+
+.carrossel-cartao-rotulo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-primary);
+}
+
+.carrossel-cartao-total {
+    font-size: 0.85rem;
+}
+
+@media (max-width: 991px) {
+    /* Tres vagas nao cabem: passa a rolar, e a vaga vira fracao da tela. */
+    .portfolio-grid--carrossel .portfolio-item,
+    .carrossel-cartao {
+        flex-basis: 38vw;
+    }
+}
+
+@media (max-width: 639px) {
+    /* Uma vaga e meia na tela: a segunda foto aparece cortada, que e o que
+       sinaliza "tem mais aqui, arrasta". */
+    .portfolio-grid--carrossel .portfolio-item,
+    .carrossel-cartao {
+        flex-basis: 62vw;
+    }
+}
+
+/* ==========================================================================
    VARIANTE MASONRY (paginas por nicho)
    Motivos e alternativas descartadas: docs/arquitetura/arquitetura.md.
    ========================================================================== */

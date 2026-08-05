@@ -1,12 +1,33 @@
 ---
-import { itensDestaque, PORTFOLIO_CATEGORIES } from '../../data/portfolioData';
-import { NICHOS, caminhoDoNicho, rotuloDoNicho } from '../../data/nichosData';
+import {
+  itensDestaque,
+  portfolioItems,
+  PORTFOLIO_CATEGORIES
+} from '../../data/portfolioData';
+import { nichoDaCategoria, caminhoDoNicho } from '../../data/nichosData';
 import GaleriaGrid from '../portfolio/GaleriaGrid.astro';
 
 /**
- * A galeria da home. A grade está em `GaleriaGrid.astro`, compartilhada com as
- * páginas por nicho; aqui fica só o que é da home — filtros e links por estilo.
+ * A galeria da home: um carrossel por categoria.
+ *
+ * Cada fileira mostra 3 fotos em destaque e termina num cartão com o link para
+ * a página do nicho, que traz o acervo inteiro. Ver `docs/arquitetura/`,
+ * seção "As seis páginas".
  */
+
+/** Categorias de verdade — 'all' é só o botão de filtro. */
+const categorias = PORTFOLIO_CATEGORIES.filter((cat) => cat.id !== 'all');
+
+const fileiras = categorias.map((cat) => ({
+  ...cat,
+  fotos: itensDestaque.filter((item) => item.category === cat.id),
+  // O total do acervo, não o do destaque: é ele que anuncia o volume no botão.
+  total: portfolioItems.filter((item) => item.category === cat.id).length,
+  caminho: (() => {
+    const nicho = nichoDaCategoria(cat.id);
+    return nicho ? caminhoDoNicho(nicho) : '/';
+  })()
+}));
 ---
 
 <section class="portfolio-section" id="portfolio">
@@ -24,7 +45,7 @@ import GaleriaGrid from '../portfolio/GaleriaGrid.astro';
           role="tab"
           id={`filtro-${cat.id}`}
           aria-selected={cat.id === 'all'}
-          aria-controls="portfolio-grid"
+          aria-controls="portfolio-carrosseis"
           class={`filter-btn${cat.id === 'all' ? ' active' : ''}`}
           data-filtro={cat.id}
         >
@@ -33,52 +54,70 @@ import GaleriaGrid from '../portfolio/GaleriaGrid.astro';
       ))}
     </div>
 
-    <div class="reveal">
-      {/* Só a camada de destaque: 6 por categoria. As páginas por nicho é que
-          mostram o acervo inteiro. */}
-      <GaleriaGrid itens={itensDestaque} id="portfolio-grid" layout="grade" />
-    </div>
+    <div id="portfolio-carrosseis">
+      {fileiras.map((fileira) => (
+        <section class="carrossel reveal" data-category={fileira.id} aria-labelledby={`fileira-${fileira.id}`}>
+          <h3 class="carrossel-titulo" id={`fileira-${fileira.id}`}>{fileira.label}</h3>
 
-    {/* Link recíproco: sem isto as cinco páginas ficam órfãs para o Google.
-        A lista sai de NICHOS porque "Todos" não tem página e o slug da URL nem
-        sempre é o id da categoria (`fineline` no código, `fine-line` na URL). */}
-    <nav class="portfolio-nichos reveal" aria-label="Páginas por estilo de tatuagem">
-      <h3>Ver por estilo</h3>
-      <ul>
-        {NICHOS.map((nicho) => (
-          <li>
-            <a href={caminhoDoNicho(nicho)}>{rotuloDoNicho(nicho)}</a>
-          </li>
-        ))}
-      </ul>
-    </nav>
+          {/*
+            `scroll-snap` puro, sem JavaScript: no desktop as 3 fotos e o cartão
+            cabem lado a lado e não há o que rolar; no celular transbordam e a
+            visitante arrasta com o dedo.
+
+            Não é um widget de carrossel — não avança sozinho, não tem bolinhas
+            e nada fica escondido. Um contêiner que rola já vem com teclado,
+            leitor de tela e busca funcionando; widget com autoplay precisa
+            reconstruir os três e costuma errar.
+          */}
+          <div class="carrossel-trilho">
+            <GaleriaGrid itens={fileira.fotos} layout="carrossel" />
+
+            <a class="carrossel-cartao" href={fileira.caminho}>
+              <span class="carrossel-cartao-rotulo">Ver todas</span>
+              <span class="carrossel-cartao-total">{fileira.total} trabalhos</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M5 12h14" />
+                <path d="m12 5 7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+        </section>
+      ))}
+    </div>
   </div>
 </section>
 
 <script>
-  // Filtro por categoria. Fica aqui e não no GaleriaGrid porque só a home
-  // filtra — as páginas por nicho já chegam filtradas pela URL.
-  const grade = document.getElementById('portfolio-grid');
+  // Filtro por categoria: esconde as fileiras que não são a escolhida.
+  // Antes escondia foto por foto; com uma fileira por categoria, o alvo é a
+  // fileira inteira — e o `.hidden` do portfolio.css resolve os dois.
   const botoesFiltro = document.querySelectorAll<HTMLButtonElement>('[data-filtro]');
+  const fileiras = document.querySelectorAll<HTMLElement>('.carrossel[data-category]');
 
-  if (grade) {
-    const itens = Array.from(grade.querySelectorAll<HTMLElement>('.portfolio-item'));
+  for (const botao of botoesFiltro) {
+    botao.addEventListener('click', () => {
+      const alvo = botao.dataset.filtro;
 
-    for (const botao of botoesFiltro) {
-      botao.addEventListener('click', () => {
-        const alvo = botao.dataset.filtro;
+      for (const outro of botoesFiltro) {
+        const ativo = outro === botao;
+        outro.classList.toggle('active', ativo);
+        outro.setAttribute('aria-selected', String(ativo));
+      }
 
-        for (const outro of botoesFiltro) {
-          const ativo = outro === botao;
-          outro.classList.toggle('active', ativo);
-          outro.setAttribute('aria-selected', String(ativo));
-        }
-
-        // `.hidden` já existe no portfolio.css e resolve para `display: none`.
-        for (const item of itens) {
-          item.classList.toggle('hidden', alvo !== 'all' && item.dataset.category !== alvo);
-        }
-      });
-    }
+      for (const fileira of fileiras) {
+        fileira.classList.toggle('hidden', alvo !== 'all' && fileira.dataset.category !== alvo);
+      }
+    });
   }
 </script>

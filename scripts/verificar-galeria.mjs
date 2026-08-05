@@ -39,25 +39,24 @@ try {
 
   await page.goto(BASE_URL, { waitUntil: 'networkidle' });
 
-  // --- a grade chega a ficar visível? ---
+  // --- as fileiras chegam a ficar visíveis? ---
   await page.locator('#portfolio').evaluate((el) => el.scrollIntoView({ block: 'start' }));
   await page.waitForTimeout(1200);
   const opacidade = await page
-    .locator('.portfolio-grid')
+    .locator('.carrossel')
+    .first()
     .evaluate((el) => getComputedStyle(el).opacity);
-  checar('grade visível depois de entrar na tela', opacidade === '1', `opacity=${opacidade}`);
-
-  // --- filtro ---
-  const total = await page.locator('.portfolio-item').count();
-  const visiveisInicio = await page.locator('.portfolio-item:not(.hidden)').count();
-  checar('todos os itens aparecem no início', total > 0 && visiveisInicio === total,
-         `${visiveisInicio}/${total}`);
+  checar('fileira visível depois de entrar na tela', opacidade === '1', `opacity=${opacidade}`);
 
   /*
-    A home é a camada de destaque: 6 por categoria, igual para todas.
+    A home é a camada de destaque: uma fileira por categoria, 3 fotos em cada.
     Sem esta checagem, cada lote importado para as páginas por nicho inflaria a
-    home em silêncio — no primeiro lote ela pulou de 30 para 36 fotos.
+    home em silêncio — num lote anterior ela pulou de 30 para 36 fotos sozinha.
   */
+  const fileiras = await page.locator('.carrossel').count();
+  checar('uma fileira por categoria', fileiras === 5, `${fileiras} fileiras`);
+
+  const total = await page.locator('.portfolio-item').count();
   const porCategoria = await page.locator('.portfolio-item').evaluateAll((nos) => {
     const conta = {};
     for (const n of nos) {
@@ -66,18 +65,50 @@ try {
     }
     return conta;
   });
-  const fora = Object.entries(porCategoria).filter(([, n]) => n !== 6);
-  checar('home mostra 6 fotos por categoria', fora.length === 0,
-         fora.length
-           ? fora.map(([c, n]) => `${c}=${n}`).join(', ')
-           : Object.keys(porCategoria).length + ' categorias com 6');
+  const fora = Object.entries(porCategoria).filter(([, n]) => n !== 3);
+  checar('home mostra 3 fotos por categoria', fora.length === 0 && total === 15,
+         fora.length ? fora.map(([c, n]) => `${c}=${n}`).join(', ') : `${total} fotos`);
 
+  /*
+    Cada fileira termina num cartão com o link para a página do nicho. É a
+    metade do link recíproco que parte da home — sem ela as cinco páginas
+    ficariam órfãs.
+  */
+  const cartoes = await page
+    .locator('.carrossel-cartao')
+    .evaluateAll((as) => as.map((a) => a.getAttribute('href')));
+  const esperados = [
+    '/tatuagem/coberturas',
+    '/tatuagem/botanico',
+    '/tatuagem/geek',
+    '/tatuagem/blackwork',
+    '/tatuagem/fine-line'
+  ];
+  checar('cada fileira linka a página do nicho',
+         JSON.stringify(cartoes) === JSON.stringify(esperados),
+         cartoes.join(' '));
+
+  /*
+    No desktop as 4 vagas cabem e não há rolagem; no celular transbordam de
+    propósito, e é o corte da segunda foto que sinaliza "arrasta".
+    Este script roda a 390px, então todos os trilhos devem rolar.
+  */
+  const rolam = await page.locator('.carrossel-trilho').evaluateAll(
+    (ts) => ts.filter((t) => t.scrollWidth > t.clientWidth).length
+  );
+  checar('trilhos rolam na horizontal no celular', rolam === 5, `${rolam}/5`);
+
+  // --- filtro: agora esconde a fileira inteira, não foto a foto ---
   await page.locator('[data-filtro="blackwork"]').click();
   await page.waitForTimeout(150);
-  const visiveisBw = await page.locator('.portfolio-item:not(.hidden)').count();
-  const esperadoBw = await page.locator('.portfolio-item[data-category="blackwork"]').count();
-  checar('filtro Blackwork mostra só blackwork', visiveisBw === esperadoBw && visiveisBw > 0,
-         `${visiveisBw} visíveis, esperado ${esperadoBw}`);
+  const fileirasVisiveis = await page.locator('.carrossel:not(.hidden)').count();
+  const categoriaVisivel = await page
+    .locator('.carrossel:not(.hidden)')
+    .first()
+    .getAttribute('data-category');
+  checar('filtro Blackwork mostra só a fileira de blackwork',
+         fileirasVisiveis === 1 && categoriaVisivel === 'blackwork',
+         `${fileirasVisiveis} fileira(s), primeira=${categoriaVisivel}`);
 
   const marcadoBw = await page.locator('[data-filtro="blackwork"]').getAttribute('aria-selected');
   const marcadoTodos = await page.locator('[data-filtro="all"]').getAttribute('aria-selected');
@@ -87,8 +118,8 @@ try {
 
   await page.locator('[data-filtro="all"]').click();
   await page.waitForTimeout(150);
-  const voltou = await page.locator('.portfolio-item:not(.hidden)').count();
-  checar('voltar para Todos restaura a grade', voltou === total, `${voltou}/${total}`);
+  const voltou = await page.locator('.carrossel:not(.hidden)').count();
+  checar('voltar para Todos restaura as fileiras', voltou === 5, `${voltou}/5`);
 
   // --- lightbox ---
   const primeiro = page.locator('.portfolio-item').first();

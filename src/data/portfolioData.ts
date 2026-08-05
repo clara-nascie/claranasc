@@ -298,7 +298,6 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 4,
-    destaque: true,
     title: 'Floral no Peito',
     category: 'coberturas',
     categoryLabel: 'Coberturas',
@@ -308,7 +307,6 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 5,
-    destaque: true,
     title: 'Samurai em Braço Fechado',
     category: 'coberturas',
     categoryLabel: 'Coberturas',
@@ -318,7 +316,6 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 6,
-    destaque: true,
     title: 'Fullmetal Alchemist',
     category: 'coberturas',
     categoryLabel: 'Coberturas',
@@ -1466,7 +1463,6 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 10,
-    destaque: true,
     title: 'Braçadeira Floral',
     category: 'botanico',
     categoryLabel: 'Botânico',
@@ -1476,7 +1472,6 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 11,
-    destaque: true,
     title: 'Folhas e Flores no Braço',
     category: 'botanico',
     categoryLabel: 'Botânico',
@@ -1486,7 +1481,6 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 12,
-    destaque: true,
     title: 'Girassol na Costela',
     category: 'botanico',
     categoryLabel: 'Botânico',
@@ -1606,7 +1600,6 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 16,
-    destaque: true,
     title: 'Amaterasu — Okami',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
@@ -1616,7 +1609,6 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 17,
-    destaque: true,
     title: 'Árvore Branca no Ombro',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
@@ -1626,7 +1618,6 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 18,
-    destaque: true,
     title: 'Baraggan — Bleach',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
@@ -1668,7 +1659,6 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 22,
-    destaque: true,
     title: 'Máscara Tribal',
     category: 'blackwork',
     categoryLabel: 'Blackwork',
@@ -1678,7 +1668,6 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 23,
-    destaque: true,
     title: 'Tucano em Losango',
     category: 'blackwork',
     categoryLabel: 'Blackwork',
@@ -1688,7 +1677,6 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 24,
-    destaque: true,
     title: 'Navio e Polvo',
     category: 'blackwork',
     categoryLabel: 'Blackwork',
@@ -1730,7 +1718,6 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 28,
-    destaque: true,
     title: 'Livros e Cartola',
     category: 'fineline',
     categoryLabel: 'Fine Line',
@@ -1740,7 +1727,6 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 29,
-    destaque: true,
     title: 'Borboleta',
     category: 'fineline',
     categoryLabel: 'Fine Line',
@@ -1750,7 +1736,6 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 30,
-    destaque: true,
     title: 'Cavalo',
     category: 'fineline',
     categoryLabel: 'Fine Line',
