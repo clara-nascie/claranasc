@@ -48,6 +48,7 @@
     aspect-ratio: 4 / 5;
     background-color: var(--bg-tertiary);
     transition: var(--transition-smooth);
+    container-type: inline-size;
 }
 
 .portfolio-item.hidden {
@@ -183,6 +184,14 @@
     color: var(--text-primary);
 }
 
+.carrossel-hint {
+    display: none;
+}
+
+@keyframes deslize-seta {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(4px); }
+}
 
 
 @media (max-width: 991px) {
@@ -275,7 +284,7 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: clamp(15px, 4vw, 30px);
+    padding: clamp(12px, 8cqi, 30px);
     transition: var(--transition-smooth);
     border: 1px solid transparent;
 }
@@ -290,7 +299,7 @@
 }
 
 .item-category {
-    font-size: clamp(0.65rem, 1.5vw, 0.75rem);
+    font-size: clamp(0.6rem, 5cqi, 0.75rem);
     text-transform: uppercase;
     letter-spacing: 0.15em;
     color: var(--accent-gold-on-dark);
@@ -301,7 +310,9 @@
 }
 
 .item-title {
-    font-size: clamp(1rem, 2.2vw, 1.3rem);
+    font-size: clamp(0.85rem, 8cqi, 1.3rem);
+    word-wrap: break-word;
+    hyphens: auto;
     /* Sobre o gradiente escuro do .portfolio-hover, nao sobre o fundo do site. */
     color: var(--text-on-dark);
     text-transform: uppercase;
@@ -312,8 +323,8 @@
 
 .btn-zoom {
     position: absolute;
-    top: clamp(12px, 3vw, 30px);
-    right: clamp(12px, 3vw, 30px);
+    top: clamp(12px, 8cqi, 30px);
+    right: clamp(12px, 8cqi, 30px);
     color: var(--text-on-dark);
     /* Fundo escuro proprio, e nao um veu claro: a lupa fica no topo do
        overlay, onde o gradiente e quase transparente, entao o contraste
@@ -346,4 +357,45 @@
 .btn-zoom:hover {
     background-color: var(--accent-gold);
     color: var(--bg-primary);
+}
+@media (max-width: 480px) {
+    .portfolio-grid--carrossel .portfolio-hover {
+        padding: 12px;
+    }
+    .portfolio-grid--carrossel .item-category {
+        font-size: 0.6rem;
+    }
+    .portfolio-grid--carrossel .item-title {
+        font-size: 0.85rem;
+    }
+    .portfolio-grid--carrossel .btn-zoom {
+        top: 10px;
+        right: 10px;
+        width: 32px;
+        height: 32px;
+    }
+    .portfolio-grid--carrossel .portfolio-item:hover .btn-zoom {
+        transform: scale(0.9);
+    }
+}
+
+@media (max-width: 991px) {
+    .carrossel-hint {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 6px;
+        margin-top: 8px;
+        padding-right: 12px;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--text-secondary);
+        opacity: 0.8;
+        position: relative;
+        z-index: 10;
+    }
+    .carrossel-hint svg {
+        animation: deslize-seta 1.5s ease-in-out infinite;
+    }
 }
