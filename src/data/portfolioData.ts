@@ -73,6 +73,34 @@ import finelineCavalo from '../assets/portfolio/fineline-cavalo-costas.webp';
 
 // IMPORTS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
 // Não remova o marcador nem escreva abaixo dele à mão.
+import blackworkVegvisirEmCirculoPeito from '../assets/portfolio/blackwork-vegvisir-em-circulo-peito.webp';
+import blackworkAstronautaEEntropiaAntebraco from '../assets/portfolio/blackwork-astronauta-e-entropia-antebraco.webp';
+import blackworkPomoDeOuroNuca from '../assets/portfolio/blackwork-pomo-de-ouro-nuca.webp';
+import blackworkLanternaEMariposaPanturrilha from '../assets/portfolio/blackwork-lanterna-e-mariposa-panturrilha.webp';
+import blackworkFiguraNaMolduraPanturrilha from '../assets/portfolio/blackwork-figura-na-moldura-panturrilha.webp';
+import blackworkAtlasEGeometriaAntebraco from '../assets/portfolio/blackwork-atlas-e-geometria-antebraco.webp';
+import blackworkMulherComPlanetasAntebraco from '../assets/portfolio/blackwork-mulher-com-planetas-antebraco.webp';
+import blackworkSamuraiEGalhosAntebraco from '../assets/portfolio/blackwork-samurai-e-galhos-antebraco.webp';
+import blackworkTeaRexBraco from '../assets/portfolio/blackwork-tea-rex-braco.webp';
+import blackworkGaloCoxa from '../assets/portfolio/blackwork-galo-coxa.webp';
+import blackworkCartaDeTaroDeathCoxa from '../assets/portfolio/blackwork-carta-de-taro-death-coxa.webp';
+import blackworkCartaDeTaroTheCupidCoxa from '../assets/portfolio/blackwork-carta-de-taro-the-cupid-coxa.webp';
+import blackworkSerpentePerna from '../assets/portfolio/blackwork-serpente-perna.webp';
+import blackworkPersonagemComTenisBraco from '../assets/portfolio/blackwork-personagem-com-tenis-braco.webp';
+import blackworkPersonagemComTenisBracoDeFrente from '../assets/portfolio/blackwork-personagem-com-tenis-braco-de-frente.webp';
+import blackworkAdaptadorDeVinilPanturrilha from '../assets/portfolio/blackwork-adaptador-de-vinil-panturrilha.webp';
+import blackworkAdaptadorDeVinilPanturrilhaDePerto from '../assets/portfolio/blackwork-adaptador-de-vinil-panturrilha-de-perto.webp';
+import blackworkMulherComFloresEChifresBraco from '../assets/portfolio/blackwork-mulher-com-flores-e-chifres-braco.webp';
+import blackworkCapaceteDoAyrtonSennaBraco from '../assets/portfolio/blackwork-capacete-do-ayrton-senna-braco.webp';
+import blackworkSilhuetaComViolaoBraco from '../assets/portfolio/blackwork-silhueta-com-violao-braco.webp';
+import blackworkCoracaoRemendadoAntebraco from '../assets/portfolio/blackwork-coracao-remendado-antebraco.webp';
+import blackworkPolvoPerna from '../assets/portfolio/blackwork-polvo-perna.webp';
+import blackworkMinasGeraisUaiManoPanturrilha from '../assets/portfolio/blackwork-minas-gerais-uai-mano-panturrilha.webp';
+import blackworkMulherComPlanetasAntebracoDePerto from '../assets/portfolio/blackwork-mulher-com-planetas-antebraco-de-perto.webp';
+import blackworkEsqueletoBigHeartAbdomen from '../assets/portfolio/blackwork-esqueleto-big-heart-abdomen.webp';
+import blackworkMulherEGuerreiroBraco from '../assets/portfolio/blackwork-mulher-e-guerreiro-braco.webp';
+import blackworkCartasDeTaroNasDuasCoxas from '../assets/portfolio/blackwork-cartas-de-taro-nas-duas-coxas.webp';
+import blackworkDivindadeComAnkhAntebraco from '../assets/portfolio/blackwork-divindade-com-ankh-antebraco.webp';
 import geekTheLastOfUsComposicao from '../assets/portfolio/geek-the-last-of-us-composicao-panturrilha.webp';
 import geekCrossoverMewtwoELaw from '../assets/portfolio/geek-crossover-mewtwo-e-law-antebraco.webp';
 import geekVariasReferencias from '../assets/portfolio/geek-varias-referencias-antebraco.webp';
@@ -319,6 +347,230 @@ export const portfolioItems: PortfolioItem[] = [
   // A partir deste ponto os itens vêm na ordem de importação, não por
   // categoria: a página filtra por `category`, então a ordem no array não
   // muda nada do que aparece na tela.
+  {
+    id: 87,
+    title: 'Vegvísir em Círculo',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkVegvisirEmCirculoPeito,
+    alt: 'Tatuagem blackwork de vegvísir dentro de círculo em preto sólido, no peito'
+  },
+  {
+    id: 88,
+    title: 'Astronauta e Entropia',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkAstronautaEEntropiaAntebraco,
+    alt: 'Tatuagem blackwork de astronauta com a palavra Entropy, DNA e geometria, em pontilhismo no antebraço'
+  },
+  {
+    id: 89,
+    title: 'Pomo de Ouro',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkPomoDeOuroNuca,
+    alt: 'Tatuagem blackwork do pomo de ouro, de Harry Potter, em pontilhismo na nuca'
+  },
+  {
+    id: 90,
+    title: 'Lanterna e Mariposa',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkLanternaEMariposaPanturrilha,
+    alt: 'Tatuagem blackwork de lanterna antiga com mariposa e folhas, em pontilhismo na panturrilha'
+  },
+  {
+    id: 91,
+    title: 'Figura na Moldura',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkFiguraNaMolduraPanturrilha,
+    alt: 'Tatuagem blackwork de figura sentada dentro de moldura, com borboleta e flores, em pontilhismo na panturrilha'
+  },
+  {
+    id: 92,
+    title: 'Atlas e Geometria',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkAtlasEGeometriaAntebraco,
+    alt: 'Tatuagem blackwork de figura clássica erguendo uma esfera, com geometria sagrada, no antebraço'
+  },
+  {
+    id: 93,
+    title: 'Mulher e Planetas',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkMulherComPlanetasAntebraco,
+    alt: 'Tatuagem blackwork de mulher com cabelo de nuvens e planetas em pontilhismo no antebraço'
+  },
+  {
+    id: 94,
+    title: 'Samurai e Galhos',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkSamuraiEGalhosAntebraco,
+    alt: 'Tatuagem blackwork de elmo de samurai entre galhos secos, em pontilhismo no antebraço'
+  },
+  {
+    id: 95,
+    title: 'Tea Rex',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkTeaRexBraco,
+    alt: 'Tatuagem blackwork de T-Rex dentro de uma xícara de chá com a etiqueta Tea Rex, no braço, sobre o tríceps'
+  },
+  {
+    id: 96,
+    title: 'Galo',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkGaloCoxa,
+    alt: 'Tatuagem de galo estilizado com detalhes em cor e estrela amarela na coxa'
+  },
+  {
+    id: 97,
+    title: 'Carta Death',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkCartaDeTaroDeathCoxa,
+    alt: 'Tatuagem blackwork de carta de tarô Death com caveira encapuzada e teia de aranha, na coxa'
+  },
+  {
+    id: 98,
+    title: 'Carta The Cupid',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkCartaDeTaroTheCupidCoxa,
+    alt: 'Tatuagem blackwork de carta de tarô The Cupid com anjo e nuvens, na coxa'
+  },
+  {
+    id: 99,
+    title: 'Serpente',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkSerpentePerna,
+    alt: 'Tatuagem de serpente em preto e cinza com escamas detalhadas na perna'
+  },
+  {
+    id: 100,
+    title: 'Personagem com Tênis',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkPersonagemComTenisBraco,
+    alt: 'Tatuagem blackwork de personagem em traço de rabisco usando tênis, no braço'
+  },
+  {
+    id: 101,
+    title: 'Personagem com Tênis, de Frente',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkPersonagemComTenisBracoDeFrente,
+    alt: 'Tatuagem blackwork de personagem em traço de rabisco usando tênis, no braço, vista de frente'
+  },
+  {
+    id: 102,
+    title: 'Adaptador de Vinil',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkAdaptadorDeVinilPanturrilha,
+    alt: 'Tatuagem blackwork de adaptador de disco de vinil com uma data, em pontilhismo na panturrilha'
+  },
+  {
+    id: 103,
+    title: 'Adaptador de Vinil, de Perto',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkAdaptadorDeVinilPanturrilhaDePerto,
+    alt: 'Tatuagem blackwork de adaptador de disco de vinil em pontilhismo na panturrilha, vista de perto'
+  },
+  {
+    id: 104,
+    title: 'Mulher com Flores e Chifres',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkMulherComFloresEChifresBraco,
+    alt: 'Tatuagem blackwork de mulher com flores, chifres e felino em braço fechado'
+  },
+  {
+    id: 105,
+    title: 'Capacete do Ayrton Senna',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkCapaceteDoAyrtonSennaBraco,
+    alt: 'Tatuagem blackwork do capacete do Ayrton Senna com a assinatura dele, no braço, sobre o tríceps'
+  },
+  {
+    id: 106,
+    title: 'Silhueta com Violão',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkSilhuetaComViolaoBraco,
+    alt: 'Tatuagem blackwork de silhueta de homem com violão em preto sólido, no braço'
+  },
+  {
+    id: 107,
+    title: 'Coração Remendado',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkCoracaoRemendadoAntebraco,
+    alt: 'Tatuagem de coração anatômico com curativo e faixa azul no antebraço'
+  },
+  {
+    id: 108,
+    title: 'Polvo na Perna',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkPolvoPerna,
+    alt: 'Tatuagem de polvo em preto e cinza cobrindo a perna inteira, da coxa ao tornozelo'
+  },
+  {
+    id: 109,
+    title: 'Uai Mano',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkMinasGeraisUaiManoPanturrilha,
+    alt: 'Tatuagem em trash polka com o mapa de Minas Gerais e a inscrição Uai Mano, na panturrilha'
+  },
+  {
+    id: 110,
+    title: 'Mulher e Planetas, de Perto',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkMulherComPlanetasAntebracoDePerto,
+    alt: 'Tatuagem blackwork de mulher com cabelo de nuvens e planetas no antebraço, vista de perto'
+  },
+  {
+    id: 111,
+    title: 'She\'s Got a Big Heart',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkEsqueletoBigHeartAbdomen,
+    alt: 'Tatuagem blackwork de esqueleto com a frase She\'s got a big heart, em traço fino no abdômen'
+  },
+  {
+    id: 112,
+    title: 'Mulher e Guerreiro',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkMulherEGuerreiroBraco,
+    alt: 'Tatuagem blackwork ornamental de mulher e figura guerreira em braço fechado'
+  },
+  {
+    id: 113,
+    title: 'As Duas Cartas de Tarô',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkCartasDeTaroNasDuasCoxas,
+    alt: 'Tatuagem blackwork com as cartas de tarô The Cupid e Death, uma em cada coxa'
+  },
+  {
+    id: 114,
+    title: 'Divindade com Ankh',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkDivindadeComAnkhAntebraco,
+    alt: 'Tatuagem blackwork de divindade com chifres e cajado ankh, em pontilhismo no antebraço'
+  },
   {
     id: 67,
     title: 'Composição The Last of Us',
