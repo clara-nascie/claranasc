@@ -49,9 +49,9 @@ import botanicoBracadeiraCompleta from '../assets/portfolio/botanico-bracadeira-
 
 // --- Geek & Animes ---
 import geekTorre from '../assets/portfolio/geek-torre-e-anel-ombro.webp';
-import geekCheshire from '../assets/portfolio/geek-gato-de-cheshire-costas.webp';
-import geekCoringa from '../assets/portfolio/geek-coringa-braco.webp';
-import geekDragao from '../assets/portfolio/geek-dragao-vermelho-antebraco.webp';
+import geekAliceNoPais from '../assets/portfolio/geek-alice-no-pais-das-maravilhas-costas.webp';
+import geekBerserkGuts from '../assets/portfolio/geek-berserk-guts-braco.webp';
+import geekOkamiAmaterasu from '../assets/portfolio/geek-okami-amaterasu-antebraco.webp';
 import geekArvore from '../assets/portfolio/geek-arvore-branca-ombro.webp';
 import geekCaveira from '../assets/portfolio/geek-caveira-alada-antebraco.webp';
 
@@ -73,46 +73,46 @@ import finelineCavalo from '../assets/portfolio/fineline-cavalo-costas.webp';
 
 // IMPORTS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
 // Não remova o marcador nem escreva abaixo dele à mão.
-import geekHeadstockEFitaCassetePanturrilha from '../assets/portfolio/geek-headstock-e-fita-cassete-panturrilha.webp';
-import geekOnePiecePersonagemAntebraco from '../assets/portfolio/geek-one-piece-personagem-antebraco.webp';
-import geekJackSkellingtonAntebraco from '../assets/portfolio/geek-jack-skellington-antebraco.webp';
-import geekCenaDeAnimeEmAquarelaPanturrilha from '../assets/portfolio/geek-cena-de-anime-em-aquarela-panturrilha.webp';
-import geekPersonagemDeMangaPanturrilha from '../assets/portfolio/geek-personagem-de-manga-panturrilha.webp';
+import geekTheLastOfUsComposicao from '../assets/portfolio/geek-the-last-of-us-composicao-panturrilha.webp';
+import geekCrossoverMewtwoELaw from '../assets/portfolio/geek-crossover-mewtwo-e-law-antebraco.webp';
+import geekVariasReferencias from '../assets/portfolio/geek-varias-referencias-antebraco.webp';
+import geekJinxArcane from '../assets/portfolio/geek-jinx-arcane-panturrilha.webp';
+import geekZarakiKenpachi from '../assets/portfolio/geek-bleach-zaraki-kenpachi-panturrilha.webp';
 import geekPokemonMeowthAntebraco from '../assets/portfolio/geek-pokemon-meowth-antebraco.webp';
-import geekStitchAntebraco from '../assets/portfolio/geek-stitch-antebraco.webp';
-import geekSimbolosNasMaos from '../assets/portfolio/geek-simbolos-nas-maos.webp';
-import geekEspadaQuebradaAntebraco from '../assets/portfolio/geek-espada-quebrada-antebraco.webp';
-import geekPretoSolidoEmNegativoAntebraco from '../assets/portfolio/geek-preto-solido-em-negativo-antebraco.webp';
+import geekStitchECoragem from '../assets/portfolio/geek-stitch-e-coragem-antebraco.webp';
+import geekBerserkMarcaNasMaos from '../assets/portfolio/geek-berserk-marca-nas-maos.webp';
+import geekNarsil from '../assets/portfolio/geek-narsil-senhor-dos-aneis-antebraco.webp';
+import geekBaldursGate from '../assets/portfolio/geek-baldurs-gate-simbolo-antebraco.webp';
 import geekDarkSoulsFogueiraBraco from '../assets/portfolio/geek-dark-souls-fogueira-braco.webp';
-import geekCranioComChifresPanturrilha from '../assets/portfolio/geek-cranio-com-chifres-panturrilha.webp';
-import geekCartaDeTaroDeathPanturrilha from '../assets/portfolio/geek-carta-de-taro-death-panturrilha.webp';
-import geekCoringaEmCartaDeBaralhoPanturrilha from '../assets/portfolio/geek-coringa-em-carta-de-baralho-panturrilha.webp';
-import geekSimboloEmVermelhoAntebraco from '../assets/portfolio/geek-simbolo-em-vermelho-antebraco.webp';
-import geekRpgD20RollInitiativeAntebraco from '../assets/portfolio/geek-rpg-d20-roll-initiative-antebraco.webp';
-import geekDoisPersonagensDeAnimePanturrilha from '../assets/portfolio/geek-dois-personagens-de-anime-panturrilha.webp';
+import geekDiscoElysiumVolition from '../assets/portfolio/geek-disco-elysium-volition-panturrilha.webp';
+import geekDeadCells from '../assets/portfolio/geek-dead-cells-panturrilha.webp';
+import geekCupheadKingDice from '../assets/portfolio/geek-cuphead-king-dice-panturrilha.webp';
+import geekSupernaturalMarcaDeCaim from '../assets/portfolio/geek-supernatural-marca-de-caim-antebraco.webp';
+import geekDungeonsAndDragons from '../assets/portfolio/geek-dungeons-and-dragons-composicao-antebraco.webp';
+import geekMobPsycho from '../assets/portfolio/geek-mob-psycho-panturrilha.webp';
 import geekNarutoEmQuadroAntebraco from '../assets/portfolio/geek-naruto-em-quadro-antebraco.webp';
 import geekBerserkMarcaDoSacrificioPescoco from '../assets/portfolio/geek-berserk-marca-do-sacrificio-pescoco.webp';
 import geekHomemAranhaEmQuadroAntebraco from '../assets/portfolio/geek-homem-aranha-em-quadro-antebraco.webp';
-import geekSimboloCircularPeito from '../assets/portfolio/geek-simbolo-circular-peito.webp';
-import geekOnePieceLetteringPeito from '../assets/portfolio/geek-one-piece-lettering-peito.webp';
-import geekOnePiecePeitoCompleto from '../assets/portfolio/geek-one-piece-peito-completo.webp';
-import geekPersonagensEmAquarelaPerna from '../assets/portfolio/geek-personagens-em-aquarela-perna.webp';
+import geekNarutoClaNara from '../assets/portfolio/geek-naruto-cla-nara-peito.webp';
+import geekOnePieceTatuagemDoAce from '../assets/portfolio/geek-one-piece-tatuagem-do-ace-peito.webp';
+import geekOnePieceENaruto from '../assets/portfolio/geek-one-piece-e-naruto-peito.webp';
+import geekPersonagensAzuisDoCinema from '../assets/portfolio/geek-personagens-azuis-do-cinema-perna.webp';
 import geekCalciferAntebraco from '../assets/portfolio/geek-calcifer-antebraco.webp';
 import geekDeadpoolQuadrinhoAntebraco from '../assets/portfolio/geek-deadpool-quadrinho-antebraco.webp';
 import geekBobEsponjaNoLapisBraco from '../assets/portfolio/geek-bob-esponja-no-lapis-braco.webp';
-import geekColagemRetroAntebraco from '../assets/portfolio/geek-colagem-retro-antebraco.webp';
+import geekLoveDeathAndRobots from '../assets/portfolio/geek-love-death-and-robots-antebraco.webp';
 import geekManoplaDoInfinitoAntebraco from '../assets/portfolio/geek-manopla-do-infinito-antebraco.webp';
 import geekPokemonLinhaDoCharmanderAntebraco from '../assets/portfolio/geek-pokemon-linha-do-charmander-antebraco.webp';
 import geekSenhorDosAneisEspadaArcoMachadoAntebraco from '../assets/portfolio/geek-senhor-dos-aneis-espada-arco-machado-antebraco.webp';
 import geekSenhorDosAneisEspadaArcoMachadoAntebracoDeLado from '../assets/portfolio/geek-senhor-dos-aneis-espada-arco-machado-antebraco-de-lado.webp';
 import geekBioshockFarolPanturrilha from '../assets/portfolio/geek-bioshock-farol-panturrilha.webp';
 import geekTheWitcherMedalhaoPanturrilha from '../assets/portfolio/geek-the-witcher-medalhao-panturrilha.webp';
-import geekCenaDeCoelhosAntebraco from '../assets/portfolio/geek-cena-de-coelhos-antebraco.webp';
+import geekOkamiHanagami from '../assets/portfolio/geek-okami-hanagami-antebraco.webp';
 import geekTRexPunkPerna from '../assets/portfolio/geek-t-rex-punk-perna.webp';
 import geekLifeIsStrangeBorboletaPanturrilha from '../assets/portfolio/geek-life-is-strange-borboleta-panturrilha.webp';
-import geekPersonagemEmCirculoDeChamasPanturrilha from '../assets/portfolio/geek-personagem-em-circulo-de-chamas-panturrilha.webp';
-import geekVanEmBlackworkCoxa from '../assets/portfolio/geek-van-em-blackwork-coxa.webp';
-import geekCenaEmMolduraCircularPanturrilha from '../assets/portfolio/geek-cena-em-moldura-circular-panturrilha.webp';
+import geekOnePieceAceELuffy from '../assets/portfolio/geek-one-piece-ace-e-luffy-panturrilha.webp';
+import geekGandalfEmLego from '../assets/portfolio/geek-gandalf-em-lego-coxa.webp';
+import geekTheLastOfUsEllie from '../assets/portfolio/geek-the-last-of-us-ellie-panturrilha.webp';
 
 export interface PortfolioCategory {
   id: string;
@@ -239,7 +239,7 @@ export const portfolioItems: PortfolioItem[] = [
     category: 'coberturas',
     categoryLabel: 'Coberturas',
     image: coberturaSamurai,
-    alt: 'Cobertura de tatuagem com  samurai, montanhas e torii em braço fechado',
+    alt: 'Cobertura de tatuagem com tema oriental, samurai, montanhas e torii em braço fechado',
     description: 'Cena inteira construída por cima do trabalho anterior, do ombro ao cotovelo.'
   },
   {
@@ -321,43 +321,43 @@ export const portfolioItems: PortfolioItem[] = [
   // muda nada do que aparece na tela.
   {
     id: 67,
-    title: 'Headstock e Fita Cassete',
+    title: 'Composição The Last of Us',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
-    image: geekHeadstockEFitaCassetePanturrilha,
-    alt: 'Tatuagem geek de braço de violão com fita cassete e folhagem, em blackwork na panturrilha'
+    image: geekTheLastOfUsComposicao,
+    alt: 'Tatuagem geek de The Last of Us com braço de violão e fita cassete, em blackwork na panturrilha'
   },
   {
     id: 68,
-    title: 'Personagem de One Piece',
+    title: 'Crossover Mewtwo e Law',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
-    image: geekOnePiecePersonagemAntebraco,
-    alt: 'Tatuagem geek de One Piece com personagem de chapéu malhado e espada, em cores no antebraço'
+    image: geekCrossoverMewtwoELaw,
+    alt: 'Tatuagem geek em crossover de Mewtwo com Trafalgar Law, de One Piece, em cores no antebraço'
   },
   {
     id: 69,
-    title: 'Jack Skellington',
+    title: 'Braço Geek',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
-    image: geekJackSkellingtonAntebraco,
-    alt: 'Tatuagem geek de Jack Skellington, de O Estranho Mundo de Jack, em blackwork no antebraço'
+    image: geekVariasReferencias,
+    alt: 'Tatuagem geek com várias referências pequenas em blackwork espalhadas pelo antebraço'
   },
   {
     id: 70,
-    title: 'Cena de Anime em Aquarela',
+    title: 'Jinx — Arcane',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
-    image: geekCenaDeAnimeEmAquarelaPanturrilha,
-    alt: 'Tatuagem geek com cena de anime em aquarela colorida na panturrilha'
+    image: geekJinxArcane,
+    alt: 'Tatuagem geek da Jinx, de Arcane, em aquarela colorida na panturrilha'
   },
   {
     id: 71,
-    title: 'Personagem de Mangá',
+    title: 'Zaraki Kenpachi — Bleach',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
-    image: geekPersonagemDeMangaPanturrilha,
-    alt: 'Tatuagem geek de personagem de mangá com sorriso largo, em preto e cinza na panturrilha'
+    image: geekZarakiKenpachi,
+    alt: 'Tatuagem geek de Zaraki Kenpachi, de Bleach, em preto e cinza na panturrilha'
   },
   {
     id: 72,
@@ -369,39 +369,39 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 73,
-    title: 'Stitch',
+    title: 'Stitch e Coragem',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
-    image: geekStitchAntebraco,
-    alt: 'Tatuagem geek do Stitch, de Lilo & Stitch, em pontilhismo no antebraço'
+    image: geekStitchECoragem,
+    alt: 'Tatuagem geek do Stitch e do Coragem, o Cão Covarde, em pontilhismo no antebraço'
   },
   {
     id: 74,
-    title: 'Símbolos nas Mãos',
+    title: 'Berserk — Marca',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
-    image: geekSimbolosNasMaos,
-    alt: 'Tatuagem geek com símbolos minimalistas em preto sólido nas mãos de duas pessoas'
+    image: geekBerserkMarcaNasMaos,
+    alt: 'Tatuagem geek de Berserk com a marca em preto sólido nas mãos de duas pessoas'
   },
   {
     id: 75,
-    title: 'Espada Quebrada',
+    title: 'Narsil — O Senhor dos Anéis',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
-    image: geekEspadaQuebradaAntebraco,
-    alt: 'Tatuagem geek de espada quebrada em preto e cinza no antebraço'
+    image: geekNarsil,
+    alt: 'Tatuagem geek da espada Narsil, de O Senhor dos Anéis, em preto e cinza no antebraço'
   },
   {
     id: 76,
-    title: 'Preto Sólido em Negativo',
+    title: 'Símbolo de Baldur’s Gate',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
-    image: geekPretoSolidoEmNegativoAntebraco,
-    alt: 'Tatuagem geek em preto sólido contornando o antebraço, com o desenho aparecendo pelo negativo da pele'
+    image: geekBaldursGate,
+    alt: 'Tatuagem geek com o símbolo de Baldur’s Gate em preto sólido contornando o antebraço'
   },
   {
     id: 77,
-    title: 'Fogueira',
+    title: 'Fogueira — Dark Souls',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
     image: geekDarkSoulsFogueiraBraco,
@@ -409,51 +409,51 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 78,
-    title: 'Crânio com Chifres',
+    title: 'Volition — Disco Elysium',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
-    image: geekCranioComChifresPanturrilha,
-    alt: 'Tatuagem geek de crânio com chifres em blackwork e pontilhismo na panturrilha'
+    image: geekDiscoElysiumVolition,
+    alt: 'Tatuagem geek de Disco Elysium com o símbolo de Volition em blackwork na panturrilha'
   },
   {
     id: 79,
-    title: 'Carta de Tarô Death',
+    title: 'Dead Cells',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
-    image: geekCartaDeTaroDeathPanturrilha,
-    alt: 'Tatuagem geek de carta de tarô Death com figura em cores na panturrilha'
+    image: geekDeadCells,
+    alt: 'Tatuagem geek de Dead Cells em carta ilustrada, colorida na panturrilha'
   },
   {
     id: 80,
-    title: 'Coringa em Carta de Baralho',
+    title: 'King Dice — Cuphead',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
-    image: geekCoringaEmCartaDeBaralhoPanturrilha,
-    alt: 'Tatuagem geek do Coringa dentro de uma carta de baralho, colorida na panturrilha'
+    image: geekCupheadKingDice,
+    alt: 'Tatuagem geek do King Dice, de Cuphead, colorido na panturrilha'
   },
   {
     id: 81,
-    title: 'Símbolo em Vermelho',
+    title: 'Marca de Caim — Supernatural',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
-    image: geekSimboloEmVermelhoAntebraco,
-    alt: 'Tatuagem geek de símbolo em traço pincelado, em vermelho sólido, no antebraço'
+    image: geekSupernaturalMarcaDeCaim,
+    alt: 'Tatuagem geek de Supernatural com a Marca de Caim em vermelho sólido no antebraço'
   },
   {
     id: 82,
-    title: 'Roll Initiative',
+    title: 'Composição de D&D',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
-    image: geekRpgD20RollInitiativeAntebraco,
-    alt: 'Tatuagem geek de RPG com dado d20, coruja e a fita Roll Initiative, em blackwork no antebraço'
+    image: geekDungeonsAndDragons,
+    alt: 'Tatuagem geek de Dungeons & Dragons com dado d20 e a fita Roll Initiative, em blackwork no antebraço'
   },
   {
     id: 83,
-    title: 'Dois Personagens',
+    title: 'Mob Psycho',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
-    image: geekDoisPersonagensDeAnimePanturrilha,
-    alt: 'Tatuagem geek com dois personagens de anime lado a lado, em traço fino na panturrilha'
+    image: geekMobPsycho,
+    alt: 'Tatuagem geek de Mob Psycho com dois personagens em traço fino na panturrilha'
   },
   {
     id: 84,
@@ -481,35 +481,35 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 47,
-    title: 'Símbolo em Blackwork no Peito',
+    title: 'Clã Nara — Naruto',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
-    image: geekSimboloCircularPeito,
-    alt: 'Tatuagem geek de símbolo circular em traço pincelado e preto sólido no peito'
+    image: geekNarutoClaNara,
+    alt: 'Tatuagem geek de Naruto com o símbolo do clã Nara em preto sólido no peito'
   },
   {
     id: 48,
-    title: '3D2Y e ASCE',
+    title: 'Tatuagem do Ace — One Piece',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
-    image: geekOnePieceLetteringPeito,
-    alt: 'Tatuagem geek de One Piece com as inscrições 3D2Y e ASCE em lettering no peito'
+    image: geekOnePieceTatuagemDoAce,
+    alt: 'Tatuagem geek de One Piece com a tatuagem do Ace e a inscrição 3D2Y no peito'
   },
   {
     id: 49,
-    title: 'Peito Fechado em One Piece',
+    title: 'One Piece e Naruto',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
-    image: geekOnePiecePeitoCompleto,
-    alt: 'Tatuagem geek de One Piece no peito, com símbolo circular e lettering 3D2Y e ASCE, vista completa'
+    image: geekOnePieceENaruto,
+    alt: 'Tatuagem geek de One Piece e Naruto no peito, com o símbolo do clã Nara e lettering'
   },
   {
     id: 50,
-    title: 'Personagens em Aquarela',
+    title: 'Personagens Azuis do Cinema',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
-    image: geekPersonagensEmAquarelaPerna,
-    alt: 'Tatuagem geek de personagens de animação em aquarela colorida na perna'
+    image: geekPersonagensAzuisDoCinema,
+    alt: 'Tatuagem geek com personagens azuis de cinema em aquarela colorida na perna'
   },
   {
     id: 51,
@@ -537,11 +537,11 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 54,
-    title: 'Colagem Retrô',
+    title: 'Love, Death and Robots',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
-    image: geekColagemRetroAntebraco,
-    alt: 'Tatuagem geek em colagem de eletrônicos antigos, robô e gato, com detalhes coloridos no antebraço'
+    image: geekLoveDeathAndRobots,
+    alt: 'Tatuagem geek de Love, Death and Robots com robôs e eletrônicos, com detalhes coloridos no antebraço'
   },
   {
     id: 55,
@@ -593,11 +593,11 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 61,
-    title: 'Cena de Coelhos',
+    title: 'Hanagami — Okami',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
-    image: geekCenaDeCoelhosAntebraco,
-    alt: 'Tatuagem geek com cena de coelhos e figuras em pontilhismo, com respingos em vermelho, no antebraço'
+    image: geekOkamiHanagami,
+    alt: 'Tatuagem geek de Okami com os Hanagami em pontilhismo e respingos vermelhos no antebraço'
   },
   {
     id: 62,
@@ -609,7 +609,7 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 63,
-    title: 'Borboleta e Polaroid',
+    title: 'Life is Strange',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
     image: geekLifeIsStrangeBorboletaPanturrilha,
@@ -617,27 +617,27 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 64,
-    title: 'Personagem em Círculo de Chamas',
+    title: 'Ace e Luffy — One Piece',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
-    image: geekPersonagemEmCirculoDeChamasPanturrilha,
-    alt: 'Tatuagem geek de personagem de anime correndo dentro de um círculo de chamas em vermelho, na panturrilha'
+    image: geekOnePieceAceELuffy,
+    alt: 'Tatuagem geek de One Piece com Ace e Luffy em círculos de chamas vermelhas, na panturrilha'
   },
   {
     id: 65,
-    title: 'Van em Blackwork',
+    title: 'Gandalf em Lego',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
-    image: geekVanEmBlackworkCoxa,
-    alt: 'Tatuagem geek de van antiga vista de frente, em blackwork com pontilhismo, na coxa'
+    image: geekGandalfEmLego,
+    alt: 'Tatuagem geek do Gandalf em versão Lego, em blackwork com pontilhismo, na coxa'
   },
   {
     id: 66,
-    title: 'Cena em Moldura Circular',
+    title: 'Ellie — The Last of Us',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
-    image: geekCenaEmMolduraCircularPanturrilha,
-    alt: 'Tatuagem geek com figura feminina e ave dentro de moldura circular, em blackwork na panturrilha'
+    image: geekTheLastOfUsEllie,
+    alt: 'Tatuagem geek da Ellie, de The Last of Us, em moldura circular com blackwork na panturrilha'
   },
 
   // --------------------------------------------------------------- Botânico
@@ -794,31 +794,31 @@ export const portfolioItems: PortfolioItem[] = [
   {
     id: 14,
     destaque: true,
-    title: 'Gato de Cheshire nas Costas',
+    title: 'Composição Alice no País das Maravilhas',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
-    image: geekCheshire,
-    alt: 'Tatuagem do Gato de Cheshire com xícaras e cogumelos ocupando as costas',
+    image: geekAliceNoPais,
+    alt: 'Tatuagem geek de Alice no País das Maravilhas com o Gato de Cheshire e xícaras nas costas',
     description: 'Peça grande de costas, com os elementos empilhados seguindo a coluna.'
   },
   {
     id: 15,
     destaque: true,
-    title: 'Coringa no Braço',
+    title: 'Guts — Berserk',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
-    image: geekCoringa,
-    alt: 'Tatuagem do Coringa em preto e cinza cobrindo o braço',
+    image: geekBerserkGuts,
+    alt: 'Tatuagem geek do Guts, de Berserk, em preto e cinza no braço',
     description: 'Alto contraste para o rosto continuar legível de longe.'
   },
   {
     id: 16,
     destaque: true,
-    title: 'Dragão com Detalhe em Vermelho',
+    title: 'Amaterasu — Okami',
     category: 'geek',
     categoryLabel: 'Geek & Animes',
-    image: geekDragao,
-    alt: 'Tatuagem de dragão oriental no antebraço com detalhes pontuais em vermelho',
+    image: geekOkamiAmaterasu,
+    alt: 'Tatuagem geek da Amaterasu, de Okami, com detalhes em vermelho no antebraço',
     description: 'O vermelho aparece em três pontos só, para marcar sem competir com o preto.'
   },
   {

@@ -117,7 +117,7 @@ export const NICHOS: Nicho[] = [
       {
         pergunta: "Precisa ser colorida?",
         resposta:
-          "Não, e na maioria das vezes é melhor que não seja. Preto e cinza com bom contraste continua legível de longe e envelhece por igual. Quando entra cor, ela funciona melhor em pontos: o dragão do antebraço da galeria tem vermelho em três lugares só, porque cor demais compete com o preto e some primeiro.",
+          "Não, e na maioria das vezes é melhor que não seja. Preto e cinza com bom contraste continua legível de longe e envelhece por igual. Quando entra cor, ela funciona melhor em pontos: a Amaterasu do antebraço, aqui na galeria, tem vermelho em três lugares só, porque cor demais compete com o preto e some primeiro.",
       },
     ],
     mensagemWhatsapp:
