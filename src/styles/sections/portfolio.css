@@ -278,7 +278,11 @@
     overflow: hidden;
 }
 
+/* Pressionar a foto abre a espiada. Sem estas duas linhas o celular abre o
+   menu nativo de salvar imagem em cima do gesto e a espiada nunca acontece. */
 .portfolio-img-wrapper img {
+    -webkit-touch-callout: none;
+    user-select: none;
     width: 100%;
     height: 100%;
     object-fit: cover;

@@ -86,19 +86,81 @@ const TAMANHOS = eCarrossel
 </div>
 
 <script>
+  /* Abaixo disso o gesto é um toque, não uma pressão: sem a espera, encostar
+     numa foto para rolar a página já a abriria. */
+  const PRESSAO_MS = 250;
+  /* Todo arrasto começa com o dedo em cima de uma foto. Passou daqui, a pessoa
+     está rolando a página ou o carrossel, e a espiada é cancelada. */
+  const TOLERANCIA_PX = 10;
+
+  function dadosDaFoto(gatilho: HTMLElement) {
+    return {
+      src: gatilho.dataset.src,
+      title: gatilho.dataset.title,
+      category: gatilho.dataset.category
+    };
+  }
+
   for (const grade of document.querySelectorAll<HTMLElement>('[data-galeria]')) {
+    let temporizador: number | null = null;
+    let espiando = false;
+    let inicio = { x: 0, y: 0 };
+
+    const cancelarEspera = () => {
+      if (temporizador === null) return;
+      clearTimeout(temporizador);
+      temporizador = null;
+    };
+
+    const encerrarEspiada = () => {
+      cancelarEspera();
+      if (!espiando) return;
+      espiando = false;
+      window.dispatchEvent(new CustomEvent('close-lightbox'));
+    };
+
+    grade.addEventListener('pointerdown', (evento) => {
+      const item = (evento.target as HTMLElement).closest<HTMLElement>('.portfolio-item');
+      const gatilho = item?.querySelector<HTMLElement>('.lightbox-trigger');
+      if (!gatilho) return;
+
+      inicio = { x: evento.clientX, y: evento.clientY };
+      temporizador = window.setTimeout(() => {
+        temporizador = null;
+        espiando = true;
+        window.dispatchEvent(
+          new CustomEvent('open-lightbox', {
+            detail: { ...dadosDaFoto(gatilho), espiada: true }
+          })
+        );
+      }, PRESSAO_MS);
+    });
+
+    /* `pointerup` vai para o elemento sob o dedo, e com a ampliação aberta esse
+       elemento é o modal, não a galeria. Por isso a soltura é escutada na
+       janela: na grade ela simplesmente não chegaria. */
+    window.addEventListener('pointerup', encerrarEspiada);
+    window.addEventListener('pointercancel', encerrarEspiada);
+
+    window.addEventListener('pointermove', (evento) => {
+      if (temporizador === null) return;
+      const dx = evento.clientX - inicio.x;
+      const dy = evento.clientY - inicio.y;
+      if (Math.hypot(dx, dy) > TOLERANCIA_PX) cancelarEspera();
+    });
+
+    /* O menu nativo de "salvar imagem" abre na pressão longa e rouba o gesto
+       antes de ele virar espiada. */
+    grade.addEventListener('contextmenu', (evento) => {
+      if ((evento.target as HTMLElement).closest('.portfolio-item')) evento.preventDefault();
+    });
+
     grade.addEventListener('click', (evento) => {
       const gatilho = (evento.target as HTMLElement).closest<HTMLElement>('.lightbox-trigger');
       if (!gatilho) return;
 
       window.dispatchEvent(
-        new CustomEvent('open-lightbox', {
-          detail: {
-            src: gatilho.dataset.src,
-            title: gatilho.dataset.title,
-            category: gatilho.dataset.category
-          }
-        })
+        new CustomEvent('open-lightbox', { detail: dadosDaFoto(gatilho) })
       );
     });
   }

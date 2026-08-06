@@ -236,6 +236,54 @@ try {
   await page.waitForTimeout(400);
   checar('um único voltar sai da página de nicho', !page.url().includes('/tatuagem/'), page.url());
 
+  /*
+    A espiada: pressionar a foto amplia, soltar volta ao normal.
+
+    Ela não passa pelo histórico, ao contrário do que a lupa abre — nasce e
+    morre no mesmo gesto, e uma entrada por foto espiada esbarraria no limite
+    de `pushState` do Safari.
+
+    Os três cenários que a quebrariam na prática: o toque curto (não pode
+    abrir), o arrasto (a pessoa está rolando, não espiando) e a soltura (tem
+    que fechar mesmo com o dedo terminando em cima do modal, não da galeria).
+  */
+  await page.goto(BASE_URL, { waitUntil: 'networkidle' });
+  await aguardarLightboxHidratado(page);
+  const alvo = page.locator('.portfolio-item').first();
+  await alvo.scrollIntoViewIfNeeded();
+  await page.waitForTimeout(300);
+  const caixa = await alvo.boundingBox();
+  const centro = { x: caixa.x + caixa.width / 2, y: caixa.y + caixa.height / 2 };
+
+  await page.mouse.move(centro.x, centro.y);
+  await page.mouse.down();
+  await page.waitForTimeout(150);
+  const cedoDemais = !(await page.locator('#lightbox-modal').isVisible().catch(() => false));
+  checar('toque curto não dispara a espiada', cedoDemais);
+
+  await page.waitForTimeout(250);
+  const espiou = await page.locator('#lightbox-modal').isVisible().catch(() => false);
+  checar('pressionar a foto amplia', espiou);
+
+  const semHistorico = await page.evaluate(() => !history.state?.lightbox);
+  checar('espiada não registra histórico', semHistorico);
+
+  await page.mouse.up();
+  await page.waitForTimeout(300);
+  const voltouAoNormal = !(await page.locator('#lightbox-modal').isVisible().catch(() => false));
+  const rolagemOk = await page.evaluate(() => document.body.style.overflow === '');
+  checar('soltar volta ao normal', voltouAoNormal && rolagemOk);
+
+  await page.mouse.move(centro.x, centro.y);
+  await page.mouse.down();
+  await page.waitForTimeout(80);
+  await page.mouse.move(centro.x, centro.y - 60, { steps: 5 });
+  await page.waitForTimeout(400);
+  const arrastouSemAbrir = !(await page.locator('#lightbox-modal').isVisible().catch(() => false));
+  checar('arrastar para rolar não amplia', arrastouSemAbrir);
+  await page.mouse.up();
+  await page.waitForTimeout(200);
+
   checar('sem erros no console', errosConsole.length === 0, errosConsole.join(' | ') || 'nenhum');
 
   await page.close();
