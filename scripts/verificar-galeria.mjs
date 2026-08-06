@@ -22,6 +22,26 @@ async function aguardarServidor(url, tentativas = 40) {
   throw new Error(`Servidor não respondeu em ${url}. Rode \`npm run preview\` (ou \`npm run dev\`).`);
 }
 
+/*
+  O clique na lupa só vale depois que a ilha do Lightbox hidrata: antes disso o
+  evento é disparado e não há ninguém escutando, e ele some sem deixar rastro.
+  No localhost a hidratação é instantânea e um `waitForTimeout` disfarçava; em
+  produção, com rede real, o clique caía na janela entre as duas coisas e o
+  teste acusava um defeito que não existia.
+*/
+async function aguardarLightboxHidratado(page) {
+  await page.waitForFunction(
+    () => {
+      const ilha = [...document.querySelectorAll('astro-island')].find((n) =>
+        (n.getAttribute('component-url') || '').includes('Lightbox')
+      );
+      return Boolean(ilha) && !ilha.hasAttribute('ssr');
+    },
+    null,
+    { timeout: 10000 }
+  );
+}
+
 await aguardarServidor(BASE_URL);
 
 const browser = await chromium.launch();
@@ -124,6 +144,7 @@ try {
   checar('voltar para Todos restaura as fileiras', voltou === 5, `${voltou}/5`);
 
   // --- lightbox ---
+  await aguardarLightboxHidratado(page);
   const primeiro = page.locator('.portfolio-item').first();
   await primeiro.locator('.lightbox-trigger').click({ force: true });
   await page.waitForTimeout(300);
@@ -180,6 +201,7 @@ try {
   await page.goto(BASE_URL, { waitUntil: 'networkidle' });
   await page.locator('a[href="/tatuagem/blackwork/"]').first().click();
   await page.waitForURL('**/tatuagem/blackwork/');
+  await aguardarLightboxHidratado(page);
   await page.locator('.lightbox-trigger').first().click({ force: true });
   await page.waitForTimeout(300);
   const ampliouNoNicho = await page.locator('#lightbox-modal').isVisible().catch(() => false);
