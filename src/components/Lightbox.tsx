@@ -105,7 +105,10 @@ export const Lightbox: React.FC = () => {
   if (!isOpen) return null;
 
   return (
-    <div className="lightbox-modal active" id="lightbox-modal">
+    <div
+      className={`lightbox-modal active${espiando ? ' lightbox-modal--espiada' : ''}`}
+      id="lightbox-modal"
+    >
       {!espiando && (
         <button className="lightbox-close" id="lightbox-close" aria-label="Fechar Galeria" onClick={closeLightbox}>
           <X aria-hidden="true" />

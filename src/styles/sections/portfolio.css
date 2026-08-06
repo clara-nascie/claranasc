@@ -41,7 +41,18 @@
     gap: 30px;
 }
 
+/*
+  Pressionar a foto abre a espiada, e o celular tem dois gestos nativos para a
+  mesma pressão: o menu de salvar imagem e a seleção de texto. Os dois roubam o
+  gesto antes de ele virar espiada -- a seleção é pior, porque prende o menu de
+  copiar na tela e a foto não fecha mais ao soltar.
+
+  Vale no item inteiro, não só na imagem: o titulo e a categoria do overlay
+  ficam invisíveis no celular, mas texto invisível continua selecionável.
+*/
 .portfolio-item {
+    -webkit-touch-callout: none;
+    user-select: none;
     position: relative;
     border-radius: 8px;
     overflow: hidden;
@@ -278,11 +289,7 @@
     overflow: hidden;
 }
 
-/* Pressionar a foto abre a espiada. Sem estas duas linhas o celular abre o
-   menu nativo de salvar imagem em cima do gesto e a espiada nunca acontece. */
 .portfolio-img-wrapper img {
-    -webkit-touch-callout: none;
-    user-select: none;
     width: 100%;
     height: 100%;
     object-fit: cover;

@@ -24,6 +24,20 @@
     pointer-events: all;
 }
 
+/*
+  Na espiada a ampliação nasce debaixo do dedo, e dedo parado em cima de texto
+  é o gesto de selecionar: o celular reconhecia a seleção na legenda, abria o
+  menu de copiar/traduzir e engolia a soltura -- a foto não fechava mais.
+
+  Vale só durante a espiada. Na ampliação que fica aberta o texto continua
+  selecionável, porque ali a pessoa tem tempo e motivo para copiar o título.
+*/
+.lightbox-modal--espiada,
+.lightbox-modal--espiada * {
+    -webkit-touch-callout: none;
+    user-select: none;
+}
+
 .lightbox-close {
     position: absolute;
     top: 30px;

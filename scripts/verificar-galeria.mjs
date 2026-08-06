@@ -145,6 +145,15 @@ try {
 
   // --- lightbox ---
   await aguardarLightboxHidratado(page);
+
+  /* O título e a categoria do overlay ficam invisíveis no celular, mas texto
+     invisível continua selecionável e rouba a pressão que abriria a espiada. */
+  const selecaoNaGaleria = await page
+    .locator('.item-title')
+    .first()
+    .evaluate((el) => getComputedStyle(el).userSelect);
+  checar('texto do overlay não é selecionável', selecaoNaGaleria === 'none', selecaoNaGaleria);
+
   const primeiro = page.locator('.portfolio-item').first();
   await primeiro.locator('.lightbox-trigger').click({ force: true });
   await page.waitForTimeout(300);
@@ -289,6 +298,22 @@ try {
      mexer na rolagem durante o toque é o que provoca o cancelamento acima. */
   const overflowIntocado = await page.evaluate(() => document.body.style.overflow === '');
   checar('espiada não mexe no overflow do body', overflowIntocado);
+
+  /*
+    A ampliação nasce debaixo do dedo, e dedo parado sobre texto é o gesto de
+    selecionar: o celular selecionava a legenda, abria o menu de copiar e
+    engolia a soltura, deixando a foto presa aberta.
+  */
+  const legendaSelecionavel = await page.evaluate(() => {
+    const alvo = document.querySelector('#lightbox-title');
+    const faixa = document.createRange();
+    faixa.selectNodeContents(alvo);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(faixa);
+    return sel.toString().trim();
+  });
+  checar('legenda da espiada não seleciona', legendaSelecionavel === '', `"${legendaSelecionavel}"`);
 
   await page.mouse.up();
   await page.waitForTimeout(300);
