@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { X } from 'lucide-react';
 
 export const Lightbox: React.FC = () => {
@@ -16,6 +16,13 @@ export const Lightbox: React.FC = () => {
       });
       setIsOpen(true);
       document.body.style.overflow = 'hidden';
+
+      /* Entrada de histórico descartável. Sem ela o "voltar" do celular não tem
+         o que desfazer na página e sai dela — quem abria uma foto na página de
+         nicho voltava para a home. */
+      if (!history.state?.lightbox) {
+        history.pushState({ lightbox: true }, '');
+      }
     };
 
     window.addEventListener('open-lightbox', handleOpen);
@@ -25,10 +32,38 @@ export const Lightbox: React.FC = () => {
     };
   }, []);
 
-  const closeLightbox = () => {
-    setIsOpen(false);
-    document.body.style.overflow = '';
-  };
+  /* Fechar pelo X ou pelo Esc desfaz a entrada empurrada na abertura, em vez de
+     fechar direto: todos os caminhos passam pelo `popstate` e o histórico não
+     acumula entradas mortas. O `else` cobre a entrada já ter sido consumida. */
+  const closeLightbox = useCallback(() => {
+    if (history.state?.lightbox) {
+      history.back();
+    } else {
+      setIsOpen(false);
+      document.body.style.overflow = '';
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handlePop = () => {
+      setIsOpen(false);
+      document.body.style.overflow = '';
+    };
+
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeLightbox();
+    };
+
+    window.addEventListener('popstate', handlePop);
+    window.addEventListener('keydown', handleKey);
+
+    return () => {
+      window.removeEventListener('popstate', handlePop);
+      window.removeEventListener('keydown', handleKey);
+    };
+  }, [isOpen, closeLightbox]);
 
   if (!isOpen) return null;
 
