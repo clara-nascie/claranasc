@@ -268,6 +268,10 @@ try {
   const semHistorico = await page.evaluate(() => !history.state?.lightbox);
   checar('espiada não registra histórico', semHistorico);
 
+  // O X só faz sentido no que fica aberto; a espiada some ao soltar o dedo.
+  const semBotaoFechar = (await page.locator('#lightbox-close').count()) === 0;
+  checar('espiada não mostra o X de fechar', semBotaoFechar);
+
   await page.mouse.up();
   await page.waitForTimeout(300);
   const voltouAoNormal = !(await page.locator('#lightbox-modal').isVisible().catch(() => false));

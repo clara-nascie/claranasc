@@ -6,9 +6,19 @@ export const Lightbox: React.FC = () => {
   const [imgData, setImgData] = useState({ src: '', title: '', category: '' });
 
   /* Espiada é a ampliação que dura o gesto: abre na pressão e fecha ao soltar.
-     Fica num ref porque nada na tela depende dela — só o comportamento de
-     fechamento muda. */
-  const espiando = useRef(false);
+     Ela some sozinha, então o X não tem função nenhuma ali e fica escondido.
+
+     Vale nos dois lugares porque os dois leem em momentos diferentes: o estado
+     desenha a tela, e o ref é o que os ouvintes registrados uma vez só
+     conseguem consultar — pelo estado, eles leriam sempre o valor da primeira
+     renderização. */
+  const [espiando, setEspiando] = useState(false);
+  const espiandoRef = useRef(false);
+
+  const marcarEspiada = useCallback((valor: boolean) => {
+    espiandoRef.current = valor;
+    setEspiando(valor);
+  }, []);
 
   useEffect(() => {
     // Listen to custom event instead of hardcoded DOM nodes
@@ -21,7 +31,7 @@ export const Lightbox: React.FC = () => {
       });
       setIsOpen(true);
       document.body.style.overflow = 'hidden';
-      espiando.current = Boolean(customEvent.detail.espiada);
+      marcarEspiada(Boolean(customEvent.detail.espiada));
 
       /* Entrada de histórico descartável. Sem ela o "voltar" do celular não tem
          o que desfazer na página e sai dela — quem abria uma foto na página de
@@ -30,14 +40,14 @@ export const Lightbox: React.FC = () => {
          A espiada fica de fora: ela nasce e morre no mesmo gesto, e empurrar
          uma entrada por foto espiada esbarraria no limite de `pushState` que o
          Safari impõe por janela de tempo. */
-      if (!espiando.current && !history.state?.lightbox) {
+      if (!espiandoRef.current && !history.state?.lightbox) {
         history.pushState({ lightbox: true }, '');
       }
     };
 
     const handleClose = () => {
-      if (!espiando.current) return;
-      espiando.current = false;
+      if (!espiandoRef.current) return;
+      marcarEspiada(false);
       setIsOpen(false);
       document.body.style.overflow = '';
     };
@@ -49,26 +59,26 @@ export const Lightbox: React.FC = () => {
       window.removeEventListener('open-lightbox', handleOpen);
       window.removeEventListener('close-lightbox', handleClose);
     };
-  }, []);
+  }, [marcarEspiada]);
 
   /* Fechar pelo X ou pelo Esc desfaz a entrada empurrada na abertura, em vez de
      fechar direto: todos os caminhos passam pelo `popstate` e o histórico não
      acumula entradas mortas. O `else` cobre a entrada já ter sido consumida. */
   const closeLightbox = useCallback(() => {
-    espiando.current = false;
+    marcarEspiada(false);
     if (history.state?.lightbox) {
       history.back();
     } else {
       setIsOpen(false);
       document.body.style.overflow = '';
     }
-  }, []);
+  }, [marcarEspiada]);
 
   useEffect(() => {
     if (!isOpen) return;
 
     const handlePop = () => {
-      espiando.current = false;
+      marcarEspiada(false);
       setIsOpen(false);
       document.body.style.overflow = '';
     };
@@ -84,15 +94,17 @@ export const Lightbox: React.FC = () => {
       window.removeEventListener('popstate', handlePop);
       window.removeEventListener('keydown', handleKey);
     };
-  }, [isOpen, closeLightbox]);
+  }, [isOpen, closeLightbox, marcarEspiada]);
 
   if (!isOpen) return null;
 
   return (
     <div className="lightbox-modal active" id="lightbox-modal">
-      <button className="lightbox-close" id="lightbox-close" aria-label="Fechar Galeria" onClick={closeLightbox}>
-        <X aria-hidden="true" />
-      </button>
+      {!espiando && (
+        <button className="lightbox-close" id="lightbox-close" aria-label="Fechar Galeria" onClick={closeLightbox}>
+          <X aria-hidden="true" />
+        </button>
+      )}
       <div className="lightbox-content">
         <img src={imgData.src} alt={imgData.title} id="lightbox-img" />
         <div className="lightbox-caption">
