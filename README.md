@@ -63,7 +63,17 @@ O site é construído com Astro para gerar arquivos estáticos super otimizados:
 * **CSS3 Vanilla**: Layout responsivo com Flexbox, CSS Grid e variáveis customizadas.
 * **Lucide Icons & Google Fonts**: Tipografia com as fontes *Syne* e *Inter*.
 
-Para mais detalhes sobre as tecnologias, consulte a [Documentação de Stack](docs/tecnologias/tecnologias.md) e [Arquitetura](docs/arquitetura/arquitetura.md).
+### Documentação
+
+O código diz **o que** acontece; o `docs/` guarda o **porquê**.
+
+| Documento | Sobre |
+|---|---|
+| [Arquitetura](docs/arquitetura/arquitetura.md) | Estrutura, ilhas, pipeline de imagem, SEO |
+| [Gestos da galeria](docs/arquitetura/gestos-da-galeria.md) | Como uma foto é ampliada, e os gestos nativos que isso disputa |
+| [Decisões visuais](docs/design/decisoes-visuais.md) | Hero, cabeçalho, tipografia e tokens de cor |
+| [Stack](docs/tecnologias/tecnologias.md) | Tecnologias e versões |
+| [Fases](docs/fases/tarefas.md) | O que já foi percorrido |
 
 ---
 

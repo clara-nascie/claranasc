@@ -152,9 +152,13 @@ na home é mover um `destaque` de uma foto para outra da mesma categoria.
 ### A home: um carrossel por categoria
 
 Cinco fileiras que rolam na horizontal, cada uma com 3 fotos e um cartão final
-com o link para a página do nicho e o total do acervo ("Ver todas · 68
-trabalhos"). Substituiu uma grade de 30 fotos que media 19.037px no celular; a
-home passou a medir **6.763px**.
+com o link para a página do nicho ("Ver mais Blackwork"). Substituiu uma grade
+de 30 fotos que media 19.037px no celular; a home passou a medir **6.763px**.
+
+O texto do cartão nomeia o nicho de destino em vez de um "Ver todas" genérico:
+o texto de um link é sinal de ranqueamento sobre a página de destino, e cinco
+links idênticos também deixavam quem usa leitor de tela sem como distingui-los
+(WCAG 2.4.4).
 
 Cada fileira carrega rótulo e destino próprios. O filtro obrigava a visitante a
 escolher antes de ver; uma fileira rotulada deixa ver um exemplo de cada e
