@@ -184,6 +184,16 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--text-primary);
+    text-align: center;
+}
+
+/*
+  Os dois `span` sao `block` em vez de um `<br>`: alem de quebrar a linha, o
+  bloco garante o espaco entre "Ver mais" e o nicho no nome acessivel do link,
+  que o `<br>` nao produz -- o leitor de tela anunciaria "ver maiscoberturas".
+*/
+.carrossel-cartao-rotulo > span {
+    display: block;
 }
 
 .carrossel-hint {

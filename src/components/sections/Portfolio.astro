@@ -53,7 +53,10 @@ const fileiras = categorias.map((cat) => ({
             <GaleriaGrid itens={fileira.fotos} layout="carrossel" />
 
             <a class="carrossel-cartao" href={fileira.caminho}>
-              <span class="carrossel-cartao-rotulo">Ver todas</span>
+              <span class="carrossel-cartao-rotulo">
+                <span>Ver mais</span>
+                <span>{fileira.label}</span>
+              </span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="22"
