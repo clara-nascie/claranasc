@@ -3,7 +3,9 @@
 export const SITE = {
   url: 'https://claranasc.com',
   name: 'Clara Nasc',
-  businessName: 'Clara Nasc Tattoo',
+  // Precisa bater exatamente com o nome no Google Business Profile, senão o
+  // Google lê a ficha e o site como dois negócios diferentes.
+  businessName: 'Clara Nasc',
   jobTitle: 'Tatuadora',
   locale: 'pt_BR',
   lang: 'pt-BR',
