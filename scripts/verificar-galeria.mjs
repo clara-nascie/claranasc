@@ -77,12 +77,14 @@ try {
   const cartoes = await page
     .locator('.carrossel-cartao')
     .evaluateAll((as) => as.map((a) => a.getAttribute('href')));
+  // A barra final não é cosmética: sem ela o servidor responde com um redirect
+  // antes de entregar a página, e cada link interno custaria um salto extra.
   const esperados = [
-    '/tatuagem/coberturas',
-    '/tatuagem/botanico',
-    '/tatuagem/geek',
-    '/tatuagem/blackwork',
-    '/tatuagem/fine-line'
+    '/tatuagem/coberturas/',
+    '/tatuagem/botanico/',
+    '/tatuagem/geek/',
+    '/tatuagem/blackwork/',
+    '/tatuagem/fine-line/'
   ];
   checar('cada fileira linka a página do nicho',
          JSON.stringify(cartoes) === JSON.stringify(esperados),
@@ -162,6 +164,55 @@ try {
     .locator('astro-island')
     .evaluateAll((nos) => nos.some((n) => (n.getAttribute('component-url') || '').includes('Portfolio')));
   checar('galeria não hidrata React', !portfolioHidratado);
+
+  /*
+    O "voltar" do celular com a ampliação aberta.
+
+    O lightbox abria e fechava só com estado do React: para o navegador nada
+    acontecia, e o voltar saía da página. Quem ampliava uma foto na página de
+    nicho caía na home, porque foi de lá que veio. A abertura passou a empurrar
+    uma entrada de histórico descartável, e é ela que o voltar consome.
+
+    O percurso começa na home de propósito — é ele que reproduz o defeito.
+    Entrar direto na página de nicho não reproduz: sem página anterior, o
+    voltar não teria para onde ir e o bug ficaria invisível.
+  */
+  await page.goto(BASE_URL, { waitUntil: 'networkidle' });
+  await page.locator('a[href="/tatuagem/blackwork/"]').first().click();
+  await page.waitForURL('**/tatuagem/blackwork/');
+  await page.locator('.lightbox-trigger').first().click({ force: true });
+  await page.waitForTimeout(300);
+  const ampliouNoNicho = await page.locator('#lightbox-modal').isVisible().catch(() => false);
+  checar('lightbox abre na página de nicho', ampliouNoNicho);
+
+  await page.goBack();
+  await page.waitForTimeout(400);
+  const fechouNoVoltar = !(await page.locator('#lightbox-modal').isVisible().catch(() => false));
+  const ficouNoNicho = page.url().includes('/tatuagem/blackwork/');
+  checar('voltar fecha a ampliação e mantém a página', fechouNoVoltar && ficouNoNicho, page.url());
+
+  const rolagemDevolvida = await page.evaluate(() => document.body.style.overflow === '');
+  checar('voltar devolve a rolagem da página', rolagemDevolvida);
+
+  // Esc é o atalho esperado de qualquer modal, e critério da WCAG 2.1.2.
+  await page.locator('.lightbox-trigger').first().click({ force: true });
+  await page.waitForTimeout(300);
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(300);
+  const fechouNoEsc = !(await page.locator('#lightbox-modal').isVisible().catch(() => false));
+  checar('Esc fecha a ampliação', fechouNoEsc);
+
+  /*
+    Fechar pelo X ou pelo Esc precisa consumir a entrada empurrada na abertura.
+    Sem isso, quem abrisse e fechasse cinco fotos precisaria de cinco "voltar"
+    para sair da página.
+  */
+  const semLixoNoHistorico = await page.evaluate(() => !history.state?.lightbox);
+  checar('fechar não deixa entrada morta no histórico', semLixoNoHistorico);
+
+  await page.goBack();
+  await page.waitForTimeout(400);
+  checar('um único voltar sai da página de nicho', !page.url().includes('/tatuagem/'), page.url());
 
   checar('sem erros no console', errosConsole.length === 0, errosConsole.join(' | ') || 'nenhum');
 
