@@ -3,13 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import BreadcrumbSchema from '../components/seo/BreadcrumbSchema.astro';
 import { whatsappUrl, LICENCIAMENTO } from '../data/siteData';
 
-/**
- * A página que a propriedade `license` dos dados estruturados aponta.
- *
- * Ela existe por exigência do Google — sem uma página descrevendo os termos, o
- * selo "Licenciável" no Google Imagens não aparece. Mas serve a dois donos: é
- * também onde quem quiser usar uma foto encontra o caminho de pedir.
- */
+/** Destino da propriedade `license` dos dados estruturados de imagem. */
 
 const trilha = [
   { nome: 'Início', caminho: '/' },

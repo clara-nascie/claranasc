@@ -19,7 +19,7 @@ export interface Nicho {
   h1: string;
   /** A frase única abaixo do título. Até 120 caracteres. */
   chamada: string;
-  /** Escreva a pergunta como a pessoa digita no Google. Resposta de 2 a 4 frases. */
+  /** Pergunta como a pessoa digita no Google; resposta de 2 a 4 frases. */
   faq: PerguntaFrequente[];
   /** Já vem digitada no WhatsApp de quem sai desta página. */
   mensagemWhatsapp: string;
@@ -199,11 +199,9 @@ export function fotosDoNicho(nicho: Nicho): PortfolioItem[] {
 
 /**
  * Caminho da página, para os links internos. Um lugar só monta a URL.
- *
- * A barra final não é enfeite: o build gera `tatuagem/{slug}/index.html`, e
- * sem ela o servidor responde 307 para a versão com barra. Cada link interno
- * pagava esse desvio, e o `BreadcrumbList` declarava uma URL diferente da que
- * o canonical da própria página aponta.
+ * ⚠️ A barra final é obrigatória: sem ela o servidor responde 307 para a
+ * versão com barra, e o `BreadcrumbList` declararia uma URL diferente do
+ * canonical da própria página.
  */
 export function caminhoDoNicho(nicho: Nicho): string {
   return `/tatuagem/${nicho.slug}/`;

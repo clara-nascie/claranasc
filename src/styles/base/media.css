@@ -7,17 +7,9 @@
         gap: 60px;
     }
     
-    /*
-      O `width: 100%` nao e redundante com o `max-width`. `margin: 0 auto` em
-      item de grid CANCELA o `stretch` padrao: o item deixa de ocupar a coluna e
-      passa a se ajustar ao conteudo. Foi o que sumiu com a foto na GitHub #18 --
-      o conteudo era uma div vazia e o contêiner colapsou para os 2px das bordas.
-
-      Hoje o conteudo e um `<img>`, que tem tamanho intrinseco, entao o colapso
-      nao voltaria por esse caminho. O `width` fica como declaracao explicita de
-      intencao: a coluna deve ocupar a largura disponivel ate o teto de 450px,
-      independentemente do que houver dentro dela.
-    */
+    /* ⚠️ O `width: 100%` nao e redundante com o `max-width`: `margin: 0 auto`
+       em item de grid cancela o `stretch` padrao, e sem ele a coluna passa a se
+       ajustar ao conteudo. */
     .about-image-column {
         width: 100%;
         max-width: 450px;

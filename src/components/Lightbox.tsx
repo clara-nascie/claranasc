@@ -1,27 +1,17 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { X } from 'lucide-react';
 
+/** Ampliação de foto. Ver `docs/arquitetura/gestos-da-galeria.md`. */
 export const Lightbox: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [imgData, setImgData] = useState({ src: '', previa: '', title: '', category: '' });
-
-  /* A ampliação sobe com a miniatura que já está na tela e troca pelo arquivo
-     grande quando ele termina de baixar. Sem isso ela abria em preto e a foto
-     só aparecia meio segundo depois, no 4G. */
   const [grandePronta, setGrandePronta] = useState(false);
-
-  /* `active` precisa entrar num quadro DEPOIS da montagem. Aplicada junto, o
-     navegador não tem estado anterior de onde animar e a ampliação aparece de
-     um corte só — era a "piscada". */
   const [ativo, setAtivo] = useState(false);
 
-  /* Espiada é a ampliação que dura o gesto: abre na pressão e fecha ao soltar.
-     Ela some sozinha, então o X não tem função nenhuma ali e fica escondido.
-
-     Vale nos dois lugares porque os dois leem em momentos diferentes: o estado
-     desenha a tela, e o ref é o que os ouvintes registrados uma vez só
-     conseguem consultar — pelo estado, eles leriam sempre o valor da primeira
-     renderização. */
+  /* O ref existe além do estado porque os dois são lidos em momentos
+     diferentes: o estado desenha a tela, e o ref é o que os ouvintes
+     registrados uma vez só conseguem consultar — pelo estado eles leriam para
+     sempre o valor da primeira renderização. */
   const [espiando, setEspiando] = useState(false);
   const espiandoRef = useRef(false);
 
@@ -31,7 +21,6 @@ export const Lightbox: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // Listen to custom event instead of hardcoded DOM nodes
     const handleOpen = (e: Event) => {
       const customEvent = e as CustomEvent;
       setImgData({
@@ -45,19 +34,14 @@ export const Lightbox: React.FC = () => {
       setIsOpen(true);
       marcarEspiada(eEspiada);
 
-      /* A espiada não trava a rolagem por aqui. Mexer em `overflow` com o dedo
-         ainda na tela faz o navegador cancelar o ponteiro, e a foto voltava
-         sozinha antes de a pessoa soltar. Quem segura a rolagem durante o
-         gesto é o `touchmove` da galeria. */
+      /* ⚠️ A espiada não pode mexer em `overflow`: alterar a rolagem com um
+         toque em curso faz o navegador cancelar o ponteiro. Quem segura a
+         rolagem durante o gesto é o `touchmove` da galeria. */
       if (!eEspiada) document.body.style.overflow = 'hidden';
 
-      /* Entrada de histórico descartável. Sem ela o "voltar" do celular não tem
-         o que desfazer na página e sai dela — quem abria uma foto na página de
-         nicho voltava para a home.
-
-         A espiada fica de fora: ela nasce e morre no mesmo gesto, e empurrar
-         uma entrada por foto espiada esbarraria no limite de `pushState` que o
-         Safari impõe por janela de tempo. */
+      /* Entrada descartável para o "voltar" do celular consumir. A espiada fica
+         de fora: uma entrada por foto espiada esbarraria no limite de
+         `pushState` do Safari. */
       if (!espiandoRef.current && !history.state?.lightbox) {
         history.pushState({ lightbox: true }, '');
       }
@@ -79,9 +63,8 @@ export const Lightbox: React.FC = () => {
     };
   }, [marcarEspiada]);
 
-  /* Fechar pelo X ou pelo Esc desfaz a entrada empurrada na abertura, em vez de
-     fechar direto: todos os caminhos passam pelo `popstate` e o histórico não
-     acumula entradas mortas. O `else` cobre a entrada já ter sido consumida. */
+  /* Desfaz a entrada de histórico em vez de fechar direto, para os dois
+     caminhos terminarem no `popstate`. O `else` cobre a entrada já consumida. */
   const closeLightbox = useCallback(() => {
     marcarEspiada(false);
     if (history.state?.lightbox) {
@@ -92,6 +75,8 @@ export const Lightbox: React.FC = () => {
     }
   }, [marcarEspiada]);
 
+  /* ⚠️ `active` só no quadro seguinte à montagem: aplicada junto, não há estado
+     anterior de onde animar e as transições de CSS não rodam. */
   useEffect(() => {
     if (!isOpen) {
       setAtivo(false);
@@ -156,10 +141,6 @@ export const Lightbox: React.FC = () => {
           id="lightbox-img"
         />
         <div className="lightbox-caption">
-          {/* `category` já chega como rótulo pronto (ex: 'Blackwork'), enviado pelo
-              Portfolio via `item.categoryLabel`. O mapeamento que existia aqui
-              comparava contra ids ('blackwork'), nunca casava, e caía sempre no
-              fallback — toda tatuagem ampliada aparecia como "Ornamental". */}
           <span className="lightbox-category" id="lightbox-category">{imgData.category}</span>
           <h3 className="lightbox-title" id="lightbox-title">{imgData.title}</h3>
         </div>

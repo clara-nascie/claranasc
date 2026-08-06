@@ -86,37 +86,29 @@ const TAMANHOS = eCarrossel
 </div>
 
 <script>
-  /* Abaixo disso o gesto é um toque, não uma pressão: sem a espera, encostar
-     numa foto para rolar a página já a abriria. */
+  /* Gestos de ampliação. Ver `docs/arquitetura/gestos-da-galeria.md`. */
+
   const PRESSAO_MS = 250;
-  /* Todo arrasto começa com o dedo em cima de uma foto. Passou daqui, a pessoa
-     está rolando a página ou o carrossel, e a espiada é cancelada. */
   const TOLERANCIA_PX = 10;
 
   function dadosDaFoto(gatilho: HTMLElement) {
     const item = gatilho.closest<HTMLElement>('.portfolio-item');
     return {
       src: gatilho.dataset.src,
-      /* A miniatura já está pintada na tela e não custa nenhuma requisição.
-         Ela é o primeiro quadro da ampliação, que sem isso abre em preto até
-         o arquivo grande chegar — meio segundo de fundo vazio no celular. */
+      // Miniatura já pintada: primeiro quadro da ampliação, sem requisição.
       previa: item?.querySelector('img')?.currentSrc,
       title: gatilho.dataset.title,
       category: gatilho.dataset.category
     };
   }
 
-  /* Começa a baixar a ampliação já no encostar do dedo, e não quando a espiada
-     abre: são 250ms de vantagem, de graça. */
   function adiantarAmpliada(gatilho: HTMLElement) {
     if (!gatilho.dataset.src) return;
     const adiantada = new Image();
     adiantada.src = gatilho.dataset.src;
   }
 
-  /* O estado do gesto é um só na página, não um por galeria: só existe um dedo
-     e uma ampliação de cada vez. A home tem cinco fileiras, e com o estado e os
-     ouvintes dentro do laço eles eram registrados cinco vezes. */
+  // Um dedo e uma ampliação por página: estado e ouvintes ficam fora do laço.
   let temporizador: number | null = null;
   let espiando = false;
   let inicio = { x: 0, y: 0 };
@@ -163,19 +155,14 @@ const TAMANHOS = eCarrossel
     });
   }
 
-  /* `pointerup` vai para o elemento sob o dedo, e com a ampliação aberta esse
-     elemento é o modal, não a galeria. Por isso a soltura é escutada na janela:
-     na grade ela simplesmente não chegaria. */
+  /* ⚠️ A soltura é escutada na janela: com a ampliação aberta o dedo levanta
+     sobre o modal, e na grade o evento não chegaria. */
   window.addEventListener('pointerup', encerrarEspiada);
   window.addEventListener('mouseup', encerrarEspiada);
   window.addEventListener('touchend', encerrarEspiada);
 
-  /* `pointercancel` NÃO fecha a espiada.
-
-     Ele significa "o sistema assumiu esse toque", e o celular dispara isso com
-     o dedo ainda na tela, ao reconhecer a pressão longa — por volta dos 500ms.
-     Tratá-lo como soltura fazia a foto ampliar e voltar sozinha em menos de um
-     segundo. Quem encerra é a soltura de verdade. */
+  /* ⚠️ `pointercancel` não encerra a espiada. Ele significa "o sistema assumiu
+     esse toque", e o celular dispara isso com o dedo ainda na tela. */
   window.addEventListener('pointercancel', cancelarEspera);
 
   window.addEventListener('pointermove', (evento) => {
@@ -185,9 +172,8 @@ const TAMANHOS = eCarrossel
     if (Math.hypot(dx, dy) > TOLERANCIA_PX) cancelarEspera();
   });
 
-  /* Com a espiada aberta a página não deve rolar. Bloquear aqui, e não com
-     `overflow: hidden`, é de propósito: mudar a rolagem no meio de um toque faz
-     o navegador cancelar o ponteiro, que é metade do defeito acima. */
+  /* ⚠️ A rolagem é travada aqui, e não com `overflow`: alterá-la com um toque
+     em curso faz o navegador cancelar o ponteiro. */
   window.addEventListener(
     'touchmove',
     (evento) => {
@@ -196,12 +182,8 @@ const TAMANHOS = eCarrossel
     { passive: false }
   );
 
-  /* Nenhum menu de contexto durante o gesto.
-
-     São dois alvos, e por isso a checagem no documento e não na galeria: antes
-     da espiada abrir o dedo está sobre a miniatura, e depois está sobre a
-     ampliação, que vive fora da galeria. O Chrome no Android oferecia baixar,
-     copiar e pesquisar no Lens em cima da foto ampliada. */
+  /* No documento, e não na galeria: antes de a espiada abrir o dedo está sobre
+     a miniatura, e depois sobre a ampliação, que vive fora da galeria. */
   document.addEventListener(
     'contextmenu',
     (evento) => {

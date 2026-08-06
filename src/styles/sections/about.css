@@ -18,14 +18,8 @@
     width: 100%;
 }
 
-/*
-  Era `.about-image-placeholder`, uma div vazia com `background-image`. Virou
-  `<img>` de verdade na GitHub #18: imagem de fundo não tem tamanho intrínseco,
-  e era isso que deixava o contêiner colapsar para 2px abaixo de 992px.
-
-  `display: block` evita a folga de linha de base que o `<img>` inline deixaria
-  embaixo, o que desalinharia a moldura dourada por alguns pixels.
-*/
+/* `display: block` evita a folga de linha de base do `<img>` inline, que
+   desalinharia a moldura dourada. */
 .about-image-foto {
     display: block;
     width: 100%;
@@ -66,12 +60,8 @@
     font-weight: 300;
 }
 
-/*
- * O reset zera cor e sublinhado de todo `<a>`, então um link dentro do texto
- * corrido precisa se anunciar aqui. O distintivo é o sublinhado, não a cor:
- * a WCAG 1.4.1 proíbe usar cor como único indicador, e herdar
- * `--text-secondary` evita criar mais um contraste no limite.
- */
+/* ⚠️ O distintivo e o sublinhado, nao a cor: a WCAG 1.4.1 proibe cor como
+   unico indicador. O reset zera os dois em todo `<a>`. */
 .about-text a {
     color: inherit;
     font-weight: 500;

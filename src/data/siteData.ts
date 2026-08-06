@@ -14,10 +14,8 @@ export const SITE = {
 
 /**
  * Titularidade das fotos, para os dados estruturados de imagem.
- *
- * O `license` precisa ser uma página que descreva os termos — é requisito do
- * Google para o selo "Licenciável" no Google Imagens, e é o que impede que a
- * declaração fique valendo só dentro do repositório.
+ * ⚠️ `caminho` precisa apontar para uma página que descreva os termos — é
+ * requisito do Google para o selo "Licenciável" no Google Imagens.
  */
 export const LICENCIAMENTO = {
   caminho: '/licenciamento/',

@@ -1,26 +1,7 @@
 ---
 import { LOCATION, enderecoLinha, mapsUrl } from '../../data/siteData';
 
-/**
- * Hero tipográfico sobre fundo desenhado.
- *
- * A vitrine de 3 fotos foi removida em 31/07/2026 (GitHub #19). Ela existia
- * para anunciar leque de estilos, mas na prática mostrava duas categorias
- * repetidas no desktop e uma só no celular — e as miniaturas ficavam pequenas
- * demais para avaliar traço, que é o que a visitante veio ver. As fotos agora
- * vivem só na galeria, onde têm espaço.
- *
- * O crisântemo em line art entrou no lugar, como fundo em CSS
- * (`.hero-section::before`). É decorativo puro: não é `<img>` de propósito,
- * porque não carrega informação e não deve aparecer para leitor de tela nem
- * competir por atenção com o H1.
- *
- * Efeito colateral bom: sem imagem no hero, o elemento LCP passa a ser o texto
- * do H1, que renderiza junto com o HTML. Ajuda a GitHub #12.
- *
- * Sem `<Image>` e sem `client:`, este componente não precisaria mais ser
- * `.astro` — mas continua sendo porque é o padrão das seções do site.
- */
+/** Hero tipográfico sobre fundo desenhado. Ver `docs/design/decisoes-visuais.md`. */
 ---
 
 {/* `data-cta-apos`: o botão flutuante só aparece depois deste bloco. */}
@@ -28,11 +9,8 @@ import { LOCATION, enderecoLinha, mapsUrl } from '../../data/siteData';
   <div class="hero-grid">
     <div class="hero-content">
       <span class="hero-tagline fade-in">Blackwork, Fine Line, Botânico, Geek &amp; Coberturas</span>
-      {/*
-        O H1 carrega o nome e o termo de busca. O nome fica no tamanho grande
-        e "Tatuadora em Belo Horizonte" entra como linha secundária dentro do
-        mesmo H1 — para o Google, o H1 inteiro conta como um só título.
-      */}
+      {/* As duas linhas ficam dentro do mesmo H1: para o Google, ele conta
+          como um título só, com o nome e o termo de busca juntos. */}
       <h1 class="hero-title fade-in-delay-1">
         <span class="hero-title-name">Clara Nasc</span>
         <span class="hero-title-role">Tatuadora em Belo Horizonte</span>
@@ -41,24 +19,12 @@ import { LOCATION, enderecoLinha, mapsUrl } from '../../data/siteData';
         A resposta para a vida, o universo e tudo mais é sempre uma tatuagem nova!
       </p>
 
-      {/*
-        Onde fica o estúdio, acima da dobra — sem precisar rolar até o rodapé
-        ou perguntar no WhatsApp.
+      {/* Na tela aparece só o nome do estúdio; o endereço completo vai no
+          `aria-label`, que é o nome acessível do link.
 
-        Na tela aparece só o nome: o endereço inteiro aqui competia com o
-        subtítulo e poluía o bloco. Ele não se perde, porém — vai no
-        `aria-label`, que é o nome acessível do link. Leitor de tela lê o
-        endereço completo, e o texto continua no DOM para quem rastreia.
-
-        `<address>` de verdade, e não um `<p>`: é o elemento semântico para
-        dados de contato. O navegador o deixa em itálico por padrão, o que o
-        CSS desfaz.
-
-        O endereço sai de `enderecoLinha()` em vez de escrito aqui. O Google
-        cruza o endereço do site com o do Business Profile e o de diretórios;
-        duas grafias do mesmo lugar enfraquecem essa associação, e endereço
-        copiado à mão é como as grafias divergem.
-      */}
+          ⚠️ O endereço sai de `enderecoLinha()`, nunca escrito à mão: o Google
+          cruza o do site com o do Business Profile, e duas grafias do mesmo
+          lugar enfraquecem essa associação. */}
       <address class="hero-endereco fade-in-delay-2">
         <a
           href={mapsUrl()}
@@ -109,21 +75,11 @@ import { LOCATION, enderecoLinha, mapsUrl } from '../../data/siteData';
       </div>
     </div>
 
-    {/*
-      O crisântemo. É elemento de verdade, e não um pseudo-elemento, por um
-      motivo de acessibilidade e não de estilo: no layout empilhado ele precisa
-      entrar no FLUXO, abaixo do texto.
-
-      Posicionado (absoluto ou fixo em relação ao rodapé do hero) ele sempre
-      alcançava o subtítulo em alguma largura — a altura do hero empilhado
-      depende de quantas linhas o texto ocupa, então não existe deslocamento
-      que sirva para todas. Medido: 2,10:1 de contraste entre 600px e 992px,
-      contra os 4,5:1 da WCAG AA. No fluxo, a sobreposição fica impossível por
-      construção, sem número mágico.
-
-      `aria-hidden` porque é decoração: não carrega informação nenhuma que já
-      não esteja no texto ao lado.
-    */}
+    {/* ⚠️ Elemento de verdade, não pseudo-elemento: no layout empilhado o
+        crisântemo precisa entrar no fluxo, abaixo do texto. Posicionado, ele
+        alcançava o subtítulo em alguma largura e derrubava o contraste a
+        2,10:1 — a altura do hero varia com o número de linhas, então nenhum
+        deslocamento serve para todas. */}
     <div class="hero-flor" aria-hidden="true"></div>
   </div>
 </section>

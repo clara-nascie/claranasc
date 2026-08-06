@@ -26,16 +26,9 @@ export const Footer: React.FC = () => {
               <li><a href={LICENCIAMENTO.caminho}>Uso das imagens</a></li>
             </ul>
           </div>
-          {/*
-            Endereço por extenso. O hero mostra só o nome do estúdio, para não
-            poluir o bloco de entrada; aqui é onde ele cabe inteiro.
-
-            Não é só conveniência para quem quer conferir a rua antes de sair
-            de casa: endereço visível na página é sinal de negócio local, e o
-            Google cruza essa grafia com a do Business Profile e a de
-            diretórios. Por isso sai de `LOCATION`, e não escrito à mão — duas
-            grafias do mesmo lugar enfraquecem a associação.
-          */}
+          {/* ⚠️ Sai de `LOCATION`, nunca escrito à mão: o Google cruza esta
+              grafia com a do Business Profile, e duas versões do mesmo
+              endereço enfraquecem a associação. */}
           <div className="footer-studio">
             <h3>Estúdio</h3>
             <address className="footer-endereco">
@@ -49,8 +42,8 @@ export const Footer: React.FC = () => {
           <div className="footer-social">
             <h3>Redes Sociais</h3>
             <div className="social-icons">
-              {/* Só renderiza quando o handle estiver preenchido em siteData.ts — link
-                  para instagram.com/ sem perfil é link quebrado aos olhos do Google. */}
+              {/* Só renderiza com o handle preenchido: link para o domínio da
+                  rede sem perfil conta como link quebrado. */}
               {SOCIAL.instagram && (
                 <a href={SOCIAL.instagram} target="_blank" rel="noreferrer" aria-label="Perfil de Clara Nasc no Instagram" className="social-link">
                   <InstagramIcon size={22} />

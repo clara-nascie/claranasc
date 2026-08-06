@@ -6,17 +6,8 @@ interface InstagramIconProps {
 }
 
 /**
- * Ícone da marca Instagram.
- *
- * Não vem do `lucide-react`: o Lucide removeu ícones de marca do pacote por
- * questões de trademark, e não há substituto equivalente. O path abaixo foi
- * extraído do projeto Simple Icons (https://simpleicons.org), cujos SVGs são
- * CC0. As marcas seguem pertencendo aos respectivos donos — o uso aqui é para
- * linkar o próprio perfil, que é o caso de uso previsto.
- *
- * Diferença visual a considerar: ícones do Lucide são traçado (`stroke`) e este
- * é preenchido (`fill`), então ele parece um pouco mais "cheio" ao lado dos
- * demais. É o custo normal de usar um glifo de marca reconhecível.
+ * Ícone da marca Instagram. Path do Simple Icons (CC0), não do `lucide-react`.
+ * Ver `docs/design/decisoes-visuais.md`.
  */
 export const InstagramIcon: React.FC<InstagramIconProps> = ({ size = 24, className }) => (
   <svg

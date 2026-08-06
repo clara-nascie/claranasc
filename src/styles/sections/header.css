@@ -1,10 +1,7 @@
 /* ==========================================================================
    HEADER NAVIGATION
    ========================================================================== */
-/*
- * `absolute`, e não `fixed`: o cabeçalho rola junto e sai da tela. Quem assume
- * a navegação a partir daí é o botão flutuante (`FloatingCta`).
- */
+/* `absolute`, nao `fixed`: ver docs/design/decisoes-visuais.md. */
 .main-header {
     position: absolute;
     top: 0;
@@ -70,26 +67,12 @@
     color: var(--text-primary);
 }
 
-/*
-  Fundo solido nos dois links de navegacao. Nao e so estetica: o cabecalho
-  flutua sobre o hero e o crisantemo passa atras deles em forca quase cheia --
-  o topo direito e justamente onde a mascara nao apaga nada. Sem fundo, o
-  traco atravessava os rotulos.
+/* ⚠️ O fundo solido recorta o crisantemo, que passaria por tras dos rotulos.
+   A cor e `--bg-hero-top` porque e literalmente a que esta atras do botao --
+   isto acopla o cabecalho ao fundo da secao sob ele.
 
-  A cor e o `--bg-hero-top`, e nao um cinza qualquer: o degrade do hero comeca
-  nela, entao na altura do cabecalho essa e literalmente a cor que esta atras
-  do botao. O retangulo desaparece no fundo em vez de se anunciar como caixa,
-  e ainda assim recorta a flor.
-
-  ⚠️ Isto acopla o cabecalho ao hero. Vale enquanto o header for absoluto
-  sobre o hero (so ha uma pagina). Se ele passar a flutuar sobre outra secao
-  -- as paginas por nicho da #11 --, esta cor deixa de casar com o fundo.
-
-  O `:not(.btn-header-cta)` e necessario: "Agendar Sessao" carrega `.nav-link`
-  E `.btn-header-cta` no markup. Sem ele, o CTA so escaparia deste fundo por
-  chegar depois no arquivo -- ou seja, a aparencia dependeria da ordem das
-  regras, e reordenar o CSS quebraria o botao sem aviso.
-*/
+   ⚠️ O `:not(.btn-header-cta)` e necessario: sem ele o CTA so escaparia deste
+   fundo por chegar depois no arquivo, e reordenar o CSS o quebraria. */
 .nav-link:not(.btn-header-cta) {
     background-color: var(--bg-hero-top);
     padding: 8px 18px;

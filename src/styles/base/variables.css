@@ -11,12 +11,9 @@
     --accent-gold-rgb: 166, 107, 63; 
     
     --text-primary: hsl(20, 15%, 15%); /* Cafe (Quase preto) */
-    /* Escurecido de 40% para 36% e depois para 32%, ambos em 31/07/2026.
-       A 40% dava 4,71:1 sobre o --bg-primary: passava na WCAG AA por 0,2 de
-       margem, ou seja, margem nenhuma. O fundo mais escuro do hero derrubou
-       para 4,33:1; 36% recuperou; e o crisantemo a 0.85 derrubou de novo, para
-       4,15:1. A 32% o pior caso do hero volta a ~4,9:1.
-       E o token que paga o custo do desenho de fundo -- ver hero.css. */
+    /* ⚠️ Acoplado a mascara do crisantemo no hero: clarear este token sem
+       baixar a mascara reprova o contraste do subtitulo.
+       Ver docs/design/decisoes-visuais.md. */
     --text-secondary: hsl(20, 10%, 32%); /* Marrom Medio */
     --text-muted: hsl(20, 10%, 60%);
     --border-color: hsl(40, 20%, 85%);

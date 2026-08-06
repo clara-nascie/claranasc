@@ -52,7 +52,7 @@ const ALVOS = [
 const FALHAS_ACEITAS = [
   {
     padrao: /\.hero-tagline|#nav-link-contato/,
-    motivo: 'Clara decidiu em 31/07/2026 nao mexer no --accent-gold. Dourado sobre fundo claro nao alcanca 4,5:1; e a mesma raiz do botao primario na GitHub #8.'
+    motivo: 'Falha aceita: dourado sobre fundo claro nao alcanca 4,5:1 (GitHub #8).'
   }
 ];
 

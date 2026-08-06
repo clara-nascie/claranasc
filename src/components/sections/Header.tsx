@@ -31,7 +31,6 @@ export const Header: React.FC = () => {
         </div>
       </header>
 
-      {/* Mobile Menu Overlay */}
       <div className={`mobile-overlay ${isMobileMenuOpen ? 'active' : ''}`} id="mobile-overlay" style={{ display: isMobileMenuOpen ? 'flex' : 'none' }}>
         <button className="mobile-menu-close" id="mobile-menu-close" aria-label="Fechar Menu" onClick={closeMenu}>
           <X aria-hidden="true" />

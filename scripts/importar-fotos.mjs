@@ -36,10 +36,9 @@
  *   <categoria> de tatuagem com <assunto> em <técnica> no <região>, sobre o
  *   <sub-região>
  *
- * **Cite a região geral E a específica.** Regra da Clara (04/08/2026): ela
- * diferencia bíceps de tríceps, mas quem busca digita "tatuagem braço" — e
- * descobre que quer no bíceps ao ver um exemplo. "no braço, sobre o bíceps"
- * atende as duas buscas; só "bíceps" perde a maior das duas.
+ * **Cite a região geral E a específica.** Quem busca digita "tatuagem braço",
+ * mas escolhe o bíceps ao ver um exemplo. "no braço, sobre o bíceps" atende as
+ * duas buscas; só "bíceps" perde a maior das duas.
  *
  * Onde não der para afirmar a sub-região olhando a foto, fique no termo geral.
  * `alt` errado é pior que `alt` genérico.
@@ -49,13 +48,9 @@
  *
  * ## O que NÃO descartar
  *
- * Regra da Clara (04/08/2026), depois de eu ter cortado fotos demais:
- *
  * - **Ângulo diferente da mesma tatuagem entra.** Uma peça que dá a volta no
- *   braço não cabe em uma foto só, e cada ângulo mostra uma parte que a outra
- *   não mostra. Descartar como "repetida" apaga metade do trabalho.
- * - **Marca d'água do @tattookapala não é impedimento.** É o estúdio antigo, e
- *   ela considera irrelevante.
+ *   braço não cabe em uma foto só, e cada ângulo mostra o que o outro esconde.
+ * - **Marca d'água do estúdio antigo não é impedimento.**
  *
  * O que sobra para descartar: arquivo ilegível e duplicata exata — que é o que
  * o `inventario-fotos.mjs` já detecta sozinho.

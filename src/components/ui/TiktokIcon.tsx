@@ -6,17 +6,8 @@ interface TiktokIconProps {
 }
 
 /**
- * Ícone da marca TikTok.
- *
- * Mesma origem e mesma razão do `InstagramIcon`: o `lucide-react` removeu
- * ícones de marca do pacote por questões de trademark, então o path vem do
- * Simple Icons (https://simpleicons.org), cujos SVGs são CC0. As marcas seguem
- * pertencendo aos respectivos donos — o uso aqui é para linkar o próprio
- * perfil, que é o caso de uso previsto.
- *
- * É preenchido (`fill`) e não traçado (`stroke`) como os ícones do Lucide,
- * então parece um pouco mais "cheio" ao lado deles. É o custo normal de usar
- * um glifo de marca reconhecível.
+ * Ícone da marca TikTok. Path do Simple Icons (CC0), não do `lucide-react`.
+ * Ver `docs/design/decisoes-visuais.md`.
  */
 export const TiktokIcon: React.FC<TiktokIconProps> = ({ size = 24, className }) => (
   <svg

@@ -49,28 +49,14 @@
     max-width: 720px;
 }
 
-/*
-  Dois passos acima da chamada (1,2rem) numa escala de 1,25: 1,5 -> 1,875.
-  Continua sendo o maior texto da pagina sem destoar do resto -- a 2,9rem ele
-  competia com o proprio conteudo.
-
-  `clamp` em vez de media query: o titulo mais longo tem 42 caracteres e
-  precisa encolher de forma continua, nao em degraus.
-*/
+/* Escala tipografica e medidas: docs/design/decisoes-visuais.md. */
 .nicho-titulo {
     font-size: clamp(1.5rem, 3.2vw, 1.875rem);
     text-transform: uppercase;
     margin-bottom: 15px;
 }
 
-/*
-  Tambem fluida, e nao fixa em 1,2rem, para a distancia ate o titulo se manter.
-  Com a chamada travada, o titulo encolhia no celular e ela nao: a razao caia
-  de 1,56x para 1,25x e os dois passavam a ter quase o mesmo peso.
-
-  `ch` e nao pixel no `max-width`: a medida de linha acompanha o tamanho da
-  fonte em vez de ser um numero fixo.
-*/
+/* Fluida junto com o titulo: travada, a razao entre os dois caia no celular. */
 .nicho-chamada {
     font-size: clamp(1rem, 1.6vw, 1.2rem);
     line-height: 1.7;
@@ -253,42 +239,3 @@
     color: var(--text-primary);
 }
 
-/* ==========================================================================
-   LINKS PARA OS NICHOS A PARTIR DA HOME (abaixo da grade)
-   ========================================================================== */
-.portfolio-nichos {
-    margin-top: 50px;
-    text-align: center;
-}
-
-.portfolio-nichos h3 {
-    font-size: 0.8rem;
-    font-family: 'Syne', sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    color: var(--accent-gold);
-    margin-bottom: 18px;
-}
-
-.portfolio-nichos ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    justify-content: center;
-    list-style: none;
-}
-
-.portfolio-nichos a {
-    display: inline-block;
-    padding: 10px 22px;
-    font-size: 0.85rem;
-    border: 1px solid var(--border-color);
-    border-radius: 30px;
-    background-color: var(--bg-primary);
-    color: var(--text-secondary);
-}
-
-.portfolio-nichos a:hover {
-    border-color: var(--accent-gold);
-    color: var(--text-primary);
-}

@@ -2,14 +2,7 @@
    HERO SECTION — tipografia sobre fundo desenhado
    ========================================================================== */
 
-/*
-  85vh em vez de 100vh de propósito.
-  Um hero de viewport inteira cria a "ilusão de completude" (NN/g): a tela parece
-  um conteúdo fechado e a visitante não imagina que existe mais abaixo. Com 85vh,
-  o topo da galeria aparece sem rolar, o que é o sinal visual mais eficaz para
-  convidar ao scroll.
-  `min-height` impede que o hero fique apertado em telas baixas.
-*/
+/* Ver `docs/design/decisoes-visuais.md` para o porquê de 85vh e do degradê. */
 .hero-section {
     height: 85vh;
     min-height: 620px;
@@ -17,46 +10,22 @@
     position: relative;
     display: flex;
     align-items: center;
-    /* Degrade em vez de cor chapada: o --bg-primary sozinho lia como branco.
-       Comeca no --bg-hero-top e termina no --bg-secondary, a cor da galeria,
-       para as duas secoes se encontrarem sem linha de emenda.
-
-       O background-color fica embaixo mesmo sendo 100% coberto pelo degrade:
-       e o fallback se o gradiente nao renderizar, e e o que o
-       verificar-visual.mjs le ao medir contraste (ele procura o primeiro
-       ancestral com background-color opaco). Sem ele, a medicao cairia no
-       body e usaria um creme mais claro que o real. Usa o tom mais escuro do
-       degrade de proposito: mede o pior caso para o texto escuro. */
+    /* ⚠️ O `background-color` continua aqui mesmo coberto pelo degradê: é o
+       fallback, e é o que o `verificar-visual.mjs` lê ao medir contraste. */
     background-color: var(--bg-hero-top);
     background-image: linear-gradient(to bottom, var(--bg-hero-top) 0%, var(--bg-secondary) 100%);
     padding-top: var(--header-height);
     overflow: hidden;
 }
 
-/* --- Camadas de fundo ------------------------------------------------------
-
-   Tres camadas, de baixo para cima:
-     .hero-flor              z-index 0  — o crisantemo
-     .hero-section::after    z-index 1  — o grao
-     .hero-content           z-index 2  — o texto
-
-   O grao vem por cima da flor de proposito: assim as duas leem como uma
-   superficie so, em vez de um desenho colado sobre um fundo texturizado.
-   ---------------------------------------------------------------------- */
+/* --- Camadas de fundo: flor (0), grao (1), texto (2) -------------------- */
 
 /*
-  Crisantemo em line art, imagem de fundo de um elemento vazio e `aria-hidden`.
+  ⚠️ O `absolute` resolve contra `.hero-section` porque `.hero-grid` nao e
+  posicionado. Posicionar o `.hero-grid` faz a flor encolher para dentro dele.
 
-  O arquivo teve o viewBox apertado ate a bbox real do desenho (ver
-  public/assets/hero-crisantemo.svg). Isso importa: no original, 31,8% da
-  altura era margem vazia embaixo e 18,5% em cima, entao qualquer
-  posicionamento aqui centralizaria a caixa e nao a flor. Com o viewBox
-  apertado, `right`/`top` valem para o desenho de verdade.
-
-  Ele mora dentro de `.hero-grid`, mas `.hero-grid` NAO e `position: relative`
-  de proposito: assim o `absolute` aqui resolve contra `.hero-section` e a flor
-  sangra para fora do container, contra a borda da tela. Se alguem posicionar
-  o `.hero-grid`, a flor encolhe para dentro dele sem aviso.
+  ⚠️ O viewBox do SVG esta apertado na bbox do desenho: `right`/`top` valem
+  para a flor, nao para uma caixa com margem vazia.
 */
 .hero-flor {
     position: absolute;
@@ -74,56 +43,18 @@
     opacity: 0.85;
     pointer-events: none;
 
-    /*
-      A flor e larga o bastante para passar por tras do texto -- e e para
-      passar mesmo, foi pedido. Mas o subtitulo usa `--text-secondary`, que
-      sobre o creme tem folga para escurecer o fundo em no maximo ~7% de tinta
-      antes de furar os 4,5:1 da WCAG AA. A flor esta a 55%: um traco cheio
-      atras do subtitulo mediria perto de 2:1.
-
-      Dai a mascara. Ela nao move nem encolhe a flor: reduz o desenho a um
-      fantasma na faixa da esquerda, onde o texto esta, e o devolve inteiro a
-      direita. E o que permite ter as duas coisas -- sobreposicao e contraste.
-
-      Sao muitos pontos de parada de proposito. Com apenas tres, a mascara ia
-      do piso a 100% em 26% da largura e a rampa aparecia como uma linha
-      divisoria no meio do desenho. Os pontos intermediarios espalham a
-      transicao por quase toda a flor e desenham uma curva no lugar de uma
-      reta -- a aceleracao e gradual, entao nao ha nenhum ponto onde o olho
-      encontre uma borda. Ao mudar o piso, reescalone os sete valores em vez de
-      so levantar o primeiro, senao a curva perde o formato e o cotovelo volta.
-
-      Uma versao anterior zerava a mascara a esquerda (`transparent 8%`). Ficou
-      conservadora demais: a flor so comecava a aparecer bem depois do fim do
-      texto e a sobreposicao pedida nao acontecia.
-
-      CONTRASTE -- o que chega ao texto e `opacity x piso da mascara`. Hoje
-      0.85 x 0.13 da ~11% de tinta efetiva sob o texto. Isso e MAIS do que o
-      `--text-secondary` original suportava: foi preciso escurecer o token para
-      32% para o subtitulo voltar a passar. Os dois andam juntos -- clarear o
-      token de novo sem baixar isto aqui reprova o hero.
-
-      Verifique com `node scripts/verificar-contraste-fundo.mjs` (o
-      verificar-visual.mjs NAO enxerga esta flor: ele mede contraste procurando
-      `background-color` nos ancestrais, e aqui o fundo e `background-image`
-      num elemento a parte).
-    */
+    /* ⚠️ Desbota a flor sob o texto. O que chega ao texto e `opacity x piso
+       da mascara`, e isso esta acoplado ao `--text-secondary`: clarear o token
+       sem baixar a mascara reprova o hero. Ao mudar o piso, reescalone os sete
+       valores -- so levantar o primeiro traz de volta o cotovelo visivel.
+       Confira com `node scripts/verificar-contraste-fundo.mjs`. */
     -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0.13) 0%, rgba(0, 0, 0, 0.15) 20%, rgba(0, 0, 0, 0.22) 36%, rgba(0, 0, 0, 0.36) 50%, rgba(0, 0, 0, 0.58) 64%, rgba(0, 0, 0, 0.81) 80%, #000 94%);
     mask-image: linear-gradient(to right, rgba(0, 0, 0, 0.13) 0%, rgba(0, 0, 0, 0.15) 20%, rgba(0, 0, 0, 0.22) 36%, rgba(0, 0, 0, 0.36) 50%, rgba(0, 0, 0, 0.58) 64%, rgba(0, 0, 0, 0.81) 80%, #000 94%);
 }
 
-/*
-  Textura de grao. E um SVG de ruido embutido como data URI, nao um arquivo:
-  sao ~350 bytes dentro do proprio CSS, entao nao custa nenhuma requisicao a
-  mais nem entra na disputa pelo LCP. `fractalNoise` gera o grao e o
-  `feColorMatrix saturate=0` o deixa cinza, para o ruido nao puxar cor e sujar
-  o creme.
-
-  A opacidade foi medida, nao chutada: 0.05 e 0.10 sao imperceptiveis mesmo
-  ampliando 3x, e 0.24 ja puxa o creme para um cinza sujo. 0.16 e o ponto em
-  que se le como papel. Se mexer, compare capturas ampliadas -- em tamanho
-  real qualquer valor entre 0.05 e 0.24 parece igual.
-*/
+/* Textura de grao: SVG de ruido embutido como data URI, ~350 bytes, sem
+   requisicao a mais. Ao mexer na opacidade, compare capturas ampliadas -- em
+   tamanho real qualquer valor entre 0.05 e 0.24 parece igual. */
 .hero-section::after {
     content: '';
     position: absolute;
@@ -142,15 +73,8 @@
 
 /* --- Coluna de texto ------------------------------------------------------ */
 
-/*
-  Largura limitada mesmo sem a segunda coluna: sem as fotos, nada mais segura o
-  texto, e uma linha de 1200px seria ilegivel.
-
-  O `52%` nao e estetico, e de contraste: garante que o texto nunca alcance a
-  flor. So o `620px` nao bastava -- entre 992px e 1200px de viewport a caixa
-  fixa era larga demais para o container e o subtitulo entrava por cima do
-  traco. Ver a nota de largura em `.hero-section::before`.
-*/
+/* ⚠️ O `52%` e de contraste, nao de estetica: garante que o texto nunca
+   alcance a flor. So o `620px` nao bastava entre 992px e 1200px. */
 .hero-content {
     position: relative;
     z-index: 2;
@@ -204,16 +128,9 @@
     line-height: 1.6;
 }
 
-/*
-  Endereço do estúdio, acima da dobra.
-
-  `font-style: normal` desfaz o itálico que o navegador aplica por padrão ao
-  `<address>`. O elemento foi escolhido por semântica, não por aparência.
-
-  Usa `--text-secondary`, o mesmo token do subtítulo, que é o mais claro que
-  sobrevive ao fundo do hero. `--text-muted` reprovaria: sobre o creme ele nem
-  chega perto dos 4,5:1.
-*/
+/* `font-style: normal` desfaz o itálico que o navegador dá ao `<address>`.
+   ⚠️ `--text-secondary` é o token mais claro que sobrevive ao fundo do hero;
+   `--text-muted` reprovaria na WCAG AA. */
 .hero-endereco {
     font-style: normal;
     margin: 0 0 32px 0;
@@ -221,12 +138,8 @@
     line-height: 1.5;
 }
 
-/*
-  Sublinhado presente em repouso, e nao so no hover. Sobrou so o nome do
-  estudio aqui, sem o endereco: sem nenhuma marca, "Iuna Tattoo" leria como
-  texto comum e ninguem descobriria que leva ao mapa. O alfinete sugere lugar,
-  nao clique.
-*/
+/* Sublinhado em repouso, nao so no hover: sem marca nenhuma, o nome do
+   estudio leria como texto comum e ninguem descobriria que leva ao mapa. */
 .hero-endereco a {
     display: inline-flex;
     align-items: baseline;
@@ -281,35 +194,15 @@
         justify-content: center;
     }
 
-    /*
-      Empilhado nao ha "ao lado", entao a flor sai do posicionamento absoluto e
-      entra no FLUXO, depois do texto. E o que torna a sobreposicao impossivel
-      por construcao: nenhuma altura de hero, nenhum numero de linhas do
-      subtitulo e nenhuma largura de tela conseguem faze-la subir.
-
-      A tentativa anterior era manter absoluto e empurrar para o rodape com um
-      deslocamento fixo. Media 2,10:1 de contraste entre 600px e 992px --
-      naquelas larguras o texto ocupa menos linhas, o hero encolhe e a flor
-      alcancava o subtitulo. Nao havia deslocamento que servisse para todas as
-      larguras.
-
-      A opacidade nao e sobrescrita aqui: herda os 0.85 do desktop. Como no
-      empilhado nao ha texto sobre a flor nem mascara, 0.85 e a forca cheia do
-      desenho -- que e o mesmo que o desktop mostra no lado direito, onde
-      tambem nao ha texto. Os dois passam a ler igual.
-
-      A margem negativa deixa o `overflow: hidden` do hero cortar a base da
-      flor, para ela florescer para dentro da galeria em vez de terminar numa
-      borda reta.
-    */
+    /* ⚠️ Empilhado, a flor sai do absoluto e entra no FLUXO, depois do texto.
+       E o que torna a sobreposicao impossivel por construcao -- com absoluto,
+       nenhum deslocamento servia para todas as larguras. */
     .hero-flor {
         position: static;
         width: min(80vw, 420px);
         margin: 44px auto -90px;
         transform: none;
-        /* Sem mascara aqui: ela existe para desbotar a flor sob o texto, e no
-           empilhado a flor nao fica sob texto nenhum. Mantida, so deixaria um
-           lado apagado sem motivo. */
+        /* Sem mascara: no empilhado a flor nao fica sob texto nenhum. */
         -webkit-mask-image: none;
         mask-image: none;
     }

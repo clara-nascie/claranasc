@@ -41,15 +41,9 @@
     gap: 30px;
 }
 
-/*
-  Pressionar a foto abre a espiada, e o celular tem dois gestos nativos para a
-  mesma pressão: o menu de salvar imagem e a seleção de texto. Os dois roubam o
-  gesto antes de ele virar espiada -- a seleção é pior, porque prende o menu de
-  copiar na tela e a foto não fecha mais ao soltar.
-
-  Vale no item inteiro, não só na imagem: o titulo e a categoria do overlay
-  ficam invisíveis no celular, mas texto invisível continua selecionável.
-*/
+/* ⚠️ Vale no item inteiro, nao so na imagem: o texto do overlay fica invisivel
+   no celular, mas texto invisivel continua selecionavel e rouba a pressao que
+   abriria a espiada. Ver docs/arquitetura/gestos-da-galeria.md. */
 .portfolio-item {
     -webkit-touch-callout: none;
     user-select: none;
@@ -69,14 +63,8 @@
 /* ==========================================================================
    VARIANTE CARROSSEL (home)
    ==========================================================================
-   Uma fileira por categoria: 3 fotos em destaque e um cartao com o link para
-   a pagina do nicho. Substituiu a grade de 30 fotos, que media 19.000px de
-   altura no celular.
-
-   ⚠️ Nao e um widget de carrossel. Nao avanca sozinho, nao tem bolinhas e
-   nada fica escondido -- e um conteiner que rola com `scroll-snap`. Widget com
-   autoplay precisa reimplementar teclado, leitor de tela e busca dentro dele, e
-   e onde a acessibilidade costuma quebrar. Aqui os tres funcionam de graca.
+   ⚠️ Nao e um widget de carrossel: e um conteiner que rola com `scroll-snap`.
+   Motivos e alternativas descartadas: docs/arquitetura/arquitetura.md.
    ========================================================================== */
 .carrossel {
     margin-bottom: 48px;
@@ -94,13 +82,7 @@
     color: var(--text-primary);
 }
 
-/*
-  O trilho e a area que rola. `overflow-x: auto` no celular, e no desktop as 4
-  vagas cabem na largura do container -- entao nao ha rolagem nenhuma.
-
-  A barra de rolagem foi escondida (scrollbar-width: none) para criar uma
-  experiência de "swipe" parecida com redes sociais.
-*/
+/* A area que rola. No desktop as 4 vagas cabem e nao ha rolagem nenhuma. */
 .carrossel-trilho {
     display: flex;
     gap: 20px;
@@ -144,16 +126,9 @@
     display: contents;
 }
 
-/*
-  `flex: 0 0 <largura>` em vez de `width`: item de flex encolhe por padrao para
-  caber, e encolhendo nao ha o que rolar -- as 3 fotos ficariam espremidas.
-
-  A largura e `calc`, nao um pixel fixo: as 4 vagas precisam caber exatamente na
-  largura do trilho, seja ela qual for. Com 285px fixos (a conta feita sobre os
-  1200px do `--container-max-width`) o cartao ficava cortado numa tela de
-  1280px, onde o container mede 1152px -- o `.container` e 90% da largura, e so
-  chega no teto acima de ~1333px.
-*/
+/* ⚠️ `flex: 0 0` e nao `width`: item de flex encolhe para caber, e encolhendo
+   nao ha o que rolar. A largura e `calc` e nao pixel fixo -- o `.container` e
+   90% da tela e so chega no teto acima de ~1333px. */
 .portfolio-grid--carrossel .portfolio-item {
     flex: 1 0 calc((100% - 60px) / 4);
     scroll-snap-align: start;
@@ -198,11 +173,8 @@
     text-align: center;
 }
 
-/*
-  Os dois `span` sao `block` em vez de um `<br>`: alem de quebrar a linha, o
-  bloco garante o espaco entre "Ver mais" e o nicho no nome acessivel do link,
-  que o `<br>` nao produz -- o leitor de tela anunciaria "ver maiscoberturas".
-*/
+/* ⚠️ `block` e nao `<br>`: o bloco garante o espaco entre "Ver mais" e o
+   nicho no nome acessivel do link, que o `<br>` nao produz. */
 .carrossel-cartao-rotulo > span {
     display: block;
 }
@@ -277,10 +249,6 @@
     height: auto;
     object-fit: initial;
 }
-
-/* Sem legenda embaixo da foto: decisao da Clara em 04/08/2026 -- "so as fotos
-   fica melhor". O titulo e a categoria seguem no overlay de hover, igual a
-   grade da home. */
 
 .portfolio-img-wrapper {
     position: relative;

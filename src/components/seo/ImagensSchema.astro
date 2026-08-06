@@ -5,14 +5,12 @@ import type { PortfolioItem } from '../../data/portfolioData';
 /**
  * Declara ao Google quem é o dono de cada foto.
  *
- * O sitemap de imagens não serve para isso: as tags `<image:license>`,
- * `<image:title>` e `<image:caption>` foram descontinuadas pelo Google em 2022,
- * e hoje só `<image:loc>` é lida. Titularidade só chega por dados estruturados
- * (ou por metadado IPTC dentro do arquivo, que exigiria reprocessar as 176).
+ * ⚠️ Titularidade não cabe no sitemap de imagens: `<image:license>`,
+ * `<image:title>` e `<image:caption>` foram descontinuadas em 2022, e hoje só
+ * `<image:loc>` é lida. Só chega por dados estruturados.
  *
- * O `creator` aponta para o nó da Clara por `@id` em vez de repetir nome, foto
- * e redes em cada uma das fotos. Um `@id` que já existe no `LocalBusinessSchema`
- * da mesma página é a forma de dizer "é esta pessoa" sem duplicar o cadastro.
+ * O `creator` referencia o nó da Clara por `@id`, já declarado no
+ * `LocalBusinessSchema` da mesma página, em vez de repetir o cadastro por foto.
  */
 
 interface Props {

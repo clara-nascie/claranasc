@@ -41,11 +41,8 @@ const LIMITE_IGUAL = 6;
 const EXTENSOES = new Set(['.jpg', '.jpeg', '.png', '.webp']);
 
 /**
- * `failOn: 'none'` aceita JPEG truncado em vez de recusar o arquivo.
- *
- * Recupera 2 fotos que o padrão rejeitava. As outras 4 do acervo estão
- * corrompidas de verdade ("bad seek") e continuam ilegíveis — são as mesmas já
- * descartadas por decisão da Clara; não tente recuperá-las de novo.
+ * `failOn: 'none'` aceita JPEG truncado em vez de recusar o arquivo — recupera
+ * fotos que o padrão rejeitava. Arquivos com "bad seek" continuam ilegíveis.
  */
 async function impressao(arquivo) {
   const dados = await sharp(await readFile(arquivo), { failOn: 'none' })

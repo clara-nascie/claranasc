@@ -128,18 +128,9 @@ try {
     await checarVisibilidade(cta, true, `[${rotulo}] botão flutuante visível no portfólio`);
     await page.screenshot({ path: `${OUT_DIR}/${rotulo}-2-portfolio.png` });
 
-    /*
-      --- 3. A foto da artista precisa ter tamanho de verdade ---
-
-      Existir no DOM não é aparecer. A GitHub #18 viveu em produção com este
-      contêiner colapsado para 2x3 pixels em toda tela até 992px: o elemento
-      estava lá, o CSS estava lá, e a foto simplesmente não tinha tamanho.
-      Nenhuma checagem daqui olhava esta seção.
-
-      Mede a caixa renderizada em vez de conferir se o seletor existe. O limite
-      de 50px é folgado de propósito — não é sobre enquadramento, é sobre
-      distinguir "foto" de "resíduo de borda".
-    */
+    /* ⚠️ Mede a caixa renderizada, não a existência do seletor: existir no
+       DOM não é aparecer, e este contêiner já viveu colapsado em 2x3px. O
+       limite de 50px distingue "foto" de "resíduo de borda". */
     await page.locator('#sobre').scrollIntoViewIfNeeded();
     await page.waitForTimeout(600);
     const foto = await page.locator('.about-image-foto').boundingBox();

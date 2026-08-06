@@ -22,13 +22,9 @@ async function aguardarServidor(url, tentativas = 40) {
   throw new Error(`Servidor não respondeu em ${url}. Rode \`npm run preview\` (ou \`npm run dev\`).`);
 }
 
-/*
-  O clique na lupa só vale depois que a ilha do Lightbox hidrata: antes disso o
-  evento é disparado e não há ninguém escutando, e ele some sem deixar rastro.
-  No localhost a hidratação é instantânea e um `waitForTimeout` disfarçava; em
-  produção, com rede real, o clique caía na janela entre as duas coisas e o
-  teste acusava um defeito que não existia.
-*/
+/* ⚠️ O clique só vale depois que a ilha hidrata: antes disso o evento é
+   disparado sem ninguém escutando. No localhost a hidratação é instantânea e
+   um `waitForTimeout` disfarçava; contra produção, não. */
 async function aguardarLightboxHidratado(page) {
   await page.waitForFunction(
     () => {
@@ -169,8 +165,6 @@ try {
     checar('lightbox recebe a variante ampliada', peloPipeline, src);
 
     const categoria = (await page.locator('#lightbox-category').textContent())?.trim();
-    // 'Ornamental' era o fallback de um mapeamento que nunca casava e fazia
-    // toda tatuagem ampliada aparecer com a mesma categoria.
     checar('categoria não caiu em fallback',
            categoria && categoria.length > 0 && categoria !== 'Ornamental',
            `categoria="${categoria}"`);
@@ -195,18 +189,9 @@ try {
     .evaluateAll((nos) => nos.some((n) => (n.getAttribute('component-url') || '').includes('Portfolio')));
   checar('galeria não hidrata React', !portfolioHidratado);
 
-  /*
-    O "voltar" do celular com a ampliação aberta.
-
-    O lightbox abria e fechava só com estado do React: para o navegador nada
-    acontecia, e o voltar saía da página. Quem ampliava uma foto na página de
-    nicho caía na home, porque foi de lá que veio. A abertura passou a empurrar
-    uma entrada de histórico descartável, e é ela que o voltar consome.
-
-    O percurso começa na home de propósito — é ele que reproduz o defeito.
-    Entrar direto na página de nicho não reproduz: sem página anterior, o
-    voltar não teria para onde ir e o bug ficaria invisível.
-  */
+  /* O "voltar" com a ampliação aberta deve fechá-la sem sair da página.
+     ⚠️ O percurso começa na home de propósito: entrando direto na página de
+     nicho o voltar não teria para onde ir e o defeito ficaria invisível. */
   await page.goto(BASE_URL, { waitUntil: 'networkidle' });
   await page.locator('a[href="/tatuagem/blackwork/"]').first().click();
   await page.waitForURL('**/tatuagem/blackwork/');
@@ -233,11 +218,8 @@ try {
   const fechouNoEsc = !(await page.locator('#lightbox-modal').isVisible().catch(() => false));
   checar('Esc fecha a ampliação', fechouNoEsc);
 
-  /*
-    Fechar pelo X ou pelo Esc precisa consumir a entrada empurrada na abertura.
-    Sem isso, quem abrisse e fechasse cinco fotos precisaria de cinco "voltar"
-    para sair da página.
-  */
+  /* Fechar precisa consumir a entrada empurrada na abertura, senão o
+     histórico acumula uma por foto ampliada. */
   const semLixoNoHistorico = await page.evaluate(() => !history.state?.lightbox);
   checar('fechar não deixa entrada morta no histórico', semLixoNoHistorico);
 
@@ -245,17 +227,8 @@ try {
   await page.waitForTimeout(400);
   checar('um único voltar sai da página de nicho', !page.url().includes('/tatuagem/'), page.url());
 
-  /*
-    A espiada: pressionar a foto amplia, soltar volta ao normal.
-
-    Ela não passa pelo histórico, ao contrário do que a lupa abre — nasce e
-    morre no mesmo gesto, e uma entrada por foto espiada esbarraria no limite
-    de `pushState` do Safari.
-
-    Os três cenários que a quebrariam na prática: o toque curto (não pode
-    abrir), o arrasto (a pessoa está rolando, não espiando) e a soltura (tem
-    que fechar mesmo com o dedo terminando em cima do modal, não da galeria).
-  */
+  /* A espiada: pressionar amplia, soltar volta.
+     Ver docs/arquitetura/gestos-da-galeria.md. */
   await page.goto(BASE_URL, { waitUntil: 'networkidle' });
   await aguardarLightboxHidratado(page);
   const alvo = page.locator('.portfolio-item').first();
@@ -264,11 +237,8 @@ try {
   const caixa = await alvo.boundingBox();
   const centro = { x: caixa.x + caixa.width / 2, y: caixa.y + caixa.height / 2 };
 
-  /*
-    Guarda o primeiro quadro em que a ampliação existe. É o único instante que
-    interessa para os dois defeitos de suavidade: ela abria de um corte só, e
-    abria em preto porque pedia um arquivo diferente do que já estava na tela.
-  */
+  /* Guarda o primeiro quadro em que a ampliação existe: é o único instante
+     em que dá para ver se ela anima e se já tem foto. */
   await page.evaluate(() => {
     window.__primeiroQuadro = null;
     const observador = new MutationObserver(() => {
@@ -298,27 +268,19 @@ try {
   checar('espiada não registra histórico', semHistorico);
 
   const quadroInicial = await page.evaluate(() => window.__primeiroQuadro);
-  /* A ampliação sobe com a miniatura que já está pintada. Sem isso ela abria em
-     preto até o arquivo grande chegar — meio segundo de fundo vazio no 4G. */
   checar('espiada abre com a foto já pintada', quadroInicial?.fotoPintada === true);
-  /* `active` entra no quadro seguinte ao da montagem. Aplicada junto, não há
-     estado anterior de onde animar e a ampliação aparece de um corte só. */
   checar(
     'espiada anima em vez de aparecer de uma vez',
     quadroInicial !== null && quadroInicial.opacidade < 1,
     `opacidade no primeiro quadro = ${quadroInicial?.opacidade}`
   );
 
-  // O X só faz sentido no que fica aberto; a espiada some ao soltar o dedo.
   const semBotaoFechar = (await page.locator('#lightbox-close').count()) === 0;
   checar('espiada não mostra o X de fechar', semBotaoFechar);
 
-  /*
-    `pointercancel` não pode fechar a espiada. O celular dispara esse evento
-    com o dedo ainda na tela, ao reconhecer a pressão longa por volta dos
-    500ms — a foto ampliava e voltava sozinha em menos de um segundo. Só a
-    soltura de verdade encerra.
-  */
+  /* ⚠️ O celular dispara `pointercancel` com o dedo ainda na tela, ao
+     reconhecer a pressão longa. Emulação não reproduz isso — daí o disparo
+     explícito. */
   await page.evaluate(() =>
     window.dispatchEvent(new PointerEvent('pointercancel', { bubbles: true, pointerId: 1 }))
   );
@@ -326,16 +288,11 @@ try {
   const sobreviveuAoCancelamento = await page.locator('#lightbox-modal').isVisible().catch(() => false);
   checar('pointercancel não fecha a espiada', sobreviveuAoCancelamento);
 
-  /* A espiada trava a rolagem pelo `touchmove`, não por `overflow: hidden`:
-     mexer na rolagem durante o toque é o que provoca o cancelamento acima. */
   const overflowIntocado = await page.evaluate(() => document.body.style.overflow === '');
   checar('espiada não mexe no overflow do body', overflowIntocado);
 
-  /*
-    A ampliação nasce debaixo do dedo, e dedo parado sobre texto é o gesto de
-    selecionar: o celular selecionava a legenda, abria o menu de copiar e
-    engolia a soltura, deixando a foto presa aberta.
-  */
+  /* Dedo parado sobre texto é o gesto de selecionar, e a ampliação nasce
+     debaixo do dedo. */
   const legendaSelecionavel = await page.evaluate(() => {
     const alvo = document.querySelector('#lightbox-title');
     const faixa = document.createRange();
@@ -347,12 +304,8 @@ try {
   });
   checar('legenda da espiada não seleciona', legendaSelecionavel === '', `"${legendaSelecionavel}"`);
 
-  /*
-    O Chrome no Android oferecia baixar, copiar e pesquisar no Lens em cima da
-    foto ampliada. O bloqueio de menu antes olhava só a galeria, e a ampliação
-    vive fora dela — o defeito só apareceu quando a foto passou a estar pintada
-    já no primeiro quadro, dando ao sistema uma imagem para encontrar.
-  */
+  /* O menu de ações de imagem também não pode abrir sobre a ampliação, que
+     vive fora da galeria. */
   const menuEscapou = await page.evaluate(() => {
     let escapou = false;
     const espiao = (e) => {

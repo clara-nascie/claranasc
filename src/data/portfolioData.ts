@@ -1,18 +1,9 @@
 /**
- * As imagens são **importadas**, não referenciadas por caminho de texto.
+ * ⚠️ As imagens são **importadas**, nunca referenciadas por caminho de texto:
+ * só o que entra por `import` de dentro de `src/` passa pelo pipeline do
+ * `astro:assets`. Arquivo em `public/` seria servido inteiro, sem variantes.
  *
- * Isso não é detalhe de estilo: só o que entra por `import` de dentro de `src/`
- * passa pelo pipeline do `astro:assets`, que gera as variantes responsivas em
- * WebP no build. Arquivo em `public/` é copiado byte a byte para o `dist/` —
- * o navegador da visitante receberia a foto original inteira.
- *
- * Os arquivos aqui já vêm reduzidos para caber em 1600px, que é o suficiente
- * para a maior variante que o site pede (o lightbox, 1400px). Os originais de
- * até 9000px ficam fora do repositório, em Anúncios/ (ver .gitignore).
- *
- * O nome do arquivo é conteúdo, não identificador: `cobertura-girassol-ombro`
- * descreve a foto para quem busca por imagem. Ao trocar uma foto, troque o
- * nome junto.
+ * Ver `docs/arquitetura/arquitetura.md`, seção "Pipeline de imagem".
  */
 
 // --- Coberturas ---
@@ -283,11 +274,8 @@ export const portfolioItems: PortfolioItem[] = [
     image: coberturaFullmetal,
     alt: 'Cobertura de tatuagem de Fullmetal Alchemist com círculo de transmutação e personagens em braço fechado',
   },
-  /*
-    A partir daqui, a camada de volume (Issue #16). Os ids seguem a ordem de
-    importação e não a posição no array — 31 vem depois de 6 porque 7 a 30 já
-    estavam em uso. Só a unicidade importa: o id indexa o lightbox, nunca a ordem de exibição.
-  */
+  /* ⚠️ O `id` só precisa ser único — ele indexa o lightbox, não a ordem de
+     exibição. Segue a ordem de importação, não a posição no array. */
   {
     id: 31,
     title: 'Guitarra em Trash Polka',
@@ -346,9 +334,6 @@ export const portfolioItems: PortfolioItem[] = [
   },
 
   // ITENS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
-  // A partir deste ponto os itens vêm na ordem de importação, não por
-  // categoria: a página filtra por `category`, então a ordem no array não
-  // muda nada do que aparece na tela.
   {
     id: 115,
     title: 'Símbolo de Capricórnio',
@@ -1482,12 +1467,8 @@ export const portfolioItems: PortfolioItem[] = [
     image: botanicoBuqueDeNoiva,
     alt: 'Tatuagem botânica de ramo de buquê-de-noiva em traço fino no braço, acima do cotovelo'
   },
-  /*
-    As quatro abaixo são outras vistas de peças que já aparecem acima ou no
-    destaque. Não são repetição: uma tatuagem que dá a volta no braço não cabe
-    em uma foto só, e cada ângulo mostra o que o outro esconde. Decisão da
-    Clara — não "limpe" isso achando que é duplicata.
-  */
+  /* ⚠️ As quatro abaixo são outros ângulos de peças que já aparecem acima.
+     Não são duplicatas — não remova. */
   {
     id: 42,
     title: 'Flores e Fineline',
@@ -1681,12 +1662,6 @@ export const portfolioItems: PortfolioItem[] = [
   }
 ];
 
-/**
- * A camada de destaque: o que a home mostra.
- *
- * 6 por categoria, igual para todas. As páginas por nicho consomem
- * `portfolioItems` inteiro, sem cota — é o que separa "equilibrar as
- * categorias" de "mostrar volume de trabalho" sem ter que escolher um dos dois.
- */
+/** A camada de destaque: 6 por categoria, o que a home mostra. */
 export const itensDestaque: PortfolioItem[] = portfolioItems.filter((item) => item.destaque);
 

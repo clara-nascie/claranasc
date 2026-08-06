@@ -11,7 +11,7 @@ interface ButtonProps {
 }
 
 export const Button: React.FC<ButtonProps> = ({ as = 'button', href, type, className = '', children, id, onClick }) => {
-  // If it doesn't include btn (e.g. just btn-header-cta), we can conditionally add 'btn'
+  // Variantes que trazem o próprio estilo completo não recebem a base `.btn`.
   const finalClass = className.includes('btn-header-cta') || className.includes('btn-zoom') 
     ? className 
     : `btn ${className}`.trim();

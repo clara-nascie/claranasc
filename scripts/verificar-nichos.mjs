@@ -59,7 +59,7 @@ if (!urlsDoSitemap) {
   console.log('\n⚠ Sem sitemap nesta URL (é o dev server). Rode contra `npm run preview`');
   console.log('  para verificar também a consistência entre canonical e sitemap.');
 } else {
-  // A Issue #22 pede que verifiquemos se todas as fotos estão no sitemap
+  // Toda foto da pagina precisa estar no sitemap de imagens.
   try {
     const res = await fetch(new URL('/sitemap-imagens.xml', BASE_URL));
     if (res.ok) {
@@ -200,7 +200,7 @@ try {
            alturasDistintas >= proporcoesDistintas,
            `${alturasDistintas} alturas para ${proporcoesDistintas} proporções`);
 
-    // Sem legenda visível desde 04/08/2026, o `alt` é o único texto que descreve
+    // Sem legenda visível, o `alt` é o único texto que descreve
     // cada foto — para leitor de tela e para o Google Imagens.
     const alts = await page
       .locator('.portfolio-item--livre img')

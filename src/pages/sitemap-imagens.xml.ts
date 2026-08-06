@@ -1,16 +1,14 @@
 import { portfolioItems } from '../data/portfolioData';
 
-export async function GET() {
-  // Mapeia quais categorias correspondem a quais slugs de URL
-  const slugs = {
-    'coberturas': 'coberturas',
-    'botanico': 'botanico',
-    'geek': 'geek',
-    'blackwork': 'blackwork',
-    'fineline': 'fine-line',
-  };
+const esc = (str) =>
+  str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
 
-  // Agrupa as imagens por URL da página
+export async function GET() {
   const paginas = {
     'https://claranasc.com/': portfolioItems.filter(foto => foto.destaque),
     'https://claranasc.com/tatuagem/coberturas/': portfolioItems.filter(foto => foto.category === 'coberturas'),
@@ -29,9 +27,6 @@ export async function GET() {
     xml += `\n  <url>\n    <loc>${url}</loc>`;
     
     for (const foto of fotos) {
-      // Escape special XML characters for safety (e.g. &, <, >)
-      const esc = (str) => str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
-      
       const imgLoc = new URL(foto.image.src, 'https://claranasc.com').href;
       xml += `
     <image:image>
