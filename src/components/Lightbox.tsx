@@ -3,7 +3,17 @@ import { X } from 'lucide-react';
 
 export const Lightbox: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [imgData, setImgData] = useState({ src: '', title: '', category: '' });
+  const [imgData, setImgData] = useState({ src: '', previa: '', title: '', category: '' });
+
+  /* A ampliação sobe com a miniatura que já está na tela e troca pelo arquivo
+     grande quando ele termina de baixar. Sem isso ela abria em preto e a foto
+     só aparecia meio segundo depois, no 4G. */
+  const [grandePronta, setGrandePronta] = useState(false);
+
+  /* `active` precisa entrar num quadro DEPOIS da montagem. Aplicada junto, o
+     navegador não tem estado anterior de onde animar e a ampliação aparece de
+     um corte só — era a "piscada". */
+  const [ativo, setAtivo] = useState(false);
 
   /* Espiada é a ampliação que dura o gesto: abre na pressão e fecha ao soltar.
      Ela some sozinha, então o X não tem função nenhuma ali e fica escondido.
@@ -26,9 +36,11 @@ export const Lightbox: React.FC = () => {
       const customEvent = e as CustomEvent;
       setImgData({
         src: customEvent.detail.src,
+        previa: customEvent.detail.previa ?? '',
         title: customEvent.detail.title,
         category: customEvent.detail.category
       });
+      setGrandePronta(false);
       const eEspiada = Boolean(customEvent.detail.espiada);
       setIsOpen(true);
       marcarEspiada(eEspiada);
@@ -81,6 +93,29 @@ export const Lightbox: React.FC = () => {
   }, [marcarEspiada]);
 
   useEffect(() => {
+    if (!isOpen) {
+      setAtivo(false);
+      return;
+    }
+    const quadro = requestAnimationFrame(() => setAtivo(true));
+    return () => cancelAnimationFrame(quadro);
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen || !imgData.src) return;
+
+    const grande = new Image();
+    grande.onload = () => setGrandePronta(true);
+    grande.src = imgData.src;
+    // Já em cache: o `onload` de uma imagem completa pode não disparar.
+    if (grande.complete) setGrandePronta(true);
+
+    return () => {
+      grande.onload = null;
+    };
+  }, [isOpen, imgData.src]);
+
+  useEffect(() => {
     if (!isOpen) return;
 
     const handlePop = () => {
@@ -106,7 +141,7 @@ export const Lightbox: React.FC = () => {
 
   return (
     <div
-      className={`lightbox-modal active${espiando ? ' lightbox-modal--espiada' : ''}`}
+      className={`lightbox-modal${ativo ? ' active' : ''}${espiando ? ' lightbox-modal--espiada' : ''}`}
       id="lightbox-modal"
     >
       {!espiando && (
@@ -115,7 +150,11 @@ export const Lightbox: React.FC = () => {
         </button>
       )}
       <div className="lightbox-content">
-        <img src={imgData.src} alt={imgData.title} id="lightbox-img" />
+        <img
+          src={grandePronta || !imgData.previa ? imgData.src : imgData.previa}
+          alt={imgData.title}
+          id="lightbox-img"
+        />
         <div className="lightbox-caption">
           {/* `category` já chega como rótulo pronto (ex: 'Blackwork'), enviado pelo
               Portfolio via `item.categoryLabel`. O mapeamento que existia aqui

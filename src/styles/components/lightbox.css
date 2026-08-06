@@ -38,6 +38,24 @@
     user-select: none;
 }
 
+/*
+  A espiada sobe e desce no ritmo do dedo, então anima mais rápido que a
+  ampliação que fica aberta -- meio segundo ali parece travamento.
+
+  E sem o `backdrop-filter`: borrar a tela inteira é caro justamente no quadro
+  em que a ampliação está subindo, e o fundo já é 95% opaco, então o borrão
+  quase não aparece. Sai o custo, não sai o visual.
+*/
+.lightbox-modal--espiada {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    transition-duration: 0.18s;
+}
+
+.lightbox-modal--espiada .lightbox-content img {
+    transition-duration: 0.22s;
+}
+
 .lightbox-close {
     position: absolute;
     top: 30px;

@@ -94,11 +94,24 @@ const TAMANHOS = eCarrossel
   const TOLERANCIA_PX = 10;
 
   function dadosDaFoto(gatilho: HTMLElement) {
+    const item = gatilho.closest<HTMLElement>('.portfolio-item');
     return {
       src: gatilho.dataset.src,
+      /* A miniatura já está pintada na tela e não custa nenhuma requisição.
+         Ela é o primeiro quadro da ampliação, que sem isso abre em preto até
+         o arquivo grande chegar — meio segundo de fundo vazio no celular. */
+      previa: item?.querySelector('img')?.currentSrc,
       title: gatilho.dataset.title,
       category: gatilho.dataset.category
     };
+  }
+
+  /* Começa a baixar a ampliação já no encostar do dedo, e não quando a espiada
+     abre: são 250ms de vantagem, de graça. */
+  function adiantarAmpliada(gatilho: HTMLElement) {
+    if (!gatilho.dataset.src) return;
+    const adiantada = new Image();
+    adiantada.src = gatilho.dataset.src;
   }
 
   for (const grade of document.querySelectorAll<HTMLElement>('[data-galeria]')) {
@@ -125,6 +138,7 @@ const TAMANHOS = eCarrossel
       if (!gatilho) return;
 
       inicio = { x: evento.clientX, y: evento.clientY };
+      adiantarAmpliada(gatilho);
       temporizador = window.setTimeout(() => {
         temporizador = null;
         espiando = true;

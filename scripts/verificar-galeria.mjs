@@ -264,6 +264,26 @@ try {
   const caixa = await alvo.boundingBox();
   const centro = { x: caixa.x + caixa.width / 2, y: caixa.y + caixa.height / 2 };
 
+  /*
+    Guarda o primeiro quadro em que a ampliação existe. É o único instante que
+    interessa para os dois defeitos de suavidade: ela abria de um corte só, e
+    abria em preto porque pedia um arquivo diferente do que já estava na tela.
+  */
+  await page.evaluate(() => {
+    window.__primeiroQuadro = null;
+    const observador = new MutationObserver(() => {
+      const modal = document.querySelector('#lightbox-modal');
+      if (!modal || window.__primeiroQuadro) return;
+      const img = modal.querySelector('img');
+      window.__primeiroQuadro = {
+        opacidade: Number(getComputedStyle(modal).opacity),
+        fotoPintada: Boolean(img && img.complete && img.naturalWidth > 0)
+      };
+      observador.disconnect();
+    });
+    observador.observe(document.body, { childList: true, subtree: true });
+  });
+
   await page.mouse.move(centro.x, centro.y);
   await page.mouse.down();
   await page.waitForTimeout(150);
@@ -276,6 +296,18 @@ try {
 
   const semHistorico = await page.evaluate(() => !history.state?.lightbox);
   checar('espiada não registra histórico', semHistorico);
+
+  const quadroInicial = await page.evaluate(() => window.__primeiroQuadro);
+  /* A ampliação sobe com a miniatura que já está pintada. Sem isso ela abria em
+     preto até o arquivo grande chegar — meio segundo de fundo vazio no 4G. */
+  checar('espiada abre com a foto já pintada', quadroInicial?.fotoPintada === true);
+  /* `active` entra no quadro seguinte ao da montagem. Aplicada junto, não há
+     estado anterior de onde animar e a ampliação aparece de um corte só. */
+  checar(
+    'espiada anima em vez de aparecer de uma vez',
+    quadroInicial !== null && quadroInicial.opacidade < 1,
+    `opacidade no primeiro quadro = ${quadroInicial?.opacidade}`
+  );
 
   // O X só faz sentido no que fica aberto; a espiada some ao soltar o dedo.
   const semBotaoFechar = (await page.locator('#lightbox-close').count()) === 0;
