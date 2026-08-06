@@ -347,6 +347,26 @@ try {
   });
   checar('legenda da espiada não seleciona', legendaSelecionavel === '', `"${legendaSelecionavel}"`);
 
+  /*
+    O Chrome no Android oferecia baixar, copiar e pesquisar no Lens em cima da
+    foto ampliada. O bloqueio de menu antes olhava só a galeria, e a ampliação
+    vive fora dela — o defeito só apareceu quando a foto passou a estar pintada
+    já no primeiro quadro, dando ao sistema uma imagem para encontrar.
+  */
+  const menuEscapou = await page.evaluate(() => {
+    let escapou = false;
+    const espiao = (e) => {
+      if (!e.defaultPrevented) escapou = true;
+    };
+    window.addEventListener('contextmenu', espiao);
+    document
+      .querySelector('#lightbox-img')
+      .dispatchEvent(new MouseEvent('contextmenu', { bubbles: true, cancelable: true }));
+    window.removeEventListener('contextmenu', espiao);
+    return escapou;
+  });
+  checar('espiada não abre menu de imagem', menuEscapou === false);
+
   await page.mouse.up();
   await page.waitForTimeout(300);
   const voltouAoNormal = !(await page.locator('#lightbox-modal').isVisible().catch(() => false));

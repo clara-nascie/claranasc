@@ -114,24 +114,27 @@ const TAMANHOS = eCarrossel
     adiantada.src = gatilho.dataset.src;
   }
 
+  /* O estado do gesto é um só na página, não um por galeria: só existe um dedo
+     e uma ampliação de cada vez. A home tem cinco fileiras, e com o estado e os
+     ouvintes dentro do laço eles eram registrados cinco vezes. */
+  let temporizador: number | null = null;
+  let espiando = false;
+  let inicio = { x: 0, y: 0 };
+
+  const cancelarEspera = () => {
+    if (temporizador === null) return;
+    clearTimeout(temporizador);
+    temporizador = null;
+  };
+
+  const encerrarEspiada = () => {
+    cancelarEspera();
+    if (!espiando) return;
+    espiando = false;
+    window.dispatchEvent(new CustomEvent('close-lightbox'));
+  };
+
   for (const grade of document.querySelectorAll<HTMLElement>('[data-galeria]')) {
-    let temporizador: number | null = null;
-    let espiando = false;
-    let inicio = { x: 0, y: 0 };
-
-    const cancelarEspera = () => {
-      if (temporizador === null) return;
-      clearTimeout(temporizador);
-      temporizador = null;
-    };
-
-    const encerrarEspiada = () => {
-      cancelarEspera();
-      if (!espiando) return;
-      espiando = false;
-      window.dispatchEvent(new CustomEvent('close-lightbox'));
-    };
-
     grade.addEventListener('pointerdown', (evento) => {
       const item = (evento.target as HTMLElement).closest<HTMLElement>('.portfolio-item');
       const gatilho = item?.querySelector<HTMLElement>('.lightbox-trigger');
@@ -150,46 +153,6 @@ const TAMANHOS = eCarrossel
       }, PRESSAO_MS);
     });
 
-    /* `pointerup` vai para o elemento sob o dedo, e com a ampliação aberta esse
-       elemento é o modal, não a galeria. Por isso a soltura é escutada na
-       janela: na grade ela simplesmente não chegaria. */
-    window.addEventListener('pointerup', encerrarEspiada);
-    window.addEventListener('mouseup', encerrarEspiada);
-    window.addEventListener('touchend', encerrarEspiada);
-
-    /* `pointercancel` NÃO fecha a espiada.
-
-       Ele significa "o sistema assumiu esse toque", e o celular dispara isso
-       com o dedo ainda na tela, ao reconhecer a pressão longa — por volta dos
-       500ms. Tratá-lo como soltura fazia a foto ampliar e voltar sozinha em
-       menos de um segundo. Quem encerra é a soltura de verdade: `pointerup`,
-       `touchend` ou `mouseup`. */
-    window.addEventListener('pointercancel', cancelarEspera);
-
-    window.addEventListener('pointermove', (evento) => {
-      if (temporizador === null) return;
-      const dx = evento.clientX - inicio.x;
-      const dy = evento.clientY - inicio.y;
-      if (Math.hypot(dx, dy) > TOLERANCIA_PX) cancelarEspera();
-    });
-
-    /* Com a espiada aberta a página não deve rolar. Bloquear aqui, e não com
-       `overflow: hidden`, é de propósito: mudar a rolagem no meio de um toque
-       faz o navegador cancelar o ponteiro, que é metade do defeito acima. */
-    window.addEventListener(
-      'touchmove',
-      (evento) => {
-        if (espiando) evento.preventDefault();
-      },
-      { passive: false }
-    );
-
-    /* O menu nativo de "salvar imagem" abre na pressão longa e rouba o gesto
-       antes de ele virar espiada. */
-    grade.addEventListener('contextmenu', (evento) => {
-      if ((evento.target as HTMLElement).closest('.portfolio-item')) evento.preventDefault();
-    });
-
     grade.addEventListener('click', (evento) => {
       const gatilho = (evento.target as HTMLElement).closest<HTMLElement>('.lightbox-trigger');
       if (!gatilho) return;
@@ -199,4 +162,53 @@ const TAMANHOS = eCarrossel
       );
     });
   }
+
+  /* `pointerup` vai para o elemento sob o dedo, e com a ampliação aberta esse
+     elemento é o modal, não a galeria. Por isso a soltura é escutada na janela:
+     na grade ela simplesmente não chegaria. */
+  window.addEventListener('pointerup', encerrarEspiada);
+  window.addEventListener('mouseup', encerrarEspiada);
+  window.addEventListener('touchend', encerrarEspiada);
+
+  /* `pointercancel` NÃO fecha a espiada.
+
+     Ele significa "o sistema assumiu esse toque", e o celular dispara isso com
+     o dedo ainda na tela, ao reconhecer a pressão longa — por volta dos 500ms.
+     Tratá-lo como soltura fazia a foto ampliar e voltar sozinha em menos de um
+     segundo. Quem encerra é a soltura de verdade. */
+  window.addEventListener('pointercancel', cancelarEspera);
+
+  window.addEventListener('pointermove', (evento) => {
+    if (temporizador === null) return;
+    const dx = evento.clientX - inicio.x;
+    const dy = evento.clientY - inicio.y;
+    if (Math.hypot(dx, dy) > TOLERANCIA_PX) cancelarEspera();
+  });
+
+  /* Com a espiada aberta a página não deve rolar. Bloquear aqui, e não com
+     `overflow: hidden`, é de propósito: mudar a rolagem no meio de um toque faz
+     o navegador cancelar o ponteiro, que é metade do defeito acima. */
+  window.addEventListener(
+    'touchmove',
+    (evento) => {
+      if (espiando) evento.preventDefault();
+    },
+    { passive: false }
+  );
+
+  /* Nenhum menu de contexto durante o gesto.
+
+     São dois alvos, e por isso a checagem no documento e não na galeria: antes
+     da espiada abrir o dedo está sobre a miniatura, e depois está sobre a
+     ampliação, que vive fora da galeria. O Chrome no Android oferecia baixar,
+     copiar e pesquisar no Lens em cima da foto ampliada. */
+  document.addEventListener(
+    'contextmenu',
+    (evento) => {
+      if (espiando || (evento.target as HTMLElement).closest('.portfolio-item')) {
+        evento.preventDefault();
+      }
+    },
+    true
+  );
 </script>

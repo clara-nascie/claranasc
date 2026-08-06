@@ -52,6 +52,18 @@
     transition-duration: 0.18s;
 }
 
+/*
+  Durante a espiada o modal é só imagem na tela, não alvo de toque: nada ali
+  precisa ser tocado, porque quem encerra é a soltura na janela.
+
+  Sem isto o dedo passa a mirar a foto ampliada, e o Chrome no Android oferece
+  baixar, copiar e pesquisar no Lens em cima dela. A especificidade tripla é
+  para vencer o `pointer-events: all` do `.active`.
+*/
+.lightbox-modal.active.lightbox-modal--espiada {
+    pointer-events: none;
+}
+
 .lightbox-modal--espiada .lightbox-content img {
     transition-duration: 0.22s;
 }
