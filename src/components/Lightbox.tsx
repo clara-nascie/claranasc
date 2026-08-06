@@ -29,9 +29,15 @@ export const Lightbox: React.FC = () => {
         title: customEvent.detail.title,
         category: customEvent.detail.category
       });
+      const eEspiada = Boolean(customEvent.detail.espiada);
       setIsOpen(true);
-      document.body.style.overflow = 'hidden';
-      marcarEspiada(Boolean(customEvent.detail.espiada));
+      marcarEspiada(eEspiada);
+
+      /* A espiada não trava a rolagem por aqui. Mexer em `overflow` com o dedo
+         ainda na tela faz o navegador cancelar o ponteiro, e a foto voltava
+         sozinha antes de a pessoa soltar. Quem segura a rolagem durante o
+         gesto é o `touchmove` da galeria. */
+      if (!eEspiada) document.body.style.overflow = 'hidden';
 
       /* Entrada de histórico descartável. Sem ela o "voltar" do celular não tem
          o que desfazer na página e sai dela — quem abria uma foto na página de

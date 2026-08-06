@@ -140,7 +140,17 @@ const TAMANHOS = eCarrossel
        elemento é o modal, não a galeria. Por isso a soltura é escutada na
        janela: na grade ela simplesmente não chegaria. */
     window.addEventListener('pointerup', encerrarEspiada);
-    window.addEventListener('pointercancel', encerrarEspiada);
+    window.addEventListener('mouseup', encerrarEspiada);
+    window.addEventListener('touchend', encerrarEspiada);
+
+    /* `pointercancel` NÃO fecha a espiada.
+
+       Ele significa "o sistema assumiu esse toque", e o celular dispara isso
+       com o dedo ainda na tela, ao reconhecer a pressão longa — por volta dos
+       500ms. Tratá-lo como soltura fazia a foto ampliar e voltar sozinha em
+       menos de um segundo. Quem encerra é a soltura de verdade: `pointerup`,
+       `touchend` ou `mouseup`. */
+    window.addEventListener('pointercancel', cancelarEspera);
 
     window.addEventListener('pointermove', (evento) => {
       if (temporizador === null) return;
@@ -148,6 +158,17 @@ const TAMANHOS = eCarrossel
       const dy = evento.clientY - inicio.y;
       if (Math.hypot(dx, dy) > TOLERANCIA_PX) cancelarEspera();
     });
+
+    /* Com a espiada aberta a página não deve rolar. Bloquear aqui, e não com
+       `overflow: hidden`, é de propósito: mudar a rolagem no meio de um toque
+       faz o navegador cancelar o ponteiro, que é metade do defeito acima. */
+    window.addEventListener(
+      'touchmove',
+      (evento) => {
+        if (espiando) evento.preventDefault();
+      },
+      { passive: false }
+    );
 
     /* O menu nativo de "salvar imagem" abre na pressão longa e rouba o gesto
        antes de ele virar espiada. */

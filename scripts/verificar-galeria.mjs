@@ -272,6 +272,24 @@ try {
   const semBotaoFechar = (await page.locator('#lightbox-close').count()) === 0;
   checar('espiada não mostra o X de fechar', semBotaoFechar);
 
+  /*
+    `pointercancel` não pode fechar a espiada. O celular dispara esse evento
+    com o dedo ainda na tela, ao reconhecer a pressão longa por volta dos
+    500ms — a foto ampliava e voltava sozinha em menos de um segundo. Só a
+    soltura de verdade encerra.
+  */
+  await page.evaluate(() =>
+    window.dispatchEvent(new PointerEvent('pointercancel', { bubbles: true, pointerId: 1 }))
+  );
+  await page.waitForTimeout(500);
+  const sobreviveuAoCancelamento = await page.locator('#lightbox-modal').isVisible().catch(() => false);
+  checar('pointercancel não fecha a espiada', sobreviveuAoCancelamento);
+
+  /* A espiada trava a rolagem pelo `touchmove`, não por `overflow: hidden`:
+     mexer na rolagem durante o toque é o que provoca o cancelamento acima. */
+  const overflowIntocado = await page.evaluate(() => document.body.style.overflow === '');
+  checar('espiada não mexe no overflow do body', overflowIntocado);
+
   await page.mouse.up();
   await page.waitForTimeout(300);
   const voltouAoNormal = !(await page.locator('#lightbox-modal').isVisible().catch(() => false));
