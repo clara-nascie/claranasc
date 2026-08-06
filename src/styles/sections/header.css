@@ -1,6 +1,10 @@
 /* ==========================================================================
    HEADER NAVIGATION
    ========================================================================== */
+/*
+ * `absolute`, e não `fixed`: o cabeçalho rola junto e sai da tela. Quem assume
+ * a navegação a partir daí é o botão flutuante (`FloatingCta`).
+ */
 .main-header {
     position: absolute;
     top: 0;
@@ -8,10 +12,8 @@
     width: 100%;
     height: var(--header-height);
     z-index: 1000;
-    transition: var(--transition-smooth);
     display: flex;
     align-items: center;
-    border-bottom: 1px solid transparent;
 }
 
 .header-container {
