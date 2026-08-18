@@ -11,6 +11,10 @@ e o lightbox é a única ilha envolvida.
 | `open-lightbox` | `GaleriaGrid` | Abre. `detail.espiada` distingue os dois modos |
 | `close-lightbox` | `GaleriaGrid` | Encerra a espiada ao soltar o dedo |
 
+O `detail` do `open-lightbox` leva a galeria inteira (`fotos`) e o `indice` da
+foto tocada, não os dados de uma foto só — é o que permite passar para a
+próxima sem fechar.
+
 ## Dois modos de ampliar
 
 **Pela lupa.** Fica aberta até fechar no X, no Esc ou no voltar do navegador.
@@ -24,6 +28,75 @@ Os dois limiares da espiada não são preciosismo:
   numa foto para rolar a página já a abriria.
 - **10px de tolerância.** Todo arrasto começa com o dedo em cima de uma foto.
   Passou daqui, a pessoa está rolando a página ou o carrossel.
+
+## Passar de foto sem fechar
+
+Com a ampliação aberta, deslizar o dedo para o lado troca de foto. Antes era
+preciso fechar e abrir a próxima uma a uma.
+
+### O recorte é a galeria de origem
+
+Uma página de nicho é uma galeria só: dá para percorrer as 30 e tantas fotos do
+estilo de ponta a ponta. Na home cada fileira é uma galeria, então o deslize
+anda dentro da categoria e para no fim dela.
+
+O recorte não é arbitrário: a legenda mostra a categoria da foto, e um deslize
+que saltasse de Blackwork para Fine Line no meio do gesto desmentiria a própria
+legenda. Também é o que o Instagram faz — deslizar percorre o álbum, não o
+feed inteiro.
+
+### Três lâminas, não a galeria inteira
+
+O trilho monta só a anterior, a atual e a próxima, e desliza em `transform`.
+
+Montar as 34 fotos de uma página de nicho colocaria 34 `<img>` no DOM, e o
+navegador baixaria todas — a ampliação pesa 1400px de largura. Com a janela de
+três, a vizinha já chega baixada antes de o dedo pedir por ela, e o custo fica
+em duas fotos adiantadas, não trinta e quatro.
+
+O índice só troca **no fim** da animação, junto com a volta do trilho ao
+repouso. Como o React aplica as duas mudanças na mesma renderização, a lâmina
+que entrou fica exatamente onde a animação a deixou — separadas, haveria um
+quadro em que a foto pula.
+
+### Os limiares do deslize
+
+- **18% da largura da tela.** Abaixo disso o trilho volta sozinho. É o ponto em
+  que o gesto deixa de ser hesitação e vira intenção.
+- **8px antes de decidir a direção.** Enquanto o dedo não passa disso, o gesto
+  ainda pode virar qualquer coisa; passou, vale o eixo dominante. Deslize mais
+  vertical que horizontal é descartado.
+- **Arrasto dividido por 3 na borda.** Na primeira e na última foto o trilho
+  ainda cede um pouco e volta. É a resposta que diz "acabou" sem travar seco.
+
+### Dois tempos, porque são dois movimentos
+
+| Origem | Duração | Curva |
+|---|---|---|
+| Solta do dedo | 0.38s | `cubic-bezier(0.25, 1, 0.5, 1)` |
+| Seta ou teclado | 0.55s | `cubic-bezier(0.4, 0, 0.2, 1)` |
+
+Não é preciosismo: são percursos diferentes. Quando o dedo solta, o trilho já
+andou quase toda a distância e a animação só completa o resto — a curva não
+freia no começo, para emendar no movimento que já vinha. A seta parte do
+repouso e percorre a tela inteira, então precisa de mais tempo e de aceleração
+nas duas pontas; com o tempo do deslize, a foto trocava de estalo.
+
+### O mouse não arrasta
+
+No desktop o deslize é seta na tela (`@media (hover: hover) and (pointer: fine)`)
+ou seta do teclado. Capturar o arrasto do mouse impediria de selecionar a
+legenda — que na ampliação fixa é selecionável de propósito.
+
+⚠️ O `touch-action: none` do visor não é enfeite: sem ele o navegador assume o
+arrasto horizontal como gesto próprio e os `pointermove` param de chegar no meio
+do deslize.
+
+### O contador fica no topo
+
+`1 / 34` no canto superior esquerdo, espelhando o X. No rodapé ele dividiria a
+faixa com o botão flutuante de WhatsApp. Ele também ensina o gesto: sem o
+número, nada na tela diz que existe uma próxima foto.
 
 ## O voltar do celular precisa ter o que desfazer
 

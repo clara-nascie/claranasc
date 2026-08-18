@@ -102,6 +102,17 @@ const TAMANHOS = eCarrossel
     };
   }
 
+  /* A ampliação recebe a fileira inteira, não uma foto: é o que permite passar
+     para a próxima sem fechar. O recorte é a galeria de origem. */
+  function galeriaDaFoto(gatilho: HTMLElement) {
+    const grade = gatilho.closest<HTMLElement>('[data-galeria]');
+    const gatilhos = [...(grade?.querySelectorAll<HTMLElement>('.lightbox-trigger') ?? [])];
+    return {
+      fotos: gatilhos.map(dadosDaFoto),
+      indice: Math.max(0, gatilhos.indexOf(gatilho))
+    };
+  }
+
   function adiantarAmpliada(gatilho: HTMLElement) {
     if (!gatilho.dataset.src) return;
     const adiantada = new Image();
@@ -139,7 +150,7 @@ const TAMANHOS = eCarrossel
         espiando = true;
         window.dispatchEvent(
           new CustomEvent('open-lightbox', {
-            detail: { ...dadosDaFoto(gatilho), espiada: true }
+            detail: { ...galeriaDaFoto(gatilho), espiada: true }
           })
         );
       }, PRESSAO_MS);
@@ -150,7 +161,7 @@ const TAMANHOS = eCarrossel
       if (!gatilho) return;
 
       window.dispatchEvent(
-        new CustomEvent('open-lightbox', { detail: dadosDaFoto(gatilho) })
+        new CustomEvent('open-lightbox', { detail: galeriaDaFoto(gatilho) })
       );
     });
   }

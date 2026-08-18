@@ -338,6 +338,102 @@ try {
 
   checar('sem erros no console', errosConsole.length === 0, errosConsole.join(' | ') || 'nenhum');
 
+  /* Deslizar de lado com a ampliação aberta passa de foto.
+     ⚠️ O toque vem pelo CDP: `page.mouse` gera pointerType "mouse", e o
+     arrasto de mouse é ignorado de propósito. */
+  const contexto = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    hasTouch: true,
+    isMobile: true
+  });
+  const comToque = await contexto.newPage();
+  const cdp = await contexto.newCDPSession(comToque);
+
+  const deslizar = async (de, para) => {
+    const ponto = (x) => [{ x, y: 420, id: 1, radiusX: 12, radiusY: 12, force: 1 }];
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: ponto(de) });
+    for (let i = 1; i <= 12; i++) {
+      await cdp.send('Input.dispatchTouchEvent', {
+        type: 'touchMove',
+        touchPoints: ponto(de + ((para - de) * i) / 12)
+      });
+      await comToque.waitForTimeout(12);
+    }
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+    await comToque.waitForTimeout(600);
+  };
+
+  const contador = () =>
+    comToque.evaluate(() => document.querySelector('#lightbox-contador')?.textContent?.trim());
+
+  await comToque.goto(`${BASE_URL}/tatuagem/blackwork/`, { waitUntil: 'networkidle' });
+  await aguardarLightboxHidratado(comToque);
+  const fotosDoNicho = await comToque.locator('.portfolio-item').count();
+  await comToque.locator('.lightbox-trigger').first().click({ force: true });
+  await comToque.waitForTimeout(400);
+
+  checar('ampliação abre no contador da galeria inteira',
+         (await contador()) === `1 / ${fotosDoNicho}`, await contador());
+
+  await deslizar(330, 60);
+  checar('deslizar para a esquerda passa para a próxima',
+         (await contador()) === `2 / ${fotosDoNicho}`, await contador());
+
+  await deslizar(60, 330);
+  checar('deslizar para a direita volta para a anterior',
+         (await contador()) === `1 / ${fotosDoNicho}`, await contador());
+
+  /* Na primeira foto não há anterior: o trilho cede e volta, mas a ampliação
+     não pode fechar nem ficar presa fora do repouso. */
+  await deslizar(60, 330);
+  const repouso = await comToque.evaluate(
+    () => document.querySelector('.lightbox-trilho')?.style.transform
+  );
+  checar('deslizar além da borda não fecha nem trava o trilho',
+         (await contador()) === `1 / ${fotosDoNicho}` && repouso?.includes('-100%'),
+         `${await contador()} / ${repouso}`);
+
+  // Deslize curto é hesitação, não intenção de trocar.
+  await deslizar(200, 165);
+  checar('deslize curto não troca de foto', (await contador()) === `1 / ${fotosDoNicho}`, await contador());
+
+  /* O recorte é a galeria de origem: na home, a fileira. Sem isto o deslize
+     saltaria de categoria e desmentiria a legenda. */
+  await comToque.goto(BASE_URL, { waitUntil: 'networkidle' });
+  await aguardarLightboxHidratado(comToque);
+  await comToque.locator('.carrossel[data-category="geek"] .lightbox-trigger').first().click({ force: true });
+  await comToque.waitForTimeout(400);
+  await deslizar(330, 60);
+  await deslizar(330, 60);
+  await deslizar(330, 60);
+  const categoriaNoFim = await comToque.evaluate(
+    () => document.querySelector('#lightbox-category')?.textContent?.trim()
+  );
+  checar('na home o deslize fica dentro da fileira',
+         (await contador()) === '3 / 3' && categoriaNoFim === 'Geek & Animes',
+         `${await contador()} — ${categoriaNoFim}`);
+
+  // Sem mouse não há seta na tela; o teclado é o caminho de quem não desliza.
+  const comSetas = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+  await comSetas.goto(`${BASE_URL}/tatuagem/blackwork/`, { waitUntil: 'networkidle' });
+  await aguardarLightboxHidratado(comSetas);
+  await comSetas.locator('.lightbox-trigger').first().click({ force: true });
+  await comSetas.waitForTimeout(400);
+
+  const setaVisivel = await comSetas.locator('#lightbox-proxima').isVisible();
+  const voltarDesabilitado = await comSetas.locator('#lightbox-anterior').isDisabled();
+  checar('desktop mostra as setas, com a de voltar desabilitada na primeira',
+         setaVisivel && voltarDesabilitado);
+
+  await comSetas.keyboard.press('ArrowRight');
+  await comSetas.waitForTimeout(900);
+  const depoisDaTecla = await comSetas.evaluate(
+    () => document.querySelector('#lightbox-contador')?.textContent?.trim()
+  );
+  checar('seta do teclado passa de foto', depoisDaTecla === `2 / ${fotosDoNicho}`, depoisDaTecla);
+
+  await comToque.close();
+  await comSetas.close();
   await page.close();
 } finally {
   await browser.close();

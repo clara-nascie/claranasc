@@ -52,6 +52,103 @@
     transition-duration: 0.22s;
 }
 
+/* ⚠️ `touch-action: none` para o navegador nao assumir o arrasto horizontal:
+   sem isto ele engole os `pointermove` e o deslize morre no meio. */
+.lightbox-visor {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    touch-action: none;
+}
+
+.lightbox-trilho {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    will-change: transform;
+}
+
+/* Solta do dedo: o gesto ja andou quase todo o caminho, entao a animacao so
+   completa o resto. Curva sem freio no comeco, para emendar no movimento. */
+.lightbox-trilho--animando {
+    transition: transform 0.38s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Seta ou teclado: parte do repouso e percorre a tela inteira. Precisa de mais
+   tempo e de aceleracao nas duas pontas, senao a foto troca de estalo. */
+.lightbox-trilho--comando {
+    transition-duration: 0.55s;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lightbox-slide {
+    flex: 0 0 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lightbox-close,
+.lightbox-nav {
+    z-index: 2;
+}
+
+.lightbox-nav {
+    position: absolute;
+    top: 50%;
+    /* Escondida por padrao: onde nao ha mouse, quem passa de foto e o dedo. */
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    color: var(--text-on-dark);
+    background-color: rgba(255, 255, 255, 0.05);
+    transition: var(--transition-smooth);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .lightbox-nav {
+        display: flex;
+    }
+}
+
+.lightbox-nav--anterior {
+    left: 30px;
+    transform: translateY(-50%);
+}
+
+.lightbox-nav--proxima {
+    right: 30px;
+    transform: translateY(-50%);
+}
+
+.lightbox-nav:hover:not(:disabled) {
+    background-color: var(--accent-gold);
+    color: var(--bg-primary);
+}
+
+.lightbox-nav:disabled {
+    opacity: 0.2;
+    cursor: default;
+}
+
+/* No topo, e nao no rodape: embaixo ele divide a faixa com o botao
+   flutuante de WhatsApp. */
+.lightbox-contador {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    color: var(--text-on-dark);
+    opacity: 0.6;
+}
+
 .lightbox-close {
     position: absolute;
     top: 30px;

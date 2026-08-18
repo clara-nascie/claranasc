@@ -1,12 +1,32 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+
+interface Foto {
+  src: string;
+  previa: string;
+  title: string;
+  category: string;
+}
+
+const REPOUSO = -100;
+const LIMIAR_ARRASTO = 0.18;
+const RESISTENCIA_BORDA = 3;
+const FOLGA_PX = 8;
 
 /** Ampliação de foto. Ver `docs/arquitetura/gestos-da-galeria.md`. */
 export const Lightbox: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [imgData, setImgData] = useState({ src: '', previa: '', title: '', category: '' });
-  const [grandePronta, setGrandePronta] = useState(false);
+  const [fotos, setFotos] = useState<Foto[]>([]);
+  const [indice, setIndice] = useState(0);
+  const [prontas, setProntas] = useState<ReadonlySet<string>>(new Set());
   const [ativo, setAtivo] = useState(false);
+
+  const [posicao, setPosicao] = useState(REPOUSO);
+  const [animando, setAnimando] = useState(false);
+  const [viaComando, setViaComando] = useState(false);
+  const [pendente, setPendente] = useState(0);
+  const trilhoRef = useRef<HTMLDivElement>(null);
+  const arrasto = useRef<{ x: number; y: number; largura: number; decidido: boolean } | null>(null);
 
   /* O ref existe além do estado porque os dois são lidos em momentos
      diferentes: o estado desenha a tela, e o ref é o que os ouvintes
@@ -23,13 +43,12 @@ export const Lightbox: React.FC = () => {
   useEffect(() => {
     const handleOpen = (e: Event) => {
       const customEvent = e as CustomEvent;
-      setImgData({
-        src: customEvent.detail.src,
-        previa: customEvent.detail.previa ?? '',
-        title: customEvent.detail.title,
-        category: customEvent.detail.category
-      });
-      setGrandePronta(false);
+      setFotos(customEvent.detail.fotos ?? []);
+      setIndice(customEvent.detail.indice ?? 0);
+      setPosicao(REPOUSO);
+      setAnimando(false);
+      setPendente(0);
+      arrasto.current = null;
       const eEspiada = Boolean(customEvent.detail.espiada);
       setIsOpen(true);
       marcarEspiada(eEspiada);
@@ -86,19 +105,37 @@ export const Lightbox: React.FC = () => {
     return () => cancelAnimationFrame(quadro);
   }, [isOpen]);
 
+  /* Baixa as três lâminas do trilho, e não só a do meio: a vizinha aparece
+     durante o deslize, antes de virar a foto atual. */
+  const pedidas = useRef(new Set<string>());
   useEffect(() => {
-    if (!isOpen || !imgData.src) return;
+    if (!isOpen) return;
 
-    const grande = new Image();
-    grande.onload = () => setGrandePronta(true);
-    grande.src = imgData.src;
-    // Já em cache: o `onload` de uma imagem completa pode não disparar.
-    if (grande.complete) setGrandePronta(true);
+    for (const foto of [fotos[indice - 1], fotos[indice], fotos[indice + 1]]) {
+      if (!foto?.src || pedidas.current.has(foto.src)) continue;
+      pedidas.current.add(foto.src);
 
-    return () => {
-      grande.onload = null;
-    };
-  }, [isOpen, imgData.src]);
+      const marcar = () => setProntas((antes) => new Set(antes).add(foto.src));
+      const grande = new Image();
+      grande.onload = marcar;
+      grande.src = foto.src;
+      // Já em cache: o `onload` de uma imagem completa pode não disparar.
+      if (grande.complete) marcar();
+    }
+  }, [isOpen, fotos, indice]);
+
+  const navegar = useCallback(
+    (direcao: number) => {
+      if (pendente) return;
+      const alvo = indice + direcao;
+      if (alvo < 0 || alvo >= fotos.length) return;
+      setPendente(direcao);
+      setViaComando(true);
+      setAnimando(true);
+      setPosicao(REPOUSO - direcao * 100);
+    },
+    [pendente, indice, fotos.length]
+  );
 
   useEffect(() => {
     if (!isOpen) return;
@@ -111,6 +148,9 @@ export const Lightbox: React.FC = () => {
 
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') closeLightbox();
+      if (espiandoRef.current) return;
+      if (e.key === 'ArrowLeft') navegar(-1);
+      if (e.key === 'ArrowRight') navegar(1);
     };
 
     window.addEventListener('popstate', handlePop);
@@ -120,31 +160,161 @@ export const Lightbox: React.FC = () => {
       window.removeEventListener('popstate', handlePop);
       window.removeEventListener('keydown', handleKey);
     };
-  }, [isOpen, closeLightbox, marcarEspiada]);
+  }, [isOpen, closeLightbox, marcarEspiada, navegar]);
+
+  /* O índice só troca no fim da animação, e junto com a volta ao repouso: como
+     o React aplica os dois na mesma renderização, a lâmina que entrou continua
+     exatamente onde a animação a deixou. */
+  const aoTerminarTransicao = (e: React.TransitionEvent) => {
+    if (e.target !== trilhoRef.current || e.propertyName !== 'transform') return;
+    setAnimando(false);
+    setPosicao(REPOUSO);
+    if (pendente) {
+      setIndice((atual) => atual + pendente);
+      setPendente(0);
+    }
+  };
+
+  /* Arrasto só de toque: no desktop o gesto do mouse é a seta, e capturá-lo
+     aqui impediria de selecionar a legenda. */
+  const aoPressionar = (e: React.PointerEvent) => {
+    if (e.pointerType === 'mouse' || pendente || fotos.length < 2) return;
+    arrasto.current = { x: e.clientX, y: e.clientY, largura: e.currentTarget.clientWidth, decidido: false };
+    setViaComando(false);
+    setAnimando(false);
+  };
+
+  const aoMover = (e: React.PointerEvent) => {
+    const gesto = arrasto.current;
+    if (!gesto) return;
+
+    const dx = e.clientX - gesto.x;
+    if (!gesto.decidido) {
+      const dy = e.clientY - gesto.y;
+      if (Math.hypot(dx, dy) < FOLGA_PX) return;
+      if (Math.abs(dx) <= Math.abs(dy)) {
+        arrasto.current = null;
+        return;
+      }
+      gesto.decidido = true;
+      e.currentTarget.setPointerCapture(e.pointerId);
+    }
+
+    const naBorda = (dx > 0 && indice === 0) || (dx < 0 && indice === fotos.length - 1);
+    const avanco = naBorda ? dx / RESISTENCIA_BORDA : dx;
+    setPosicao(REPOUSO + (avanco / gesto.largura) * 100);
+  };
+
+  const aoSoltar = (e: React.PointerEvent) => {
+    const gesto = arrasto.current;
+    if (!gesto) return;
+    arrasto.current = null;
+
+    const dx = e.clientX - gesto.x;
+    const direcao = dx < 0 ? 1 : -1;
+    const alvo = indice + direcao;
+    setAnimando(true);
+
+    if (Math.abs(dx) > gesto.largura * LIMIAR_ARRASTO && alvo >= 0 && alvo < fotos.length) {
+      setPendente(direcao);
+      setPosicao(REPOUSO - direcao * 100);
+    } else {
+      setPosicao(REPOUSO);
+    }
+  };
+
+  const aoCancelar = () => {
+    if (!arrasto.current) return;
+    arrasto.current = null;
+    setAnimando(true);
+    setPosicao(REPOUSO);
+  };
 
   if (!isOpen) return null;
+
+  const varias = fotos.length > 1;
 
   return (
     <div
       className={`lightbox-modal${ativo ? ' active' : ''}${espiando ? ' lightbox-modal--espiada' : ''}`}
       id="lightbox-modal"
     >
+      <div
+        className="lightbox-visor"
+        onPointerDown={aoPressionar}
+        onPointerMove={aoMover}
+        onPointerUp={aoSoltar}
+        onPointerCancel={aoCancelar}
+      >
+        <div
+          className={`lightbox-trilho${animando ? ' lightbox-trilho--animando' : ''}${
+            animando && viaComando ? ' lightbox-trilho--comando' : ''
+          }`}
+          ref={trilhoRef}
+          style={{ transform: `translate3d(${posicao}%, 0, 0)` }}
+          onTransitionEnd={aoTerminarTransicao}
+        >
+          {[-1, 0, 1].map((deslocamento) => {
+            const foto = fotos[indice + deslocamento];
+            const atual = deslocamento === 0;
+
+            return (
+              <div className="lightbox-slide" key={indice + deslocamento} aria-hidden={!atual}>
+                {foto && (
+                  <div className="lightbox-content">
+                    <img
+                      src={prontas.has(foto.src) || !foto.previa ? foto.src : foto.previa}
+                      alt={foto.title}
+                      id={atual ? 'lightbox-img' : undefined}
+                      fetchPriority={atual ? 'high' : 'low'}
+                    />
+                    <div className="lightbox-caption">
+                      <span className="lightbox-category" id={atual ? 'lightbox-category' : undefined}>
+                        {foto.category}
+                      </span>
+                      <h3 className="lightbox-title" id={atual ? 'lightbox-title' : undefined}>
+                        {foto.title}
+                      </h3>
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
       {!espiando && (
         <button className="lightbox-close" id="lightbox-close" aria-label="Fechar Galeria" onClick={closeLightbox}>
           <X aria-hidden="true" />
         </button>
       )}
-      <div className="lightbox-content">
-        <img
-          src={grandePronta || !imgData.previa ? imgData.src : imgData.previa}
-          alt={imgData.title}
-          id="lightbox-img"
-        />
-        <div className="lightbox-caption">
-          <span className="lightbox-category" id="lightbox-category">{imgData.category}</span>
-          <h3 className="lightbox-title" id="lightbox-title">{imgData.title}</h3>
-        </div>
-      </div>
+
+      {!espiando && varias && (
+        <>
+          <button
+            className="lightbox-nav lightbox-nav--anterior"
+            id="lightbox-anterior"
+            aria-label="Foto anterior"
+            disabled={indice === 0}
+            onClick={() => navegar(-1)}
+          >
+            <ChevronLeft aria-hidden="true" />
+          </button>
+          <button
+            className="lightbox-nav lightbox-nav--proxima"
+            id="lightbox-proxima"
+            aria-label="Próxima foto"
+            disabled={indice === fotos.length - 1}
+            onClick={() => navegar(1)}
+          >
+            <ChevronRight aria-hidden="true" />
+          </button>
+          <p className="lightbox-contador" id="lightbox-contador" aria-live="polite">
+            {indice + 1} / {fotos.length}
+          </p>
+        </>
+      )}
     </div>
   );
 };
