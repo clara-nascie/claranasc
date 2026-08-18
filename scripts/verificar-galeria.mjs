@@ -413,6 +413,49 @@ try {
          (await contador()) === '3 / 3' && categoriaNoFim === 'Geek & Animes',
          `${await contador()} — ${categoriaNoFim}`);
 
+  /* A ampliação não pode encostar nos controles. Foto em pé com legenda de
+     duas linhas era o caso ruim: o X grudava no topo da foto e a legenda saía
+     por baixo do botão flutuante. Tela baixa de propósito — é onde aperta. */
+  const apertada = await browser.newContext({
+    viewport: { width: 360, height: 640 },
+    hasTouch: true,
+    isMobile: true
+  });
+  const comPoucaAltura = await apertada.newPage();
+  await comPoucaAltura.goto(`${BASE_URL}/tatuagem/botanico/`, { waitUntil: 'networkidle' });
+  await aguardarLightboxHidratado(comPoucaAltura);
+  await comPoucaAltura.locator('.lightbox-trigger').first().click({ force: true });
+  await comPoucaAltura.waitForTimeout(400);
+
+  let pior = null;
+  for (let i = 0; i < 6; i++) {
+    const medida = await comPoucaAltura.evaluate(() => {
+      const caixa = (sel) => document.querySelector(sel)?.getBoundingClientRect();
+      const foto = caixa('#lightbox-img');
+      const x = caixa('#lightbox-close');
+      const legenda = caixa('.lightbox-caption');
+      const img = document.querySelector('#lightbox-img');
+      return {
+        titulo: document.querySelector('#lightbox-title')?.textContent?.trim(),
+        folga: Math.round(foto.top - x.bottom),
+        legendaCabe: legenda.bottom <= window.innerHeight,
+        /* Encolher só em altura deixaria a caixa mais larga que a imagem, e a
+           borda apareceria descolada da foto. */
+        desvioDeFormato: Math.abs(foto.width / foto.height - img.naturalWidth / img.naturalHeight)
+      };
+    });
+    if (!pior || medida.folga < pior.folga) pior = medida;
+    if (!medida.legendaCabe || medida.desvioDeFormato > 0.02) pior = medida;
+    await comPoucaAltura.locator('#lightbox-proxima').click({ force: true }).catch(() => {});
+    await comPoucaAltura.waitForTimeout(700);
+  }
+
+  checar('ampliação não encosta no X nem estoura a legenda',
+         pior.folga > 8 && pior.legendaCabe && pior.desvioDeFormato <= 0.02,
+         `folga ${pior.folga}px, legenda cabe=${pior.legendaCabe}, desvio de formato ${pior.desvioDeFormato.toFixed(3)} ("${pior.titulo}")`);
+
+  await comPoucaAltura.close();
+
   // Sem mouse não há seta na tela; o teclado é o caminho de quem não desliza.
   const comSetas = await browser.newPage({ viewport: { width: 1440, height: 900 } });
   await comSetas.goto(`${BASE_URL}/tatuagem/blackwork/`, { waitUntil: 'networkidle' });

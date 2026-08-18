@@ -52,6 +52,12 @@
     transition-duration: 0.22s;
 }
 
+/* A espiada nao mostra X nem contador: sem controles no topo, nao ha faixa a
+   reservar, e a foto usa a tela toda. */
+.lightbox-modal--espiada .lightbox-slide {
+    padding: 24px 0;
+}
+
 /* ⚠️ `touch-action: none` para o navegador nao assumir o arrasto horizontal:
    sem isto ele engole os `pointermove` e o deslize morre no meio. */
 .lightbox-visor {
@@ -81,11 +87,15 @@
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* A faixa de cima e a de baixo sao reservadas, e nao decoracao: em cima moram
+   o X e o contador, embaixo o botao flutuante de WhatsApp. Sem elas a foto
+   encosta nos dois. */
 .lightbox-slide {
     flex: 0 0 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 96px 0 104px;
 }
 
 .lightbox-close,
@@ -173,16 +183,22 @@
 
 .lightbox-content {
     max-width: 80%;
-    max-height: 80vh;
+    /* Da lamina, ja descontadas as faixas — nao da tela. */
+    max-height: 100%;
+    min-height: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 20px;
 }
 
+/* ⚠️ `min-height: 0` para a foto poder encolher: em flexbox um item so encolhe
+   abaixo do proprio conteudo com isto, e sem ele a legenda e empurrada para
+   fora da tela em vez de a foto ceder. */
 .lightbox-content img {
     max-width: 100%;
     max-height: 70vh;
+    min-height: 0;
     object-fit: contain;
     border-radius: 4px;
     border: 1px solid var(--glass-border);
@@ -195,7 +211,9 @@
     transform: scale(1);
 }
 
+/* Quem cede altura e a foto, nunca a legenda. */
 .lightbox-caption {
+    flex-shrink: 0;
     text-align: center;
 }
 

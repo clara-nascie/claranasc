@@ -92,6 +92,24 @@ legenda — que na ampliação fixa é selecionável de propósito.
 arrasto horizontal como gesto próprio e os `pointermove` param de chegar no meio
 do deslize.
 
+### A lâmina reserva as faixas dos controles
+
+A foto tinha altura fixa (`70vh`) e o conjunto foto + legenda era centralizado
+na tela **inteira**, como se ela estivesse vazia. Não está: em cima moram o X e
+o contador, embaixo o botão flutuante de WhatsApp. Numa foto em pé com legenda
+de duas linhas o conjunto ficava alto demais e invadia as duas pontas — o X
+encostava no topo da foto e a segunda linha da legenda sumia atrás do botão.
+
+Agora a lâmina reserva as faixas (`padding: 96px 0 104px`) e **quem cede altura
+é a foto**, nunca a legenda.
+
+⚠️ O `min-height: 0` na foto é o que faz isso funcionar. Em flexbox um item não
+encolhe abaixo do próprio conteúdo sem ele, e uma imagem "cabe" no tamanho que
+pedir — sem esse zero, era a legenda que era empurrada para fora da tela.
+
+A espiada é isenta: ela não mostra X nem contador, então não há faixa a
+reservar e a foto usa a tela toda.
+
 ### O contador fica no topo
 
 `1 / 34` no canto superior esquerdo, espelhando o X. No rodapé ele dividiria a
