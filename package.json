@@ -14,7 +14,8 @@
     "verificar:galeria": "node scripts/verificar-galeria.mjs",
     "verificar:nichos": "node scripts/verificar-nichos.mjs",
     "verificar:contraste": "node scripts/verificar-contraste-fundo.mjs",
-    "analytics": "node scripts/analytics-cloudflare.mjs"
+    "analytics": "node scripts/analytics-cloudflare.mjs",
+    "worker": "wrangler dev"
   },
   "dependencies": {
     "@astrojs/react": "^6.0.1",
@@ -27,6 +28,8 @@
     "react-dom": "^19.2.8"
   },
   "devDependencies": {
-    "playwright": "^1.62.0"
+    "@cloudflare/workers-types": "^5.20260818.1",
+    "playwright": "^1.62.0",
+    "wrangler": "^4.124.0"
   }
 }
