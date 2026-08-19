@@ -18,23 +18,31 @@ src/
 │   │                BreadcrumbSchema.astro, FaqSchema.astro
 │   ├── sections/    Header.tsx, ContactForm.tsx, Footer.tsx
 │   │                Hero.astro, Portfolio.astro, About.astro
-│   ├── ui/          Primitivos: Button, Input, Select, Textarea
+│   ├── ui/          Primitivos: Button, Input, Select, Textarea, FileInput
 │   │                Marca: InstagramIcon, TiktokIcon
 │   ├── FloatingCta.astro
 │   └── Lightbox.tsx
 ├── data/            siteData.ts (negocio), portfolioData.ts (galeria),
-│                    nichosData.ts (texto das paginas por nicho)
+│                    nichosData.ts (texto das paginas por nicho),
+│                    referencias.ts (limites do upload, compartilhados
+│                    entre o formulario e o Worker)
 ├── layouts/         BaseLayout.astro (head + header + rodape + reveal)
 ├── pages/           index.astro
 │                    tatuagem/[categoria].astro  -> 5 paginas
 └── styles/          base/ + components/ + sections/, agregados por global.css
 
+worker/
+└── index.ts         Unico codigo do projeto que roda na borda. Recebe as
+                     fotos de referencia do formulario e as entrega de volta.
+                     Ver referencias-do-orcamento.md
+
 scripts/
 ├── inventario-fotos.mjs   o que do acervo ja esta no site
 ├── importar-fotos.mjs     converte, renomeia e escreve no portfolioData
 ├── verificar-visual.mjs   botao flutuante, console, contraste, foto da artista
-├── verificar-galeria.mjs  home: carrosseis, filtro, lightbox
+├── verificar-galeria.mjs  home: carrosseis, filtro, lightbox, deslize
 ├── verificar-nichos.mjs   as 5 paginas por nicho
+├── verificar-formulario.mjs  formulario e upload (exige o Worker no ar)
 └── verificar-contraste-fundo.mjs   contraste sobre imagem de fundo
 ```
 
@@ -104,10 +112,17 @@ Duas coisas que o projeto **não** pode fazer, e que têm nome: *hidden text*
 tela) e *cloaking* (servir conteúdo diferente para o Googlebot). A penalidade
 não é ranquear menos, é ação manual.
 
-> Vale registrar que aqui **nem seria possível**: o site é estático. O build
-> gera arquivos `.html` na borda da Cloudflare, e o Googlebot baixa exatamente
-> o mesmo arquivo que a visitante. Não existe código no servidor para decidir
-> "para este aqui eu mando texto a mais".
+> Vale registrar que aqui **nem seria possível**: as páginas são estáticas. O
+> build gera arquivos `.html` na borda da Cloudflare, e o Googlebot baixa
+> exatamente o mesmo arquivo que a visitante. Não existe código no servidor
+> para decidir "para este aqui eu mando texto a mais".
+>
+> Desde 19/08/2026 existe um Worker, mas ele não toca nenhuma página: o
+> `run_worker_first` o limita a `/api/*` e `/r/*`, e o resto do site continua
+> sendo entregue direto pelo servidor de assets. A propriedade acima segue
+> valendo, e **manter isso assim é uma decisão, não um acaso** — código na
+> borda que respondesse páginas abriria justamente a porta que este parágrafo
+> diz estar fechada.
 
 O accordion é `<details>`/`<summary>` nativo, **sem JavaScript**. Não é
 economia: o elemento já traz abrir/fechar, foco por teclado, `Enter`/`Espaço` e
@@ -209,8 +224,8 @@ Três componentes hidratam hoje, todos com `client:load`:
 | Componente | Por que hidrata |
 | --- | --- |
 | `Header` | abre/fecha o menu mobile |
-| `ContactForm` | estado do formulário e montagem da mensagem do WhatsApp |
-| `Lightbox` | galeria ampliada |
+| `ContactForm` | estado do formulário, envio das fotos de referência e montagem da mensagem do WhatsApp |
+| `Lightbox` | galeria ampliada e deslize entre as fotos |
 
 O resto — `Hero`, `Portfolio`, `About`, `Footer`, `AppLayout`, `FloatingCta` —
 é HTML estático, sem JavaScript de componente.
@@ -404,18 +419,26 @@ são a mesma entidade.
 
 ## Hospedagem e deploy
 
-* **Cloudflare Pages**, build a cada push na `main`. O push publica direto em produção, sem etapa de aprovação.
-* Configuração: build command `npm run build`, output `dist`.
-* Sem servidor Node em runtime — só arquivos estáticos na edge.
+* **Cloudflare Workers servindo assets estáticos** — não Pages. Quem manda na configuração é o `wrangler.jsonc` na raiz, não o painel.
+* Build a cada push na `main`, do lado da Cloudflare. O push publica **direto em produção**, sem etapa de aprovação.
+* Sem servidor Node em runtime. O único código que roda na borda é o `worker/index.ts`, e só em `/api/*` e `/r/*`.
+
+⚠️ **O bucket R2 `claranasc-referencias` precisa existir**, senão o deploy
+falha e derruba o site. Criado em 18/08/2026, com expiração de 30 dias. Ver
+[`referencias-do-orcamento.md`](referencias-do-orcamento.md).
+
+O `wrangler` é dependência de desenvolvimento **só para rodar o Worker
+localmente** — o deploy continua sendo da Cloudflare, a partir do repositório.
 
 ## Verificação
 
-Quatro scripts, todos com Chromium headless (Playwright):
+Cinco scripts, todos com Chromium headless (Playwright):
 
 | Comando | Cobre |
 | --- | --- |
 | `npm run verificar` | botão flutuante por scroll, erros de console, requisições falhas, contraste computado a partir das cores renderizadas e **se a foto da artista tem tamanho de verdade** |
-| `npm run verificar:galeria` | home: 5 fileiras com 3 fotos cada, os links dos cartões, o filtro escondendo fileiras, os trilhos rolando no celular, o lightbox, e se a fileira **fica de fato visível** |
+| `npm run verificar:galeria` | home: 5 fileiras com 3 fotos cada, os links dos cartões, o filtro escondendo fileiras, os trilhos rolando no celular, o lightbox, o **deslize entre fotos** (toque disparado por CDP) e se a fileira **fica de fato visível** |
+| `npm run verificar:formulario` | o formulário de orçamento e o upload das referências: caminho feliz, arquivo disfarçado, excesso de fotos, método errado, travessia de caminho e a trava de envios. **Exige `npm run worker`** — ver o aviso abaixo |
 | `npm run verificar:nichos` | as 5 páginas por nicho: H1 único, limites de title/description, canonical vs. sitemap, tamanho da chamada, masonry em 3 colunas, proporção das fotos, `BreadcrumbList` vs. trilha da tela, **`FAQPage` vs. texto visível**, links internos sem 404 e o botão flutuante |
 | `npm run verificar:contraste` | contraste de cada texto do hero e do cabeçalho contra o fundo **renderizado**, pixel a pixel, em 8 larguras |
 
@@ -427,7 +450,12 @@ Quatro scripts, todos com Chromium headless (Playwright):
 > comparação entre canonical e sitemap não roda no dev (o script avisa quando
 > pula).
 
-O tema comum aos três: **existir no DOM não é aparecer.** Cada um nasceu de um
+> ⚠️ E o `verificar:formulario` não roda contra **nenhum** dos dois: `dev` e
+> `preview` servem só arquivos estáticos, e `/api/referencias` não existe lá —
+> a verificação passaria a testar o nada. Ele precisa de `npm run build`
+> seguido de `npm run worker`.
+
+O tema comum a eles: **existir no DOM não é aparecer.** Cada um nasceu de um
 bug que sobreviveu em produção porque nada olhava aquilo.
 
 * A galeria teve os 30 itens presentes e corretamente filtrados, e invisível no

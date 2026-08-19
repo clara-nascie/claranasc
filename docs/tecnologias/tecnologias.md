@@ -14,6 +14,11 @@ Horizonte, decisões de performance aqui são decisões de SEO.
   > ⚠️ **Não há verificação de tipos neste projeto.** O `npm run build` (Vite) apenas **remove** os tipos, não valida nada — um erro de tipo passa sem reclamar. O `typescript` não está instalado, e o `@astrojs/check` é incompatível com TypeScript 7. Não conte com o TS para pegar bugs aqui; ele serve como documentação e autocomplete no editor.
 * **CSS3 vanilla** — sem framework utilitário. Design System *Premium Light Mode* (fundo creme, tons terrosos, acento marrom mel) em `src/styles/base/variables.css`. CSS modularizado em `base/`, `components/` e `sections/`, todos importados por `global.css`.
 * **Node.js** (≥ 22.12.0) — só em desenvolvimento e na etapa de build. Não há servidor Node em runtime.
+* **Cloudflare Workers + R2** — desde 19/08/2026 o projeto tem código rodando na borda: `worker/index.ts`, que recebe as fotos de referência do formulário de orçamento e as guarda num bucket R2.
+  > O motivo é uma limitação dura, não uma preferência: link `wa.me` aceita `phone` e `text`, e **não existe parâmetro de arquivo**. Sem algo rodando no servidor, não havia nem para onde a foto ir nem como ela entrar na mensagem. As decisões, os limites e as travas estão em [`docs/arquitetura/referencias-do-orcamento.md`](../arquitetura/referencias-do-orcamento.md).
+  > ⚠️ O Worker é limitado a `/api/*` e `/r/*` pelo `run_worker_first`. As páginas continuam estáticas, e isso é uma decisão — ver a nota sobre *cloaking* na arquitetura.
+* **`wrangler`** (dependência de desenvolvimento) — roda o Worker localmente com R2 e rate limit simulados. Roda local por padrão (`--remote` é `false`) e **não precisa de conta nem de token**, que é o que permite ao CI testar o upload.
+  > ⚠️ O `.env` do projeto tem um `CLOUDFLARE_API_TOKEN` com escopo só de Analytics, e ele **tem precedência sobre o login por OAuth**. Qualquer comando de R2 esbarra nisso. A saída é `--env-file` apontando para um arquivo vazio — a opção substitui a descoberta do `.env`, não soma a ela.
 
 ## Bibliotecas
 

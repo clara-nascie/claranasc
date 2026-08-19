@@ -98,6 +98,25 @@ este arquivo registra o que já foi percorrido.
 - [x] Altura no celular: 19.037px → 6.763px; 1.013 KB → 619 KB
 - [x] Filtro mantido, agora escondendo fileiras inteiras
 
+## ✅ Deslize na galeria ampliada _(18/08/2026)_
+- [x] Com a foto aberta, deslizar para o lado troca de foto — antes era fechar e abrir uma a uma
+- [x] O evento `open-lightbox` passou a levar a galeria inteira e o índice, não uma foto só
+- [x] Trilho de 3 lâminas (anterior/atual/próxima): montar as 34 de um nicho baixaria 34 imagens de 1400px
+- [x] Recorte é a galeria de origem — na home, a fileira; a legenda mostra a categoria e um salto a desmentiria
+- [x] Setas na tela e no teclado no desktop; o arrasto de mouse ficou de fora para não quebrar a seleção da legenda
+- [x] Dois tempos de animação: 0,38s soltando o dedo, 0,55s pela seta — percursos diferentes
+- [x] Ampliação parou de encostar no X e de esconder a legenda atrás do botão flutuante ⚠️ o `min-height: 0` é o que faz a foto ceder em vez da legenda
+- [x] 8 checagens novas no `verificar:galeria`, com toque disparado por CDP
+
+## ✅ Fotos de referência no orçamento _(19/08/2026)_
+- [x] Campo de WhatsApp removido do formulário: era **coletado, obrigatório e descartado** — nunca entrou na mensagem
+- [x] Campo de upload de até 5 fotos, com miniatura, remoção e arrastar-soltar
+- [x] **Primeiro código do projeto rodando na borda**: `worker/index.ts` + bucket R2
+- [x] Bucket `claranasc-referencias` criado, com expiração de 30 dias ⚠️ sem ele o deploy falha
+- [x] `wrangler` como dependência de desenvolvimento — sem ele nada testaria o endpoint
+- [x] `verificar:formulario`, 17 checagens, ligado ao CI
+- [x] Verificado contra o R2 real antes do push, e o binding conferido em produção sem escrever nada
+
 ## ⏳ Em aberto
 
 Ver as [issues](https://github.com/clara-nascie/claranasc/issues). Prioridade:
@@ -123,3 +142,8 @@ Ver as [issues](https://github.com/clara-nascie/claranasc/issues). Prioridade:
 * **Não filtre o acervo por conta própria.** Ângulo diferente da mesma tatuagem **entra**: uma peça que dá a volta no braço não cabe em uma foto só. Marca d'água do estúdio antigo (`@tattookapala`) é irrelevante. Descarte só arquivo ilegível e duplicata byte-a-byte — o que o `inventario-fotos.mjs` já detecta sozinho.
 * **Mostre os nomes das fotos à Clara antes de importar.** Medido: corrigir depois custou 30 renomeações em Geek; revisar antes custou zero em Fine Line. Ela conhece a sessão, o agente só vê a foto.
 * **Lighthouse deve ser rodado contra `npm run preview`**, nunca contra o dev server — o dev server não é representativo do build de produção.
+* **O `verificar:formulario` não roda contra `dev` nem contra `preview`.** Os dois servem só arquivos estáticos: `/api/referencias` não existe lá e a verificação passaria a testar o nada. Precisa de `npm run build` e `npm run worker`.
+* **O bucket R2 tem que existir, senão o deploy derruba o site.** O `wrangler.jsonc` declara `claranasc-referencias`; um deploy com bucket ausente falha, e o deploy vai direto para produção. O mesmo vale para qualquer binding novo que se declare ali.
+* **O tipo de arquivo declarado pelo navegador não vale nada.** O `accept` do campo e o `type` do arquivo vêm do cliente. Quem recusa é a conferência dos primeiros bytes no Worker — se um dia alguém "simplificar" isso, o endereço vira hospedagem de arquivo qualquer no domínio dela.
+* **Falha de upload não pode engolir o envio do formulário.** Ele existe para começar uma conversa; se o upload falhar, o WhatsApp abre do mesmo jeito avisando que as fotos vão pelo chat.
+* **Gesto de toque se testa no aparelho.** Quatro defeitos da espiada e agora o campo de upload: emulação reproduz a geometria do toque, não o reconhecedor de gestos do sistema. Rastreado na [#23](https://github.com/clara-nascie/claranasc/issues/23).
