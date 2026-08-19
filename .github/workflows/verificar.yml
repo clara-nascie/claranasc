@@ -60,6 +60,22 @@ jobs:
         env:
           BASE_URL: http://localhost:4321
 
+      # ⚠️ O formulário de orçamento exige o Worker no ar. O `astro preview`
+      # serve só os arquivos estáticos: `/api/referencias` não existe lá, e a
+      # verificação passaria a testar o nada.
+      #
+      # `wrangler dev` roda local por padrão (`--remote` é false), com R2 e
+      # rate limit simulados. Não precisa de conta nem de token da Cloudflare.
+      - name: Subir o Worker
+        if: always()
+        run: npx wrangler dev --port 8787 &
+
+      - name: Verificação do formulário e do envio de referências
+        if: always()
+        run: npm run verificar:formulario
+        env:
+          BASE_URL: http://127.0.0.1:8787
+
       # Sobe as capturas mesmo quando a verificação falha — são elas que
       # mostram o que aconteceu.
       - name: Publicar capturas

@@ -1,14 +1,39 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "claranasc",
+  "main": "worker/index.ts",
   "compatibility_date": "2026-06-19",
   "observability": {
     "enabled": true
   },
   "assets": {
-    "directory": "dist"
+    "directory": "dist",
+    "binding": "ASSETS",
+    // Só estas rotas passam pelo Worker. O resto do site continua sendo
+    // entregue direto pelo servidor de assets, como antes de existir Worker.
+    "run_worker_first": ["/api/*", "/r/*"]
   },
   "compatibility_flags": [
     "nodejs_compat"
+  ],
+  // ⚠️ O bucket precisa existir ANTES do primeiro push, senão o deploy falha.
+  // Ver docs/arquitetura/referencias-do-orcamento.md.
+  "r2_buckets": [
+    {
+      "binding": "REFERENCIAS",
+      "bucket_name": "claranasc-referencias"
+    }
+  ],
+  // 5 envios por minuto por IP. O endereço de upload é público, e sem isto
+  // uma única máquina encheria o bucket.
+  "ratelimits": [
+    {
+      "name": "LIMITE_UPLOAD",
+      "namespace_id": "1",
+      "simple": {
+        "limit": 5,
+        "period": 60
+      }
+    }
   ]
 }

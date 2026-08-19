@@ -7,10 +7,11 @@ interface ButtonProps {
   className?: string;
   children: React.ReactNode;
   id?: string;
+  disabled?: boolean;
   onClick?: React.MouseEventHandler<HTMLElement>;
 }
 
-export const Button: React.FC<ButtonProps> = ({ as = 'button', href, type, className = '', children, id, onClick }) => {
+export const Button: React.FC<ButtonProps> = ({ as = 'button', href, type, className = '', children, id, disabled, onClick }) => {
   // Variantes que trazem o próprio estilo completo não recebem a base `.btn`.
   const finalClass = className.includes('btn-header-cta') || className.includes('btn-zoom') 
     ? className 
@@ -24,7 +25,7 @@ export const Button: React.FC<ButtonProps> = ({ as = 'button', href, type, class
     );
   }
   return (
-    <button type={type || 'button'} className={finalClass} id={id} onClick={onClick}>
+    <button type={type || 'button'} className={finalClass} id={id} disabled={disabled} onClick={onClick}>
       {children}
     </button>
   );

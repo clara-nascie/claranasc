@@ -15,7 +15,8 @@
     "verificar:nichos": "node scripts/verificar-nichos.mjs",
     "verificar:contraste": "node scripts/verificar-contraste-fundo.mjs",
     "analytics": "node scripts/analytics-cloudflare.mjs",
-    "worker": "wrangler dev"
+    "worker": "wrangler dev",
+    "verificar:formulario": "node scripts/verificar-formulario.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^6.0.1",

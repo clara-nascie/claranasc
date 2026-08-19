@@ -104,9 +104,8 @@ O projeto utiliza Node.js e Astro para gerenciamento de dependências e servidor
 
 ## 🔍 Verificação Visual e de Acessibilidade
 
-O projeto inclui três scripts que sobem um Chromium headless (Playwright),
-navegam pelo site como uma visitante e checam o que análise de código não
-alcança.
+O projeto inclui scripts que sobem um Chromium headless (Playwright), navegam
+pelo site como uma visitante e checam o que análise de código não alcança.
 
 ```bash
 npm run dev                  # em um terminal
@@ -118,15 +117,25 @@ npm run verificar:contraste
 | Script | Cobre |
 | --- | --- |
 | `verificar` | comportamento por scroll, erros de console, requisições falhas, contraste computado e se a foto da artista tem tamanho de verdade |
-| `verificar:galeria` | filtro por categoria, lightbox e se a grade fica visível |
+| `verificar:galeria` | filtro por categoria, lightbox, deslize entre fotos e se a grade fica visível |
 | `verificar:contraste` | contraste pixel a pixel contra o fundo **renderizado**, em 8 larguras |
+| `verificar:formulario` | o formulário de orçamento e o envio das fotos de referência |
+
+> ⚠️ **`verificar:formulario` é o único que não roda contra `npm run dev` nem
+> `npm run preview`.** Ele precisa do Worker no ar, porque `/api/referencias`
+> não existe num servidor de arquivos estáticos:
+>
+> ```bash
+> npm run build     # o Worker serve o dist/
+> npm run worker    # em outro terminal
+> npm run verificar:formulario
+> ```
 
 Sai um relatório de PASSOU/FALHOU no terminal e capturas em `.playwright/`
 (desktop 1280px e mobile 390px). Os scripts encerram com código de saída 1
-quando alguma verificação falha, então servem em CI — o workflow roda os dois
-primeiros.
+quando alguma verificação falha, então servem em CI.
 
-> O que os três têm em comum: **existir no DOM não é aparecer**. Cada um nasceu
+> O que eles têm em comum: **existir no DOM não é aparecer**. Cada um nasceu
 > de um bug que sobreviveu em produção porque nada olhava aquilo — a galeria
 > invisível no celular, a foto da artista colapsada em 2x3 pixels, e o texto do
 > hero em 2,10:1 sobre a imagem de fundo que o verificador antigo não enxergava.
@@ -148,12 +157,26 @@ raiz — não o painel:
 | Campo | Valor | Significa |
 | --- | --- | --- |
 | `name` | `claranasc` | nome do Worker |
+| `main` | `worker/index.ts` | recebe as fotos de referência do formulário |
 | `assets.directory` | `dist` | a pasta publicada, saída do `npm run build` |
+| `assets.run_worker_first` | `/api/*`, `/r/*` | só estas rotas passam pelo Worker; o resto do site é entregue direto |
+| `r2_buckets` | `claranasc-referencias` | onde as fotos de referência ficam |
+| `ratelimits` | 5/min por IP | trava do endereço público de upload |
 | `observability.enabled` | `true` | liga os logs do Worker no painel |
 
-A build roda do lado da Cloudflare, pela integração com o GitHub: `wrangler`
-não é dependência do projeto e não há workflow de deploy no repositório.
-Publicar é dar push.
+A build roda do lado da Cloudflare, pela integração com o GitHub, e não há
+workflow de deploy no repositório. Publicar é dar push.
+
+> ⚠️ **O bucket R2 precisa existir antes do primeiro push.** O deploy vai
+> direto para produção e falha se o bucket declarado não existir. Os comandos
+> estão em
+> [`docs/arquitetura/referencias-do-orcamento.md`](docs/arquitetura/referencias-do-orcamento.md).
+
+`wrangler` é dependência de desenvolvimento **só para rodar o Worker
+localmente** (`npm run worker`) — o deploy continua sendo da Cloudflare. Sem
+ele, nem o formulário de orçamento nem o CI teriam como ser testados: o
+`astro preview` serve apenas os arquivos estáticos, e `/api/referencias` não
+existe lá.
 
 ### Ver os acessos
 
