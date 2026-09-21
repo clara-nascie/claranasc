@@ -7,6 +7,7 @@ import { converterFoto, type FotoConvertida } from '../../lib/converterFoto';
 import {
   ALT_MINIMO,
   blocoDoItem,
+  limparTexto,
   linhaDeImport,
   problemasDaFoto,
   sugerirNome
@@ -32,6 +33,8 @@ export const PainelFotos: React.FC<PainelFotosProps> = ({ categorias, proximoId,
   const [alt, setAlt] = useState('');
   const [arquivo, setArquivo] = useState('');
   const [arquivoEditado, setArquivoEditado] = useState(false);
+  const [enviando, setEnviando] = useState(false);
+  const [enviada, setEnviada] = useState<{ arquivo: string; commit: string } | null>(null);
 
   useEffect(() => {
     if (!arquivoEditado) setArquivo(sugerirNome(categoria, titulo, parteDoCorpo));
@@ -49,6 +52,7 @@ export const PainelFotos: React.FC<PainelFotosProps> = ({ categorias, proximoId,
     const escolhido = lista?.[0];
     if (!escolhido) return;
     setOriginal(escolhido);
+    setEnviada(null);
     setConvertida(null);
     setPrevia(null);
     setErro(null);
@@ -64,9 +68,47 @@ export const PainelFotos: React.FC<PainelFotosProps> = ({ categorias, proximoId,
   };
 
   const rotulo = categorias.find((c) => c.id === categoria)!.label;
-  const foto = { id: proximoId, arquivo, titulo, categoria, categoriaLabel: rotulo, alt };
+  const foto = {
+    id: proximoId,
+    arquivo,
+    titulo: limparTexto(titulo),
+    categoria,
+    categoriaLabel: rotulo,
+    alt: limparTexto(alt)
+  };
   const problemas = problemasDaFoto(foto, existentes);
   const pronta = convertida && problemas.length === 0;
+
+  const enviar = async () => {
+    if (!convertida) return;
+    const dados = new FormData();
+    dados.append('foto', convertida.blob, `${arquivo}.webp`);
+    dados.append('arquivo', arquivo);
+    dados.append('titulo', foto.titulo);
+    dados.append('categoria', categoria);
+    dados.append('alt', foto.alt);
+
+    setEnviando(true);
+    setErro(null);
+    try {
+      const resposta = await fetch('/api/admin/fotos', { method: 'POST', body: dados });
+      const corpo = await resposta.json().catch(() => ({}));
+      if (!resposta.ok) throw new Error(corpo.erro ?? `O envio falhou (${resposta.status}).`);
+      setEnviada({ arquivo, commit: corpo.commit });
+      setConvertida(null);
+      setOriginal(null);
+      setTitulo('');
+      setParteDoCorpo('');
+      setAlt('');
+      setArquivoEditado(false);
+    } catch (e) {
+      // Sem internet o `fetch` falha sem resposta nenhuma, e a mensagem do
+      // navegador ("Failed to fetch") não diz nada para quem está no celular.
+      setErro(e instanceof TypeError ? 'Sem conexão. A foto não foi enviada.' : (e as Error).message);
+    } finally {
+      setEnviando(false);
+    }
+  };
 
   return (
     <div className="painel-fotos">
@@ -83,6 +125,12 @@ export const PainelFotos: React.FC<PainelFotosProps> = ({ categorias, proximoId,
 
       {convertendo && <p className="painel-aviso">Convertendo…</p>}
       {erro && <p className="painel-erro" role="alert">{erro}</p>}
+      {enviada && (
+        <p className="painel-sucesso" role="status">
+          <strong>{enviada.arquivo}</strong> foi enviada. Ela aparece no site em alguns minutos, depois
+          do build. <a href={enviada.commit}>Ver o commit</a>
+        </p>
+      )}
 
       {convertida && previa && original && (
         <figure className="painel-previa">
@@ -150,10 +198,10 @@ export const PainelFotos: React.FC<PainelFotosProps> = ({ categorias, proximoId,
             <code>src/assets/portfolio/{arquivo}.webp</code>
           </p>
           <pre>{`${linhaDeImport(foto)}\n\n${blocoDoItem(foto)}`}</pre>
-          <a className="btn btn-primary" href={previa!} download={`${arquivo}.webp`}>
-            Baixar o WebP
-          </a>
-          <p className="painel-aviso">O envio direto para o site chega na próxima etapa.</p>
+          <button type="button" className="btn btn-primary" disabled={enviando} onClick={enviar}>
+            {enviando ? 'Enviando…' : 'Enviar para o site'}
+          </button>
+          <p className="painel-aviso">O id final é conferido na hora do envio.</p>
         </section>
       )}
     </div>

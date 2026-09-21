@@ -13,6 +13,11 @@
     // entregue direto pelo servidor de assets, como antes de existir Worker.
     "run_worker_first": ["/api/*", "/r/*"]
   },
+  // Destino dos commits do painel /admin. O GITHUB_TOKEN é secret, não entra aqui.
+  "vars": {
+    "GITHUB_REPO": "clara-nascie/claranasc",
+    "GITHUB_BRANCH": "main"
+  },
   "compatibility_flags": [
     "nodejs_compat"
   ],

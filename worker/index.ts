@@ -6,8 +6,9 @@
  */
 
 import { LIMITE_REFERENCIAS } from '../src/data/referencias';
+import { receberFotoDoPortfolio, type EnvAdmin } from './admin';
 
-interface Env {
+interface Env extends EnvAdmin {
   ASSETS: Fetcher;
   REFERENCIAS: R2Bucket;
   LIMITE_UPLOAD: RateLimit;
@@ -212,6 +213,13 @@ export default {
         return json({ erro: 'Método não permitido.' }, 405);
       }
       return receberReferencias(request, env);
+    }
+
+    if (url.pathname === '/api/admin/fotos') {
+      if (request.method !== 'POST') {
+        return json({ erro: 'Método não permitido.' }, 405);
+      }
+      return receberFotoDoPortfolio(request, env);
     }
 
     if (url.pathname.startsWith('/r/')) {
