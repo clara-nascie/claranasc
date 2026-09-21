@@ -1,32 +1,3 @@
-/**
- * Contraste do texto do hero contra o fundo REAL, pixel a pixel.
- *
- * Por que existe: o verificar-visual.mjs mede contraste subindo a arvore ate
- * achar um `background-color` opaco. Isso e cego para o crisantemo do hero, que
- * e `background-image` da `.hero-flor` -- o texto poderia estar em cima do
- * traco e o script continuaria lendo o creme do ancestral e aprovando. Foi o
- * que aconteceu: ele deu 12/14 enquanto o subtitulo media 2,10:1.
- *
- * Uso:
- *   npm run dev            (em outro terminal)
- *   npm run verificar:contraste
- *
- * Como mede: pinta o texto de transparente e captura so o fundo.
- *
- * Duas abordagens foram descartadas, as duas por falsear a medicao:
- *   - `visibility: hidden`: `.btn` tem `transition: all 0.4s`, e `all` inclui
- *     `visibility`. O texto some com 400ms de atraso e vaza para a captura.
- *   - remover o bloco do DOM: no layout empilhado a `.hero-flor` esta no
- *     FLUXO, entao ela sobe para o lugar que o texto ocupava. Media-se um
- *     layout que nao existe.
- * `color: transparent` nao mexe em layout nenhum.
- *
- * Duas leituras por elemento:
- *   p1   percentil 1 dos pixels mais escuros. E o numero de julgamento: ignora
- *        pixel isolado de grao, mas pega qualquer regiao escura de verdade.
- *   min  o pixel mais escuro. So para registro -- com o grao ligado ele quase
- *        sempre e ruido de 1px e reprovaria tudo.
- */
 import { chromium } from 'playwright';
 
 const LARGURAS = [1440, 1280, 1100, 993, 900, 768, 600, 390];
@@ -41,14 +12,6 @@ const ALVOS = [
   '#nav-link-portfolio', '#nav-link-sobre', '#nav-link-contato'
 ];
 
-/**
- * Falhas conhecidas e aceitas por decisao. Aparecem como AVISO e nao reprovam,
- * pelo mesmo motivo do verificar-visual.mjs: um relatorio permanentemente
- * vermelho deixa de ser lido, e a proxima regressao de verdade passa batida.
- *
- * Ao corrigir, **remova a entrada**. E de proposito que isso exija uma decisao
- * explicita, em vez de uma flag generica de "ignorar erros".
- */
 const FALHAS_ACEITAS = [
   {
     padrao: /\.hero-tagline|#nav-link-contato/,
@@ -76,16 +39,7 @@ for (const largura of LARGURAS) {
     if (!el) return null;
     const r = el.getBoundingClientRect();
     const s = getComputedStyle(el);
-    /*
-      Encolhe a caixa antes de amostrar. Borda e canto arredondado nao sao
-      fundo, e entravam na conta como se fossem:
-        - a borda do `.btn-header-cta` e do mesmo dourado do rotulo dele, entao
-          o pixel "mais escuro do fundo" era a propria borda e o contraste dava
-          1,00:1;
-        - fora do raio do canto o fundo do botao nao pinta, e o desenho do hero
-          aparecia por ali.
-      O texto nunca chega nessa faixa -- ha padding entre ele e a borda.
-    */
+
     const recuo = Math.ceil(Math.max(
       parseFloat(s.borderTopWidth) || 0,
       parseFloat(s.borderLeftWidth) || 0,
@@ -105,12 +59,7 @@ for (const largura of LARGURAS) {
   }).filter(Boolean), ALVOS);
 
   await page.addStyleTag({
-    /*
-      `.nav-menu a.nav-link` e mais especifico de proposito: o `.btn-header-cta`
-      declara `color: ... !important`, e um seletor de uma classe so empatava
-      com ele. O empate fazia o rotulo continuar pintado, e a medicao lia a
-      propria letra como se fosse o fundo -- dava 1,00:1.
-    */
+
     content: `.hero-content, .hero-content *, .nav-menu, .nav-menu *,
       .nav-menu a.nav-link, .nav-menu a.nav-link * {
       color: transparent !important;

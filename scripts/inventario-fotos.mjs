@@ -7,16 +7,6 @@
  *      as fotos publicadas foram renomeadas para descrever o desenho);
  *   2. quais são duplicatas entre si dentro do acervo;
  *   3. quais o sharp não consegue abrir.
- *
- * O casamento é por **impressão digital de imagem**, não por nome nem por hash
- * de bytes: a foto publicada passou por redimensionamento e conversão para
- * WebP, então nenhum byte dela é igual ao do arquivo original.
- *
- * A impressão é uma miniatura 16x16 em tons de cinza. Duas fotos são a mesma
- * quando a diferença média por pixel fica abaixo de LIMITE_IGUAL — tolerância
- * que absorve recompressão sem juntar fotos parecidas da mesma sessão.
- *
- * Uso:  node scripts/inventario-fotos.mjs [--json]
  */
 import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';

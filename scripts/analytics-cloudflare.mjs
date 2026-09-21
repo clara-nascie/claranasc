@@ -1,19 +1,3 @@
-/**
- * Relatório de acesso do site, direto da API da Cloudflare.
- *
- * Os números vêm da GraphQL Analytics API, a mesma fonte do painel. São
- * métricas de servidor: a Cloudflare as coleta porque o tráfego passa por ela,
- * sem script nenhum na página. Não incluem tempo na página nem Core Web Vitals
- * de campo — isso exigiria o beacon do Web Analytics no HTML.
- *
- * Uso:
- *   1. Crie um .env na raiz (já ignorado pelo git) com:
- *        CLOUDFLARE_API_TOKEN=seu_token
- *        CLOUDFLARE_ZONE_ID=opcional, o script descobre pelo nome
- *   2. node scripts/analytics-cloudflare.mjs [dias]
- *
- *   O padrão é 7 dias. `node scripts/analytics-cloudflare.mjs 30` para um mês.
- */
 
 const GRAPHQL = 'https://api.cloudflare.com/client/v4/graphql';
 const REST = 'https://api.cloudflare.com/client/v4';

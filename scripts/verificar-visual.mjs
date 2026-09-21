@@ -48,19 +48,7 @@ function parseRgb(cssColor) {
   return [parts[0], parts[1], parts[2]];
 }
 
-/**
- * Falhas conhecidas, já rastreadas e aceitas por ora: aparecem no relatório
- * como AVISO e não reprovam o processo, para o CI não ficar permanentemente
- * vermelho por algo que já tem issue aberta.
- *
- * Ao corrigir, **remova a entrada** — é de propósito que isso exija uma
- * decisão explícita, e não uma flag genérica de "ignorar erros".
- */
 const FALHAS_ACEITAS = [
-  // Só o botão primário: creme sobre marrom mel dá 3,78:1. O `.btn-secondary`
-  // passou a 14,08:1 quando o hero virou fundo claro, então NÃO deve mais ser
-  // aceito — o padrão é específico de propósito, para uma regressão nele voltar
-  // a reprovar.
   { padrao: /contraste "Orçamento/, motivo: 'GitHub #8 — botão primário 3,78:1' }
 ];
 
@@ -118,11 +106,6 @@ try {
     await checarVisibilidade(cta, false, `[${rotulo}] botão flutuante oculto sobre o hero`);
     await page.screenshot({ path: `${OUT_DIR}/${rotulo}-1-hero.png` });
 
-    // --- 2. Deve aparecer depois de rolar o hero ---
-    // `scrollIntoView({ block: 'start' })`, não `scrollIntoViewIfNeeded()`: o
-    // hero agora tem 85vh e deixa a galeria espiar, então `#portfolio` já está
-    // parcialmente visível sem rolar — e `IfNeeded` não faz nada nesse caso,
-    // deixando o hero na tela e o teste medindo a situação errada.
     await page.locator('#portfolio').evaluate((el) => el.scrollIntoView({ block: 'start' }));
     await page.waitForTimeout(800);
     await checarVisibilidade(cta, true, `[${rotulo}] botão flutuante visível no portfólio`);
@@ -151,12 +134,7 @@ try {
     await page.waitForTimeout(600);
 
     const botoesHero = await page.evaluate(() => {
-      /**
-       * Cor de fundo que realmente aparece atrás do elemento: sobe a árvore até
-       * achar o primeiro ancestral com background-color opaco. Fundo hardcoded
-       * quebra silenciosamente quando o layout muda — foi o que aconteceu quando
-       * o hero deixou de ser escuro.
-       */
+
       const fundoEfetivo = (el) => {
         let atual = el;
         while (atual && atual !== document.documentElement) {

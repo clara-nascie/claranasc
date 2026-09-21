@@ -99,17 +99,6 @@ try {
       As fotos são `loading="lazy"`: as de baixo da dobra têm `naturalWidth`
       zero até entrarem na tela, e a checagem de proporção dividia por zero.
       Passou com 6 fotos, reprovou com 26, e a página estava certa nas duas.
-
-      Duas tentativas anteriores erraram por simular o que a visitante faz em
-      vez de pedir o que o teste precisa: rolar + esperar 1,2s quebrou com 46
-      fotos, e rolar + esperar a condição estourou o tempo porque a altura da
-      página cresce enquanto as imagens chegam, e o laço de rolagem termina
-      antes de alcançar o fim.
-
-      Trocar `loading` para `eager` manda o navegador buscar todas de uma vez,
-      sem depender de posição de scroll. E a espera virou uma checagem própria:
-      se alguma não carregar, isso é defeito da página e deve aparecer como
-      falha nomeada, não como exceção do script.
     */
     await page.locator('.portfolio-item--livre img').evaluateAll((imgs) => {
       for (const img of imgs) img.loading = 'eager';

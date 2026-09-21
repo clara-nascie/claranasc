@@ -4,13 +4,7 @@
  * Faz as três coisas que toda foto do site precisa e que erram quando são
  * feitas à mão: reduzir para 1600px no lado maior, converter para **WebP de
  * verdade** e gravar com o nome que descreve o desenho.
- *
- * > O `.webp` do projeto já foi JPEG renomeado uma vez. Aqui a conversão é
- * > real: o sharp reencoda, e o script confere o formato do arquivo gravado.
- *
- * Também imprime o trecho pronto de `portfolioData.ts` — o `import` e o item
- * do array —, porque digitar 145 desses à mão é onde entra erro de digitação.
- *
+
  * Uso:
  *   node scripts/importar-fotos.mjs <manifesto.json> [--forcar]
  *
@@ -30,34 +24,6 @@
  *       }
  *     ]
  *   }
- *
- * ## Como escrever o `alt`
- *
- *   <categoria> de tatuagem com <assunto> em <técnica> no <região>, sobre o
- *   <sub-região>
- *
- * **Cite a região geral E a específica.** Quem busca digita "tatuagem braço",
- * mas escolhe o bíceps ao ver um exemplo. "no braço, sobre o bíceps" atende as
- * duas buscas; só "bíceps" perde a maior das duas.
- *
- * Onde não der para afirmar a sub-região olhando a foto, fique no termo geral.
- * `alt` errado é pior que `alt` genérico.
- *
- * Repetir "Cobertura de tatuagem com..." em todas é intencional, não descuido:
- * é o termo de busca, e o Google Imagens lê o `alt` de cada foto isoladamente.
- *
- * ## O que NÃO descartar
- *
- * - **Ângulo diferente da mesma tatuagem entra.** Uma peça que dá a volta no
- *   braço não cabe em uma foto só, e cada ângulo mostra o que o outro esconde.
- * - **Marca d'água do estúdio antigo não é impedimento.**
- *
- * O que sobra para descartar: arquivo ilegível e duplicata exata — que é o que
- * o `inventario-fotos.mjs` já detecta sozinho.
- *
- * Quando duas fotos são a mesma peça, o nome descreve o que aquela vista tem
- * de próprio (`-outro-lado`, `-completa`) em vez de virar `-2`. O nome do
- * arquivo é conteúdo, não identificador.
  */
 import { readFile, writeFile, stat } from 'node:fs/promises';
 import path from 'node:path';
