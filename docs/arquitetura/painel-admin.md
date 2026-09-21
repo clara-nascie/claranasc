@@ -77,6 +77,12 @@ envio. Falha fechada: esquecer a configuração bloqueia o painel, não o abre.
 | `GITHUB_TOKEN` | secret; `.dev.vars` no local | Fine-grained token, só o repositório `claranasc`, só *Contents: read and write*. Vence em 1 ano. |
 | `ACCESS_TEAM_DOMAIN`, `ACCESS_AUD` | `wrangler.jsonc` | Do aplicativo do Access. |
 
+⚠️ O `ACCESS_TEAM_DOMAIN` **não é o nome da organização** mostrado no Zero
+Trust ("claranasc"), e sim um identificador gerado (`square-wind-1f90`). O
+jeito seguro de descobrir é abrir `claranasc.com/admin` sem login e ver para
+onde o redirecionamento leva. O endereço errado não dá erro de configuração:
+o Worker só passa a recusar todos os logins.
+
 Quando o token vencer, o painel avisa "O token do GitHub venceu ou foi
 revogado". Gere outro e rode `npx wrangler secret put GITHUB_TOKEN`.
 

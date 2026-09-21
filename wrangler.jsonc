@@ -16,7 +16,11 @@
   // Destino dos commits do painel /admin. O GITHUB_TOKEN é secret, não entra aqui.
   "vars": {
     "GITHUB_REPO": "clara-nascie/claranasc",
-    "GITHUB_BRANCH": "main"
+    "GITHUB_BRANCH": "main",
+    // Do aplicativo "Painel admin" no Zero Trust. O team domain NÃO é o nome
+    // da organização: é o endereço para onde o login redireciona.
+    "ACCESS_TEAM_DOMAIN": "https://square-wind-1f90.cloudflareaccess.com",
+    "ACCESS_AUD": "03135ef1810035ba08538dd836d42b6842eeda574fc502021e337d29ce943536"
   },
   "compatibility_flags": [
     "nodejs_compat"
