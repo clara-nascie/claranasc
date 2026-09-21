@@ -64,6 +64,7 @@ import finelineCavalo from '../assets/portfolio/fineline-cavalo-costas.webp';
 
 // IMPORTS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
 // Não remova o marcador nem escreva abaixo dele à mão.
+import finelineHomenagemParaAFilhaLaraPerna from '../assets/portfolio/fineline-homenagem-para-a-filha-lara-perna.webp';
 import finelineSimboloDeCapricornioBraco from '../assets/portfolio/fineline-simbolo-de-capricornio-braco.webp';
 import finelineTatuagemDeCasalCruzAntebraco from '../assets/portfolio/fineline-tatuagem-de-casal-cruz-antebraco.webp';
 import finelineLetteringLetGoBraco from '../assets/portfolio/fineline-lettering-let-go-braco.webp';
@@ -334,6 +335,14 @@ export const portfolioItems: PortfolioItem[] = [
   },
 
   // ITENS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
+  {
+    id: 177,
+    title: 'Homenagem para a filha, Lara',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineHomenagemParaAFilhaLaraPerna,
+    alt: 'Tatuagem fineline em homenagem a filha. Desenho de criança em tattoo.'
+  },
   {
     id: 115,
     title: 'Símbolo de Capricórnio',
