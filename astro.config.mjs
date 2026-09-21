@@ -25,6 +25,7 @@ export default defineConfig({
       lastmod: new Date(),
       priority: 0.8,
       customSitemaps: ['https://claranasc.com/sitemap-imagens.xml'],
+      filter: (pagina) => !pagina.includes('/admin'),
       // A home é o alvo principal; as páginas por nicho herdam 0.8.
       serialize(item) {
         if (item.url === 'https://claranasc.com/') {

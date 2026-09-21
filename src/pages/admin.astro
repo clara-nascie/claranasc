@@ -1,0 +1,42 @@
+---
+import { readdirSync } from 'node:fs';
+import path from 'node:path';
+
+import '../styles/base/variables.css';
+import '../styles/base/reset.css';
+import '../styles/components/forms.css';
+import '../styles/components/buttons.css';
+import '../styles/sections/admin.css';
+
+import { PORTFOLIO_CATEGORIES, portfolioItems } from '../data/portfolioData';
+import { PainelFotos } from '../components/admin/PainelFotos';
+
+const categorias = PORTFOLIO_CATEGORIES.filter((c) => c.id !== 'all');
+const proximoId = Math.max(...portfolioItems.map((item) => item.id)) + 1;
+const existentes = readdirSync(path.join(process.cwd(), 'src', 'assets', 'portfolio'))
+  .filter((nome) => nome.endsWith('.webp'))
+  .map((nome) => nome.replace(/\.webp$/, ''));
+---
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Nova foto | Clara Nasc</title>
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@500;700;800&display=swap"
+    rel="stylesheet"
+  />
+</head>
+<body class="admin">
+  <main class="admin-conteudo">
+    <h1>Nova foto</h1>
+    <PainelFotos client:load categorias={categorias} proximoId={proximoId} existentes={existentes} />
+  </main>
+</body>
+</html>
