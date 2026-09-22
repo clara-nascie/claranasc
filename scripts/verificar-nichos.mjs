@@ -8,6 +8,7 @@
  *   npm run preview                          (em outro terminal)
  *   BASE_URL=http://localhost:4321 npm run verificar:nichos
  */
+import { readdirSync } from 'node:fs';
 import { chromium } from 'playwright';
 
 const BASE_URL = process.env.BASE_URL ?? 'http://localhost:4321';
@@ -65,7 +66,14 @@ if (!urlsDoSitemap) {
     if (res.ok) {
       const xml = await res.text();
       const urlsUnicas = new Set([...xml.matchAll(/<image:loc>([^<]+)<\/image:loc>/g)].map(m => m[1]));
-      checar('sitemap de imagens lista as 176 fotos exclusivas', urlsUnicas.size === 176, `${urlsUnicas.size} fotos únicas declaradas`);
+      // Conta a pasta em vez de fixar um número: o painel /admin acrescenta fotos.
+      const fotosNoProjeto = readdirSync(new URL('../src/assets/portfolio/', import.meta.url))
+        .filter((nome) => nome.endsWith('.webp')).length;
+      checar(
+        `sitemap de imagens lista as ${fotosNoProjeto} fotos da pasta do portfólio`,
+        urlsUnicas.size === fotosNoProjeto,
+        `${urlsUnicas.size} fotos únicas declaradas`
+      );
     } else {
       checar('sitemap de imagens acessível', false, 'arquivo não existe');
     }
