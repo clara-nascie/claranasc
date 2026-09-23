@@ -64,6 +64,7 @@ import finelineCavalo from '../assets/portfolio/fineline-cavalo-costas.webp';
 
 // IMPORTS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
 // Não remova o marcador nem escreva abaixo dele à mão.
+import finelineHoemanagemParaAFilhaPerna from '../assets/portfolio/fineline-hoemanagem-para-a-filha-perna.webp';
 import botanicoOncaComCoracoesBraco from '../assets/portfolio/botanico-onca-com-coracoes-braco.webp';
 import coberturaPassaroEFolhasTriceps from '../assets/portfolio/cobertura-passaro-e-folhas-triceps.webp';
 import blackworkAstronautaEBuracoNegroCoxa from '../assets/portfolio/blackwork-astronauta-e-buraco-negro-coxa.webp';
@@ -338,6 +339,14 @@ export const portfolioItems: PortfolioItem[] = [
   },
 
   // ITENS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
+  {
+    id: 181,
+    title: 'Hoemanagem para a filha',
+    category: 'fineline',
+    categoryLabel: 'Fine Line',
+    image: finelineHoemanagemParaAFilhaPerna,
+    alt: 'Tatuagem, tattoo, homenagem para filho, desenho de criança em tattoo. Tattoo de retrato, tatuagem fineline.'
+  },
   {
     id: 180,
     title: 'Onça com corações',
