@@ -64,6 +64,7 @@ import finelineCavalo from '../assets/portfolio/fineline-cavalo-costas.webp';
 
 // IMPORTS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
 // Não remova o marcador nem escreva abaixo dele à mão.
+import blackworkAstronautaEBuracoNegroCoxa from '../assets/portfolio/blackwork-astronauta-e-buraco-negro-coxa.webp';
 import finelineHomenagemParaAFilhaLaraPerna from '../assets/portfolio/fineline-homenagem-para-a-filha-lara-perna.webp';
 import finelineSimboloDeCapricornioBraco from '../assets/portfolio/fineline-simbolo-de-capricornio-braco.webp';
 import finelineTatuagemDeCasalCruzAntebraco from '../assets/portfolio/fineline-tatuagem-de-casal-cruz-antebraco.webp';
@@ -335,6 +336,14 @@ export const portfolioItems: PortfolioItem[] = [
   },
 
   // ITENS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
+  {
+    id: 178,
+    title: 'Astronauta e buraco negro',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkAstronautaEBuracoNegroCoxa,
+    alt: 'Tatuagem de astronauta com buraco negro, no estilo blackwork, sombreado. Tatuagem com temática de espaço sideral.'
+  },
   {
     id: 177,
     title: 'Homenagem para a filha, Lara',
