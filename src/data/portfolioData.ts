@@ -64,6 +64,7 @@ import finelineCavalo from '../assets/portfolio/fineline-cavalo-costas.webp';
 
 // IMPORTS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
 // Não remova o marcador nem escreva abaixo dele à mão.
+import blackworkFechamentoDePernaPolvoPerna from '../assets/portfolio/blackwork-fechamento-de-perna-polvo-perna.webp';
 import blackworkAstronautaAntebraco from '../assets/portfolio/blackwork-astronauta-antebraco.webp';
 import blackworkOrganicTattooCostela from '../assets/portfolio/blackwork-organic-tattoo-costela.webp';
 import finelineHoemanagemParaAFilhaPerna from '../assets/portfolio/fineline-hoemanagem-para-a-filha-perna.webp';
@@ -341,6 +342,14 @@ export const portfolioItems: PortfolioItem[] = [
   },
 
   // ITENS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
+  {
+    id: 184,
+    title: 'Fechamento de perna/polvo',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkFechamentoDePernaPolvoPerna,
+    alt: 'Fechamento de perna de tatuagem em blackwork. Tatuagem de polvo em blackwork na perna. Tatuagem masculina blackwork perna.'
+  },
   {
     id: 183,
     title: 'Astronauta',
