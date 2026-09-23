@@ -68,7 +68,6 @@ import blackworkCobraECruzAntebraco from '../assets/portfolio/blackwork-cobra-e-
 import blackworkFechamentoDePernaPolvoPerna from '../assets/portfolio/blackwork-fechamento-de-perna-polvo-perna.webp';
 import blackworkAstronautaAntebraco from '../assets/portfolio/blackwork-astronauta-antebraco.webp';
 import blackworkOrganicTattooCostela from '../assets/portfolio/blackwork-organic-tattoo-costela.webp';
-import finelineHoemanagemParaAFilhaPerna from '../assets/portfolio/fineline-hoemanagem-para-a-filha-perna.webp';
 import botanicoOncaComCoracoesBraco from '../assets/portfolio/botanico-onca-com-coracoes-braco.webp';
 import coberturaPassaroEFolhasTriceps from '../assets/portfolio/cobertura-passaro-e-folhas-triceps.webp';
 import blackworkAstronautaEBuracoNegroCoxa from '../assets/portfolio/blackwork-astronauta-e-buraco-negro-coxa.webp';
@@ -374,14 +373,6 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Blackwork',
     image: blackworkOrganicTattooCostela,
     alt: 'Tatuagem orgânica, abstrata, na costela, em traços pretos e vermelhos. Tatuagem blackwork. Tatuagem vermelha. Tatuagem orgânica masculina'
-  },
-  {
-    id: 181,
-    title: 'Hoemanagem para a filha',
-    category: 'fineline',
-    categoryLabel: 'Fine Line',
-    image: finelineHoemanagemParaAFilhaPerna,
-    alt: 'Tatuagem, tattoo, homenagem para filho, desenho de criança em tattoo. Tattoo de retrato, tatuagem fineline.'
   },
   {
     id: 180,

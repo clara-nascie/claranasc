@@ -175,12 +175,20 @@ async function tentarCommit(
   if (!ref.ok) throw new ErroGithub(ref.status, `Não encontrei o ramo "${ramo}" no GitHub.`);
   const shaBase = ((await ref.json()) as { object: { sha: string } }).object.sha;
 
-  const [dados, existente] = await Promise.all([
+  const [dados, pasta] = await Promise.all([
     github(`/contents/${DADOS}?ref=${shaBase}`, { accept: 'application/vnd.github.raw+json' }),
-    github(`/contents/${PASTA}/${campos.arquivo}.webp?ref=${shaBase}`)
+    github(`/contents/${PASTA}?ref=${shaBase}`)
   ]);
   if (!dados.ok) throw new ErroGithub(dados.status, 'Não consegui ler o portfolioData.ts.');
+  if (!pasta.ok) throw new ErroGithub(pasta.status, 'Não consegui listar as fotos do portfólio.');
   const fonte = await dados.text();
+  const arquivos = (await pasta.json()) as { name: string; sha: string }[];
+
+  /* O sha de um blob sai do conteúdo: a mesma foto com outro nome tem o mesmo
+     sha. Conferir só o nome deixou uma foto repetida entrar, e o Astro serviu
+     um arquivo só para as duas entradas do portfólio. */
+  const repetida = arquivos.find((a) => a.sha === shaFoto);
+  if (repetida) throw new ErroGithub(400, `Essa foto já está no site como ${repetida.name}.`);
 
   const categoria = categoriasDoFonte(fonte).find((c) => c.id === campos.categoria);
   if (!categoria) throw new ErroGithub(400, 'Categoria desconhecida.');
@@ -193,7 +201,10 @@ async function tentarCommit(
     categoriaLabel: categoria.label,
     alt: campos.alt
   };
-  const problemas = problemasDaFoto(foto, existente.ok ? [foto.arquivo] : []);
+  const problemas = problemasDaFoto(
+    foto,
+    arquivos.map((a) => a.name.replace(/\.webp$/, ''))
+  );
   if (problemas.length) throw new ErroGithub(400, problemas.join(' '));
 
   const arvore = await github('/git/trees', {
