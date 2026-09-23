@@ -65,9 +65,9 @@ import finelineCavalo from '../assets/portfolio/fineline-cavalo-costas.webp';
 // IMPORTS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
 // Não remova o marcador nem escreva abaixo dele à mão.
 import blackworkCobraECruzAntebraco from '../assets/portfolio/blackwork-cobra-e-cruz-antebraco.webp';
-import blackworkFechamentoDePernaPolvoPerna from '../assets/portfolio/blackwork-fechamento-de-perna-polvo-perna.webp';
+import blackworkFechamentoDePernaPolvo from '../assets/portfolio/blackwork-fechamento-de-perna-polvo.webp';
 import blackworkAstronautaAntebraco from '../assets/portfolio/blackwork-astronauta-antebraco.webp';
-import blackworkOrganicTattooCostela from '../assets/portfolio/blackwork-organic-tattoo-costela.webp';
+import blackworkTatuagemOrganicaCostela from '../assets/portfolio/blackwork-tatuagem-organica-costela.webp';
 import botanicoOncaComCoracoesBraco from '../assets/portfolio/botanico-onca-com-coracoes-braco.webp';
 import coberturaPassaroEFolhasTriceps from '../assets/portfolio/cobertura-passaro-e-folhas-triceps.webp';
 import blackworkAstronautaEBuracoNegroCoxa from '../assets/portfolio/blackwork-astronauta-e-buraco-negro-coxa.webp';
@@ -348,15 +348,15 @@ export const portfolioItems: PortfolioItem[] = [
     category: 'blackwork',
     categoryLabel: 'Blackwork',
     image: blackworkCobraECruzAntebraco,
-    alt: 'Tatuagem em blackwork de cobra com uma cruz. Tatuagem blackwork antebraço. Tattoo blackwork homem.'
+    alt: 'Tatuagem blackwork de cobra enrolada em uma cruz ornamentada, no antebraço'
   },
   {
     id: 184,
-    title: 'Fechamento de perna/polvo',
+    title: 'Fechamento de perna com polvo',
     category: 'blackwork',
     categoryLabel: 'Blackwork',
-    image: blackworkFechamentoDePernaPolvoPerna,
-    alt: 'Fechamento de perna de tatuagem em blackwork. Tatuagem de polvo em blackwork na perna. Tatuagem masculina blackwork perna.'
+    image: blackworkFechamentoDePernaPolvo,
+    alt: 'Fechamento de perna em blackwork com um polvo, da coxa ao tornozelo, em sombreado pontilhado'
   },
   {
     id: 183,
@@ -364,15 +364,15 @@ export const portfolioItems: PortfolioItem[] = [
     category: 'blackwork',
     categoryLabel: 'Blackwork',
     image: blackworkAstronautaAntebraco,
-    alt: 'Tatuagem de astronauta no antebraço, em blackwork. Com frase e buraco negro. Tatuagem com temática de espaço sideral.'
+    alt: 'Tatuagem blackwork de astronauta flutuando ao lado de uma estrela pontilhada e de uma frase, no antebraço'
   },
   {
     id: 182,
-    title: 'Organic tattoo',
+    title: 'Tatuagem orgânica',
     category: 'blackwork',
     categoryLabel: 'Blackwork',
-    image: blackworkOrganicTattooCostela,
-    alt: 'Tatuagem orgânica, abstrata, na costela, em traços pretos e vermelhos. Tatuagem blackwork. Tatuagem vermelha. Tatuagem orgânica masculina'
+    image: blackworkTatuagemOrganicaCostela,
+    alt: 'Tatuagem orgânica abstrata em traços pretos e vermelhos, na costela'
   },
   {
     id: 180,
@@ -380,7 +380,7 @@ export const portfolioItems: PortfolioItem[] = [
     category: 'botanico',
     categoryLabel: 'Botânico',
     image: botanicoOncaComCoracoesBraco,
-    alt: 'Tatuagem de onça pintada, em fineline, botânico, com corações. Tatuagem delicada, tatuagem fineline, tatuagem feminina.'
+    alt: 'Tatuagem de onça pintada com as pintas em forma de coração, em traço fino, no braço'
   },
   {
     id: 179,
@@ -388,7 +388,7 @@ export const portfolioItems: PortfolioItem[] = [
     category: 'coberturas',
     categoryLabel: 'Coberturas',
     image: coberturaPassaroEFolhasTriceps,
-    alt: 'Tatuagem de cobertura com temática floral, botânico, com pássaro e folhas. Cobertura, tattoo.'
+    alt: 'Cobertura de tatuagem com pássaro entre folhas e crisântemo, em sombreado pontilhado, no tríceps'
   },
   {
     id: 178,
@@ -396,7 +396,7 @@ export const portfolioItems: PortfolioItem[] = [
     category: 'blackwork',
     categoryLabel: 'Blackwork',
     image: blackworkAstronautaEBuracoNegroCoxa,
-    alt: 'Tatuagem de astronauta com buraco negro, no estilo blackwork, sombreado. Tatuagem com temática de espaço sideral.'
+    alt: 'Tatuagem blackwork de astronauta flutuando ao lado de um buraco negro, com as frases "I\'ve already given up" e "It\'s ok", na coxa'
   },
   {
     id: 177,
@@ -404,7 +404,7 @@ export const portfolioItems: PortfolioItem[] = [
     category: 'fineline',
     categoryLabel: 'Fine Line',
     image: finelineHomenagemParaAFilhaLaraPerna,
-    alt: 'Tatuagem fineline em homenagem a filha. Desenho de criança em tattoo.'
+    alt: 'Tatuagem fine line do desenho de uma criança, com o nome Lara e a data 15/07/2026, na panturrilha'
   },
   {
     id: 115,
