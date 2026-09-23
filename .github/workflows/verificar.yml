@@ -11,7 +11,11 @@ on:
 
 jobs:
   verificar:
-    runs-on: ubuntu-latest
+    # Fixa a versão em vez de `ubuntu-latest`: em 19/10/2026 esse rótulo passa
+    # a apontar para o Ubuntu 26, e a verificação depende das bibliotecas de
+    # sistema que o Chromium do Playwright precisa. A troca fica para um commit
+    # feito de propósito, não para uma data do GitHub.
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
 
     steps:
@@ -80,7 +84,7 @@ jobs:
       # mostram o que aconteceu.
       - name: Publicar capturas
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: capturas-${{ github.sha }}
           path: .playwright/
