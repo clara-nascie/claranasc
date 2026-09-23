@@ -64,6 +64,7 @@ import finelineCavalo from '../assets/portfolio/fineline-cavalo-costas.webp';
 
 // IMPORTS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
 // Não remova o marcador nem escreva abaixo dele à mão.
+import blackworkCobraECruzAntebraco from '../assets/portfolio/blackwork-cobra-e-cruz-antebraco.webp';
 import blackworkFechamentoDePernaPolvoPerna from '../assets/portfolio/blackwork-fechamento-de-perna-polvo-perna.webp';
 import blackworkAstronautaAntebraco from '../assets/portfolio/blackwork-astronauta-antebraco.webp';
 import blackworkOrganicTattooCostela from '../assets/portfolio/blackwork-organic-tattoo-costela.webp';
@@ -342,6 +343,14 @@ export const portfolioItems: PortfolioItem[] = [
   },
 
   // ITENS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
+  {
+    id: 185,
+    title: 'Cobra e cruz',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkCobraECruzAntebraco,
+    alt: 'Tatuagem em blackwork de cobra com uma cruz. Tatuagem blackwork antebraço. Tattoo blackwork homem.'
+  },
   {
     id: 184,
     title: 'Fechamento de perna/polvo',
