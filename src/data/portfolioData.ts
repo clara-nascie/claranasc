@@ -64,6 +64,7 @@ import finelineCavalo from '../assets/portfolio/fineline-cavalo-costas.webp';
 
 // IMPORTS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
 // Não remova o marcador nem escreva abaixo dele à mão.
+import botanicoOncaComCoracoesBraco from '../assets/portfolio/botanico-onca-com-coracoes-braco.webp';
 import coberturaPassaroEFolhasTriceps from '../assets/portfolio/cobertura-passaro-e-folhas-triceps.webp';
 import blackworkAstronautaEBuracoNegroCoxa from '../assets/portfolio/blackwork-astronauta-e-buraco-negro-coxa.webp';
 import finelineHomenagemParaAFilhaLaraPerna from '../assets/portfolio/fineline-homenagem-para-a-filha-lara-perna.webp';
@@ -337,6 +338,14 @@ export const portfolioItems: PortfolioItem[] = [
   },
 
   // ITENS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
+  {
+    id: 180,
+    title: 'Onça com corações',
+    category: 'botanico',
+    categoryLabel: 'Botânico',
+    image: botanicoOncaComCoracoesBraco,
+    alt: 'Tatuagem de onça pintada, em fineline, botânico, com corações. Tatuagem delicada, tatuagem fineline, tatuagem feminina.'
+  },
   {
     id: 179,
     title: 'Pássaro e folhas',
