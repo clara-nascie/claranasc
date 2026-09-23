@@ -64,6 +64,7 @@ import finelineCavalo from '../assets/portfolio/fineline-cavalo-costas.webp';
 
 // IMPORTS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
 // Não remova o marcador nem escreva abaixo dele à mão.
+import blackworkOrganicTattooCostela from '../assets/portfolio/blackwork-organic-tattoo-costela.webp';
 import finelineHoemanagemParaAFilhaPerna from '../assets/portfolio/fineline-hoemanagem-para-a-filha-perna.webp';
 import botanicoOncaComCoracoesBraco from '../assets/portfolio/botanico-onca-com-coracoes-braco.webp';
 import coberturaPassaroEFolhasTriceps from '../assets/portfolio/cobertura-passaro-e-folhas-triceps.webp';
@@ -339,6 +340,14 @@ export const portfolioItems: PortfolioItem[] = [
   },
 
   // ITENS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
+  {
+    id: 182,
+    title: 'Organic tattoo',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkOrganicTattooCostela,
+    alt: 'Tatuagem orgânica, abstrata, na costela, em traços pretos e vermelhos. Tatuagem blackwork. Tatuagem vermelha. Tatuagem orgânica masculina'
+  },
   {
     id: 181,
     title: 'Hoemanagem para a filha',
