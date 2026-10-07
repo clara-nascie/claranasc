@@ -66,7 +66,7 @@ import finelineCavalo from '../assets/portfolio/fineline-cavalo-costas.webp';
 // Não remova o marcador nem escreva abaixo dele à mão.
 import blackworkOnePieceLawBiceps from '../assets/portfolio/blackwork-one-piece-law-biceps.webp';
 import blackworkOuroborosPanturrilha from '../assets/portfolio/blackwork-ouroboros-panturrilha.webp';
-import coberturaFlorDeLotusComFloresOrnamentaisTriceps from '../assets/portfolio/cobertura-flor-de-lotus-com-flores-ornamentais-triceps.webp';
+import botanicoFlorDeLotusComFloresOrnamentaisTriceps from '../assets/portfolio/botanico-flor-de-lotus-com-flores-ornamentais-triceps.webp';
 import botanicoFloralNoBracoBraco from '../assets/portfolio/botanico-floral-no-braco-braco.webp';
 import geekCrashEAkiraCoxa from '../assets/portfolio/geek-crash-e-akira-coxa.webp';
 import blackworkWalterWhitePanturrilha from '../assets/portfolio/blackwork-walter-white-panturrilha.webp';
@@ -379,9 +379,9 @@ export const portfolioItems: PortfolioItem[] = [
   {
     id: 201,
     title: 'Flor de lótus com flores ornamentais',
-    category: 'coberturas',
-    categoryLabel: 'Coberturas',
-    image: coberturaFlorDeLotusComFloresOrnamentaisTriceps,
+    category: 'botanico',
+    categoryLabel: 'Botânico',
+    image: botanicoFlorDeLotusComFloresOrnamentaisTriceps,
     alt: 'Tatuagem floral de flor de lótus e flores ornamentais em fineline com desenho orgânico no triceps'
   },
   {
