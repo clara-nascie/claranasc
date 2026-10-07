@@ -18,6 +18,7 @@ Desktop.ini
 # versoes processadas em src/assets/portfolio/, que o astro:assets otimiza no
 # build. Os originais ficam so na maquina.
 Anúncios/
+/coberturas-antes/
 
 # build output
 dist/
@@ -44,3 +45,4 @@ pnpm-debug.log*
 
 # Página local de revisão de nomes de fotos — transitória, não versionar.
 revisao-fine-line.html
+revisao-coberturas.html
