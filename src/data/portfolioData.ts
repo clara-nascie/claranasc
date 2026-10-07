@@ -64,6 +64,7 @@ import finelineCavalo from '../assets/portfolio/fineline-cavalo-costas.webp';
 
 // IMPORTS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
 // Não remova o marcador nem escreva abaixo dele à mão.
+import geekCrashEAkiraCoxa from '../assets/portfolio/geek-crash-e-akira-coxa.webp';
 import blackworkWalterWhitePanturrilha from '../assets/portfolio/blackwork-walter-white-panturrilha.webp';
 import blackworkCaveiraEAmpulhetaAntebraco from '../assets/portfolio/blackwork-caveira-e-ampulheta-antebraco.webp';
 import blackworkNaveEspacialLateralDaPanturrilha from '../assets/portfolio/blackwork-nave-espacial-lateral-da-panturrilha.webp';
@@ -355,6 +356,14 @@ export const portfolioItems: PortfolioItem[] = [
   },
 
   // ITENS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
+  {
+    id: 199,
+    title: 'Crash e Akira',
+    category: 'geek',
+    categoryLabel: 'Geek & Animes',
+    image: geekCrashEAkiraCoxa,
+    alt: 'Tatuagem geek de um crossover entre o personagem Crash Bandcock e a moto do filme Akira colorida'
+  },
   {
     id: 198,
     title: 'Walter White',
