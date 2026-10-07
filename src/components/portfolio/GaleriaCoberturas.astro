@@ -1,0 +1,79 @@
+---
+import { Image, getImage } from 'astro:assets';
+import type { PortfolioItem } from '../../data/portfolioData';
+import { antesDa } from '../../data/coberturasData';
+
+interface Props {
+  itens: PortfolioItem[];
+}
+
+const { itens } = Astro.props;
+
+const ampliada = async (image: ImageMetadata) =>
+  (await getImage({ src: image, width: 1400, format: 'webp' })).src;
+
+const cards = await Promise.all(
+  itens.map(async (item) => {
+    const antes = antesDa(item);
+    return {
+      item,
+      antes,
+      depoisGrande: await ampliada(item.image),
+      antesGrande: antes ? await ampliada(antes.image) : undefined
+    };
+  })
+);
+---
+
+<div class="coberturas-grid" data-galeria="por-foto">
+  {cards.map(({ item, antes, depoisGrande, antesGrande }) => (
+    <div class="portfolio-item cobertura-card" data-category={item.category}>
+      <button
+        type="button"
+        class="cobertura-gatilho lightbox-trigger"
+        aria-label={antes ? `${item.title}: ver antes e depois` : `Ampliar imagem de ${item.title}`}
+        data-src={depoisGrande}
+        data-title={item.title}
+        data-category={item.categoryLabel}
+        data-antes-src={antesGrande}
+        data-antes-alt={antes?.alt}
+      >
+        <span class="cobertura-foto">
+          <Image
+            src={item.image}
+            alt={item.alt}
+            widths={[280, 380, 560, 760]}
+            sizes="(max-width: 768px) 46vw, (max-width: 1200px) 31vw, 380px"
+            format="webp"
+            quality={72}
+            loading="lazy"
+            decoding="async"
+          />
+          {antes && (
+            <span class="cobertura-antes" data-antes>
+              <Image
+                src={antes.image}
+                alt={antes.alt}
+                widths={[120, 260]}
+                sizes="(max-width: 768px) 12vw, 100px"
+                format="webp"
+                quality={72}
+                loading="lazy"
+                decoding="async"
+              />
+              <span class="cobertura-antes-rotulo">Antes</span>
+            </span>
+          )}
+        </span>
+        <span class="cobertura-texto">
+          <span class="cobertura-titulo">{item.title}</span>
+          {antes && <span class="cobertura-acao">Ver antes e depois</span>}
+        </span>
+      </button>
+    </div>
+  ))}
+</div>
+
+<script>
+  import '../../lib/gestosDaGaleria';
+</script>

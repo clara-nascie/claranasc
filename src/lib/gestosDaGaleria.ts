@@ -4,6 +4,10 @@
 const PRESSAO_MS = 250;
 const TOLERANCIA_PX = 10;
 
+/* ⚠️ Mesmo corte do `media.css` e do `lightbox.css`. Abaixo dele o antes vira
+   a foto seguinte da fileira (deslize); acima, aparece ao lado do depois. */
+const CELULAR = '(max-width: 768px)';
+
 function dadosDaFoto(gatilho: HTMLElement) {
   const item = gatilho.closest<HTMLElement>('.portfolio-item');
   return {
@@ -15,10 +19,36 @@ function dadosDaFoto(gatilho: HTMLElement) {
   };
 }
 
-/* A ampliação recebe a fileira inteira, não uma foto: é o que permite passar
-   para a próxima sem fechar. O recorte é a galeria de origem. */
+function antesDaFoto(gatilho: HTMLElement) {
+  if (!gatilho.dataset.antesSrc) return undefined;
+  const item = gatilho.closest<HTMLElement>('.portfolio-item');
+  return {
+    src: gatilho.dataset.antesSrc,
+    previa: item?.querySelector<HTMLImageElement>('[data-antes] img')?.currentSrc,
+    alt: gatilho.dataset.antesAlt ?? ''
+  };
+}
+
+/* Fotos da mesma tatuagem: depois e, se houver, o antes. */
+function fotosDaTatuagem(gatilho: HTMLElement) {
+  const depois = dadosDaFoto(gatilho);
+  const antes = antesDaFoto(gatilho);
+  if (!antes) return [depois];
+  if (!window.matchMedia(CELULAR).matches) return [{ ...depois, antes }];
+  return [
+    { ...depois, category: 'Depois', dica: 'Ver o antes' },
+    { src: antes.src, previa: antes.previa, title: depois.title, category: 'Antes' }
+  ];
+}
+
+/* A ampliação recebe uma fileira, não uma foto: é o que permite passar para a
+   próxima sem fechar. Em `data-galeria="por-foto"` a fileira é só a tatuagem
+   tocada; nas outras, a galeria inteira. */
 function galeriaDaFoto(gatilho: HTMLElement) {
   const grade = gatilho.closest<HTMLElement>('[data-galeria]');
+  if (grade?.dataset.galeria === 'por-foto') {
+    return { fotos: fotosDaTatuagem(gatilho), indice: 0 };
+  }
   const gatilhos = [...(grade?.querySelectorAll<HTMLElement>('.lightbox-trigger') ?? [])];
   return {
     fotos: gatilhos.map(dadosDaFoto),
@@ -27,9 +57,11 @@ function galeriaDaFoto(gatilho: HTMLElement) {
 }
 
 function adiantarAmpliada(gatilho: HTMLElement) {
-  if (!gatilho.dataset.src) return;
-  const adiantada = new Image();
-  adiantada.src = gatilho.dataset.src;
+  for (const src of [gatilho.dataset.src, gatilho.dataset.antesSrc]) {
+    if (!src) continue;
+    const adiantada = new Image();
+    adiantada.src = src;
+  }
 }
 
 // Um dedo e uma ampliação por página: estado e ouvintes ficam fora do laço.

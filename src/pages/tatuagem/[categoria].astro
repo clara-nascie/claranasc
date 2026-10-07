@@ -6,6 +6,7 @@ import BreadcrumbSchema from '../../components/seo/BreadcrumbSchema.astro';
 import FaqSchema from '../../components/seo/FaqSchema.astro';
 import ImagensSchema from '../../components/seo/ImagensSchema.astro';
 import GaleriaGrid from '../../components/portfolio/GaleriaGrid.astro';
+import GaleriaCoberturas from '../../components/portfolio/GaleriaCoberturas.astro';
 
 import { whatsappUrl, LOCATION } from '../../data/siteData';
 import {
@@ -69,6 +70,12 @@ const outrosNichos = NICHOS.filter((outro) => outro.slug !== nicho.slug);
           <h1 class="nicho-titulo">{nicho.h1}</h1>
           <div class="header-divider left"></div>
           <p class="nicho-chamada">{nicho.chamada}</p>
+          {nicho.legendaGaleria && (
+            <p class="nicho-legenda">
+              <span class="nicho-legenda-icone" aria-hidden="true"></span>
+              {nicho.legendaGaleria}
+            </p>
+          )}
         </header>
       </div>
     </section>
@@ -81,7 +88,11 @@ const outrosNichos = NICHOS.filter((outro) => outro.slug !== nicho.slug);
         </div>
 
         <div class="reveal">
-          <GaleriaGrid itens={fotos} layout="masonry" />
+          {nicho.galeria === 'antes-depois' ? (
+            <GaleriaCoberturas itens={fotos} />
+          ) : (
+            <GaleriaGrid itens={fotos} layout="masonry" />
+          )}
         </div>
       </div>
     </section>
@@ -100,14 +111,18 @@ const outrosNichos = NICHOS.filter((outro) => outro.slug !== nicho.slug);
       </section>
 
       <section class="nicho-cta reveal" aria-labelledby="titulo-cta">
-        <h2 id="titulo-cta">Quer uma assim?</h2>
+        <h2 id="titulo-cta">{nicho.ctaTitulo ?? 'Quer uma assim?'}</h2>
         <p>
-          Atendo com hora marcada no {LOCATION.studioName}, na {LOCATION.streetAddress},
-          {' '}{LOCATION.neighborhood}, {LOCATION.city}.
+          {nicho.ctaTexto ?? (
+            <>
+              Atendo com hora marcada no {LOCATION.studioName}, na {LOCATION.streetAddress},
+              {' '}{LOCATION.neighborhood}, {LOCATION.city}.
+            </>
+          )}
         </p>
         <div class="nicho-cta-acoes">
           <a href={whatsappUrl(nicho.mensagemWhatsapp)} target="_blank" rel="noreferrer" class="btn btn-primary">
-            Falar no WhatsApp
+            {nicho.ctaBotao ?? 'Falar no WhatsApp'}
           </a>
           <a href="/#contato" class="btn btn-secondary">
             Formulário de orçamento

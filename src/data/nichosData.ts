@@ -23,6 +23,14 @@ export interface Nicho {
   faq: PerguntaFrequente[];
   /** Já vem digitada no WhatsApp de quem sai desta página. */
   mensagemWhatsapp: string;
+  /** `antes-depois`: grade por foto com a miniatura do antes (coberturas). */
+  galeria?: "masonry" | "antes-depois";
+  /** Linha abaixo da chamada que explica a grade. */
+  legendaGaleria?: string;
+  /** Substituem o "Quer uma assim?" da chamada final. */
+  ctaTitulo?: string;
+  ctaTexto?: string;
+  ctaBotao?: string;
 }
 
 export interface PerguntaFrequente {
@@ -61,6 +69,13 @@ export const NICHOS: Nicho[] = [
     ],
     mensagemWhatsapp:
       "Olá Clara! Vim pela página de coberturas do site e gostaria de saber se a minha tatuagem tem cobertura.",
+    galeria: "antes-depois",
+    legendaGaleria:
+      "O quadradinho no canto de cada foto mostra como era a tatuagem antes.",
+    ctaTitulo: "Quer saber se a sua tatuagem cobre?",
+    ctaTexto:
+      "Mande uma foto da tatuagem atual pelo WhatsApp e eu te digo o que dá pra fazer.",
+    ctaBotao: "Enviar foto pelo WhatsApp",
   },
   {
     slug: "botanico",
