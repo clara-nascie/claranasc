@@ -505,20 +505,31 @@ export const portfolioItems: PortfolioItem[] = [
     alt: 'Cobertura de tatuagem com par de trevos em preto e cinza no braço, sobre o bíceps'
   },
   {
-    id: 185,
-    title: 'Cobra e cruz',
-    category: 'blackwork',
-    categoryLabel: 'Blackwork',
-    image: blackworkCobraECruzAntebraco,
-    alt: 'Tatuagem blackwork de cobra enrolada em uma cruz ornamentada, no antebraço'
-  },
-  {
     id: 184,
+    destaque: true,
     title: 'Fechamento de perna com polvo',
     category: 'blackwork',
     categoryLabel: 'Blackwork',
     image: blackworkFechamentoDePernaPolvo,
     alt: 'Fechamento de perna em blackwork com um polvo, da coxa ao tornozelo, em sombreado pontilhado'
+  },
+  {
+    id: 20,
+    destaque: true,
+    title: 'The Rind — Escher',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkEscher,
+    alt: 'Tatuagem blackwork inspirada em The Rind, de Escher, com faixas em preto sólido envolvendo o antebraço',
+  },
+  {
+    id: 185,
+    destaque: true,
+    title: 'Cobra e cruz',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkCobraECruzAntebraco,
+    alt: 'Tatuagem blackwork de cobra enrolada em uma cruz ornamentada, no antebraço'
   },
   {
     id: 183,
@@ -1792,7 +1803,6 @@ export const portfolioItems: PortfolioItem[] = [
   // -------------------------------------------------------------- Blackwork
   {
     id: 19,
-    destaque: true,
     title: 'Lobo Geométrico',
     category: 'blackwork',
     categoryLabel: 'Blackwork',
@@ -1800,17 +1810,7 @@ export const portfolioItems: PortfolioItem[] = [
     alt: 'Tatuagem blackwork de lobo dividido entre realismo e formas geométricas no braço',
   },
   {
-    id: 20,
-    destaque: true,
-    title: 'The Rind — Escher',
-    category: 'blackwork',
-    categoryLabel: 'Blackwork',
-    image: blackworkEscher,
-    alt: 'Tatuagem blackwork inspirada em The Rind, de Escher, com faixas em preto sólido envolvendo o antebraço',
-  },
-  {
     id: 21,
-    destaque: true,
     title: 'Vegvisir e Corvo',
     category: 'blackwork',
     categoryLabel: 'Blackwork',
