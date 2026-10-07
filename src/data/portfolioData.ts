@@ -64,6 +64,7 @@ import finelineCavalo from '../assets/portfolio/fineline-cavalo-costas.webp';
 
 // IMPORTS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
 // Não remova o marcador nem escreva abaixo dele à mão.
+import blackworkWalterWhitePanturrilha from '../assets/portfolio/blackwork-walter-white-panturrilha.webp';
 import blackworkCaveiraEAmpulhetaAntebraco from '../assets/portfolio/blackwork-caveira-e-ampulheta-antebraco.webp';
 import blackworkNaveEspacialLateralDaPanturrilha from '../assets/portfolio/blackwork-nave-espacial-lateral-da-panturrilha.webp';
 import blackworkLoboEmPeleDeCordeiroAntebracoLateral from '../assets/portfolio/blackwork-lobo-em-pele-de-cordeiro-antebraco-lateral.webp';
@@ -354,6 +355,14 @@ export const portfolioItems: PortfolioItem[] = [
   },
 
   // ITENS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
+  {
+    id: 198,
+    title: 'Walter White',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkWalterWhitePanturrilha,
+    alt: 'Tatuagem do personagem Walter White da série de televisão Breaking Bad, em blackwork na panturrilha'
+  },
   {
     id: 197,
     title: 'Caveira e ampulheta',
