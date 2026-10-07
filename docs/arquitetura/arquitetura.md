@@ -10,10 +10,12 @@ interatividade — as "ilhas".
 src/
 ├── assets/
 │   ├── portfolio/   Fotos do portfolio (entram pelo pipeline de imagem)
+│   ├── coberturas-antes/  O "antes" das coberturas (fora do schema)
 │   └── about-artist.webp
 ├── components/
 │   ├── layout/      AppLayout (wrapper estatico)
 │   ├── portfolio/   GaleriaGrid.astro (grade + lightbox, compartilhada)
+│   │                GaleriaCoberturas.astro (grade por foto com o antes)
 │   ├── seo/         Seo.astro, LocalBusinessSchema.astro,
 │   │                BreadcrumbSchema.astro, FaqSchema.astro
 │   ├── sections/    Header.tsx, ContactForm.tsx, Footer.tsx
@@ -24,6 +26,7 @@ src/
 │   └── Lightbox.tsx
 ├── data/            siteData.ts (negocio), portfolioData.ts (galeria),
 │                    nichosData.ts (texto das paginas por nicho),
+│                    coberturasData.ts (o antes de cada cobertura),
 │                    referencias.ts (limites do upload, compartilhados
 │                    entre o formulario e o Worker)
 ├── layouts/         BaseLayout.astro (head + header + rodape + reveal)
@@ -39,6 +42,8 @@ worker/
 scripts/
 ├── inventario-fotos.mjs   o que do acervo ja esta no site
 ├── importar-fotos.mjs     converte, renomeia e escreve no portfolioData
+├── importar-antes.mjs     converte o antes das coberturas (nao escreve dados)
+├── converter-foto.mjs     a conversao que os dois importadores compartilham
 ├── verificar-visual.mjs   botao flutuante, console, contraste, foto da artista
 ├── verificar-galeria.mjs  home: carrosseis, filtro, lightbox, deslize
 ├── verificar-nichos.mjs   as 5 paginas por nicho
@@ -61,7 +66,7 @@ O site deixou de ter uma página só em 04/08/2026, com a
 | URL | Papel | Fotos |
 | --- | --- | --- |
 | `/` | home: hero, carrosséis por categoria, bio, formulário | 15 |
-| `/tatuagem/coberturas` | cobertura de tatuagem bh | 13 |
+| `/tatuagem/coberturas` | cobertura de tatuagem bh | 20 (13 com antes) |
 | `/tatuagem/botanico` | tatuagem botânica bh | 15 |
 | `/tatuagem/geek` | tatuagem geek bh / anime bh | 46 |
 | `/tatuagem/blackwork` | blackwork bh | 34 |
@@ -217,6 +222,53 @@ foto para o Google Imagens e para leitor de tela é o `alt`.
 > o texto encolhe e cresce **em proporção à foto**, garantindo que as palavras não
 > fiquem cortadas. O item de portfólio atua como contêiner (`container-type: inline-size`).
 
+### Coberturas: antes e depois
+
+A página de coberturas não usa o masonry. Cada foto é um card 4:5 com a
+miniatura do **antes** no canto inferior esquerdo; tocar abre a ampliação só
+daquela tatuagem:
+
+| | Ampliação |
+| --- | --- |
+| Desktop (> 768px) | um slide, antes e depois lado a lado |
+| Celular (≤ 768px) | dois slides: abre no depois, desliza para o antes |
+
+> ⚠️ **O par do desktop se mede pelo espaço que sobra, não por conta fixa.**
+> A primeira versão calculava a foto como "altura da tela − 340px". Com zoom no
+> navegador a tela encolhe em px de CSS e os 340px não: a 200% o par caiu para
+> 16% da altura. Hoje a caixa do par é um contêiner (`container-type: size`) e
+> cada foto usa `cqw`/`cqh` — a maior 4:5 que cabe. Medido: 84% da altura a
+> 100%, 75% a 200%. Coberto por `npm run verificar:nichos`.
+
+As fotos de antes e depois não têm o mesmo ângulo, por isso nunca há slider
+nem sobreposição: cada uma no seu espaço. No celular o lado a lado deixaria as
+duas pequenas demais, e o deslize reaproveita o trilho que o lightbox já tem.
+
+**Um card por foto, não por trabalho.** Ângulos diferentes da mesma tatuagem
+(Água-viva, Floral no Pulso, Lótus) continuam sendo fotos independentes, cada
+uma com o seu antes — quando só existe um antes, os ângulos o compartilham. Dá
+volume à página, que é a de menos trabalhos.
+
+**Sem página por trabalho.** O handoff do Claude Design previa uma URL por
+cobertura, com texto sobre a peça. Sem esse texto, cada página teria só um
+título e duas fotos: 20 URLs rasas (*thin content*) disputando com
+`/tatuagem/coberturas`, que é a URL que ranqueia. A ampliação entrega a mesma
+comparação sem sair da página.
+
+**O antes mora em `coberturasData.ts`, e não num campo do `PortfolioItem`.** O
+painel `/admin` e o `importar-fotos.mjs` escrevem texto dentro do
+`portfolioData.ts`; mudar o formato dos itens de lá arriscaria os dois. A chave
+é o `id` do depois.
+
+> ⚠️ **O antes fica fora do `ImagensSchema` e do `sitemap-imagens.xml`.** Os
+> dois declaram a Clara como autora e licenciante de cada foto, e a tatuagem
+> antiga não é trabalho dela. Por isso a pasta é separada,
+> `src/assets/coberturas-antes/`. Coberto por `npm run verificar:nichos`.
+
+Foto de cobertura nova pelo `/admin` entra sem antes e aparece como card
+simples. O antes é acrescentado com `scripts/importar-antes.mjs` e uma entrada
+à mão em `coberturasData.ts`.
+
 ## Ilhas de interatividade
 
 Três componentes hidratam hoje, todos com `client:load`:
@@ -367,7 +419,7 @@ regra vale para foto que carrega informação.
 
 * `BaseLayout.astro` tem um único `<script>` (módulo, portanto deferido) com um `IntersectionObserver` que adiciona `.active` para as animações de entrada, e dá `unobserve` após revelar cada elemento. Morava em `index.astro` até as seis páginas existirem.
 * `Portfolio.astro` tem o script do filtro de categoria — só a home filtra; as páginas por nicho já chegam filtradas pela URL.
-* `GaleriaGrid.astro` tem a delegação de clique que abre o lightbox. O seletor é `[data-galeria]`, e não um id fixo, porque o componente agora aparece em seis páginas.
+* `lib/gestosDaGaleria.ts` tem a delegação de clique e a pressão longa que abrem o lightbox, importado pelo `GaleriaGrid` e pelo `GaleriaCoberturas`. O seletor é `[data-galeria]`, e não um id fixo, porque as grades aparecem em seis páginas. Com `data-galeria="por-foto"` a ampliação recebe só a tatuagem tocada; nas outras, a galeria inteira.
 * `FloatingCta.astro` tem o próprio script, que observa `[data-cta-apos]` para aparecer e `#contato`/`.main-footer` para se esconder.
 
 > ⚠️ O gatilho do `FloatingCta` era `#home`, o hero — o que dava no mesmo

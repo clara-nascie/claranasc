@@ -2,14 +2,14 @@
 
 Como uma foto é ampliada, e por que o código de gesto é do jeito que é.
 
-O `GaleriaGrid.astro` detecta os gestos e dispara eventos na janela; o
+O `lib/gestosDaGaleria.ts` (importado pelas duas grades) detecta os gestos e dispara eventos na janela; o
 `Lightbox.tsx` escuta e desenha. Os dois não se conhecem — a galeria é estática
 e o lightbox é a única ilha envolvida.
 
 | Evento | Quem dispara | O que faz |
 |---|---|---|
-| `open-lightbox` | `GaleriaGrid` | Abre. `detail.espiada` distingue os dois modos |
-| `close-lightbox` | `GaleriaGrid` | Encerra a espiada ao soltar o dedo |
+| `open-lightbox` | `gestosDaGaleria` | Abre. `detail.espiada` distingue os dois modos |
+| `close-lightbox` | `gestosDaGaleria` | Encerra a espiada ao soltar o dedo |
 
 O `detail` do `open-lightbox` leva a galeria inteira (`fotos`) e o `indice` da
 foto tocada, não os dados de uma foto só — é o que permite passar para a
