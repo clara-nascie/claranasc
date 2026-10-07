@@ -2,6 +2,15 @@
    RESPONSIVE MEDIA QUERIES
    ========================================================================== */
 @media (max-width: 992px) {
+    /* ⚠️ Abaixo de ~960px os quatro itens do menu nao cabem ao lado do logo. */
+    .mobile-menu-toggle {
+        display: block;
+    }
+
+    .nav-menu {
+        display: none;
+    }
+
     .about-grid,
     .estudio-grid {
         grid-template-columns: 1fr;
@@ -31,14 +40,6 @@
 @media (max-width: 768px) {
     :root {
         --header-height: 70px;
-    }
-    
-    .mobile-menu-toggle {
-        display: block;
-    }
-    
-    .nav-menu {
-        display: none;
     }
     
     .container {

@@ -20,6 +20,7 @@ export const Footer: React.FC = () => {
               <li><a href="/">Início</a></li>
               <li><a href="/#portfolio">Portfólio</a></li>
               <li><a href="/#sobre">A Artista</a></li>
+              <li><a href="/#estudio">O Estúdio</a></li>
               <li><a href="/#contato">Agendar</a></li>
               {/* Sem este link a página de licenciamento fica órfã: existiria só
                   no sitemap e no `license` dos dados estruturados. */}

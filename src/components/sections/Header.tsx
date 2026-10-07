@@ -22,6 +22,7 @@ export const Header: React.FC = () => {
             <ul>
               <li><a href="/#portfolio" className="nav-link" id="nav-link-portfolio">Portfólio</a></li>
               <li><a href="/#sobre" className="nav-link" id="nav-link-sobre">A Artista</a></li>
+              <li><a href="/#estudio" className="nav-link" id="nav-link-estudio">O Estúdio</a></li>
               <li><Button as="a" href="/#contato" className="nav-link btn-header-cta" id="nav-link-contato">Agendar Sessão</Button></li>
             </ul>
           </nav>
@@ -39,6 +40,7 @@ export const Header: React.FC = () => {
           <ul>
             <li><a href="/#portfolio" className="mobile-nav-link" id="mob-link-portfolio" onClick={closeMenu}>Portfólio</a></li>
             <li><a href="/#sobre" className="mobile-nav-link" id="mob-link-sobre" onClick={closeMenu}>A Artista</a></li>
+            <li><a href="/#estudio" className="mobile-nav-link" id="mob-link-estudio" onClick={closeMenu}>O Estúdio</a></li>
             <li><Button as="a" href="/#contato" className="mobile-nav-link btn-mobile-cta" id="mob-link-contato" onClick={closeMenu}>Agendar Sessão</Button></li>
           </ul>
         </nav>

@@ -9,7 +9,7 @@ const LARGURAS = [1440, 1280, 1100, 993, 900, 768, 600, 390];
 const ALVOS = [
   '.hero-tagline', '.hero-title-name', '.hero-title-role', '.hero-subtitle', '.hero-endereco a',
   '#hero-secondary-btn',
-  '#nav-link-portfolio', '#nav-link-sobre', '#nav-link-contato'
+  '#nav-link-portfolio', '#nav-link-sobre', '#nav-link-estudio', '#nav-link-contato'
 ];
 
 const FALHAS_ACEITAS = [
