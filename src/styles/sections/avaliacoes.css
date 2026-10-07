@@ -85,6 +85,15 @@
     text-underline-offset: 3px;
 }
 
+.avaliacoes-coracao {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    margin-left: 0.35em;
+    vertical-align: -0.15em;
+    color: var(--accent-gold-hover);
+}
+
 .avaliacoes-deixar a:hover,
 .avaliacoes-deixar a:focus-visible {
     text-decoration-thickness: 2px;
