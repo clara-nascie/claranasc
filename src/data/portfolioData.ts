@@ -64,6 +64,7 @@ import finelineCavalo from '../assets/portfolio/fineline-cavalo-costas.webp';
 
 // IMPORTS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
 // Não remova o marcador nem escreva abaixo dele à mão.
+import blackworkCartolaLateralPanturrilha from '../assets/portfolio/blackwork-cartola-lateral-panturrilha.webp';
 import botanicoLirioEBatimentoAntebraco from '../assets/portfolio/botanico-lirio-e-batimento-antebraco.webp';
 import coberturaFloralPulso from '../assets/portfolio/cobertura-floral-pulso.webp';
 import coberturaFloralPulsoLadoDireito from '../assets/portfolio/cobertura-floral-pulso-lado-direito.webp';
@@ -349,6 +350,14 @@ export const portfolioItems: PortfolioItem[] = [
   },
 
   // ITENS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
+  {
+    id: 193,
+    title: 'Cartola',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkCartolaLateralPanturrilha,
+    alt: 'Tatuagem do retrato do cantor Cartola em blackwork'
+  },
   {
     id: 192,
     title: 'Lírio e batimento',
