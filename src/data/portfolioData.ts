@@ -330,7 +330,7 @@ export const portfolioItems: PortfolioItem[] = [
     category: 'coberturas',
     categoryLabel: 'Coberturas',
     image: coberturaCoracao,
-    alt: 'Cobertura de tatuagem com coração anatômico e linha de eletrocardiograma no braço, sobre o bíceps'
+    alt: 'Cobertura de tatuagem com coração anatômico e linha de eletrocardiograma no braço, sobre o tríceps'
   },
   {
     id: 46,
