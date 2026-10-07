@@ -2,7 +2,7 @@
 
 Como uma foto é ampliada, e por que o código de gesto é do jeito que é.
 
-O `lib/gestosDaGaleria.ts` (importado pelas duas grades) detecta os gestos e dispara eventos na janela; o
+O `lib/gestosDaGaleria.ts` (importado pelo `GaleriaGrid`) detecta os gestos e dispara eventos na janela; o
 `Lightbox.tsx` escuta e desenha. Os dois não se conhecem — a galeria é estática
 e o lightbox é a única ilha envolvida.
 

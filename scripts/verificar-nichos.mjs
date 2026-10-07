@@ -87,21 +87,26 @@ if (!urlsDoSitemap) {
    em deslize no celular. */
 async function checarAntesDepois(page) {
   const colunas = await page
-    .locator('.coberturas-grid')
-    .evaluate((el) => getComputedStyle(el).gridTemplateColumns.split(' ').length);
-  checar('grade de coberturas em 3 colunas no desktop', colunas === 3, `${colunas} colunas`);
+    .locator('.portfolio-grid--masonry')
+    .evaluate((el) => Number(getComputedStyle(el).columnCount));
+  checar('coberturas no mesmo masonry das outras páginas, em 3 colunas no desktop', colunas === 3, `${colunas} colunas`);
 
-  const proporcoes = await page
-    .locator('.cobertura-foto')
-    .evaluateAll((els) => els.map((el) => el.getBoundingClientRect()).map((r) => r.width / r.height));
-  checar('foto do depois em 4:5', proporcoes.length > 0 && proporcoes.every((p) => Math.abs(p - 0.8) < 0.01),
-         `${proporcoes.length} cards`);
+  // Masonry: cada foto na proporção em que foi tirada, sem recorte.
+  const proporcoes = await page.locator('.portfolio-item > .portfolio-img-wrapper > img').evaluateAll((imgs) =>
+    imgs.map((img) => {
+      const r = img.getBoundingClientRect();
+      // ⚠️ Os atributos, e não `img.width`: a propriedade devolve o tamanho desenhado.
+      return Math.abs(r.width / r.height - img.getAttribute('width') / img.getAttribute('height'));
+    })
+  );
+  checar('foto do depois na proporção original', proporcoes.length > 0 && proporcoes.every((d) => d < 0.02),
+         `${proporcoes.length} fotos`);
 
-  const miniaturas = await page.locator('.cobertura-card').evaluateAll((cards) =>
+  const miniaturas = await page.locator('.portfolio-item').evaluateAll((cards) =>
     cards.map((card) => {
       const gatilho = card.querySelector('.lightbox-trigger');
       const img = card.querySelector('[data-antes] img');
-      const foto = card.querySelector('.cobertura-foto').getBoundingClientRect();
+      const foto = card.querySelector('.portfolio-img-wrapper').getBoundingClientRect();
       const r = img?.getBoundingClientRect();
       return {
         temAntes: Boolean(gatilho.dataset.antesSrc),
@@ -183,9 +188,9 @@ async function checarAntesDepoisNoCelular(slug) {
   await page.goto(`${BASE_URL}/tatuagem/${slug}`, { waitUntil: 'networkidle' });
 
   const colunas = await page
-    .locator('.coberturas-grid')
-    .evaluate((el) => getComputedStyle(el).gridTemplateColumns.split(' ').length);
-  checar('celular: grade em 2 colunas', colunas === 2, `${colunas} colunas`);
+    .locator('.portfolio-grid--masonry')
+    .evaluate((el) => Number(getComputedStyle(el).columnCount));
+  checar('celular: masonry em 2 colunas', colunas === 2, `${colunas} colunas`);
 
   const gatilho = page.locator('.lightbox-trigger[data-antes-src]').first();
   const antesSrc = await gatilho.getAttribute('data-antes-src');

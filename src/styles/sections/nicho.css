@@ -261,70 +261,6 @@
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 }
 
-.coberturas-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 32px 24px;
-}
-
-@media (max-width: 768px) {
-    .coberturas-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 28px 14px;
-    }
-}
-
-/* ⚠️ Desfaz o `.portfolio-item` da galeria: lá o item é a própria foto, com
-   proporção travada e `overflow: hidden`, que cortariam o título. */
-.cobertura-card {
-    aspect-ratio: auto;
-    overflow: visible;
-    border-radius: 0;
-    background-color: transparent;
-}
-
-.cobertura-gatilho {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
-    text-align: left;
-    color: var(--text-primary);
-    cursor: pointer;
-}
-
-.cobertura-gatilho:focus-visible {
-    outline: 2px solid var(--accent-gold);
-    outline-offset: 4px;
-    border-radius: 6px;
-}
-
-.cobertura-foto {
-    position: relative;
-    display: block;
-    aspect-ratio: 4 / 5;
-    overflow: hidden;
-    border-radius: 6px;
-    background-color: var(--bg-tertiary);
-}
-
-.cobertura-foto > img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-@media (hover: hover) {
-    .cobertura-gatilho:hover .cobertura-foto > img {
-        transform: scale(1.04);
-    }
-
-    .cobertura-gatilho:hover .cobertura-titulo {
-        color: var(--accent-gold);
-    }
-}
-
 .cobertura-antes {
     position: absolute;
     left: 8px;
@@ -368,32 +304,5 @@
         padding: 3px 0 1px;
         font-size: 9px;
         letter-spacing: 0.06em;
-    }
-}
-
-.cobertura-texto {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
-.cobertura-titulo {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.06rem;
-    font-weight: 600;
-    line-height: 1.3;
-    transition: color 0.3s ease;
-}
-
-.cobertura-acao {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-}
-
-/* No celular o selo "Antes" na foto ja sinaliza o par; o `aria-label` do
-   botao continua anunciando "ver antes e depois". */
-@media (max-width: 768px) {
-    .cobertura-acao {
-        display: none;
     }
 }

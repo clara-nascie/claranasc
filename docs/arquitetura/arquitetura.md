@@ -14,8 +14,8 @@ src/
 │   └── about-artist.webp
 ├── components/
 │   ├── layout/      AppLayout (wrapper estatico)
-│   ├── portfolio/   GaleriaGrid.astro (grade + lightbox, compartilhada)
-│   │                GaleriaCoberturas.astro (grade por foto com o antes)
+│   ├── portfolio/   GaleriaGrid.astro (grade + lightbox, compartilhada;
+│   │                com `antesDepois`, o selo do antes nas coberturas)
 │   ├── seo/         Seo.astro, LocalBusinessSchema.astro,
 │   │                BreadcrumbSchema.astro, FaqSchema.astro
 │   ├── sections/    Header.tsx, ContactForm.tsx, Footer.tsx
@@ -224,9 +224,12 @@ foto para o Google Imagens e para leitor de tela é o `alt`.
 
 ### Coberturas: antes e depois
 
-A página de coberturas não usa o masonry. Cada foto é um card 4:5 com a
-miniatura do **antes** no canto inferior esquerdo; tocar abre a ampliação só
-daquela tatuagem:
+A página de coberturas usa o mesmo masonry das outras, pedido da Clara em
+07/10/2026: até então era uma grade própria de cards 4:5 com o título embaixo,
+e destoava das demais. O `GaleriaGrid` com `antesDepois` acrescenta a
+miniatura do **antes** no canto inferior esquerdo da foto, e a ampliação abre
+só aquela tatuagem (`data-galeria="por-foto"`). Abre como nas outras páginas:
+pela lupa ou pela espiada.
 
 | | Ampliação |
 | --- | --- |
@@ -419,7 +422,7 @@ regra vale para foto que carrega informação.
 
 * `BaseLayout.astro` tem um único `<script>` (módulo, portanto deferido) com um `IntersectionObserver` que adiciona `.active` para as animações de entrada, e dá `unobserve` após revelar cada elemento. Morava em `index.astro` até as seis páginas existirem.
 * `Portfolio.astro` tem o script do filtro de categoria — só a home filtra; as páginas por nicho já chegam filtradas pela URL.
-* `lib/gestosDaGaleria.ts` tem a delegação de clique e a pressão longa que abrem o lightbox, importado pelo `GaleriaGrid` e pelo `GaleriaCoberturas`. O seletor é `[data-galeria]`, e não um id fixo, porque as grades aparecem em seis páginas. Com `data-galeria="por-foto"` a ampliação recebe só a tatuagem tocada; nas outras, a galeria inteira.
+* `lib/gestosDaGaleria.ts` tem a delegação de clique e a pressão longa que abrem o lightbox, importado pelo `GaleriaGrid`. O seletor é `[data-galeria]`, e não um id fixo, porque as grades aparecem em seis páginas. Com `data-galeria="por-foto"` a ampliação recebe só a tatuagem tocada; nas outras, a galeria inteira.
 * `FloatingCta.astro` tem o próprio script, que observa `[data-cta-apos]` para aparecer e `#contato`/`.main-footer` para se esconder.
 
 > ⚠️ O gatilho do `FloatingCta` era `#home`, o hero — o que dava no mesmo

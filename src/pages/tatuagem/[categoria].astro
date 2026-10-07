@@ -6,7 +6,6 @@ import BreadcrumbSchema from '../../components/seo/BreadcrumbSchema.astro';
 import FaqSchema from '../../components/seo/FaqSchema.astro';
 import ImagensSchema from '../../components/seo/ImagensSchema.astro';
 import GaleriaGrid from '../../components/portfolio/GaleriaGrid.astro';
-import GaleriaCoberturas from '../../components/portfolio/GaleriaCoberturas.astro';
 
 import { whatsappUrl, LOCATION } from '../../data/siteData';
 import {
@@ -88,11 +87,7 @@ const outrosNichos = NICHOS.filter((outro) => outro.slug !== nicho.slug);
         </div>
 
         <div class="reveal">
-          {nicho.galeria === 'antes-depois' ? (
-            <GaleriaCoberturas itens={fotos} />
-          ) : (
-            <GaleriaGrid itens={fotos} layout="masonry" />
-          )}
+          <GaleriaGrid itens={fotos} layout="masonry" antesDepois={nicho.galeria === 'antes-depois'} />
         </div>
       </div>
     </section>

@@ -1,25 +1,33 @@
 ---
 import { Image, getImage } from 'astro:assets';
 import type { PortfolioItem } from '../../data/portfolioData';
-
+import { antesDa } from '../../data/coberturasData';
 
 interface Props {
   itens: PortfolioItem[];
   id?: string;
   layout?: 'grade' | 'masonry' | 'carrossel';
+  /** A ampliação abre só a tatuagem tocada, com o antes quando houver. */
+  antesDepois?: boolean;
 }
 
-const { itens, id, layout = 'grade' } = Astro.props;
+const { itens, id, layout = 'grade', antesDepois = false } = Astro.props;
 const eMasonry = layout === 'masonry';
 const eCarrossel = layout === 'carrossel';
 
-const ampliadas = new Map(
-  await Promise.all(
-    itens.map(async (item) => {
-      const grande = await getImage({ src: item.image, width: 1400, format: 'webp' });
-      return [item.id, grande.src] as const;
-    })
-  )
+const ampliada = async (image: ImageMetadata) =>
+  (await getImage({ src: image, width: 1400, format: 'webp' })).src;
+
+const fotos = await Promise.all(
+  itens.map(async (item) => {
+    const antes = antesDepois ? antesDa(item) : undefined;
+    return {
+      item,
+      antes,
+      grande: await ampliada(item.image),
+      antesGrande: antes ? await ampliada(antes.image) : undefined
+    };
+  })
 );
 
 const LARGURAS = [280, 380, 560, 760];
@@ -35,9 +43,9 @@ const TAMANHOS = eCarrossel
     eCarrossel && 'portfolio-grid--carrossel'
   ]}
   id={id}
-  data-galeria
+  data-galeria={antesDepois ? 'por-foto' : ''}
 >
-  {itens.map((item) => (
+  {fotos.map(({ item, antes, grande, antesGrande }) => (
     <figure class:list={['portfolio-item', eMasonry && 'portfolio-item--livre']} data-category={item.category}>
       <div class="portfolio-img-wrapper">
         <Image
@@ -50,16 +58,33 @@ const TAMANHOS = eCarrossel
           loading="lazy"
           decoding="async"
         />
+        {antes && (
+          <span class="cobertura-antes" data-antes>
+            <Image
+              src={antes.image}
+              alt={antes.alt}
+              widths={[120, 260]}
+              sizes="(max-width: 639px) 24vw, 100px"
+              format="webp"
+              quality={72}
+              loading="lazy"
+              decoding="async"
+            />
+            <span class="cobertura-antes-rotulo">Antes</span>
+          </span>
+        )}
         <div class="portfolio-hover">
           <span class="item-category">{item.categoryLabel}</span>
           <h3 class="item-title">{item.title}</h3>
           <button
             type="button"
             class="btn-zoom lightbox-trigger"
-            aria-label={`Ampliar imagem de ${item.title}`}
-            data-src={ampliadas.get(item.id)}
+            aria-label={antes ? `${item.title}: ver antes e depois` : `Ampliar imagem de ${item.title}`}
+            data-src={grande}
             data-title={item.title}
             data-category={item.categoryLabel}
+            data-antes-src={antesGrande}
+            data-antes-alt={antes?.alt}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
