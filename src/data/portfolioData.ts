@@ -64,6 +64,7 @@ import finelineCavalo from '../assets/portfolio/fineline-cavalo-costas.webp';
 
 // IMPORTS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
 // Não remova o marcador nem escreva abaixo dele à mão.
+import botanicoFloralNoBracoBraco from '../assets/portfolio/botanico-floral-no-braco-braco.webp';
 import geekCrashEAkiraCoxa from '../assets/portfolio/geek-crash-e-akira-coxa.webp';
 import blackworkWalterWhitePanturrilha from '../assets/portfolio/blackwork-walter-white-panturrilha.webp';
 import blackworkCaveiraEAmpulhetaAntebraco from '../assets/portfolio/blackwork-caveira-e-ampulheta-antebraco.webp';
@@ -356,6 +357,14 @@ export const portfolioItems: PortfolioItem[] = [
   },
 
   // ITENS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
+  {
+    id: 200,
+    title: 'Floral no braço',
+    category: 'botanico',
+    categoryLabel: 'Botânico',
+    image: botanicoFloralNoBracoBraco,
+    alt: 'Tatuagem floral com ramos delicados no braço e folhas soltas'
+  },
   {
     id: 199,
     title: 'Crash e Akira',
