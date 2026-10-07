@@ -34,7 +34,13 @@ export const PainelFotos: React.FC<PainelFotosProps> = ({ categorias, proximoId,
   const [arquivo, setArquivo] = useState('');
   const [arquivoEditado, setArquivoEditado] = useState(false);
   const [enviando, setEnviando] = useState(false);
-  const [enviada, setEnviada] = useState<{ arquivo: string; commit: string } | null>(null);
+  const [enviada, setEnviada] = useState<{ arquivo: string; id: number; commit: string } | null>(null);
+
+  /* ⚠️ `proximoId` e `existentes` vêm do build, e a página não é refeita a
+     cada envio: sem acompanhar o que o Worker gravou, a prévia repete o id e
+     aceita um nome que acabou de ser usado. */
+  const [idDaPrevia, setIdDaPrevia] = useState(proximoId);
+  const [enviadasAgora, setEnviadasAgora] = useState<string[]>([]);
 
   useEffect(() => {
     if (!arquivoEditado) setArquivo(sugerirNome(categoria, titulo, parteDoCorpo));
@@ -69,14 +75,14 @@ export const PainelFotos: React.FC<PainelFotosProps> = ({ categorias, proximoId,
 
   const rotulo = categorias.find((c) => c.id === categoria)!.label;
   const foto = {
-    id: proximoId,
+    id: idDaPrevia,
     arquivo,
     titulo: limparTexto(titulo),
     categoria,
     categoriaLabel: rotulo,
     alt: limparTexto(alt)
   };
-  const problemas = problemasDaFoto(foto, existentes);
+  const problemas = problemasDaFoto(foto, [...existentes, ...enviadasAgora]);
   const pronta = convertida && problemas.length === 0;
 
   const enviar = async () => {
@@ -94,7 +100,9 @@ export const PainelFotos: React.FC<PainelFotosProps> = ({ categorias, proximoId,
       const resposta = await fetch('/api/admin/fotos', { method: 'POST', body: dados });
       const corpo = await resposta.json().catch(() => ({}));
       if (!resposta.ok) throw new Error(corpo.erro ?? `O envio falhou (${resposta.status}).`);
-      setEnviada({ arquivo, commit: corpo.commit });
+      setEnviada({ arquivo, id: corpo.id, commit: corpo.commit });
+      setIdDaPrevia(corpo.id + 1);
+      setEnviadasAgora((lista) => [...lista, arquivo]);
       setConvertida(null);
       setOriginal(null);
       setTitulo('');
@@ -127,7 +135,7 @@ export const PainelFotos: React.FC<PainelFotosProps> = ({ categorias, proximoId,
       {erro && <p className="painel-erro" role="alert">{erro}</p>}
       {enviada && (
         <p className="painel-sucesso" role="status">
-          <strong>{enviada.arquivo}</strong> foi enviada. Ela aparece no site em alguns minutos, depois
+          <strong>{enviada.arquivo}</strong> foi enviada com o id {enviada.id}. Ela aparece no site em alguns minutos, depois
           do build. <a href={enviada.commit}>Ver o commit</a>
         </p>
       )}
