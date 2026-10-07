@@ -130,7 +130,7 @@
    nao ha o que rolar. A largura e `calc` e nao pixel fixo -- o `.container` e
    90% da tela e so chega no teto acima de ~1333px. */
 .portfolio-grid--carrossel .portfolio-item {
-    flex: 1 0 calc((100% - 60px) / 4);
+    flex: 0 0 calc((100% - 60px) / 4);
     scroll-snap-align: start;
 }
 
@@ -147,7 +147,9 @@
     transition: var(--transition-smooth);
     text-decoration: none;
     scroll-snap-align: start;
-    flex: 0 0 auto;
+    /* ⚠️ Quem absorve a sobra da fileira e o cartao, nunca as fotos: a largura
+       dele depende do rotulo, e cada categoria ficaria com fotos de outro tamanho. */
+    flex: 1 0 auto;
 }
 
 .carrossel-cartao:hover {
