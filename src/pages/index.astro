@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/sections/Hero.astro';
 import Portfolio from '../components/sections/Portfolio.astro';
 import About from '../components/sections/About.astro';
+import Estudio from '../components/sections/Estudio.astro';
 import { ContactForm } from '../components/sections/ContactForm';
 import ImagensSchema from '../components/seo/ImagensSchema.astro';
 import { portfolioItems } from '../data/portfolioData';
@@ -20,5 +21,6 @@ const fotosDaHome = portfolioItems.filter((foto) => foto.destaque);
   <Hero />
   <Portfolio />
   <About />
+  <Estudio />
   <ContactForm client:load />
 </BaseLayout>

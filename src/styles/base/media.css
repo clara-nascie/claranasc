@@ -2,7 +2,8 @@
    RESPONSIVE MEDIA QUERIES
    ========================================================================== */
 @media (max-width: 992px) {
-    .about-grid {
+    .about-grid,
+    .estudio-grid {
         grid-template-columns: 1fr;
         gap: 60px;
     }
@@ -10,7 +11,8 @@
     /* ⚠️ O `width: 100%` nao e redundante com o `max-width`: `margin: 0 auto`
        em item de grid cancela o `stretch` padrao, e sem ele a coluna passa a se
        ajustar ao conteudo. */
-    .about-image-column {
+    .about-image-column,
+    .estudio-image-column {
         width: 100%;
         max-width: 450px;
         margin: 0 auto;
@@ -72,6 +74,13 @@
     .about-details {
         grid-template-columns: 1fr;
         gap: 20px;
+    }
+
+    /* ⚠️ A margem lateral do celular e menor que 25px: o deslocamento padrao
+       da moldura cria rolagem horizontal. */
+    .estudio-image-frame {
+        top: 15px;
+        left: 15px;
     }
 }
 

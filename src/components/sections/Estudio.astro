@@ -1,0 +1,58 @@
+---
+import { Image } from 'astro:assets';
+import { MapPin } from 'lucide-react';
+import fotoEstudio from '../../assets/estudio-iuna-tattoo.jpg';
+import { LOCATION, enderecoLinha, mapsUrl } from '../../data/siteData';
+
+// A coluna tem `max-width: 450px`; o maior valor da lista cobre densidade 2x.
+const LARGURAS = [340, 450, 900];
+const TAMANHOS = '(max-width: 992px) min(90vw, 450px), 450px';
+---
+
+<section class="estudio-section" id="estudio">
+  <div class="container">
+    <div class="estudio-grid">
+      <div class="estudio-content-column reveal">
+        <span class="section-tag">{LOCATION.studioName}</span>
+        <h2 class="section-title text-left">O Estúdio</h2>
+        <div class="header-divider left"></div>
+        <p class="about-text highlight">
+          Acreditamos que tatuar deve ser uma experiência leve do início ao fim.
+        </p>
+        <p class="about-text">
+          Por isso, o estúdio foi pensado para te receber com o conforto e calma que o processo pede, além, é claro, da preocupação e seguimento de todas as normas de biossegurança.
+        </p>
+        <p class="about-text">
+          Estamos localizados na região central do {LOCATION.neighborhood}, bem fácil de chegar de qualquer ponto de BH e com estacionamento fácil pra quem prefere vir de carro.
+        </p>
+        <p class="about-text">
+          Agende sua visita! Seja pra tomar um café, conhecer o espaço, bater um papo sobre tatuagem ou tirar aquela dúvida que tá travando sua nova tattoo. Todo mundo é bem-vindo!
+        </p>
+        <address class="estudio-endereco">
+          <MapPin aria-hidden="true" />
+          <div>
+            <h4>{LOCATION.studioName}</h4>
+            <p>{enderecoLinha()}</p>
+            <a href={mapsUrl()} target="_blank" rel="noreferrer">Ver no mapa</a>
+          </div>
+        </address>
+      </div>
+      <div class="estudio-image-column reveal">
+        <div class="estudio-image-wrapper">
+          <Image
+            class="estudio-image-foto"
+            src={fotoEstudio}
+            alt={`Interior do estúdio ${LOCATION.studioName} em Belo Horizonte, com macas de tatuagem, quadros nas paredes e piso de madeira`}
+            widths={LARGURAS}
+            sizes={TAMANHOS}
+            format="webp"
+            quality={80}
+            loading="lazy"
+            decoding="async"
+          />
+          <div class="estudio-image-frame"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
