@@ -57,7 +57,7 @@ import blackworkNavio from '../assets/portfolio/blackwork-navio-polvo-coxa.webp'
 // --- Fine Line ---
 import finelineFigura from '../assets/portfolio/fineline-figura-entre-nuvens-antebraco.webp';
 import finelineMedusa from '../assets/portfolio/fineline-medusa-abdomen.webp';
-import finelineEspelho from '../assets/portfolio/fineline-espelho-e-tesoura-costas.webp';
+import finelineEspelho from '../assets/portfolio/fineline-espelho-e-espada-costas.webp';
 import finelineLivros from '../assets/portfolio/fineline-livros-e-cartola-coxa.webp';
 import finelineBorboleta from '../assets/portfolio/fineline-borboleta-antebraco.webp';
 import finelineCavalo from '../assets/portfolio/fineline-cavalo-costas.webp';
@@ -1864,11 +1864,11 @@ export const portfolioItems: PortfolioItem[] = [
   {
     id: 27,
     destaque: true,
-    title: 'Espelho e Tesoura',
+    title: 'Espelho e Espada',
     category: 'fineline',
     categoryLabel: 'Fine Line',
     image: finelineEspelho,
-    alt: 'Tatuagem fine line de espelho de mão, tesoura e flores nas costas',
+    alt: 'Tatuagem fine line de espelho de mão cruzado com uma espada, com flores, na parte alta das costas',
   },
   {
     id: 28,
