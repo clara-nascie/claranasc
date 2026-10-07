@@ -64,6 +64,7 @@ import finelineCavalo from '../assets/portfolio/fineline-cavalo-costas.webp';
 
 // IMPORTS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
 // Não remova o marcador nem escreva abaixo dele à mão.
+import blackworkLoboEmPeleDeCordeiroAntebracoLateral from '../assets/portfolio/blackwork-lobo-em-pele-de-cordeiro-antebraco-lateral.webp';
 import blackworkLoboEmPeleDeCordeiroAntebraco from '../assets/portfolio/blackwork-lobo-em-pele-de-cordeiro-antebraco.webp';
 import blackworkCartolaLateralPanturrilha from '../assets/portfolio/blackwork-cartola-lateral-panturrilha.webp';
 import botanicoLirioEBatimentoAntebraco from '../assets/portfolio/botanico-lirio-e-batimento-antebraco.webp';
@@ -351,6 +352,14 @@ export const portfolioItems: PortfolioItem[] = [
   },
 
   // ITENS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
+  {
+    id: 195,
+    title: 'Lobo em pele de cordeiro',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkLoboEmPeleDeCordeiroAntebracoLateral,
+    alt: 'Tatuagem de lobo em pele de cordeiro em blackwork no antebraço'
+  },
   {
     id: 194,
     title: 'Lobo em pele de cordeiro',
