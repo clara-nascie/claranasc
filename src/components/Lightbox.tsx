@@ -6,6 +6,8 @@ interface Foto {
   previa: string;
   title: string;
   category: string;
+  /** Cobertura no desktop: o antes aparece ao lado, no mesmo slide. */
+  antes?: { src: string; previa?: string; alt: string };
 }
 
 const REPOUSO = -100;
@@ -111,14 +113,15 @@ export const Lightbox: React.FC = () => {
   useEffect(() => {
     if (!isOpen) return;
 
-    for (const foto of [fotos[indice - 1], fotos[indice], fotos[indice + 1]]) {
-      if (!foto?.src || pedidas.current.has(foto.src)) continue;
-      pedidas.current.add(foto.src);
+    const vizinhas = [fotos[indice - 1], fotos[indice], fotos[indice + 1]];
+    for (const src of vizinhas.flatMap((foto) => [foto?.src, foto?.antes?.src])) {
+      if (!src || pedidas.current.has(src)) continue;
+      pedidas.current.add(src);
 
-      const marcar = () => setProntas((antes) => new Set(antes).add(foto.src));
+      const marcar = () => setProntas((antes) => new Set(antes).add(src));
       const grande = new Image();
       grande.onload = marcar;
-      grande.src = foto.src;
+      grande.src = src;
       // Já em cache: o `onload` de uma imagem completa pode não disparar.
       if (grande.complete) marcar();
     }
@@ -233,6 +236,7 @@ export const Lightbox: React.FC = () => {
   if (!isOpen) return null;
 
   const varias = fotos.length > 1;
+  const melhor = (src: string, previa?: string) => (prontas.has(src) || !previa ? src : previa);
 
   return (
     <div
@@ -259,15 +263,37 @@ export const Lightbox: React.FC = () => {
             const atual = deslocamento === 0;
 
             return (
-              <div className="lightbox-slide" key={indice + deslocamento} aria-hidden={!atual}>
+              <div
+                className={`lightbox-slide${foto?.antes ? ' lightbox-slide--par' : ''}`}
+                key={indice + deslocamento}
+                aria-hidden={!atual}
+              >
                 {foto && (
-                  <div className="lightbox-content">
-                    <img
-                      src={prontas.has(foto.src) || !foto.previa ? foto.src : foto.previa}
-                      alt={foto.title}
-                      id={atual ? 'lightbox-img' : undefined}
-                      fetchPriority={atual ? 'high' : 'low'}
-                    />
+                  <div className={`lightbox-content${foto.antes ? ' lightbox-content--par' : ''}`}>
+                    {foto.antes ? (
+                      <div className="lightbox-par">
+                        <div className="lightbox-par-foto">
+                          <img src={melhor(foto.antes.src, foto.antes.previa)} alt={foto.antes.alt} />
+                          <span className="lightbox-rotulo lightbox-rotulo--antes">Antes</span>
+                        </div>
+                        <div className="lightbox-par-foto">
+                          <img
+                            src={melhor(foto.src, foto.previa)}
+                            alt={foto.title}
+                            id={atual ? 'lightbox-img' : undefined}
+                            fetchPriority={atual ? 'high' : 'low'}
+                          />
+                          <span className="lightbox-rotulo lightbox-rotulo--depois">Depois</span>
+                        </div>
+                      </div>
+                    ) : (
+                      <img
+                        src={melhor(foto.src, foto.previa)}
+                        alt={foto.title}
+                        id={atual ? 'lightbox-img' : undefined}
+                        fetchPriority={atual ? 'high' : 'low'}
+                      />
+                    )}
                     <div className="lightbox-caption">
                       <span className="lightbox-category" id={atual ? 'lightbox-category' : undefined}>
                         {foto.category}

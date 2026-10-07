@@ -232,3 +232,73 @@
        contra o fundo rgba(10,10,10,0.95) do modal. */
     color: var(--text-on-dark);
 }
+
+/* --- Cobertura: antes e depois lado a lado (desktop) -------------------- */
+
+/* ⚠️ Margens em `vh`, não em px: com zoom no navegador a tela encolhe em px
+   de CSS, e uma faixa fixa come cada vez mais da altura até a foto sumir. Os
+   96px laterais deixam o X do canto fora do caminho das fotos. */
+.lightbox-slide--par {
+    padding: 4vh max(96px, 6vw);
+}
+
+.lightbox-content--par {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    gap: 16px;
+}
+
+/* ⚠️ `container-type: size` faz `cqw`/`cqh` dos FILHOS medirem o espaço que
+   sobrou depois do título. Na própria caixa as unidades ignorariam o
+   contêiner e cairiam na tela inteira. */
+.lightbox-par {
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 100%;
+    container-type: size;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+/* A maior foto 4:5 que cabe: metade da largura ou a altura toda
+   (largura = altura × 0,8), o que for menor. */
+.lightbox-par-foto {
+    position: relative;
+    width: min(calc((100cqw - 8px) / 2), calc(100cqh * 0.8));
+}
+
+.lightbox-content .lightbox-par img {
+    display: block;
+    width: 100%;
+    max-height: none;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.lightbox-rotulo {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+/* ⚠️ O tom escuro do botão, e não o `--accent-gold`: com o claro o rótulo
+   fica em 3,78:1 e reprova a WCAG; aqui dá 5:1 nas duas combinações. */
+.lightbox-rotulo--antes {
+    background-color: var(--accent-gold-hover);
+    color: var(--text-on-dark);
+}
+
+.lightbox-rotulo--depois {
+    background-color: var(--text-on-dark);
+    color: var(--accent-gold-hover);
+}
