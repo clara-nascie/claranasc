@@ -458,16 +458,50 @@ regra vale para foto que carrega informação.
 * A imagem de compartilhamento é `public/assets/og-clara-nasc.jpg`, recorte 1200x630 de uma foto real. É **JPEG e não WebP** de propósito: alguns raspadores de link ainda tropeçam em WebP, e essa é a imagem que precisa abrir em qualquer lugar. Receita em `assets/README.md`.
 * O `image` do negócio lê `OG_IMAGE.path` em vez de repetir o caminho. Foi a duplicação que deixou um placeholder gerado por IA sobreviver ali: ele sumiu da tela e ninguém lembrou que havia uma segunda referência mandando-o para o Google.
 
+### ⚠️ Avaliações: no site, mas fora do schema
+
+A seção "O que diz quem já tatuou comigo" (`Avaliacoes.astro`) mostra três
+avaliações do Google Business Profile, escolhidas à mão e copiadas para
+`avaliacoesData.ts`. Os links "ver todas" e "deixe a sua" ficam em
+`GOOGLE_AVALIACOES`, no `siteData.ts`.
+
+**Por que manual, e não pela API do Google Places:** a API exige chave e conta
+com faturamento, devolve só 5 avaliações escolhidas pelo Google e põe uma
+chamada externa no caminho da página. A escolha é da Clara, e o critério foi a
+dúvida que cada avaliação responde (segurança e cicatrização, processo de
+criação, sessão longa), não a nota, já que todas são 5.
+
+**Por que sem `Review` nem `AggregateRating` no JSON-LD:** desde 2019 o Google
+não exibe estrelas para avaliações que um negócio publica sobre si mesmo no
+próprio site (*self-serving reviews*). A marcação não daria estrelas e entraria
+no que a política dele manda ignorar. O sinal de avaliação que pesa no SEO local
+é o da **ficha** — por isso o link "deixe a sua avaliação" ajuda mais do que
+qualquer marcação.
+
+**Sem data nos cartões:** o Google mostra só datas relativas ("2 meses atrás").
+Converter para mês e ano seria um chute.
+
+**Texto sem edição**, inclusive erros de digitação. Nome como primeiro nome e
+inicial.
+
+Coberto por `npm run verificar`: três cartões visíveis, mesma altura quando
+lado a lado, link "ver todas" para o Google em nova aba, contraste do "via
+Google".
+
 ### ⚠️ O que o site **não** resolve sozinho
 
 O JSON-LD confirma e conecta a entidade, mas **não coloca o estúdio no mapa**. O
-bloco de três resultados com mapa é alimentado pelo **Google Business Profile**,
-que ainda não existe. Refinar o schema não substitui criar a ficha.
+bloco de três resultados com mapa é alimentado pelo **Google Business Profile**.
+Refinar o schema não substitui manter a ficha.
 
-Antes de criar, há um nome a decidir: hoje são três — `Clara Nasc Tattoo`
-(`SITE.businessName`), `Iuna Tattoo` (o estúdio) e `Clara Nascimento TATTOO`
-(o Instagram). O Google usa consistência de nome para concluir que registros
-são a mesma entidade.
+A ficha existe e se chama **"Clara Nasc"**. É ela a fonte do nome:
+`SITE.businessName` precisa bater exatamente com ela, porque o Google usa
+consistência de nome, endereço, telefone e horário para concluir que a ficha e
+o site são a mesma entidade. O "Iuna Tattoo" é o estúdio onde ela atende, não o
+negócio dela, e o nome de exibição do Instagram não entra nessa comparação.
+
+⚠️ Mudou algo na ficha (horário, telefone, endereço)? Mude também em
+`siteData.ts`, e vice-versa.
 
 ## Hospedagem e deploy
 
