@@ -123,6 +123,56 @@ try {
       foto ? `${Math.round(foto.width)}x${Math.round(foto.height)}px` : 'elemento não encontrado'
     );
 
+    // --- Avaliações ---
+    const cartoes = page.locator('.avaliacao-cartao');
+    for (const cartao of await cartoes.all()) await cartao.scrollIntoViewIfNeeded();
+    await page.waitForFunction(() =>
+      [...document.querySelectorAll('#avaliacoes .reveal')].every((e) => getComputedStyle(e).opacity === '1')
+    );
+    const medidas = await cartoes.evaluateAll((els) =>
+      els.map((el) => {
+        const r = el.getBoundingClientRect();
+        return { topo: Math.round(r.top + scrollY), altura: Math.round(r.height), largura: Math.round(r.width) };
+      })
+    );
+    checar(
+      `[${rotulo}] avaliações: 3 cartões com tamanho de conteúdo`,
+      medidas.length === 3 && medidas.every((m) => m.altura > 100 && m.largura > 200),
+      medidas.map((m) => `${m.largura}x${m.altura}`).join(', ') || 'nenhum cartão'
+    );
+
+    // ⚠️ Só compara cartões na mesma fileira: empilhados, cada um tem a altura do próprio texto.
+    const fileiras = Object.values(Object.groupBy(medidas, (m) => m.topo)).filter((f) => f.length > 1);
+    const desiguais = fileiras.filter((f) => new Set(f.map((m) => m.altura)).size > 1);
+    checar(
+      `[${rotulo}] avaliações: cartões lado a lado com a mesma altura`,
+      desiguais.length === 0,
+      fileiras.length ? fileiras.map((f) => f.map((m) => m.altura).join('/')).join(' · ') : 'empilhados'
+    );
+
+    const verTodas = await page.locator('#avaliacoes-ver-todas').evaluate((a) => ({
+      host: new URL(a.href).hostname,
+      target: a.target,
+      rel: a.rel
+    }));
+    checar(
+      `[${rotulo}] avaliações: link "ver todas" vai ao Google em nova aba`,
+      /(^|\.)google\.com$/.test(verTodas.host) && verTodas.target === '_blank' && verTodas.rel.includes('noreferrer'),
+      `${verTodas.host}, target=${verTodas.target}, rel=${verTodas.rel}`
+    );
+
+    const corOrigem = await page.locator('.avaliacao-origem').first().evaluate((el) => ({
+      cor: getComputedStyle(el).color,
+      fundo: getComputedStyle(el.closest('.avaliacao-cartao')).backgroundColor
+    }));
+    const razaoOrigem = razaoContraste(parseRgb(corOrigem.cor), parseRgb(corOrigem.fundo));
+    checar(
+      `[${rotulo}] contraste "via Google"`,
+      razaoOrigem >= 4.5,
+      `${razaoOrigem.toFixed(2)}:1 (WCAG AA exige 4.5:1)`
+    );
+    await page.locator('#avaliacoes').screenshot({ path: `${OUT_DIR}/${rotulo}-avaliacoes.png` });
+
     // --- 4. Deve sumir sobre o formulário de agendamento ---
     await page.locator('#contato').scrollIntoViewIfNeeded();
     await page.waitForTimeout(800);

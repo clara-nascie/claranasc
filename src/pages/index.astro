@@ -4,6 +4,7 @@ import Hero from '../components/sections/Hero.astro';
 import Portfolio from '../components/sections/Portfolio.astro';
 import About from '../components/sections/About.astro';
 import Estudio from '../components/sections/Estudio.astro';
+import Avaliacoes from '../components/sections/Avaliacoes.astro';
 import { ContactForm } from '../components/sections/ContactForm';
 import ImagensSchema from '../components/seo/ImagensSchema.astro';
 import { portfolioItems } from '../data/portfolioData';
@@ -22,5 +23,6 @@ const fotosDaHome = portfolioItems.filter((foto) => foto.destaque);
   <Portfolio />
   <About />
   <Estudio />
+  <Avaliacoes />
   <ContactForm client:load />
 </BaseLayout>

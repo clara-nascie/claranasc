@@ -16,6 +16,12 @@
         grid-template-columns: 1fr;
         gap: 60px;
     }
+
+    .avaliacoes-grid {
+        grid-template-columns: 1fr;
+        max-width: 600px;
+        margin-inline: auto;
+    }
     
     /* ⚠️ O `width: 100%` nao e redundante com o `max-width`: `margin: 0 auto`
        em item de grid cancela o `stretch` padrao, e sem ele a coluna passa a se

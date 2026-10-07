@@ -1,0 +1,88 @@
+/* ==========================================================================
+   AVALIACOES SECTION
+   ========================================================================== */
+.avaliacoes-section {
+    background-color: var(--bg-primary);
+}
+
+.avaliacoes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.avaliacao-cartao {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin: 0;
+    padding: 32px 28px;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+.avaliacao-estrelas {
+    display: flex;
+    gap: 4px;
+    color: var(--accent-gold-hover);
+}
+
+.avaliacao-texto {
+    flex-grow: 1;
+    margin: 0;
+}
+
+.avaliacao-texto p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    font-weight: 300;
+    line-height: 1.7;
+}
+
+.avaliacao-autor {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-color);
+}
+
+.avaliacao-nome {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.avaliacao-origem {
+    font-size: 0.8rem;
+    color: var(--accent-gold-hover);
+}
+
+.avaliacoes-acoes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    margin-top: 50px;
+    text-align: center;
+}
+
+.avaliacoes-deixar {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+/* ⚠️ Sublinhado, nao so cor: a WCAG 1.4.1 proibe cor como unico indicador. */
+.avaliacoes-deixar a {
+    font-weight: 500;
+    color: var(--text-primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.avaliacoes-deixar a:hover,
+.avaliacoes-deixar a:focus-visible {
+    text-decoration-thickness: 2px;
+}

@@ -1,0 +1,73 @@
+---
+import { avaliacoes } from '../../data/avaliacoesData';
+import { GOOGLE_AVALIACOES } from '../../data/siteData';
+
+const ESTRELAS = [1, 2, 3, 4, 5];
+---
+
+<section class="avaliacoes-section" id="avaliacoes">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag">Avaliações</span>
+      <h2 class="section-title">O que diz quem já tatuou comigo</h2>
+      <div class="header-divider"></div>
+    </div>
+
+    <div class="avaliacoes-grid">
+      {avaliacoes.map((avaliacao) => (
+        <figure class="avaliacao-cartao reveal">
+          <div class="avaliacao-estrelas">
+            <span class="sr-only">Nota {avaliacao.nota} de 5</span>
+            {ESTRELAS.map((n) => (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill={n <= avaliacao.nota ? 'currentColor' : 'none'}
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M12 2.5l2.94 5.96 6.56.95-4.75 4.63 1.12 6.54L12 17.5l-5.87 3.08 1.12-6.54L2.5 9.41l6.56-.95z" />
+              </svg>
+            ))}
+          </div>
+          <blockquote class="avaliacao-texto">
+            <p>{avaliacao.texto}</p>
+          </blockquote>
+          <figcaption class="avaliacao-autor">
+            <span class="avaliacao-nome">{avaliacao.nome}</span>
+            <span class="avaliacao-origem">via Google</span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+
+    {(GOOGLE_AVALIACOES.verTodas || GOOGLE_AVALIACOES.deixar) && (
+      <div class="avaliacoes-acoes reveal">
+        {GOOGLE_AVALIACOES.verTodas && (
+          <a
+            class="btn btn-secondary"
+            id="avaliacoes-ver-todas"
+            href={GOOGLE_AVALIACOES.verTodas}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Ver todas as avaliações no Google
+          </a>
+        )}
+        {GOOGLE_AVALIACOES.deixar && (
+          <p class="avaliacoes-deixar">
+            Já tatuou comigo? <a
+              href={GOOGLE_AVALIACOES.deixar}
+              target="_blank"
+              rel="noreferrer">Deixe a sua avaliação</a
+            >
+          </p>
+        )}
+      </div>
+    )}
+  </div>
+</section>

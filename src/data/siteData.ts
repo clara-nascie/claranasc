@@ -62,6 +62,11 @@ export const SOCIAL = {
   tiktok: 'https://www.tiktok.com/@clara.nasc13' as string | null
 } as const;
 
+export const GOOGLE_AVALIACOES = {
+  verTodas: 'https://search.google.com/local/reviews?placeid=ChIJV4IF-T6ZpgARTz91byyV08c' as string | null,
+  deixar: 'https://g.page/r/CU8_dW8sldPHEBM/review' as string | null
+} as const;
+
 export const OPENING_HOURS = [
   {
     days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
