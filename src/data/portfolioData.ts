@@ -64,6 +64,7 @@ import finelineCavalo from '../assets/portfolio/fineline-cavalo-costas.webp';
 
 // IMPORTS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
 // Não remova o marcador nem escreva abaixo dele à mão.
+import botanicoLirioEBatimentoAntebraco from '../assets/portfolio/botanico-lirio-e-batimento-antebraco.webp';
 import coberturaFloralPulso from '../assets/portfolio/cobertura-floral-pulso.webp';
 import coberturaFloralPulsoLadoDireito from '../assets/portfolio/cobertura-floral-pulso-lado-direito.webp';
 import coberturaFloralPulsoLadoEsquerdo from '../assets/portfolio/cobertura-floral-pulso-lado-esquerdo.webp';
@@ -348,6 +349,14 @@ export const portfolioItems: PortfolioItem[] = [
   },
 
   // ITENS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
+  {
+    id: 192,
+    title: 'Lírio e batimento',
+    category: 'botanico',
+    categoryLabel: 'Botânico',
+    image: botanicoLirioEBatimentoAntebraco,
+    alt: 'Tatuagem botânica de flor de lírio com batimento cardíaco no antebraço'
+  },
   {
     id: 186,
     title: 'Floral no Pulso',
