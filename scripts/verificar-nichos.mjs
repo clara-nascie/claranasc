@@ -15,7 +15,7 @@ const BASE_URL = process.env.BASE_URL ?? 'http://localhost:4321';
 
 /** Os cinco slugs, com o que cada página tem de próprio. */
 const NICHOS = [
-  { slug: 'coberturas', h1: 'Cobertura de tatuagem em Belo Horizonte' },
+  { slug: 'coberturas', h1: 'Cobertura de tatuagem em Belo Horizonte', antesDepois: true },
   { slug: 'botanico', h1: 'Tatuagem botânica em Belo Horizonte' },
   { slug: 'geek', h1: 'Tatuagem geek e de anime em Belo Horizonte' },
   { slug: 'blackwork', h1: 'Tatuagem blackwork em Belo Horizonte' },
@@ -82,6 +82,174 @@ if (!urlsDoSitemap) {
   }
 }
 
+/* Coberturas: grade por foto, com a miniatura do antes, e uma ampliação que
+   mostra só a tatuagem tocada — o par lado a lado no desktop, e depois → antes
+   em deslize no celular. */
+async function checarAntesDepois(page) {
+  const colunas = await page
+    .locator('.coberturas-grid')
+    .evaluate((el) => getComputedStyle(el).gridTemplateColumns.split(' ').length);
+  checar('grade de coberturas em 3 colunas no desktop', colunas === 3, `${colunas} colunas`);
+
+  const proporcoes = await page
+    .locator('.cobertura-foto')
+    .evaluateAll((els) => els.map((el) => el.getBoundingClientRect()).map((r) => r.width / r.height));
+  checar('foto do depois em 4:5', proporcoes.length > 0 && proporcoes.every((p) => Math.abs(p - 0.8) < 0.01),
+         `${proporcoes.length} cards`);
+
+  const miniaturas = await page.locator('.cobertura-card').evaluateAll((cards) =>
+    cards.map((card) => {
+      const gatilho = card.querySelector('.lightbox-trigger');
+      const img = card.querySelector('[data-antes] img');
+      const foto = card.querySelector('.cobertura-foto').getBoundingClientRect();
+      const r = img?.getBoundingClientRect();
+      return {
+        temAntes: Boolean(gatilho.dataset.antesSrc),
+        carregou: Boolean(img && img.complete && img.naturalWidth > 0),
+        // Canto inferior esquerdo, dentro da foto do depois.
+        noCanto: Boolean(r && r.left - foto.left < 20 && foto.bottom - r.bottom < 40 && r.width < foto.width * 0.4)
+      };
+    })
+  );
+  const comAntes = miniaturas.filter((m) => m.temAntes);
+  checar('cards com antes mostram a miniatura carregada',
+         comAntes.length > 0 && comAntes.every((m) => m.carregou),
+         `${comAntes.filter((m) => m.carregou).length}/${comAntes.length}`);
+  checar('miniatura do antes no canto inferior esquerdo', comAntes.every((m) => m.noCanto));
+  checar('card sem antes não tem miniatura',
+         miniaturas.filter((m) => !m.temAntes).every((m) => !m.carregou));
+
+  // ⚠️ O schema e o sitemap de imagens declaram a Clara como autora: o antes
+  // não pode entrar em nenhum dos dois.
+  const noSchema = await page.locator('script[type="application/ld+json"]').evaluateAll((nos) =>
+    nos.map((n) => n.textContent ?? '').join(' ')
+  );
+  const xml = await (await fetch(new URL('/sitemap-imagens.xml', BASE_URL))).text();
+  const antesNoSchema = /-antes\./.test(noSchema);
+  const antesNoSitemap = /-antes\./.test(xml);
+  checar('foto do antes fora do schema e do sitemap de imagens', !antesNoSchema && !antesNoSitemap,
+         `schema=${antesNoSchema} sitemap=${antesNoSitemap}`);
+
+  const slideAtual = '.lightbox-slide[aria-hidden="false"]';
+  await page.locator('.lightbox-trigger[data-antes-src]').first().click();
+  await page.locator(`${slideAtual} .lightbox-par img`).first().waitFor({ timeout: 5000 }).catch(() => {});
+  await page.waitForTimeout(600);
+  const par = await page.locator(`${slideAtual} .lightbox-par img`).evaluateAll((imgs) =>
+    imgs.map((img) => img.getBoundingClientRect()).map((r) => ({ top: Math.round(r.top), left: Math.round(r.left) }))
+  );
+  checar('desktop: antes e depois lado a lado na ampliação',
+         par.length === 2 && par[0].top === par[1].top && par[0].left < par[1].left,
+         JSON.stringify(par));
+  await checarTamanhoDoPar(page, 'desktop');
+  const slidesDesktop = await page.locator('#lightbox-contador').count();
+  checar('desktop: ampliação mostra só aquela tatuagem', slidesDesktop === 0,
+         slidesDesktop ? 'contador visível: a fileira tem mais de uma foto' : 'um slide');
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(400);
+}
+
+/* O par tem que ocupar a tela, e o título ficar abaixo dele, sem sobrepor. */
+async function checarTamanhoDoPar(page, rotulo) {
+  const medida = await page.evaluate(() => {
+    const atual = '.lightbox-slide[aria-hidden="false"]';
+    const foto = document.querySelector(`${atual} .lightbox-par img`)?.getBoundingClientRect();
+    const titulo = document.querySelector(`${atual} .lightbox-title`)?.getBoundingClientRect();
+    if (!foto || !titulo) return null;
+    return {
+      altura: Math.round((foto.height / innerHeight) * 100),
+      tituloAbaixo: titulo.top >= foto.bottom,
+      tituloNaTela: titulo.bottom <= innerHeight
+    };
+  });
+  checar(`${rotulo}: par ocupa ao menos 70% da altura da tela, com o título abaixo`,
+         medida && medida.altura >= 70 && medida.tituloAbaixo && medida.tituloNaTela,
+         JSON.stringify(medida));
+}
+
+/* ⚠️ Zoom do navegador = a mesma tela física com menos px de CSS. Uma faixa
+   fixa em px come cada vez mais altura; a 200% o par já chegou a 16%. */
+async function checarParComZoom(slug) {
+  const page = await browser.newPage({ viewport: { width: 941, height: 404 }, deviceScaleFactor: 2 });
+  await page.goto(`${BASE_URL}/tatuagem/${slug}`, { waitUntil: 'networkidle' });
+  await page.locator('.lightbox-trigger[data-antes-src]').first().click();
+  await page.locator('.lightbox-slide[aria-hidden="false"] .lightbox-par img').first().waitFor({ timeout: 5000 }).catch(() => {});
+  await page.waitForTimeout(800);
+  await checarTamanhoDoPar(page, 'zoom de 200%');
+  await page.close();
+}
+
+async function checarAntesDepoisNoCelular(slug) {
+  const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+  await page.goto(`${BASE_URL}/tatuagem/${slug}`, { waitUntil: 'networkidle' });
+
+  const colunas = await page
+    .locator('.coberturas-grid')
+    .evaluate((el) => getComputedStyle(el).gridTemplateColumns.split(' ').length);
+  checar('celular: grade em 2 colunas', colunas === 2, `${colunas} colunas`);
+
+  const gatilho = page.locator('.lightbox-trigger[data-antes-src]').first();
+  const antesSrc = await gatilho.getAttribute('data-antes-src');
+  const depoisSrc = await gatilho.getAttribute('data-src');
+  await gatilho.scrollIntoViewIfNeeded();
+  await gatilho.click();
+  await page.locator('#lightbox-contador').waitFor({ timeout: 5000 }).catch(() => {});
+
+  const atual = '.lightbox-slide[aria-hidden="false"]';
+  const estado = async () => ({
+    contador: ((await page.locator('#lightbox-contador').textContent().catch(() => '')) ?? '').replace(/\s/g, ''),
+    rotulo: (await page.locator(`${atual} .lightbox-category`).textContent())?.trim(),
+    src: await page.locator(`${atual} img`).getAttribute('src')
+  });
+  // Espera a prévia ser trocada pela ampliada antes de comparar.
+  const esperarSrc = (src) =>
+    page
+      .waitForFunction(
+        ([seletor, s]) => document.querySelector(`${seletor} img`)?.getAttribute('src') === s,
+        [atual, src],
+        { timeout: 10000 }
+      )
+      .catch(() => {});
+
+  await esperarSrc(depoisSrc);
+  const primeiro = await estado();
+  checar('celular: abre no depois, com 2 fotos na fileira',
+         primeiro.contador === '1/2' && primeiro.rotulo === 'Depois' && primeiro.src === depoisSrc,
+         JSON.stringify(primeiro));
+
+  const posicaoDaSeta = await page.evaluate((seletor) => {
+    const rotulo = document.querySelector(`${seletor} .lightbox-category`)?.getBoundingClientRect();
+    // O desenho para a posição; o botão inteiro para o alvo de toque.
+    const botao = document.querySelector(`${seletor} .lightbox-dica`)?.getBoundingClientRect();
+    const seta = document.querySelector(`${seletor} .lightbox-dica svg`)?.getBoundingClientRect();
+    if (!rotulo || !botao || !seta || seta.width === 0) return null;
+    return { aDireita: seta.left >= rotulo.right, mesmaLinha: Math.abs(seta.top + seta.height / 2 - (rotulo.top + rotulo.height / 2)) < 6, alvo: Math.min(botao.width, botao.height) };
+  }, atual);
+  checar('celular: seta à direita de "Depois", com alvo de toque de 44px',
+         posicaoDaSeta?.aDireita && posicaoDaSeta.mesmaLinha && posicaoDaSeta.alvo >= 44,
+         JSON.stringify(posicaoDaSeta));
+
+  // Pela seta, e não pelo teclado: prova também que ela leva ao antes.
+  await page.locator(`${atual} .lightbox-dica`).click();
+  await esperarSrc(antesSrc);
+  const segundo = await estado();
+  const setaNoAntes = await page.locator(`${atual} .lightbox-dica`).count();
+  checar('celular: sem seta no antes, que é a última foto', setaNoAntes === 0, `${setaNoAntes}`);
+  checar('celular: a foto seguinte é o antes da mesma tatuagem',
+         segundo.contador === '2/2' && segundo.rotulo === 'Antes' && segundo.src === antesSrc,
+         JSON.stringify(segundo));
+
+  await page.keyboard.press('ArrowRight');
+  await page.waitForTimeout(800);
+  const terceiro = await estado();
+  checar('celular: a fileira termina no antes', terceiro.contador === '2/2', JSON.stringify(terceiro));
+
+  await page.screenshot({ path: '.playwright/coberturas-celular-antes.png' });
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(400);
+  await page.screenshot({ path: '.playwright/coberturas-celular.png' });
+  await page.close();
+}
+
 const browser = await chromium.launch();
 
 try {
@@ -108,13 +276,13 @@ try {
       zero até entrarem na tela, e a checagem de proporção dividia por zero.
       Passou com 6 fotos, reprovou com 26, e a página estava certa nas duas.
     */
-    await page.locator('.portfolio-item--livre img').evaluateAll((imgs) => {
+    await page.locator('[data-galeria] img').evaluateAll((imgs) => {
       for (const img of imgs) img.loading = 'eager';
     });
     const todasCarregaram = await page
       .waitForFunction(
         () =>
-          [...document.querySelectorAll('.portfolio-item--livre img')].every(
+          [...document.querySelectorAll('[data-galeria] img')].every(
             (img) => img.complete && img.naturalWidth > 0
           ),
         null,
@@ -160,47 +328,51 @@ try {
            chamada.length > 0 && chamada.length <= 120,
            `${chamada.length} caracteres`);
 
-    // --- galeria em masonry ---
-    const totalFotos = await page.locator('.portfolio-item--livre').count();
-    checar('galeria tem fotos', totalFotos > 0, `${totalFotos} fotos`);
+    if (nicho.antesDepois) {
+      await checarAntesDepois(page);
+    } else {
+      // --- galeria em masonry ---
+      const totalFotos = await page.locator('.portfolio-item--livre').count();
+      checar('galeria tem fotos', totalFotos > 0, `${totalFotos} fotos`);
 
-    const colunas = await page
-      .locator('.portfolio-grid--masonry')
-      .evaluate((el) => getComputedStyle(el).columnCount);
-    checar('masonry em 3 colunas no desktop', colunas === '3', `column-count=${colunas}`);
+      const colunas = await page
+        .locator('.portfolio-grid--masonry')
+        .evaluate((el) => getComputedStyle(el).columnCount);
+      checar('masonry em 3 colunas no desktop', colunas === '3', `column-count=${colunas}`);
 
-    const fotos = await page.locator('.portfolio-item--livre img').evaluateAll((imgs) =>
-      imgs.map((img) => {
-        const r = img.getBoundingClientRect();
-        return {
-          proporcaoNaTela: r.width / r.height,
-          proporcaoDoArquivo: img.naturalWidth / img.naturalHeight,
-          altura: Math.round(r.height)
-        };
-      })
-    );
+      const fotos = await page.locator('.portfolio-item--livre img').evaluateAll((imgs) =>
+        imgs.map((img) => {
+          const r = img.getBoundingClientRect();
+          return {
+            proporcaoNaTela: r.width / r.height,
+            proporcaoDoArquivo: img.naturalWidth / img.naturalHeight,
+            altura: Math.round(r.height)
+          };
+        })
+      );
 
-    // Se o `object-fit: cover` e o `aspect-ratio: 4/5` da home vazarem para cá,
-    // toda foto renderiza em 0,8 e o desenho é cortado.
-    const respeitamProporcao = fotos.every(
-      (f) => Math.abs(f.proporcaoNaTela - f.proporcaoDoArquivo) < 0.02
-    );
-    const proporcoesDistintas = new Set(fotos.map((f) => f.proporcaoNaTela.toFixed(2))).size;
-    checar('fotos mantêm a proporção original', respeitamProporcao,
-           `${proporcoesDistintas} proporções diferentes na página`);
+      // Se o `object-fit: cover` e o `aspect-ratio: 4/5` da home vazarem para cá,
+      // toda foto renderiza em 0,8 e o desenho é cortado.
+      const respeitamProporcao = fotos.every(
+        (f) => Math.abs(f.proporcaoNaTela - f.proporcaoDoArquivo) < 0.02
+      );
+      const proporcoesDistintas = new Set(fotos.map((f) => f.proporcaoNaTela.toFixed(2))).size;
+      checar('fotos mantêm a proporção original', respeitamProporcao,
+             `${proporcoesDistintas} proporções diferentes na página`);
 
-    // É masonry se a altura varia pelo menos tanto quanto a proporção varia.
-    // `>=` e não `===`: proporções diferentes podem arredondar igual em duas
-    // casas decimais e ainda render alturas de pixel diferentes.
-    const alturasDistintas = new Set(fotos.map((f) => f.altura)).size;
-    checar('altura de cada item sai da própria foto',
-           alturasDistintas >= proporcoesDistintas,
-           `${alturasDistintas} alturas para ${proporcoesDistintas} proporções`);
+      // É masonry se a altura varia pelo menos tanto quanto a proporção varia.
+      // `>=` e não `===`: proporções diferentes podem arredondar igual em duas
+      // casas decimais e ainda render alturas de pixel diferentes.
+      const alturasDistintas = new Set(fotos.map((f) => f.altura)).size;
+      checar('altura de cada item sai da própria foto',
+             alturasDistintas >= proporcoesDistintas,
+             `${alturasDistintas} alturas para ${proporcoesDistintas} proporções`);
+    }
 
     // Sem legenda visível, o `alt` é o único texto que descreve
     // cada foto — para leitor de tela e para o Google Imagens.
     const alts = await page
-      .locator('.portfolio-item--livre img')
+      .locator('[data-galeria] img')
       .evaluateAll((imgs) => imgs.map((i) => i.getAttribute('alt') ?? ''));
     const semAlt = alts.filter((a) => a.trim().length < 15);
     checar('toda foto tem alt descritivo', semAlt.length === 0,
@@ -327,7 +499,7 @@ try {
     // Ancorado na galeria, nunca num scroll em pixels: posição fixa muda de
     // significado quando o conteúdo acima cresce ou encolhe. E `scrollIntoView`
     // e não `scrollIntoViewIfNeeded` — o segundo não rola se já estiver na tela.
-    await page.locator('.portfolio-grid--masonry').evaluate((el) =>
+    await page.locator('[data-galeria]').evaluate((el) =>
       el.scrollIntoView({ block: 'start' })
     );
     await page.waitForTimeout(500);
@@ -345,7 +517,13 @@ try {
 
     checar('sem erros no console', errosConsole.length === 0, errosConsole.join(' | ') || 'nenhum');
 
+    if (nicho.antesDepois) await page.screenshot({ path: '.playwright/coberturas-desktop.png' });
     await page.close();
+
+    if (nicho.antesDepois) {
+      await checarParComZoom(nicho.slug);
+      await checarAntesDepoisNoCelular(nicho.slug);
+    }
   }
 } finally {
   await browser.close();
