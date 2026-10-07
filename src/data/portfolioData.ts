@@ -64,6 +64,7 @@ import finelineCavalo from '../assets/portfolio/fineline-cavalo-costas.webp';
 
 // IMPORTS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
 // Não remova o marcador nem escreva abaixo dele à mão.
+import blackworkNaveEspacialLateralDaPanturrilha from '../assets/portfolio/blackwork-nave-espacial-lateral-da-panturrilha.webp';
 import blackworkLoboEmPeleDeCordeiroAntebracoLateral from '../assets/portfolio/blackwork-lobo-em-pele-de-cordeiro-antebraco-lateral.webp';
 import blackworkLoboEmPeleDeCordeiroAntebraco from '../assets/portfolio/blackwork-lobo-em-pele-de-cordeiro-antebraco.webp';
 import blackworkCartolaLateralPanturrilha from '../assets/portfolio/blackwork-cartola-lateral-panturrilha.webp';
@@ -352,6 +353,14 @@ export const portfolioItems: PortfolioItem[] = [
   },
 
   // ITENS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
+  {
+    id: 196,
+    title: 'Nave espacial',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkNaveEspacialLateralDaPanturrilha,
+    alt: 'Tatuagem de nave espacial decolando em blackwork na perna'
+  },
   {
     id: 195,
     title: 'Lobo em pele de cordeiro',
