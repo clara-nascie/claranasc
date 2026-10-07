@@ -389,3 +389,11 @@
     font-size: 0.875rem;
     color: var(--text-secondary);
 }
+
+/* No celular o selo "Antes" na foto ja sinaliza o par; o `aria-label` do
+   botao continua anunciando "ver antes e depois". */
+@media (max-width: 768px) {
+    .cobertura-acao {
+        display: none;
+    }
+}
