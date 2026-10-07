@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight, X } from 'lucide-react';
 
 interface Foto {
   src: string;
@@ -8,6 +8,8 @@ interface Foto {
   category: string;
   /** Cobertura no desktop: o antes aparece ao lado, no mesmo slide. */
   antes?: { src: string; previa?: string; alt: string };
+  /** Seta ao lado da legenda que leva à foto seguinte; o texto é o nome acessível. */
+  dica?: string;
 }
 
 const REPOUSO = -100;
@@ -295,9 +297,22 @@ export const Lightbox: React.FC = () => {
                       />
                     )}
                     <div className="lightbox-caption">
-                      <span className="lightbox-category" id={atual ? 'lightbox-category' : undefined}>
-                        {foto.category}
-                      </span>
+                      <div className="lightbox-category-linha">
+                        <span className="lightbox-category" id={atual ? 'lightbox-category' : undefined}>
+                          {foto.category}
+                        </span>
+                        {foto.dica && (
+                          <button
+                            type="button"
+                            className="lightbox-dica"
+                            aria-label={foto.dica}
+                            tabIndex={atual ? 0 : -1}
+                            onClick={() => navegar(1)}
+                          >
+                            <ArrowRight aria-hidden="true" strokeWidth={1.2} absoluteStrokeWidth />
+                          </button>
+                        )}
+                      </div>
                       <h3 className="lightbox-title" id={atual ? 'lightbox-title' : undefined}>
                         {foto.title}
                       </h3>
