@@ -27,15 +27,11 @@
  */
 import { readFile, writeFile, stat } from 'node:fs/promises';
 import path from 'node:path';
-import sharp from 'sharp';
+import { converterParaWebp } from './converter-foto.mjs';
 
 const RAIZ = path.resolve(import.meta.dirname, '..');
 const ACERVO = path.join(RAIZ, 'Anúncios');
 const DESTINO = path.join(RAIZ, 'src', 'assets', 'portfolio');
-
-/** Teto do lado maior. Cobre a maior variante que o site pede (lightbox, 1400px). */
-const LADO_MAXIMO = 1600;
-const QUALIDADE = 82;
 
 const [manifestoPath, ...flags] = process.argv.slice(2);
 if (!manifestoPath) {
@@ -85,30 +81,13 @@ for (const [indice, foto] of fotos.entries()) {
     }
   }
 
-  // `failOn: 'none'` aceita JPEG truncado; `rotate()` aplica o EXIF antes de
-  // redimensionar, senão foto tirada deitada sai girada no site.
-  const entrada = sharp(await readFile(origem), { failOn: 'none' }).rotate();
-  const meta = await entrada.metadata();
-
-  const buffer = await entrada
-    .resize(LADO_MAXIMO, LADO_MAXIMO, { fit: 'inside', withoutEnlargement: true })
-    .webp({ quality: QUALIDADE })
-    .toBuffer();
-
-  await writeFile(destino, buffer);
-
-  // Confere o que foi gravado, em vez de confiar no que foi pedido.
-  const gravado = await sharp(destino).metadata();
-  if (gravado.format !== 'webp') {
-    console.error(`ERRO: ${foto.arquivo}.webp saiu como ${gravado.format}`);
-    process.exit(1);
-  }
+  const { original: meta, gravado, bytes } = await converterParaWebp(origem, destino);
 
   importados.push({ ...foto, id: primeiroId + indice, ...gravado });
   console.log(
     `  ${String(indice + 1).padStart(2)}. ${foto.arquivo}.webp  ` +
       `${meta.width}x${meta.height} -> ${gravado.width}x${gravado.height}  ` +
-      `${Math.round(buffer.length / 1024)}KB`
+      `${Math.round(bytes / 1024)}KB`
   );
 }
 
