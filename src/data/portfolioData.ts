@@ -64,6 +64,12 @@ import finelineCavalo from '../assets/portfolio/fineline-cavalo-costas.webp';
 
 // IMPORTS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
 // Não remova o marcador nem escreva abaixo dele à mão.
+import coberturaFloralPulso from '../assets/portfolio/cobertura-floral-pulso.webp';
+import coberturaFloralPulsoLadoDireito from '../assets/portfolio/cobertura-floral-pulso-lado-direito.webp';
+import coberturaFloralPulsoLadoEsquerdo from '../assets/portfolio/cobertura-floral-pulso-lado-esquerdo.webp';
+import coberturaFlorDeLotusERamosTriceps from '../assets/portfolio/cobertura-flor-de-lotus-e-ramos-triceps.webp';
+import coberturaFlorDeLotusERamosTricepsDeLado from '../assets/portfolio/cobertura-flor-de-lotus-e-ramos-triceps-de-lado.webp';
+import coberturaParDeTrevosBiceps from '../assets/portfolio/cobertura-par-de-trevos-biceps.webp';
 import blackworkCobraECruzAntebraco from '../assets/portfolio/blackwork-cobra-e-cruz-antebraco.webp';
 import blackworkFechamentoDePernaPolvo from '../assets/portfolio/blackwork-fechamento-de-perna-polvo.webp';
 import blackworkAstronautaAntebraco from '../assets/portfolio/blackwork-astronauta-antebraco.webp';
@@ -342,6 +348,54 @@ export const portfolioItems: PortfolioItem[] = [
   },
 
   // ITENS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
+  {
+    id: 186,
+    title: 'Floral no Pulso',
+    category: 'coberturas',
+    categoryLabel: 'Coberturas',
+    image: coberturaFloralPulso,
+    alt: 'Cobertura de tatuagem com flores e folhas em preto e cinza envolvendo o pulso'
+  },
+  {
+    id: 187,
+    title: 'Floral no Pulso',
+    category: 'coberturas',
+    categoryLabel: 'Coberturas',
+    image: coberturaFloralPulsoLadoDireito,
+    alt: 'Cobertura de tatuagem com flores e folhas em preto e cinza no pulso, vista pelo lado de dentro'
+  },
+  {
+    id: 188,
+    title: 'Floral no Pulso',
+    category: 'coberturas',
+    categoryLabel: 'Coberturas',
+    image: coberturaFloralPulsoLadoEsquerdo,
+    alt: 'Cobertura de tatuagem com folhas em preto e cinza no pulso, vista pela lateral'
+  },
+  {
+    id: 189,
+    title: 'Flor de Lótus no Braço',
+    category: 'coberturas',
+    categoryLabel: 'Coberturas',
+    image: coberturaFlorDeLotusERamosTriceps,
+    alt: 'Cobertura de tatuagem com flor de lótus e ramos de flores em preto e cinza subindo pelo braço, sobre o tríceps'
+  },
+  {
+    id: 190,
+    title: 'Flor de Lótus no Braço',
+    category: 'coberturas',
+    categoryLabel: 'Coberturas',
+    image: coberturaFlorDeLotusERamosTricepsDeLado,
+    alt: 'Cobertura de tatuagem com ramos de flores em preto e cinza no braço, vista pela lateral'
+  },
+  {
+    id: 191,
+    title: 'Par de Trevos no Braço',
+    category: 'coberturas',
+    categoryLabel: 'Coberturas',
+    image: coberturaParDeTrevosBiceps,
+    alt: 'Cobertura de tatuagem com par de trevos em preto e cinza no braço, sobre o bíceps'
+  },
   {
     id: 185,
     title: 'Cobra e cruz',
