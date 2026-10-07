@@ -298,18 +298,21 @@ export const Lightbox: React.FC = () => {
                     )}
                     <div className="lightbox-caption">
                       <div className="lightbox-category-linha">
-                        <span className="lightbox-category" id={atual ? 'lightbox-category' : undefined}>
+                        <span
+                          className={`lightbox-category${foto.dica ? ' sr-only' : ''}`}
+                          id={atual ? 'lightbox-category' : undefined}
+                        >
                           {foto.category}
                         </span>
                         {foto.dica && (
                           <button
                             type="button"
                             className="lightbox-dica"
-                            aria-label={foto.dica}
                             tabIndex={atual ? 0 : -1}
                             onClick={() => navegar(1)}
                           >
-                            <ArrowRight aria-hidden="true" strokeWidth={1.2} absoluteStrokeWidth />
+                            {foto.dica}
+                            <ArrowRight aria-hidden="true" />
                           </button>
                         )}
                       </div>

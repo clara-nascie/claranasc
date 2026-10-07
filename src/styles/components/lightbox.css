@@ -312,22 +312,24 @@
     gap: 2px;
 }
 
-/* Ícone de 18px numa área de toque de 44px; a margem negativa devolve o
+/* ⚠️ A altura mínima de 44px é a área de toque; a margem negativa devolve o
    espaço extra para a linha não crescer. */
 .lightbox-dica {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    margin: -14px -14px -14px -8px;
+    gap: 6px;
+    min-height: 44px;
+    margin: -14px 0;
+    padding: 0 8px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
     color: var(--accent-gold-on-dark);
     cursor: pointer;
 }
 
-/* ⚠️ O traço é fixo em 1,2px no componente (`absoluteStrokeWidth`), a
-   espessura da haste do rótulo: aumentar o ícone não engrossa a seta. */
 .lightbox-dica svg {
-    width: 20px;
-    height: 20px;
+    width: 14px;
+    height: 14px;
+    animation: deslize-seta 1.5s ease-in-out infinite;
 }

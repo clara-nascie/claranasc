@@ -36,7 +36,7 @@ function fotosDaTatuagem(gatilho: HTMLElement) {
   if (!antes) return [depois];
   if (!window.matchMedia(CELULAR).matches) return [{ ...depois, antes }];
   return [
-    { ...depois, category: 'Depois', dica: 'Ver o antes' },
+    { ...depois, category: 'Depois', dica: 'Deslize para ver o antes' },
     { src: antes.src, previa: antes.previa, title: depois.title, category: 'Antes' }
   ];
 }

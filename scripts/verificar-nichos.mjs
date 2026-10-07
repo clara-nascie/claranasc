@@ -216,17 +216,30 @@ async function checarAntesDepoisNoCelular(slug) {
          primeiro.contador === '1/2' && primeiro.rotulo === 'Depois' && primeiro.src === depoisSrc,
          JSON.stringify(primeiro));
 
-  const posicaoDaSeta = await page.evaluate((seletor) => {
+  const dica = await page.evaluate((seletor) => {
+    const botao = document.querySelector(`${seletor} .lightbox-dica`);
+    const seta = botao?.querySelector('svg')?.getBoundingClientRect();
     const rotulo = document.querySelector(`${seletor} .lightbox-category`)?.getBoundingClientRect();
-    // O desenho para a posição; o botão inteiro para o alvo de toque.
-    const botao = document.querySelector(`${seletor} .lightbox-dica`)?.getBoundingClientRect();
-    const seta = document.querySelector(`${seletor} .lightbox-dica svg`)?.getBoundingClientRect();
-    if (!rotulo || !botao || !seta || seta.width === 0) return null;
-    return { aDireita: seta.left >= rotulo.right, mesmaLinha: Math.abs(seta.top + seta.height / 2 - (rotulo.top + rotulo.height / 2)) < 6, alvo: Math.min(botao.width, botao.height) };
+    if (!botao || !seta || seta.width === 0) return null;
+    // O texto sem o svg: a posição da seta se mede contra o fim da frase.
+    const faixa = document.createRange();
+    faixa.selectNodeContents(botao);
+    faixa.setEndBefore(botao.querySelector('svg'));
+    const texto = faixa.getBoundingClientRect();
+    const caixa = botao.getBoundingClientRect();
+    return {
+      texto: botao.textContent.trim(),
+      setaADireita: seta.left >= texto.right,
+      mesmaLinha: Math.abs(seta.top + seta.height / 2 - (texto.top + texto.height / 2)) < 6,
+      alvo: Math.round(caixa.height),
+      depoisVisivel: Boolean(rotulo && rotulo.width > 1 && rotulo.height > 1)
+    };
   }, atual);
-  checar('celular: seta à direita de "Depois", com alvo de toque de 44px',
-         posicaoDaSeta?.aDireita && posicaoDaSeta.mesmaLinha && posicaoDaSeta.alvo >= 44,
-         JSON.stringify(posicaoDaSeta));
+  checar('celular: "Deslize para ver o antes" com a seta à direita e alvo de toque de 44px',
+         dica?.texto === 'Deslize para ver o antes' && dica.setaADireita && dica.mesmaLinha && dica.alvo >= 44,
+         JSON.stringify(dica));
+  checar('celular: rótulo "Depois" só para leitor de tela quando há dica', dica && !dica.depoisVisivel,
+         JSON.stringify(dica));
 
   // Pela seta, e não pelo teclado: prova também que ela leva ao antes.
   await page.locator(`${atual} .lightbox-dica`).click();
