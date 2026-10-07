@@ -259,8 +259,16 @@ export const portfolioItems: PortfolioItem[] = [
     alt: 'Cobertura de tatuagem antiga com girassol em pontilhismo no ombro e clavícula',
   },
   {
-    id: 2,
+    id: 189,
     destaque: true,
+    title: 'Flor de Lótus no Braço',
+    category: 'coberturas',
+    categoryLabel: 'Coberturas',
+    image: coberturaFlorDeLotusERamosTriceps,
+    alt: 'Cobertura de tatuagem com flor de lótus e ramos de flores em preto e cinza subindo pelo braço, sobre o tríceps'
+  },
+  {
+    id: 2,
     title: 'Crisântemo no Ombro',
     category: 'coberturas',
     categoryLabel: 'Coberturas',
@@ -479,14 +487,6 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Coberturas',
     image: coberturaFloralPulsoLadoEsquerdo,
     alt: 'Cobertura de tatuagem com folhas em preto e cinza no pulso, vista pela lateral'
-  },
-  {
-    id: 189,
-    title: 'Flor de Lótus no Braço',
-    category: 'coberturas',
-    categoryLabel: 'Coberturas',
-    image: coberturaFlorDeLotusERamosTriceps,
-    alt: 'Cobertura de tatuagem com flor de lótus e ramos de flores em preto e cinza subindo pelo braço, sobre o tríceps'
   },
   {
     id: 190,
