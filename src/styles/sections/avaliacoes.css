@@ -10,27 +10,43 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 30px;
     margin-top: 50px;
+    /* Espaco para o rabinho dos baloes, que fica fora da caixa. */
+    padding-bottom: 28px;
 }
 
+/* ⚠️ Sombra por `filter`, nao `box-shadow`: so o `drop-shadow` segue o
+   contorno do rabinho do balao, que e um pseudo-elemento recortado. */
 .avaliacao-cartao {
+    position: relative;
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 12px;
     margin: 0;
     padding: 32px 28px;
-    background-color: var(--bg-secondary);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
+    background-color: var(--bg-elevated);
+    border-radius: 28px;
+    filter: drop-shadow(0 8px 20px rgba(var(--accent-gold-rgb), 0.16));
+}
+
+.avaliacao-cartao::after {
+    content: '';
+    position: absolute;
+    top: calc(100% - 1px);
+    right: 25%;
+    width: 36px;
+    height: 28px;
+    background-color: inherit;
+    clip-path: polygon(0 0, 100% 0, 0 100%);
 }
 
 .avaliacao-estrelas {
     display: flex;
     gap: 4px;
+    margin-bottom: 6px;
     color: var(--accent-gold-hover);
 }
 
 .avaliacao-texto {
-    flex-grow: 1;
     margin: 0;
 }
 
@@ -41,23 +57,10 @@
     line-height: 1.7;
 }
 
-.avaliacao-autor {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    padding-top: 16px;
-    border-top: 1px solid var(--border-color);
-}
-
 .avaliacao-nome {
     font-family: 'Syne', sans-serif;
     font-weight: 700;
     color: var(--text-primary);
-}
-
-.avaliacao-origem {
-    font-size: 0.8rem;
-    color: var(--accent-gold-hover);
 }
 
 .avaliacoes-acoes {

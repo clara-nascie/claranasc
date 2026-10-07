@@ -460,7 +460,7 @@ regra vale para foto que carrega informação.
 
 ### ⚠️ Avaliações: no site, mas fora do schema
 
-A seção "O que diz quem já tatuou comigo" (`Avaliacoes.astro`) mostra três
+A seção "O que dizem meus clientes" (`Avaliacoes.astro`) mostra três
 avaliações do Google Business Profile, escolhidas à mão e copiadas para
 `avaliacoesData.ts`. Os links "ver todas" e "deixe a sua" ficam em
 `GOOGLE_AVALIACOES`, no `siteData.ts`.
@@ -482,11 +482,12 @@ qualquer marcação.
 Converter para mês e ano seria um chute.
 
 **Texto sem edição**, inclusive erros de digitação. Nome como primeiro nome e
-inicial.
+inicial, no topo do balão. Sem selo "via Google" nos cartões: o botão "ver
+todas as avaliações no Google" logo abaixo já diz a origem.
 
 Coberto por `npm run verificar`: três cartões visíveis, mesma altura quando
-lado a lado, link "ver todas" para o Google em nova aba, contraste do "via
-Google".
+lado a lado, link "ver todas" para o Google em nova aba, contraste do texto da
+avaliação.
 
 ### ⚠️ O que o site **não** resolve sozinho
 

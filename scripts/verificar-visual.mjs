@@ -161,15 +161,15 @@ try {
       `${verTodas.host}, target=${verTodas.target}, rel=${verTodas.rel}`
     );
 
-    const corOrigem = await page.locator('.avaliacao-origem').first().evaluate((el) => ({
+    const corTexto = await page.locator('.avaliacao-texto p').first().evaluate((el) => ({
       cor: getComputedStyle(el).color,
       fundo: getComputedStyle(el.closest('.avaliacao-cartao')).backgroundColor
     }));
-    const razaoOrigem = razaoContraste(parseRgb(corOrigem.cor), parseRgb(corOrigem.fundo));
+    const razaoTexto = razaoContraste(parseRgb(corTexto.cor), parseRgb(corTexto.fundo));
     checar(
-      `[${rotulo}] contraste "via Google"`,
-      razaoOrigem >= 4.5,
-      `${razaoOrigem.toFixed(2)}:1 (WCAG AA exige 4.5:1)`
+      `[${rotulo}] contraste do texto da avaliação`,
+      razaoTexto >= 4.5,
+      `${razaoTexto.toFixed(2)}:1 (WCAG AA exige 4.5:1)`
     );
     await page.locator('#avaliacoes').screenshot({ path: `${OUT_DIR}/${rotulo}-avaliacoes.png` });
 

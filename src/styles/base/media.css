@@ -17,8 +17,10 @@
         gap: 60px;
     }
 
+    /* ⚠️ O espaco entre os baloes empilhados precisa caber o rabinho (28px). */
     .avaliacoes-grid {
         grid-template-columns: 1fr;
+        row-gap: 56px;
         max-width: 600px;
         margin-inline: auto;
     }

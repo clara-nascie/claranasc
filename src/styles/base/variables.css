@@ -6,6 +6,7 @@
     --bg-primary: hsl(40, 30%, 96%); /* Creme Claro */
     --bg-secondary: hsl(40, 25%, 92%); /* Bege */
     --bg-tertiary: hsl(40, 20%, 88%); /* Bege Escuro */
+    --bg-elevated: hsl(40, 40%, 99%); /* Quase branco: superficie sobre o creme */
     --accent-gold: hsl(30, 45%, 45%); /* Marrom Mel */
     --accent-gold-hover: hsl(30, 45%, 38%);
     --accent-gold-rgb: 166, 107, 63; 

@@ -9,13 +9,14 @@ const ESTRELAS = [1, 2, 3, 4, 5];
   <div class="container">
     <div class="section-header reveal">
       <span class="section-tag">Avaliações</span>
-      <h2 class="section-title">O que diz quem já tatuou comigo</h2>
+      <h2 class="section-title">O que dizem meus clientes</h2>
       <div class="header-divider"></div>
     </div>
 
     <div class="avaliacoes-grid">
       {avaliacoes.map((avaliacao) => (
         <figure class="avaliacao-cartao reveal">
+          <figcaption class="avaliacao-nome">{avaliacao.nome}</figcaption>
           <div class="avaliacao-estrelas">
             <span class="sr-only">Nota {avaliacao.nota} de 5</span>
             {ESTRELAS.map((n) => (
@@ -37,10 +38,6 @@ const ESTRELAS = [1, 2, 3, 4, 5];
           <blockquote class="avaliacao-texto">
             <p>{avaliacao.texto}</p>
           </blockquote>
-          <figcaption class="avaliacao-autor">
-            <span class="avaliacao-nome">{avaliacao.nome}</span>
-            <span class="avaliacao-origem">via Google</span>
-          </figcaption>
         </figure>
       ))}
     </div>
