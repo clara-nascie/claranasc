@@ -64,6 +64,7 @@ import finelineCavalo from '../assets/portfolio/fineline-cavalo-costas.webp';
 
 // IMPORTS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
 // Não remova o marcador nem escreva abaixo dele à mão.
+import blackworkOuroborosPanturrilha from '../assets/portfolio/blackwork-ouroboros-panturrilha.webp';
 import coberturaFlorDeLotusComFloresOrnamentaisTriceps from '../assets/portfolio/cobertura-flor-de-lotus-com-flores-ornamentais-triceps.webp';
 import botanicoFloralNoBracoBraco from '../assets/portfolio/botanico-floral-no-braco-braco.webp';
 import geekCrashEAkiraCoxa from '../assets/portfolio/geek-crash-e-akira-coxa.webp';
@@ -358,6 +359,14 @@ export const portfolioItems: PortfolioItem[] = [
   },
 
   // ITENS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
+  {
+    id: 202,
+    title: 'Ouroboros',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkOuroborosPanturrilha,
+    alt: 'Tatuagem blackwork de uma Ouroboros sendo atravessada por um punhal ensanguentado'
+  },
   {
     id: 201,
     title: 'Flor de lótus com flores ornamentais',
