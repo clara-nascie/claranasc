@@ -64,6 +64,7 @@ import finelineCavalo from '../assets/portfolio/fineline-cavalo-costas.webp';
 
 // IMPORTS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
 // Não remova o marcador nem escreva abaixo dele à mão.
+import blackworkOnePieceLawBiceps from '../assets/portfolio/blackwork-one-piece-law-biceps.webp';
 import blackworkOuroborosPanturrilha from '../assets/portfolio/blackwork-ouroboros-panturrilha.webp';
 import coberturaFlorDeLotusComFloresOrnamentaisTriceps from '../assets/portfolio/cobertura-flor-de-lotus-com-flores-ornamentais-triceps.webp';
 import botanicoFloralNoBracoBraco from '../assets/portfolio/botanico-floral-no-braco-braco.webp';
@@ -359,6 +360,14 @@ export const portfolioItems: PortfolioItem[] = [
   },
 
   // ITENS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
+  {
+    id: 203,
+    title: 'One piece - law',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkOnePieceLawBiceps,
+    alt: 'Tatuagem geek em preto do personagem Law do anime One Piece. A tatuagem trás várias referências relacionadas ao personagem.'
+  },
   {
     id: 202,
     title: 'Ouroboros',
