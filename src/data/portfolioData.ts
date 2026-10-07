@@ -64,6 +64,7 @@ import finelineCavalo from '../assets/portfolio/fineline-cavalo-costas.webp';
 
 // IMPORTS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
 // Não remova o marcador nem escreva abaixo dele à mão.
+import blackworkCaveiraEAmpulhetaAntebraco from '../assets/portfolio/blackwork-caveira-e-ampulheta-antebraco.webp';
 import blackworkNaveEspacialLateralDaPanturrilha from '../assets/portfolio/blackwork-nave-espacial-lateral-da-panturrilha.webp';
 import blackworkLoboEmPeleDeCordeiroAntebracoLateral from '../assets/portfolio/blackwork-lobo-em-pele-de-cordeiro-antebraco-lateral.webp';
 import blackworkLoboEmPeleDeCordeiroAntebraco from '../assets/portfolio/blackwork-lobo-em-pele-de-cordeiro-antebraco.webp';
@@ -353,6 +354,14 @@ export const portfolioItems: PortfolioItem[] = [
   },
 
   // ITENS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
+  {
+    id: 197,
+    title: 'Caveira e ampulheta',
+    category: 'blackwork',
+    categoryLabel: 'Blackwork',
+    image: blackworkCaveiraEAmpulhetaAntebraco,
+    alt: 'Tatuagem de uma ampulheta e uma caveira em blackwork no antebraço'
+  },
   {
     id: 196,
     title: 'Nave espacial',
