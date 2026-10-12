@@ -254,8 +254,16 @@ export const PORTFOLIO_CATEGORIES: PortfolioCategory[] = [
 export const portfolioItems: PortfolioItem[] = [
   // ------------------------------------------------------------- Coberturas
   {
-    id: 1,
+    id: 206,
     destaque: true,
+    title: 'Borboletas e magnólias',
+    category: 'coberturas',
+    categoryLabel: 'Coberturas',
+    image: coberturaBorboletasEMagnoliasPanturrilha,
+    alt: 'Cobertura de tatuagem com borboleta e magnólias na panturrilha com traços finos e delicados'
+  },
+  {
+    id: 1,
     title: 'Girassol em Pontilhismo',
     category: 'coberturas',
     categoryLabel: 'Coberturas',
@@ -379,14 +387,6 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Coberturas',
     image: coberturaBorboletaEMagnoliasPanturrilha,
     alt: 'Cobertura de tatuagem com borboleta e flores magnólias na panturrilha com traços finos e delicados'
-  },
-  {
-    id: 206,
-    title: 'Borboletas e magnólias',
-    category: 'coberturas',
-    categoryLabel: 'Coberturas',
-    image: coberturaBorboletasEMagnoliasPanturrilha,
-    alt: 'Cobertura de tatuagem com borboleta e magnólias na panturrilha com traços finos e delicados'
   },
   {
     id: 205,
