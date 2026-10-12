@@ -64,6 +64,7 @@ import finelineCavalo from '../assets/portfolio/fineline-cavalo-costas.webp';
 
 // IMPORTS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
 // Não remova o marcador nem escreva abaixo dele à mão.
+import botanicoFlorDeMagnoliaPanturrilha from '../assets/portfolio/botanico-flor-de-magnolia-panturrilha.webp';
 import blackworkOnePieceLawBiceps from '../assets/portfolio/blackwork-one-piece-law-biceps.webp';
 import blackworkOuroborosPanturrilha from '../assets/portfolio/blackwork-ouroboros-panturrilha.webp';
 import botanicoFlorDeLotusComFloresOrnamentaisTriceps from '../assets/portfolio/botanico-flor-de-lotus-com-flores-ornamentais-triceps.webp';
@@ -368,6 +369,14 @@ export const portfolioItems: PortfolioItem[] = [
   },
 
   // ITENS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
+  {
+    id: 204,
+    title: 'Flor de magnólia',
+    category: 'botanico',
+    categoryLabel: 'Botânico',
+    image: botanicoFlorDeMagnoliaPanturrilha,
+    alt: 'Tatuagem botânica floral de flor de magnólia na panturrilha com traços delicados'
+  },
   {
     id: 203,
     title: 'One piece - law',
