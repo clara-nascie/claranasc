@@ -64,6 +64,7 @@ import finelineCavalo from '../assets/portfolio/fineline-cavalo-costas.webp';
 
 // IMPORTS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
 // Não remova o marcador nem escreva abaixo dele à mão.
+import coberturaBorboletaEMagnoliasPanturrilha from '../assets/portfolio/cobertura-borboleta-e-magnolias-panturrilha.webp';
 import coberturaBorboletasEMagnoliasPanturrilha from '../assets/portfolio/cobertura-borboletas-e-magnolias-panturrilha.webp';
 import botanicoFlorDeMagnoliaFechadaPanturrilha from '../assets/portfolio/botanico-flor-de-magnolia-fechada-panturrilha.webp';
 import botanicoFlorDeMagnoliaPanturrilha from '../assets/portfolio/botanico-flor-de-magnolia-panturrilha.webp';
@@ -371,6 +372,14 @@ export const portfolioItems: PortfolioItem[] = [
   },
 
   // ITENS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
+  {
+    id: 207,
+    title: 'Borboleta e magnólias',
+    category: 'coberturas',
+    categoryLabel: 'Coberturas',
+    image: coberturaBorboletaEMagnoliasPanturrilha,
+    alt: 'Cobertura de tatuagem com borboleta e flores magnólias na panturrilha com traços finos e delicados'
+  },
   {
     id: 206,
     title: 'Borboletas e magnólias',
