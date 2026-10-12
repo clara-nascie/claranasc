@@ -398,6 +398,7 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 204,
+    destaque: true,
     title: 'Flor de magnólia',
     category: 'botanico',
     categoryLabel: 'Botânico',
@@ -1659,7 +1660,6 @@ export const portfolioItems: PortfolioItem[] = [
   // --------------------------------------------------------------- Botânico
   {
     id: 7,
-    destaque: true,
     title: 'Ramo Botânico no Ombro',
     category: 'botanico',
     categoryLabel: 'Botânico',
@@ -1668,12 +1668,20 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 8,
-    destaque: true,
     title: 'Sempre-viva na Clavícula',
     category: 'botanico',
     categoryLabel: 'Botânico',
     image: botanicoSempreViva,
     alt: 'Tatuagem botânica de sempre-viva em traço fino sobre a clavícula',
+  },
+  {
+    id: 39,
+    destaque: true,
+    title: 'Ramo de Café',
+    category: 'botanico',
+    categoryLabel: 'Botânico',
+    image: botanicoCafe,
+    alt: 'Tatuagem botânica de ramo de café com frutos e folhas em pontilhismo, contornando o punho'
   },
   {
     id: 9,
@@ -1723,14 +1731,6 @@ export const portfolioItems: PortfolioItem[] = [
     categoryLabel: 'Botânico',
     image: botanicoRamoFolhas,
     alt: 'Tatuagem botânica de ramo com folhas contornando o antebraço, em traço fino com pontilhismo'
-  },
-  {
-    id: 39,
-    title: 'Ramo de Café',
-    category: 'botanico',
-    categoryLabel: 'Botânico',
-    image: botanicoCafe,
-    alt: 'Tatuagem botânica de ramo de café com frutos e folhas em pontilhismo, contornando o punho'
   },
   {
     id: 40,
