@@ -64,6 +64,7 @@ import finelineCavalo from '../assets/portfolio/fineline-cavalo-costas.webp';
 
 // IMPORTS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
 // Não remova o marcador nem escreva abaixo dele à mão.
+import botanicoFlorDeMagnoliaFechadaPanturrilha from '../assets/portfolio/botanico-flor-de-magnolia-fechada-panturrilha.webp';
 import botanicoFlorDeMagnoliaPanturrilha from '../assets/portfolio/botanico-flor-de-magnolia-panturrilha.webp';
 import blackworkOnePieceLawBiceps from '../assets/portfolio/blackwork-one-piece-law-biceps.webp';
 import blackworkOuroborosPanturrilha from '../assets/portfolio/blackwork-ouroboros-panturrilha.webp';
@@ -369,6 +370,14 @@ export const portfolioItems: PortfolioItem[] = [
   },
 
   // ITENS-AUTOMATICOS — o `scripts/importar-fotos.mjs --aplicar` escreve aqui.
+  {
+    id: 205,
+    title: 'Flor de magnólia fechada',
+    category: 'botanico',
+    categoryLabel: 'Botânico',
+    image: botanicoFlorDeMagnoliaFechadaPanturrilha,
+    alt: 'Tatuagem botânica de flor de magnólia na panturrilha, com traços delicados e pétalas abertas'
+  },
   {
     id: 204,
     title: 'Flor de magnólia',
