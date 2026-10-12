@@ -13,6 +13,8 @@ import floralPulsoLadoDireito from '../assets/coberturas-antes/cobertura-floral-
 import floralPulsoLadoEsquerdo from '../assets/coberturas-antes/cobertura-floral-pulso-lado-esquerdo-antes.webp';
 import lotus from '../assets/coberturas-antes/cobertura-flor-de-lotus-e-ramos-triceps-antes.webp';
 import trevos from '../assets/coberturas-antes/cobertura-par-de-trevos-biceps-antes.webp';
+// IMPORTS-AUTOMATICOS — o painel /admin escreve aqui.
+// Não remova o marcador nem escreva abaixo dele à mão.
 
 export interface FotoAntes {
   image: ImageMetadata;
@@ -35,6 +37,7 @@ const AGUA_VIVA: FotoAntes = {
 
 /** Chave: o `id` da foto do depois em `portfolioItems`. */
 const ANTES: Record<number, FotoAntes> = {
+  // ANTES-AUTOMATICOS — o painel /admin escreve aqui.
   3: {
     image: onca,
     alt: 'Antes da cobertura: tatuagem antiga de rosas em preto carregado, do ombro ao braço'

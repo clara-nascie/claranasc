@@ -94,3 +94,27 @@
     opacity: 0.6;
     cursor: wait;
 }
+
+.painel-antes {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+.painel-antes legend {
+    padding: 0 6px;
+    font-weight: 500;
+}
+
+.painel-remover {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+}

@@ -58,6 +58,27 @@ GitHub recusa a atualização do ramo (`force: false`, resposta 422). O Worker
 relê e refaz, até 3 vezes. Testado com dois envios simultâneos: saíram ids 177
 e 178, um commit em cima do outro.
 
+## O antes das coberturas
+
+Com a categoria Coberturas aparece um segundo campo, opcional, para a foto do
+antes e o `alt` dela, que já vem começando com "Antes da cobertura: ". Ela
+passa pela mesma conversão e o Worker a confere do mesmo jeito.
+
+O mesmo commit passa a levar 4 arquivos: as duas fotos, o `portfolioData.ts` e
+o `coberturasData.ts`. O antes é gravado como
+`src/assets/coberturas-antes/<nome-do-depois>-antes.webp`, e a entrada no
+`coberturasData.ts` usa como chave o `id` que o Worker calculou para o depois.
+O texto entra pelos marcadores `IMPORTS-AUTOMATICOS` e `ANTES-AUTOMATICOS`.
+
+| Alternativa | Por que não |
+|---|---|
+| Antes num envio separado | Entre os dois commits o `coberturasData.ts` importaria uma foto que não existe, ou apontaria para um id sem foto. |
+| Escolher um antes já cadastrado (para ângulo novo de cobertura existente) | Painel mais complexo. Hoje o antes é reenviado; o arquivo duplica no repositório, mas se os bytes forem iguais o Git guarda um blob só. |
+
+Testado de ponta a ponta num ramo descartável: o painel enviou depois e antes,
+o commit saiu com os 4 arquivos, e o build desse ramo mostrou os dois na
+página `/tatuagem/coberturas`.
+
 ## Quem pode enviar
 
 O login é do **Cloudflare Access**: só o e-mail da Clara entra em `/admin*` e
@@ -97,6 +118,18 @@ npx wrangler dev --port 8788 --var GITHUB_BRANCH:<ramo-de-teste> --var ADMIN_SEM
 
 `ADMIN_SEM_LOGIN` pula o Access, e só quando o endereço é `localhost` ou
 `127.0.0.1`. Nunca defina essa variável no `wrangler.jsonc`.
+
+⚠️ Não acrescente `--env-file`: com ele o wrangler deixa de ler o `.dev.vars`,
+o `GITHUB_TOKEN` não chega ao Worker, e o erro aparece como "O token do GitHub
+venceu", com um token válido.
+
+⚠️ Antes de reiniciar o wrangler, confira se o anterior morreu de verdade
+(`Get-NetTCPConnection -LocalPort 8788`). Um `workerd` órfão segura a porta e
+continua atendendo com as variáveis antigas.
+
+O ramo descartável precisa existir no GitHub antes do envio, e com as mudanças
+que o Worker vai ler (os marcadores do `coberturasData.ts`, por exemplo). Apague
+o ramo depois.
 
 ## Depois de enviar pelo celular
 

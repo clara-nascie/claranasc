@@ -137,3 +137,37 @@ export const blocoDoItem = (foto: FotoNova) => `  {
     image: ${camelo(foto.arquivo)},
     alt: ${texto(foto.alt)}
   },`;
+
+/* ---------- Antes das coberturas ---------- */
+
+export const CATEGORIA_COM_ANTES = 'coberturas';
+export const INICIO_DO_ALT_DO_ANTES = 'Antes da cobertura: ';
+
+export const arquivoDoAntes = (foto: FotoNova) => `${foto.arquivo}-antes`;
+
+export function problemasDoAntes(alt: string): string[] {
+  const descricao = alt.trim().startsWith(INICIO_DO_ALT_DO_ANTES.trim())
+    ? alt.trim().slice(INICIO_DO_ALT_DO_ANTES.trim().length).trim()
+    : alt.trim();
+  return descricao.length < ALT_MINIMO
+    ? [`A descrição do antes precisa de pelo menos ${ALT_MINIMO} caracteres.`]
+    : [];
+}
+
+export const linhaDeImportDoAntes = (foto: FotoNova) =>
+  `import ${camelo(arquivoDoAntes(foto))} from '../assets/coberturas-antes/${arquivoDoAntes(foto)}.webp';`;
+
+export const blocoDoAntes = (foto: FotoNova, alt: string) => `  ${foto.id}: {
+    image: ${camelo(arquivoDoAntes(foto))},
+    alt: ${texto(alt)}
+  },`;
+
+export const MARCA_ANTES = '// ANTES-AUTOMATICOS';
+
+export function inserirNasCoberturas(fonte: string, foto: FotoNova, alt: string): string {
+  for (const marca of [MARCA_IMPORT, MARCA_ANTES]) {
+    if (!fonte.includes(marca)) throw new Error(`Marcador ausente em coberturasData.ts: ${marca}`);
+  }
+  const comItem = inserirApos(fonte, MARCA_ANTES, blocoDoAntes(foto, alt));
+  return inserirApos(comItem, MARCA_IMPORT, linhaDeImportDoAntes(foto));
+}

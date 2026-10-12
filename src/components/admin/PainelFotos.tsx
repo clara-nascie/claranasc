@@ -6,10 +6,16 @@ import { emMegabytes } from '../../data/referencias';
 import { converterFoto, type FotoConvertida } from '../../lib/converterFoto';
 import {
   ALT_MINIMO,
+  CATEGORIA_COM_ANTES,
+  INICIO_DO_ALT_DO_ANTES,
+  arquivoDoAntes,
+  blocoDoAntes,
   blocoDoItem,
   limparTexto,
   linhaDeImport,
+  linhaDeImportDoAntes,
   problemasDaFoto,
+  problemasDoAntes,
   sugerirNome
 } from '../../lib/itemDoPortfolio';
 
@@ -34,7 +40,15 @@ export const PainelFotos: React.FC<PainelFotosProps> = ({ categorias, proximoId,
   const [arquivo, setArquivo] = useState('');
   const [arquivoEditado, setArquivoEditado] = useState(false);
   const [enviando, setEnviando] = useState(false);
-  const [enviada, setEnviada] = useState<{ arquivo: string; id: number; commit: string } | null>(null);
+  const [enviada, setEnviada] = useState<{ arquivo: string; id: number; comAntes: boolean; commit: string } | null>(
+    null
+  );
+
+  const campoAntesRef = useRef<HTMLInputElement>(null);
+  const [antes, setAntes] = useState<FotoConvertida | null>(null);
+  const [previaAntes, setPreviaAntes] = useState<string | null>(null);
+  const [convertendoAntes, setConvertendoAntes] = useState(false);
+  const [altAntes, setAltAntes] = useState(INICIO_DO_ALT_DO_ANTES);
 
   /* ⚠️ `proximoId` e `existentes` vêm do build, e a página não é refeita a
      cada envio: sem acompanhar o que o Worker gravou, a prévia repete o id e
@@ -53,6 +67,13 @@ export const PainelFotos: React.FC<PainelFotosProps> = ({ categorias, proximoId,
     setPrevia(endereco);
     return () => URL.revokeObjectURL(endereco);
   }, [convertida]);
+
+  useEffect(() => {
+    if (!antes) return setPreviaAntes(null);
+    const endereco = URL.createObjectURL(antes.blob);
+    setPreviaAntes(endereco);
+    return () => URL.revokeObjectURL(endereco);
+  }, [antes]);
 
   const escolher = async (lista: FileList | null) => {
     const escolhido = lista?.[0];
@@ -73,6 +94,22 @@ export const PainelFotos: React.FC<PainelFotosProps> = ({ categorias, proximoId,
     }
   };
 
+  const escolherAntes = async (lista: FileList | null) => {
+    const escolhido = lista?.[0];
+    if (!escolhido) return;
+    setAntes(null);
+    setErro(null);
+    setConvertendoAntes(true);
+    try {
+      setAntes(await converterFoto(escolhido));
+    } catch (e) {
+      setErro(e instanceof Error ? e.message : 'Não consegui converter a foto do antes.');
+    } finally {
+      setConvertendoAntes(false);
+      if (campoAntesRef.current) campoAntesRef.current.value = '';
+    }
+  };
+
   const rotulo = categorias.find((c) => c.id === categoria)!.label;
   const foto = {
     id: idDaPrevia,
@@ -82,8 +119,13 @@ export const PainelFotos: React.FC<PainelFotosProps> = ({ categorias, proximoId,
     categoriaLabel: rotulo,
     alt: limparTexto(alt)
   };
-  const problemas = problemasDaFoto(foto, [...existentes, ...enviadasAgora]);
-  const pronta = convertida && problemas.length === 0;
+  // ⚠️ O antes escolhido continua guardado se a categoria mudar; só é enviado em coberturas.
+  const comAntes = categoria === CATEGORIA_COM_ANTES && antes !== null;
+  const problemas = [
+    ...problemasDaFoto(foto, [...existentes, ...enviadasAgora]),
+    ...(comAntes ? problemasDoAntes(altAntes) : [])
+  ];
+  const pronta = convertida && !convertendoAntes && problemas.length === 0;
 
   const enviar = async () => {
     if (!convertida) return;
@@ -93,6 +135,10 @@ export const PainelFotos: React.FC<PainelFotosProps> = ({ categorias, proximoId,
     dados.append('titulo', foto.titulo);
     dados.append('categoria', categoria);
     dados.append('alt', foto.alt);
+    if (comAntes) {
+      dados.append('antes', antes.blob, `${arquivoDoAntes(foto)}.webp`);
+      dados.append('altAntes', limparTexto(altAntes));
+    }
 
     setEnviando(true);
     setErro(null);
@@ -100,7 +146,7 @@ export const PainelFotos: React.FC<PainelFotosProps> = ({ categorias, proximoId,
       const resposta = await fetch('/api/admin/fotos', { method: 'POST', body: dados });
       const corpo = await resposta.json().catch(() => ({}));
       if (!resposta.ok) throw new Error(corpo.erro ?? `O envio falhou (${resposta.status}).`);
-      setEnviada({ arquivo, id: corpo.id, commit: corpo.commit });
+      setEnviada({ arquivo, id: corpo.id, comAntes: Boolean(corpo.comAntes), commit: corpo.commit });
       setIdDaPrevia(corpo.id + 1);
       setEnviadasAgora((lista) => [...lista, arquivo]);
       setConvertida(null);
@@ -108,6 +154,8 @@ export const PainelFotos: React.FC<PainelFotosProps> = ({ categorias, proximoId,
       setTitulo('');
       setParteDoCorpo('');
       setAlt('');
+      setAntes(null);
+      setAltAntes(INICIO_DO_ALT_DO_ANTES);
       setArquivoEditado(false);
     } catch (e) {
       // Sem internet o `fetch` falha sem resposta nenhuma, e a mensagem do
@@ -135,7 +183,8 @@ export const PainelFotos: React.FC<PainelFotosProps> = ({ categorias, proximoId,
       {erro && <p className="painel-erro" role="alert">{erro}</p>}
       {enviada && (
         <p className="painel-sucesso" role="status">
-          <strong>{enviada.arquivo}</strong> foi enviada com o id {enviada.id}. Ela aparece no site em alguns minutos, depois
+          <strong>{enviada.arquivo}</strong> foi enviada com o id {enviada.id}
+          {enviada.comAntes && ', junto com a foto do antes'}. Ela aparece no site em alguns minutos, depois
           do build. <a href={enviada.commit}>Ver o commit</a>
         </p>
       )}
@@ -179,6 +228,42 @@ export const PainelFotos: React.FC<PainelFotosProps> = ({ categorias, proximoId,
         placeholder="Tatuagem botânica de ramo de café em traço fino no punho"
         onChange={(e) => setAlt(e.target.value)}
       />
+      {categoria === CATEGORIA_COM_ANTES && (
+        <fieldset className="painel-antes">
+          <legend>Antes da cobertura (opcional)</legend>
+          <div className="form-group">
+            <label htmlFor="foto-antes">Foto do antes</label>
+            <input
+              ref={campoAntesRef}
+              id="foto-antes"
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              onChange={(e) => escolherAntes(e.target.files)}
+            />
+          </div>
+          {convertendoAntes && <p className="painel-aviso">Convertendo o antes…</p>}
+          {antes && previaAntes && (
+            <figure className="painel-previa">
+              <img src={previaAntes} alt="Prévia da foto do antes" />
+              <figcaption>
+                {antes.largura}×{antes.altura} · {Math.round(antes.blob.size / 1024)}KB em WebP ·{' '}
+                <button type="button" className="painel-remover" onClick={() => setAntes(null)}>
+                  Remover
+                </button>
+              </figcaption>
+            </figure>
+          )}
+          {antes && (
+            <Textarea
+              label="Descrição do antes (alt)"
+              id="alt-antes"
+              rows={3}
+              value={altAntes}
+              onChange={(e) => setAltAntes(e.target.value)}
+            />
+          )}
+        </fieldset>
+      )}
       <Input
         label="Nome do arquivo"
         id="arquivo"
@@ -206,6 +291,14 @@ export const PainelFotos: React.FC<PainelFotosProps> = ({ categorias, proximoId,
             <code>src/assets/portfolio/{arquivo}.webp</code>
           </p>
           <pre>{`${linhaDeImport(foto)}\n\n${blocoDoItem(foto)}`}</pre>
+          {comAntes && (
+            <>
+              <p>
+                <code>src/assets/coberturas-antes/{arquivoDoAntes(foto)}.webp</code>
+              </p>
+              <pre>{`${linhaDeImportDoAntes(foto)}\n\n${blocoDoAntes(foto, limparTexto(altAntes))}`}</pre>
+            </>
+          )}
           <button type="button" className="btn btn-primary" disabled={enviando} onClick={enviar}>
             {enviando ? 'Enviando…' : 'Enviar para o site'}
           </button>

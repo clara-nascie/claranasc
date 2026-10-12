@@ -8,12 +8,16 @@
 import { createRemoteJWKSet, jwtVerify } from 'jose';
 import {
   BYTES_MAXIMOS,
+  CATEGORIA_COM_ANTES,
   LADO_MAXIMO,
+  arquivoDoAntes,
   categoriasDoFonte,
   dimensoesDoWebp,
+  inserirNasCoberturas,
   inserirNoPortfolio,
   limparTexto,
   problemasDaFoto,
+  problemasDoAntes,
   proximoIdDoFonte,
   type FotoNova
 } from '../src/lib/itemDoPortfolio';
@@ -29,6 +33,8 @@ export interface EnvAdmin {
 
 const DADOS = 'src/data/portfolioData.ts';
 const PASTA = 'src/assets/portfolio';
+const DADOS_COBERTURAS = 'src/data/coberturasData.ts';
+const PASTA_ANTES = 'src/assets/coberturas-antes';
 
 const json = (dados: unknown, status = 200) =>
   new Response(JSON.stringify(dados), {
@@ -107,9 +113,12 @@ const emBase64 = (bytes: Uint8Array) => {
 async function lerCampos(request: Request) {
   const formulario = await request.formData();
   const foto = formulario.get('foto');
+  const antes = formulario.get('antes');
   const campo = (nome: string) => limparTexto(String(formulario.get(nome) ?? ''));
   return {
     foto: foto instanceof File ? foto : null,
+    antes: antes instanceof File ? antes : null,
+    altAntes: campo('altAntes'),
     arquivo: campo('arquivo'),
     titulo: campo('titulo'),
     categoria: campo('categoria'),
@@ -127,33 +136,33 @@ export async function receberFotoDoPortfolio(request: Request, env: EnvAdmin): P
     return json({ erro: 'Não consegui ler o envio.' }, 400);
   }
   if (!campos.foto) return json({ erro: 'A foto não veio no envio.' }, 400);
-  if (campos.foto.size > BYTES_MAXIMOS) return json({ erro: 'A foto passa de 4MB.' }, 413);
-
-  const bytes = new Uint8Array(await campos.foto.arrayBuffer());
-  const dimensoes = dimensoesDoWebp(bytes);
-  if (!dimensoes) return json({ erro: 'O arquivo não é WebP.' }, 415);
-  if (Math.max(dimensoes.largura, dimensoes.altura) > LADO_MAXIMO) {
-    return json({ erro: `A foto passa de ${LADO_MAXIMO}px.` }, 400);
+  if (campos.antes && campos.categoria !== CATEGORIA_COM_ANTES) {
+    return json({ erro: 'Só coberturas têm foto do antes.' }, 400);
   }
+  if (campos.antes) {
+    const problemas = problemasDoAntes(campos.altAntes);
+    if (problemas.length) return json({ erro: problemas.join(' ') }, 400);
+  }
+
+  const bytes = await lerWebp(campos.foto, 'A foto');
+  if (bytes instanceof Response) return bytes;
+  const bytesAntes = campos.antes ? await lerWebp(campos.antes, 'A foto do antes') : null;
+  if (bytesAntes instanceof Response) return bytesAntes;
 
   const github = clienteGithub(env);
   const ramo = env.GITHUB_BRANCH;
 
   try {
-    // Sobe a foto uma vez só: ela não muda entre as tentativas.
-    const blobFoto = await github('/git/blobs', {
-      method: 'POST',
-      body: { content: emBase64(bytes), encoding: 'base64' }
-    });
-    if (!blobFoto.ok) throw new ErroGithub(blobFoto.status, 'Não consegui enviar a foto ao GitHub.');
-    const { sha: shaFoto } = (await blobFoto.json()) as { sha: string };
+    // Sobe as fotos uma vez só: elas não mudam entre as tentativas.
+    const shaFoto = await subirBlob(github, bytes);
+    const shaAntes = bytesAntes ? await subirBlob(github, bytesAntes) : null;
 
     /* Se outro commit entrar entre a leitura do `portfolioData.ts` e a
        gravação, o GitHub recusa a atualização do ramo, e tudo é refeito
        em cima do commit novo. Sem isso, a edição que entrou no meio seria
        apagada. */
     for (let tentativa = 1; tentativa <= 3; tentativa++) {
-      const resultado = await tentarCommit(github, ramo, campos, shaFoto);
+      const resultado = await tentarCommit(github, ramo, campos, shaFoto, shaAntes);
       if (resultado) return json(resultado);
     }
     return json({ erro: 'O repositório mudou várias vezes seguidas. Tente de novo.' }, 409);
@@ -165,22 +174,49 @@ export async function receberFotoDoPortfolio(request: Request, env: EnvAdmin): P
   }
 }
 
+async function lerWebp(arquivo: File, nome: string): Promise<Uint8Array | Response> {
+  if (arquivo.size > BYTES_MAXIMOS) return json({ erro: `${nome} passa de 4MB.` }, 413);
+  const bytes = new Uint8Array(await arquivo.arrayBuffer());
+  const dimensoes = dimensoesDoWebp(bytes);
+  if (!dimensoes) return json({ erro: `${nome} não é WebP.` }, 415);
+  if (Math.max(dimensoes.largura, dimensoes.altura) > LADO_MAXIMO) {
+    return json({ erro: `${nome} passa de ${LADO_MAXIMO}px.` }, 400);
+  }
+  return bytes;
+}
+
+async function subirBlob(github: ReturnType<typeof clienteGithub>, bytes: Uint8Array) {
+  const blob = await github('/git/blobs', {
+    method: 'POST',
+    body: { content: emBase64(bytes), encoding: 'base64' }
+  });
+  if (!blob.ok) throw new ErroGithub(blob.status, 'Não consegui enviar a foto ao GitHub.');
+  return ((await blob.json()) as { sha: string }).sha;
+}
+
 async function tentarCommit(
   github: ReturnType<typeof clienteGithub>,
   ramo: string,
   campos: Awaited<ReturnType<typeof lerCampos>>,
-  shaFoto: string
+  shaFoto: string,
+  shaAntes: string | null
 ) {
   const ref = await github(`/git/ref/heads/${ramo}`);
   if (!ref.ok) throw new ErroGithub(ref.status, `Não encontrei o ramo "${ramo}" no GitHub.`);
   const shaBase = ((await ref.json()) as { object: { sha: string } }).object.sha;
 
-  const [dados, pasta] = await Promise.all([
+  const [dados, pasta, dadosCoberturas] = await Promise.all([
     github(`/contents/${DADOS}?ref=${shaBase}`, { accept: 'application/vnd.github.raw+json' }),
-    github(`/contents/${PASTA}?ref=${shaBase}`)
+    github(`/contents/${PASTA}?ref=${shaBase}`),
+    shaAntes
+      ? github(`/contents/${DADOS_COBERTURAS}?ref=${shaBase}`, { accept: 'application/vnd.github.raw+json' })
+      : null
   ]);
   if (!dados.ok) throw new ErroGithub(dados.status, 'Não consegui ler o portfolioData.ts.');
   if (!pasta.ok) throw new ErroGithub(pasta.status, 'Não consegui listar as fotos do portfólio.');
+  if (dadosCoberturas && !dadosCoberturas.ok) {
+    throw new ErroGithub(dadosCoberturas.status, 'Não consegui ler o coberturasData.ts.');
+  }
   const fonte = await dados.text();
   const arquivos = (await pasta.json()) as { name: string; sha: string }[];
 
@@ -207,15 +243,27 @@ async function tentarCommit(
   );
   if (problemas.length) throw new ErroGithub(400, problemas.join(' '));
 
+  const arquivosDoCommit: Record<string, string>[] = [
+    { path: `${PASTA}/${foto.arquivo}.webp`, mode: '100644', type: 'blob', sha: shaFoto },
+    { path: DADOS, mode: '100644', type: 'blob', content: inserirNoPortfolio(fonte, foto) }
+  ];
+  /* ⚠️ O antes vai no mesmo commit: separado, o coberturasData.ts importaria
+     uma foto que ainda não existe, ou apontaria para um id sem foto. */
+  if (shaAntes && dadosCoberturas) {
+    arquivosDoCommit.push(
+      { path: `${PASTA_ANTES}/${arquivoDoAntes(foto)}.webp`, mode: '100644', type: 'blob', sha: shaAntes },
+      {
+        path: DADOS_COBERTURAS,
+        mode: '100644',
+        type: 'blob',
+        content: inserirNasCoberturas(await dadosCoberturas.text(), foto, campos.altAntes)
+      }
+    );
+  }
+
   const arvore = await github('/git/trees', {
     method: 'POST',
-    body: {
-      base_tree: shaBase,
-      tree: [
-        { path: `${PASTA}/${foto.arquivo}.webp`, mode: '100644', type: 'blob', sha: shaFoto },
-        { path: DADOS, mode: '100644', type: 'blob', content: inserirNoPortfolio(fonte, foto) }
-      ]
-    }
+    body: { base_tree: shaBase, tree: arquivosDoCommit }
   });
   if (!arvore.ok) throw new ErroGithub(arvore.status, 'Não consegui montar o commit.');
   const { sha: shaArvore } = (await arvore.json()) as { sha: string };
@@ -223,7 +271,7 @@ async function tentarCommit(
   const commit = await github('/git/commits', {
     method: 'POST',
     body: {
-      message: `feat(portfolio): add ${foto.arquivo}\n\nSent from the /admin panel.`,
+      message: `feat(portfolio): add ${foto.arquivo}${shaAntes ? ' with its before photo' : ''}\n\nSent from the /admin panel.`,
       tree: shaArvore,
       parents: [shaBase]
     }
@@ -239,5 +287,5 @@ async function tentarCommit(
   if (atualizacao.status === 422) return null;
   if (!atualizacao.ok) throw new ErroGithub(atualizacao.status, 'Não consegui publicar o commit.');
 
-  return { id: foto.id, arquivo: foto.arquivo, commit: html_url };
+  return { id: foto.id, arquivo: foto.arquivo, comAntes: Boolean(shaAntes), commit: html_url };
 }
