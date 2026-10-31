@@ -88,6 +88,16 @@ export const ContactForm: React.FC = () => {
       '',
       `*Ideia:* ${formData.idea}${linhaReferencias}`
     ].join('\n');
+
+    /* Conta o envio para o funil de visibilidade. O `sendBeacon` não espera
+       resposta e não leva nada do formulário: se falhar, a conversa abre do
+       mesmo jeito. Ver `docs/arquitetura/funil-de-visibilidade.md`. */
+    try {
+      navigator.sendBeacon?.('/api/pedido');
+    } catch {
+      // A contagem é secundária; o contato não.
+    }
+
     window.open(whatsappUrl(message), '_blank', 'noopener,noreferrer');
   };
 

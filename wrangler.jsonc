@@ -43,6 +43,24 @@
         "limit": 5,
         "period": 60
       }
+    },
+    // 10 contagens de pedido por minuto por IP. Acima disso o envio não é de
+    // gente preenchendo formulário, e contar inflaria o funil.
+    {
+      "name": "LIMITE_PEDIDO",
+      "namespace_id": "2",
+      "simple": {
+        "limit": 10,
+        "period": 60
+      }
+    }
+  ],
+  // Contagem dos envios do formulário de orçamento. O dataset nasce sozinho no
+  // primeiro ponto gravado. Ver docs/arquitetura/funil-de-visibilidade.md.
+  "analytics_engine_datasets": [
+    {
+      "binding": "PEDIDOS",
+      "dataset": "claranasc_pedidos"
     }
   ]
 }

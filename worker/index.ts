@@ -3,6 +3,9 @@
 /**
  * Recebe as fotos de referência do formulário de orçamento e devolve um
  * endereço único para elas. Ver `docs/arquitetura/referencias-do-orcamento.md`.
+ *
+ * Também conta os envios do formulário, para o funil de visibilidade. Ver
+ * `docs/arquitetura/funil-de-visibilidade.md`.
  */
 
 import { LIMITE_REFERENCIAS } from '../src/data/referencias';
@@ -12,6 +15,8 @@ interface Env extends EnvAdmin {
   ASSETS: Fetcher;
   REFERENCIAS: R2Bucket;
   LIMITE_UPLOAD: RateLimit;
+  LIMITE_PEDIDO: RateLimit;
+  PEDIDOS: AnalyticsEngineDataset;
 }
 
 const { arquivos: MAX_ARQUIVOS, bytesPorArquivo: MAX_BYTES_ARQUIVO, bytesTotal: MAX_BYTES_TOTAL } =
@@ -204,9 +209,32 @@ ${fotos}
   });
 }
 
+/**
+ * Registra que o formulário de orçamento foi enviado. Responde 204 sempre: quem
+ * chama é um `sendBeacon`, que não lê resposta, e um erro aqui não pode ter
+ * efeito nenhum para a pessoa.
+ */
+async function contarPedido(request: Request, env: Env): Promise<Response> {
+  /* ⚠️ Nada do que a pessoa digitou chega aqui, e o IP não é gravado: ele só
+     serve de chave para o limite. O ponto guardado diz apenas "houve um envio". */
+  const remetente = request.headers.get('cf-connecting-ip') ?? 'desconhecido';
+  const { success } = await env.LIMITE_PEDIDO.limit({ key: remetente });
+  if (success) {
+    env.PEDIDOS.writeDataPoint({ blobs: ['pedido'], doubles: [1], indexes: ['pedido'] });
+  }
+  return new Response(null, { status: 204 });
+}
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
+
+    if (url.pathname === '/api/pedido') {
+      if (request.method !== 'POST') {
+        return json({ erro: 'Método não permitido.' }, 405);
+      }
+      return contarPedido(request, env);
+    }
 
     if (url.pathname === '/api/referencias') {
       if (request.method !== 'POST') {

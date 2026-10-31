@@ -129,6 +129,9 @@ try {
   await page.fill('#input-placement', 'Antebraço');
   await page.fill('#input-size', '12cm por 6cm');
   await page.fill('#input-idea', 'Um ramo pequeno com folhas.');
+  const contagem = page
+    .waitForRequest((r) => r.url().endsWith('/api/pedido') && r.method() === 'POST', { timeout: 20000 })
+    .catch(() => null);
   await page.click('#btn-submit-booking');
 
   await page.waitForFunction(() => window.__aberto !== null, null, { timeout: 20000 });
@@ -136,6 +139,13 @@ try {
   const mensagem = decodeURIComponent(new URL(aberto).searchParams.get('text') ?? '');
 
   checar('o envio abre o WhatsApp', aberto.includes('wa.me'));
+
+  /* O funil de visibilidade conta o envio, e a contagem não pode levar nada
+     do que a pessoa escreveu. Ver docs/arquitetura/funil-de-visibilidade.md. */
+  const beacon = await contagem;
+  checar('o envio é contado para o funil', Boolean(beacon), beacon ? 'POST /api/pedido' : 'nenhuma requisição');
+  checar('a contagem não leva dados do formulário', !beacon?.postData(),
+         beacon?.postData() ? `corpo: ${beacon.postData().slice(0, 40)}` : 'corpo vazio');
   const linkReferencias = mensagem.match(/\/r\/[0-9a-f-]{36}/)?.[0];
   checar('a mensagem carrega o link das referências', Boolean(linkReferencias),
          linkReferencias ?? mensagem.slice(-90));
@@ -187,6 +197,32 @@ try {
 
   checar('sem erros no console', errosConsole.length === 0, errosConsole.join(' | ') || 'nenhum');
   await page.close();
+
+  /* ⚠️ Falha na contagem não pode custar o contato: com a rota fora do ar, o
+     WhatsApp tem que abrir do mesmo jeito. */
+  const semContagem = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+  await semContagem.route('**/api/pedido', (rota) => rota.abort());
+  await semContagem.goto(`${BASE_URL}/#contato`, { waitUntil: 'networkidle' });
+  await aguardarFormularioHidratado(semContagem);
+  await semContagem.evaluate(() => {
+    window.__aberto = null;
+    window.open = (url) => {
+      window.__aberto = url;
+      return null;
+    };
+  });
+  await semContagem.fill('#input-name', 'Maria Teste');
+  await semContagem.selectOption('#select-style', 'Fine Line');
+  await semContagem.fill('#input-placement', 'Antebraço');
+  await semContagem.fill('#input-size', '12cm por 6cm');
+  await semContagem.fill('#input-idea', 'Um ramo pequeno com folhas.');
+  await semContagem.click('#btn-submit-booking');
+  const abriuSemContagem = await semContagem
+    .waitForFunction(() => window.__aberto !== null, null, { timeout: 10000 })
+    .then(() => true)
+    .catch(() => false);
+  checar('o WhatsApp abre mesmo com a contagem fora do ar', abriuSemContagem);
+  await semContagem.close();
 
   // --- o Worker sozinho: o que o navegador não protege ---
   const enviar = (arquivos) => {
