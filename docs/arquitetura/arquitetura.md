@@ -37,7 +37,8 @@ src/
 worker/
 └── index.ts         Unico codigo do projeto que roda na borda. Recebe as
                      fotos de referencia do formulario e as entrega de volta.
-                     Ver referencias-do-orcamento.md
+                     Ver referencias-do-orcamento.md. Tambem conta os envios
+                     do formulario (/api/pedido). Ver funil-de-visibilidade.md
 
 scripts/
 ├── inventario-fotos.mjs   o que do acervo ja esta no site
