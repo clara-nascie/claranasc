@@ -1,0 +1,16 @@
+---
+import { CAMPANHA } from '../data/campanhaData';
+
+const REPETICOES = Array.from({ length: 24 });
+---
+
+{CAMPANHA.ativa && (
+  <div class="campanha-fitas">
+    <a href={CAMPANHA.caminho} class="campanha-fita campanha-fita--preta" aria-label={`${CAMPANHA.nome}: ver condições`}>
+      <span aria-hidden="true">{REPETICOES.map(() => <b>{CAMPANHA.nome}</b>)}</span>
+    </a>
+    <a href={CAMPANHA.caminho} class="campanha-fita campanha-fita--rosa" aria-hidden="true" tabindex="-1">
+      <span>{REPETICOES.map(() => <b>{CAMPANHA.nome}</b>)}</span>
+    </a>
+  </div>
+)}

@@ -1,0 +1,78 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BreadcrumbSchema from '../components/seo/BreadcrumbSchema.astro';
+import banner from '../assets/campanha/black-november.webp';
+import { CAMPANHA } from '../data/campanhaData';
+import { whatsappUrl } from '../data/siteData';
+
+const trilha = [
+  { nome: 'Início', caminho: '/' },
+  { nome: CAMPANHA.nome, caminho: CAMPANHA.caminho }
+];
+
+const LARGURAS = [320, 420, 840];
+const TAMANHOS = '(max-width: 992px) min(90vw, 420px), 420px';
+---
+
+<BaseLayout
+  title="Black November | Clara Nasc"
+  description="Condição especial para novos clientes: 12% de desconto no Pix ou até 6x sem juros no cartão. Vagas limitadas."
+  noindex
+>
+  <BreadcrumbSchema slot="head" itens={trilha} />
+
+  <main class="campanha-pagina">
+    <div class="container campanha-grid">
+      <div class="campanha-texto" data-cta-apos>
+        <nav class="trilha" aria-label="Trilha de navegação">
+          <ol>
+            <li><a href="/">Início</a></li>
+            <li aria-current="page">{CAMPANHA.nome}</li>
+          </ol>
+        </nav>
+
+        <h1>{CAMPANHA.nome}</h1>
+
+        {CAMPANHA.ativa ? (
+          <>
+            <p class="campanha-chamada">{CAMPANHA.chamada}</p>
+            <p class="campanha-condicoes">{CAMPANHA.condicoes}</p>
+            <ul class="campanha-regras">
+              {CAMPANHA.regras.map((regra) => <li>{regra}</li>)}
+            </ul>
+            <p class="campanha-convite">{CAMPANHA.convite}</p>
+            <a
+              href={whatsappUrl(CAMPANHA.mensagemWhatsapp)}
+              target="_blank"
+              rel="noreferrer"
+              class="btn campanha-btn"
+              id="campanha-whatsapp"
+            >
+              Quero minha vaga
+            </a>
+          </>
+        ) : (
+          <>
+            <p class="campanha-chamada">{CAMPANHA.encerrada}</p>
+            <a href="/#contato" class="btn campanha-btn" id="campanha-orcamento">
+              Solicitar orçamento
+            </a>
+          </>
+        )}
+      </div>
+
+      {CAMPANHA.ativa && (
+        <div class="campanha-banner">
+          <Image
+            src={banner}
+            alt="Banner da campanha Black November, com um gato preto de manchas rosa se espreguiçando e folhas estampadas sobre fundo vinho."
+            widths={LARGURAS}
+            sizes={TAMANHOS}
+            loading="eager"
+          />
+        </div>
+      )}
+    </div>
+  </main>
+</BaseLayout>

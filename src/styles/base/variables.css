@@ -36,6 +36,13 @@
        contrastar com o creme; sobre fundo escuro ele cai para 3,85:1,
        abaixo dos 4,5:1 da WCAG AA. Mesma matiz, para a identidade nao mudar. */
     --accent-gold-on-dark: hsl(30, 50%, 60%);
+
+    /* Cores do banner da campanha. */
+    --campanha-vinho: #762837;
+    --campanha-vinho-hover: #5f1f2c;
+    --campanha-vinho-rgb: 118, 40, 55;
+    --campanha-rosa: #ecbec3;
+    --campanha-preto: #000;
     
     /* Glassmorphism (usado no lightbox) */
     --glass-border: rgba(166, 107, 63, 0.1);

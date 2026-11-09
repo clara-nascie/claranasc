@@ -1,4 +1,6 @@
 ---
+import { CAMPANHA } from '../data/campanhaData';
+
 /**
  * Botão flutuante de agendamento.
  */
@@ -7,7 +9,7 @@
 
 <a
   href="/#contato"
-  class="floating-cta"
+  class:list={['floating-cta', { 'floating-cta--campanha': CAMPANHA.ativa }]}
   id="floating-cta"
   aria-label="Ir para o formulário de orçamento e agendamento"
   >

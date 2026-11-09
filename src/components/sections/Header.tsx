@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Button } from '../ui/Button';
+import { CAMPANHA } from '../../data/campanhaData';
 
 // ⚠️ Links são `/#secao`, não `#secao`: o cabeçalho aparece em seis páginas e
 // cinco não têm essas seções. Na home o navegador rola sem recarregar.
@@ -23,6 +24,9 @@ export const Header: React.FC = () => {
               <li><a href="/#portfolio" className="nav-link" id="nav-link-portfolio">Portfólio</a></li>
               <li><a href="/#sobre" className="nav-link" id="nav-link-sobre">A Artista</a></li>
               <li><a href="/#estudio" className="nav-link" id="nav-link-estudio">O Estúdio</a></li>
+              {CAMPANHA.ativa && (
+                <li><a href={CAMPANHA.caminho} className="nav-link nav-link-campanha" id="nav-link-campanha">{CAMPANHA.nome}</a></li>
+              )}
               <li><Button as="a" href="/#contato" className="nav-link btn-header-cta" id="nav-link-contato">Agendar Sessão</Button></li>
             </ul>
           </nav>
@@ -41,6 +45,9 @@ export const Header: React.FC = () => {
             <li><a href="/#portfolio" className="mobile-nav-link" id="mob-link-portfolio" onClick={closeMenu}>Portfólio</a></li>
             <li><a href="/#sobre" className="mobile-nav-link" id="mob-link-sobre" onClick={closeMenu}>A Artista</a></li>
             <li><a href="/#estudio" className="mobile-nav-link" id="mob-link-estudio" onClick={closeMenu}>O Estúdio</a></li>
+            {CAMPANHA.ativa && (
+              <li><a href={CAMPANHA.caminho} className="mobile-nav-link mobile-nav-campanha" id="mob-link-campanha" onClick={closeMenu}>{CAMPANHA.nome}</a></li>
+            )}
             <li><Button as="a" href="/#contato" className="mobile-nav-link btn-mobile-cta" id="mob-link-contato" onClick={closeMenu}>Agendar Sessão</Button></li>
           </ul>
         </nav>

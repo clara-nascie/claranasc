@@ -25,6 +25,7 @@
 @import './sections/avaliacoes.css';
 @import './sections/contact.css';
 @import './sections/footer.css';
+@import './sections/campanha.css';
 
 /* 4. Media Queries (Overrides always at the end) */
 @import './base/media.css';

@@ -10,14 +10,16 @@ import { Header } from '../components/sections/Header';
 import { Footer } from '../components/sections/Footer';
 import { Lightbox } from '../components/Lightbox';
 import FloatingCta from '../components/FloatingCta.astro';
+import CampanhaFaixa from '../components/CampanhaFaixa.astro';
 
 interface Props {
   title: string;
   description: string;
   ogType?: 'website' | 'article';
+  noindex?: boolean;
 }
 
-const { title, description, ogType = 'website' } = Astro.props;
+const { title, description, ogType = 'website', noindex = false } = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -27,7 +29,7 @@ const { title, description, ogType = 'website' } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="/favicon.png">
 
-    <Seo title={title} description={description} ogType={ogType} />
+    <Seo title={title} description={description} ogType={ogType} noindex={noindex} />
     <LocalBusinessSchema />
 
     {/* Schema específico da página: breadcrumb, FAQ. */}
@@ -40,9 +42,12 @@ const { title, description, ogType = 'website' } = Astro.props;
 </head>
 <body>
     <AppLayout>
-        <Header client:load />
-        <slot />
-        <Footer />
+        <div class="site-corpo">
+            <CampanhaFaixa />
+            <Header client:load />
+            <slot />
+            <Footer />
+        </div>
         <Lightbox client:load />
         <FloatingCta />
     </AppLayout>

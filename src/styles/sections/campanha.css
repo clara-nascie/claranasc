@@ -1,0 +1,223 @@
+/* ==========================================================================
+   CAMPANHA: faixa, botao flutuante e pagina
+   ========================================================================== */
+/* ⚠️ A altura soma grossura (62px), afastamento e o que a inclinacao sobe e
+   desce de uma borda a outra (tan 3,5 graus = 6,1%). Mudou um, mude o calculo. */
+.site-corpo {
+    position: relative;
+    --campanha-fitas-afastamento: 56px;
+    --campanha-fitas-altura: calc(62px + var(--campanha-fitas-afastamento) + 6.1vw);
+    --campanha-fitas-respiro: 28px;
+    --campanha-fitas-espaco: calc(var(--campanha-fitas-altura) + var(--campanha-fitas-respiro));
+}
+
+.campanha-fitas {
+    position: absolute;
+    top: calc(var(--header-height) + var(--campanha-fitas-respiro));
+    left: 0;
+    width: 100%;
+    height: var(--campanha-fitas-altura);
+    overflow: hidden;
+    z-index: 10;
+}
+
+.campanha-fita {
+    position: absolute;
+    top: 50%;
+    left: -10%;
+    width: 120%;
+    display: block;
+    padding: 15px 0;
+    overflow: hidden;
+    white-space: nowrap;
+    font-family: 'Syne', sans-serif;
+    font-size: 1.7rem;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.campanha-fita b {
+    font-weight: inherit;
+    margin-right: 28px;
+}
+
+.campanha-fita--preta {
+    background-color: var(--campanha-preto);
+    color: var(--campanha-rosa);
+    transform: translateY(calc(-50% - var(--campanha-fitas-afastamento) / 2)) rotate(-3.5deg);
+}
+
+.campanha-fita--rosa {
+    background-color: var(--campanha-rosa);
+    color: var(--campanha-preto);
+    transform: translateY(calc(-50% + var(--campanha-fitas-afastamento) / 2)) rotate(3.5deg);
+}
+
+.campanha-fita:focus-visible {
+    outline: 3px solid var(--campanha-vinho);
+    outline-offset: -3px;
+}
+
+/* Reserva, em cada tipo de pagina, o espaco das fitas abaixo do header. */
+.site-corpo:has(> .campanha-fitas) :is(.nicho-intro, .campanha-pagina) {
+    padding-top: calc(var(--header-height) + var(--campanha-fitas-espaco));
+}
+
+.site-corpo:has(> .campanha-fitas) .pagina-texto {
+    padding-top: calc(var(--header-height) + var(--campanha-fitas-espaco) + 40px);
+}
+
+.site-corpo:has(> .campanha-fitas) .hero-section {
+    min-height: calc(620px + var(--campanha-fitas-espaco));
+    padding-top: calc(var(--header-height) + var(--campanha-fitas-espaco));
+}
+
+@media (max-width: 992px) {
+    .site-corpo:has(> .campanha-fitas) .hero-section {
+        min-height: 0;
+        padding-top: calc(var(--header-height) + var(--campanha-fitas-espaco) + 24px);
+    }
+}
+
+@media (max-width: 768px) {
+    /* Grossura 46px; tan 5 graus = 8,8%. */
+    .site-corpo {
+        --campanha-fitas-afastamento: 42px;
+        --campanha-fitas-altura: calc(46px + var(--campanha-fitas-afastamento) + 8.8vw);
+        --campanha-fitas-respiro: 14px;
+    }
+
+    .campanha-fita {
+        padding: 11px 0;
+        font-size: 1.2rem;
+    }
+
+    .campanha-fita--preta {
+        transform: translateY(calc(-50% - var(--campanha-fitas-afastamento) / 2)) rotate(-5deg);
+    }
+
+    .campanha-fita--rosa {
+        transform: translateY(calc(-50% + var(--campanha-fitas-afastamento) / 2)) rotate(5deg);
+    }
+}
+
+.floating-cta.floating-cta--campanha {
+    background-color: var(--campanha-vinho);
+    box-shadow: 0 6px 24px rgba(var(--campanha-vinho-rgb), 0.35);
+}
+
+.floating-cta.floating-cta--campanha.is-visible:hover {
+    background-color: var(--campanha-vinho-hover);
+    box-shadow: 0 10px 30px rgba(var(--campanha-vinho-rgb), 0.45);
+}
+
+/* ⚠️ Comeca em `--bg-hero-top` porque os links do header tem fundo dessa cor. */
+.campanha-pagina {
+    padding-top: var(--header-height);
+    background: linear-gradient(var(--bg-hero-top), var(--bg-primary) 360px);
+}
+
+.campanha-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
+    gap: 64px;
+    align-items: center;
+}
+
+.campanha-banner {
+    order: -1;
+}
+
+.campanha-banner img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+}
+
+.campanha-texto h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.25rem, 6vw, 3.75rem);
+    font-weight: 800;
+    line-height: 1.05;
+    text-transform: uppercase;
+    color: var(--campanha-vinho);
+    margin: 16px 0;
+}
+
+.campanha-chamada {
+    font-size: 1.25rem;
+    color: var(--text-primary);
+    margin-bottom: 24px;
+}
+
+.campanha-condicoes {
+    padding: 24px;
+    border-radius: 8px;
+    background-color: var(--campanha-vinho);
+    color: var(--campanha-rosa);
+    font-family: 'Syne', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1.35;
+    margin-bottom: 24px;
+}
+
+.campanha-regras {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.campanha-regras li {
+    padding: 8px 14px;
+    border-radius: 4px;
+    background-color: var(--campanha-rosa);
+    color: var(--campanha-vinho);
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.campanha-convite {
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+}
+
+.campanha-btn {
+    background-color: var(--campanha-vinho);
+    color: var(--text-on-dark);
+}
+
+.campanha-btn:hover {
+    background-color: var(--campanha-vinho-hover);
+    transform: translateY(-2px);
+}
+
+/* ⚠️ Com a aba da campanha, o menu nao cabe nesta faixa de larguras. */
+@media (min-width: 993px) and (max-width: 1199px) {
+    .nav-menu ul {
+        gap: 12px;
+    }
+
+    .nav-menu .nav-link {
+        padding-inline: 12px;
+    }
+}
+
+@media (max-width: 992px) {
+    .campanha-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 40px;
+    }
+
+    .campanha-banner {
+        order: 0;
+        width: 100%;
+        max-width: 420px;
+        margin: 0 auto;
+    }
+}
