@@ -4,7 +4,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import BreadcrumbSchema from '../components/seo/BreadcrumbSchema.astro';
 import banner from '../assets/campanha/black-november.webp';
 import { CAMPANHA } from '../data/campanhaData';
-import { whatsappUrl } from '../data/siteData';
 
 const trilha = [
   { nome: 'Início', caminho: '/' },
@@ -47,11 +46,9 @@ const descricao = CAMPANHA.ativa
             </ul>
             <p class="campanha-convite">{CAMPANHA.convite}</p>
             <a
-              href={whatsappUrl(CAMPANHA.mensagemWhatsapp)}
-              target="_blank"
-              rel="noreferrer"
+              href={`/?campanha=${CAMPANHA.parametroFormulario}#contato`}
               class="btn campanha-btn"
-              id="campanha-whatsapp"
+              id="campanha-formulario"
             >
               Quero minha vaga
             </a>

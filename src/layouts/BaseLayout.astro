@@ -12,6 +12,7 @@ import { Lightbox } from '../components/Lightbox';
 import FloatingCta from '../components/FloatingCta.astro';
 import CampanhaFaixa from '../components/CampanhaFaixa.astro';
 import CampanhaPopup from '../components/CampanhaPopup.astro';
+import CampanhaFlutuante from '../components/CampanhaFlutuante.astro';
 
 interface Props {
   title: string;
@@ -51,6 +52,7 @@ const { title, description, ogType = 'website', noindex = false } = Astro.props;
         </div>
         <Lightbox client:load />
         <FloatingCta />
+        <CampanhaFlutuante />
         <CampanhaPopup />
     </AppLayout>
 

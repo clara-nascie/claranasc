@@ -6,6 +6,7 @@ import { Textarea } from '../ui/Textarea';
 import { Select } from '../ui/Select';
 import { FileInput } from '../ui/FileInput';
 import { whatsappUrl } from '../../data/siteData';
+import { CAMPANHA } from '../../data/campanhaData';
 import { LIMITE_REFERENCIAS, TIPOS_ACEITOS, emMegabytes } from '../../data/referencias';
 
 /** Sobe as referências e devolve o endereço delas. Ver
@@ -78,9 +79,14 @@ export const ContactForm: React.FC = () => {
       }
     }
 
+    const veioDaCampanha =
+      CAMPANHA.ativa &&
+      new URLSearchParams(window.location.search).get('campanha') === CAMPANHA.parametroFormulario;
+
     const message = [
       'Olá Clara! Gostaria de solicitar um orçamento para tatuagem.',
       '',
+      ...(veioDaCampanha ? [`*Promoção:* ${CAMPANHA.nome}`] : []),
       `*Nome:* ${formData.name}`,
       `*Estilo:* ${formData.style}`,
       `*Local:* ${formData.placement}`,

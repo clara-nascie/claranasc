@@ -203,6 +203,66 @@
     transform: translateY(-2px);
 }
 
+/* So onde o menu vira ☰ e a aba da campanha fica escondida. */
+.campanha-flutuante {
+    display: none;
+}
+
+@media (max-width: 992px) {
+    .campanha-flutuante {
+        --campanha-flutuante-base: 24px;
+        position: fixed;
+        right: 24px;
+        bottom: var(--campanha-flutuante-base);
+        z-index: 900;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 24px;
+        border-radius: 50px;
+        background-color: var(--campanha-preto);
+        color: var(--campanha-rosa);
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+        font-size: 0.85rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        transition: bottom 0.3s ease, opacity 0.3s ease, visibility 0.3s;
+    }
+
+    /* Sobe quando o "Agendar Sessao" aparece, para os dois nao se cobrirem. */
+    body:has(.floating-cta.is-visible) .campanha-flutuante {
+        bottom: calc(var(--campanha-flutuante-base) + 62px);
+    }
+
+    .campanha-flutuante.is-oculto {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
+
+    .campanha-flutuante:focus-visible {
+        outline: 2px solid var(--campanha-vinho);
+        outline-offset: 3px;
+    }
+}
+
+@media (max-width: 480px) {
+    .campanha-flutuante {
+        --campanha-flutuante-base: 16px;
+        right: 16px;
+        padding: 13px 20px;
+        font-size: 0.78rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .campanha-flutuante {
+        transition: none;
+    }
+}
+
 .campanha-termos {
     margin-top: 28px;
     color: var(--text-secondary);
