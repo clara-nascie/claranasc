@@ -129,6 +129,23 @@ assim recorta a flor.
 degradê (`nicho.css`) exatamente por isso. Se o cabeçalho passar a flutuar sobre
 uma seção com outro fundo, esta cor deixa de casar.
 
+## Campanhas temporárias
+
+Fitas, aba, página e cor do botão flutuante saem de `src/data/campanhaData.ts`.
+Para encerrar, mude `ativa` para `false` e publique: o site é estático, então a
+data sozinha não o desliga. Se as vagas acabarem antes, é o mesmo interruptor.
+A página continua no ar com um aviso, porque links antigos da bio e dos stories
+ainda apontam para ela.
+
+As fitas diagonais ficam entre o cabeçalho e o conteúdo. A altura delas sai de
+`--campanha-fitas-altura`, somada ao `padding-top` de cada tipo de página. O
+hero mantém os 85vh e só cresce em telas baixas, onde o conteúdo não caberia.
+
+A página tem `noindex` e fica fora do sitemap: dura poucas semanas, não daria
+tempo de ranquear, e o Google poderia seguir mostrando uma promoção vencida.
+
+As cores vinho e rosa vêm do banner e valem só para a campanha.
+
 ## Tipografia das páginas por nicho
 
 O título fica dois passos acima da chamada numa escala de 1,25 — de 1,2rem para
