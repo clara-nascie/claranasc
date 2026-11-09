@@ -197,6 +197,95 @@
     transform: translateY(-2px);
 }
 
+.campanha-termos {
+    margin-top: 28px;
+    color: var(--text-secondary);
+    font-size: 0.8125rem;
+    line-height: 1.55;
+}
+
+.campanha-termos h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.campanha-termos ul {
+    list-style: disc;
+    padding-left: 18px;
+}
+
+.campanha-termos li + li {
+    margin-top: 4px;
+}
+
+.campanha-popup {
+    margin: auto;
+    padding: 0;
+    border: none;
+    background: transparent;
+    max-width: none;
+    max-height: 100vh;
+    max-height: 100dvh;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.campanha-popup::backdrop {
+    background-color: rgba(0, 0, 0, 0.72);
+}
+
+body:has(.campanha-popup[open]) {
+    overflow: hidden;
+}
+
+/* A largura sai da altura da tela (banner 9:16) para o botao caber sem rolar.
+   O `max` evita um banner minusculo em tela baixa; ali o pop-up rola. */
+.campanha-popup-corpo {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: min(88vw, 400px, max(220px, calc((100vh - 110px) * 0.5625)));
+    width: min(88vw, 400px, max(220px, calc((100dvh - 110px) * 0.5625)));
+}
+
+.campanha-popup-corpo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+}
+
+.campanha-popup-fechar {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: var(--campanha-preto);
+    color: var(--campanha-rosa);
+    cursor: pointer;
+}
+
+.campanha-popup-fechar:focus-visible {
+    outline: 2px solid var(--campanha-rosa);
+    outline-offset: 2px;
+}
+
+.campanha-popup-acao {
+    width: 100%;
+    text-align: center;
+}
+
 /* ⚠️ Com a aba da campanha, o menu nao cabe nesta faixa de larguras. */
 @media (min-width: 993px) and (max-width: 1199px) {
     .nav-menu ul {

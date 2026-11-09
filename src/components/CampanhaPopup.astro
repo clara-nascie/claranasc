@@ -1,0 +1,81 @@
+---
+import { Image } from 'astro:assets';
+import banner from '../assets/campanha/black-november.webp';
+import { CAMPANHA } from '../data/campanhaData';
+
+const naPaginaDaCampanha = Astro.url.pathname.replace(/\/?$/, '/') === CAMPANHA.caminho;
+
+// As condições só existem dentro da imagem aqui, então o alt precisa trazê-las.
+const descricao = `${CAMPANHA.nome}. ${CAMPANHA.chamada} ${CAMPANHA.condicoes}. ${CAMPANHA.regras.join('. ')}.`;
+
+const LARGURAS = [300, 400, 800];
+const TAMANHOS = 'min(88vw, 400px)';
+---
+
+{CAMPANHA.ativa && !naPaginaDaCampanha && (
+  <dialog class="campanha-popup" id="campanha-popup" aria-label={CAMPANHA.nome}>
+    <div class="campanha-popup-corpo">
+      <button type="button" class="campanha-popup-fechar" id="campanha-popup-fechar" aria-label="Fechar">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M18 6 6 18" />
+          <path d="m6 6 12 12" />
+        </svg>
+      </button>
+      <Image src={banner} alt={descricao} widths={LARGURAS} sizes={TAMANHOS} loading="eager" />
+      <a href={CAMPANHA.caminho} class="btn campanha-btn campanha-popup-acao" id="campanha-popup-acao">
+        {CAMPANHA.botaoPopup}
+      </a>
+    </div>
+  </dialog>
+)}
+
+<script>
+  const CHAVE = 'campanha-popup-visto';
+  const ATRASO_MS = 800;
+
+  const popup = document.getElementById('campanha-popup');
+
+  const jaViu = () => {
+    try {
+      return sessionStorage.getItem(CHAVE) !== null;
+    } catch {
+      return false;
+    }
+  };
+
+  const marcarComoVisto = () => {
+    try {
+      sessionStorage.setItem(CHAVE, '1');
+    } catch {
+      // Sem armazenamento, o pop-up só volta a aparecer na próxima página.
+    }
+  };
+
+  if (popup instanceof HTMLDialogElement) {
+    document.getElementById('campanha-popup-fechar')?.addEventListener('click', () => popup.close());
+
+    // O corpo preenche o dialog: um clique com alvo no próprio dialog foi no fundo escuro.
+    popup.addEventListener('click', (evento) => {
+      if (evento.target === popup) popup.close();
+    });
+
+    // ⚠️ Os testes automáticos clicam na página: um modal aberto bloquearia todos.
+    if (!navigator.webdriver && !jaViu()) {
+      setTimeout(() => {
+        popup.showModal();
+        marcarComoVisto();
+      }, ATRASO_MS);
+    }
+  }
+</script>

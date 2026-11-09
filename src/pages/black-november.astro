@@ -51,6 +51,12 @@ const TAMANHOS = '(max-width: 992px) min(90vw, 420px), 420px';
             >
               Quero minha vaga
             </a>
+            <section class="campanha-termos">
+              <h2>Condições</h2>
+              <ul>
+                {CAMPANHA.termos.map((termo) => <li>{termo}</li>)}
+              </ul>
+            </section>
           </>
         ) : (
           <>

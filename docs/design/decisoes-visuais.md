@@ -146,6 +146,10 @@ tempo de ranquear, e o Google poderia seguir mostrando uma promoção vencida.
 
 As cores vinho e rosa vêm do banner e valem só para a campanha.
 
+O pop-up abre uma vez por sessão do navegador, fora da página da campanha. Não
+abre com `navigator.webdriver`, porque um modal bloquearia os testes automáticos;
+para testá-lo, o Chromium precisa de `--disable-blink-features=AutomationControlled`.
+
 ## Tipografia das páginas por nicho
 
 O título fica dois passos acima da chamada numa escala de 1,25 — de 1,2rem para
