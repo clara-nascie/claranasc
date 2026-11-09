@@ -101,14 +101,16 @@ try {
     await page.waitForTimeout(2000);
 
     const cta = page.locator('#floating-cta');
+    // ⚠️ Durante uma campanha ativa o botão não é renderizado.
+    const temCta = (await cta.count()) > 0;
 
     // --- 1. O botão flutuante NÃO deve aparecer sobre o hero ---
-    await checarVisibilidade(cta, false, `[${rotulo}] botão flutuante oculto sobre o hero`);
+    if (temCta) await checarVisibilidade(cta,false, `[${rotulo}] botão flutuante oculto sobre o hero`);
     await page.screenshot({ path: `${OUT_DIR}/${rotulo}-1-hero.png` });
 
     await page.locator('#portfolio').evaluate((el) => el.scrollIntoView({ block: 'start' }));
     await page.waitForTimeout(800);
-    await checarVisibilidade(cta, true, `[${rotulo}] botão flutuante visível no portfólio`);
+    if (temCta) await checarVisibilidade(cta,true, `[${rotulo}] botão flutuante visível no portfólio`);
     await page.screenshot({ path: `${OUT_DIR}/${rotulo}-2-portfolio.png` });
 
     /* ⚠️ Mede a caixa renderizada, não a existência do seletor: existir no
@@ -176,7 +178,7 @@ try {
     // --- 4. Deve sumir sobre o formulário de agendamento ---
     await page.locator('#contato').scrollIntoViewIfNeeded();
     await page.waitForTimeout(800);
-    await checarVisibilidade(cta, false, `[${rotulo}] botão flutuante oculto sobre o formulário`);
+    if (temCta) await checarVisibilidade(cta,false, `[${rotulo}] botão flutuante oculto sobre o formulário`);
     await page.screenshot({ path: `${OUT_DIR}/${rotulo}-3-contato.png` });
 
     // --- 5. Contraste dos botões do hero ---

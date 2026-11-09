@@ -509,10 +509,14 @@ try {
     // de abrir para ler. Já aconteceu — ver `data-cta-apos` no FloatingCta.
     await page.evaluate(() => window.scrollTo(0, 0));
     await page.waitForTimeout(400);
-    const ctaNoTopo = await page.locator('#floating-cta').evaluate((el) =>
-      el.classList.contains('is-visible')
-    );
-    checar('botão flutuante escondido no topo da página', !ctaNoTopo);
+    // ⚠️ Durante uma campanha ativa o botão não é renderizado.
+    const temCta = (await page.locator('#floating-cta').count()) > 0;
+    if (temCta) {
+      const ctaNoTopo = await page.locator('#floating-cta').evaluate((el) =>
+        el.classList.contains('is-visible')
+      );
+      checar('botão flutuante escondido no topo da página', !ctaNoTopo);
+    }
 
     // Ancorado na galeria, nunca num scroll em pixels: posição fixa muda de
     // significado quando o conteúdo acima cresce ou encolhe. E `scrollIntoView`
@@ -521,10 +525,12 @@ try {
       el.scrollIntoView({ block: 'start' })
     );
     await page.waitForTimeout(500);
-    const ctaRolado = await page.locator('#floating-cta').evaluate((el) =>
-      el.classList.contains('is-visible')
-    );
-    checar('botão flutuante aparece na galeria', ctaRolado);
+    if (temCta) {
+      const ctaRolado = await page.locator('#floating-cta').evaluate((el) =>
+        el.classList.contains('is-visible')
+      );
+      checar('botão flutuante aparece na galeria', ctaRolado);
+    }
 
     // --- lightbox ---
     await page.locator('.lightbox-trigger').first().click({ force: true });
