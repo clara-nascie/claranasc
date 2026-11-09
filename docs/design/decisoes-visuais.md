@@ -146,6 +146,9 @@ tempo de ranquear, e o Google poderia seguir mostrando uma promoção vencida.
 
 As cores vinho e rosa vêm do banner e valem só para a campanha.
 
+Durante a campanha, o `FloatingCta` não é renderizado e o botão flutuante da
+campanha ocupa o lugar dele. Ao desligar a campanha, o botão original volta.
+
 O pop-up abre uma vez por sessão do navegador, fora da página da campanha. Não
 abre com `navigator.webdriver`, porque um modal bloquearia os testes automáticos;
 para testá-lo, o Chromium precisa de `--disable-blink-features=AutomationControlled`.
