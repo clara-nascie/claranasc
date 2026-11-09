@@ -13,11 +13,15 @@ const trilha = [
 
 const LARGURAS = [320, 420, 840];
 const TAMANHOS = '(max-width: 992px) min(90vw, 420px), 420px';
+
+const descricao = CAMPANHA.ativa
+  ? 'Condição especial para novos clientes: 12% de desconto no Pix ou até 6x sem juros no cartão. Vagas limitadas.'
+  : CAMPANHA.encerrada;
 ---
 
 <BaseLayout
   title="Black November | Clara Nasc"
-  description="Condição especial para novos clientes: 12% de desconto no Pix ou até 6x sem juros no cartão. Vagas limitadas."
+  description={descricao}
   noindex
 >
   <BreadcrumbSchema slot="head" itens={trilha} />

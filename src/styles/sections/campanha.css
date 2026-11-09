@@ -130,6 +130,12 @@
     order: -1;
 }
 
+/* Campanha encerrada: sem o banner, a coluna dele ficaria vazia. */
+.campanha-grid:not(:has(.campanha-banner)) {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 720px;
+}
+
 .campanha-banner img {
     display: block;
     width: 100%;
